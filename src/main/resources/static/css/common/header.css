@@ -1,0 +1,62 @@
+.header_box {
+    margin: 0 auto;
+    height: 100px;
+    width: 988px;
+}
+
+.header_box .logo_box_div {
+    float: left;
+}
+
+.header_box .user_util_box {
+    float: right;
+    line-height: 100px;
+}
+
+.header_box .user_util_box ul {
+    float: right;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header_box .user_util_box ul li {
+    height: 35%;
+}
+
+.user_util_box ul li:nth-child(-n+3) {
+    margin-right: 30px;
+}
+
+.header_box .user_util_box ul li img {
+    height: 100%;
+}
+
+.header_box .user_util_box .hosting_button {
+    outline: 0;
+    border: 0;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.header_box .user_util_box .login_button {
+    padding: 7px 15px 7px 15px;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    word-break: keep-all;
+    background: #212529;
+    color: white;
+    transition: all 0.125s ease-in 0s;
+    cursor: pointer;
+}
+
+.header_box .user_util_box .day_night_skin_button {
+    width: 55px;
+    height: 50px;
+    border: 0;
+    background-color: white;
+    cursor: pointer;
+}

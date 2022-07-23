@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/signup.css}" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+<div class="signup_container">
+    <!-- logo-box -->
+    <div th:replace="/fragments/common.html :: logo_layout"></div>
+
+    <h1 class="signup_title">회원정보 입력</h1>
+
+    <form th:object="${userSignUpInput}" method="post" class="signup_form"
+          id="signup_form" name="signupForm">
+
+        <div class="input_div clear_fix">
+            <label for="user_id" class="input_label email_label">
+                <span class="blind">아이디(이메일)</span>
+            </label>
+
+            <input th:field="*{userId}" type="email" id="user_id" class="input_form" maxlength="128"
+                   placeholder="이메일을 입력해주세요."
+                   name="userId" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" id="user_id_validation_error"
+                  class="validation_error"></span>
+            <p class="spel_condition_tag">ex) test@naver.com</p>
+            <p class="spel_condition_tag">공백,특수문자 기입 불가</p>
+        </div>
+
+        <div class="input_div clear_fix">
+            <label for="user_password" class="input_label password_label">
+                <span class="blind">비밀번호</span>
+            </label>
+
+            <input th:field="*{password}" type="password" id="user_password" name="password" class="input_form"
+                   maxlength="20" minlength="8" placeholder="비밀번호를 입력해주세요." autocomplete="on" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" id="user_password_validation_error"
+                  class="validation_error"></span>
+            <p class="spel_condition_tag">하나 이상의 숫자(0~9), 알파벳(a~z | A~Z) 포함</p>
+            <p class="spel_condition_tag">하나 이상의 특수문자 포함 ! @ # &amp; ( ).</p>
+            <p class="spel_condition_tag">최소 8자 ~ 최대 20자로 작성</p>
+        </div>
+
+        <div class="input_div clear_fix">
+            <label for="user_nickname" class="input_label nickname_label">
+                <span class="blind">닉네임</span>
+            </label>
+
+            <input th:field="*{nickname}" type="text" id="user_nickname" name="nickname" class="input_form"
+                   maxlength="128" placeholder="닉네임을 입력해주세요(최대 128글자)" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" id="user_nickname_validation_error"
+                  class="validation_error"></span>
+        </div>
+
+        <div class="input_div clear_fix">
+            <label for="user_greetings" class="input_label greetings_label">
+                <span class="blind">인사말</span>
+            </label>
+
+            <input th:field="*{greetings}" type="text" id="user_greetings" name="greetings" class="input_form"
+                   maxlength="256" placeholder="인사말을 입력해주세요(최대 256글자)" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('greetings')}" th:errors="*{greetings}"
+                  id="user_greetings_validation_error" class="validation_error"></span>
+        </div>
+
+        <div class="input_div clear_fix">
+            <label for="user_blog_name" class="input_label blog_name_label">
+                <span class="blind">블로그이름</span>
+            </label>
+
+            <input th:field="*{blogName}" type="text" id="user_blog_name" name="blogName" class="input_form"
+                   maxlength="128" placeholder="블로그 이름을 입력해주세요(최대 128글자)" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('blogName')}" th:errors="*{blogName}" id="user_blog_name_validation_error"
+                  class="validation_error"></span>
+        </div>
+
+        <!-- SNS 주소 입력 -->
+        <div class="social_input_div">
+            <h3>SNS 주소 입력 (선택)</h3>
+
+            <div class="input_div clear_fix">
+                <label for="user_social_address" class="input_label social_address_label">
+                    <span class="blind">sns주소</span>
+                </label>
+
+                <input th:field="*{address}" type="text" id="user_social_address" name="address" class="input_form"
+                       maxlength="256" placeholder="SNS 주소를 입력해주세요.">
+            </div>
+
+            <div class="spel_div">
+                <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" id="address_validation_error"
+                      class="validation_error"></span>
+            </div>
+
+            <div class="input_div clear_fix">
+                <label for="user_github_address" class="input_label github_label">
+                    <span class="blind">깃허브주소</span>
+                </label>
+
+                <input th:field="*{github}" type="text" id="user_github_address" name="github" class="input_form"
+                       maxlength="256" placeholder="github 주소를 입력해주세요.">
+            </div>
+
+            <div class="spel_div">
+                <span th:if="${#fields.hasErrors('github')}" th:errors="*{github}" id="github_validation_error"
+                      class="validation_error"></span>
+            </div>
+
+            <div class="input_div clear_fix">
+                <label for="user_twitter_address" class="input_label twitter_label">
+                    <span class="blind">트위터주소</span>
+                </label>
+
+                <input th:field="*{twitter}" type="text" id="user_twitter_address" name="twitter" class="input_form"
+                       maxlength="256" placeholder="twitter 주소를 입력해주세요.">
+            </div>
+
+            <div class="spel_div">
+                <span th:if="${#fields.hasErrors('twitter')}" th:errors="*{twitter}" id="twitter_validation_error"
+                      class="validation_error"></span>
+            </div>
+
+            <div class="input_div clear_fix">
+                <label for="user_instagram_address" class="input_label instagram_label">
+                    <span class="blind">인스타그램</span>
+                </label>
+
+                <input th:field="*{instagram}" type="text" id="user_instagram_address" name="instagram"
+                       class="input_form"
+                       maxlength="256" placeholder="instagram 주소를 입력해주세요.">
+            </div>
+
+            <div class="spel_div">
+                <span th:if="${#fields.hasErrors('instagram')}" th:errors="*{instagram}" id="instagram_validation_error"
+                      class="validation_error"></span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit_button">
+            제출
+        </button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+</div>
+</body>
+</html>

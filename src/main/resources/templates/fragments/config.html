@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="config">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+
+    <link th:href="@{/css/common/util.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/common/header.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/common/footer.css}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/androidstudio.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script type="text/javascript" th:src="@{/js/common/util.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/header.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common/footer.js}"></script>
+
+
+    <!-- 썸네일 이미지가 있는 포스트 템플릿 -->
+    <script id=thumbnail_post_template"" type="text/x-handlebars-template">
+        <li class="post_board">
+            <div class="post_board_div">
+                <a href="/post?id=959584584" class="post_link">
+                    <div class="post_img_board">
+                        <img class="post_img"
+                             src="../image/default_thumbnail.gif"
+                             title="상품이미지">
+                    </div>
+
+                    <div class="post_detail_info_box">
+                        <div class="post_detail_info_div">
+                            <div class="post_title_div">
+                                <h4 class="post_title">안녕하세요</h4>
+                                <p class="post_desc"></p>
+                            </div>
+                        </div>
+                        <div class="post_sub_info_div clear_fix">
+                            <div class="post_upload_div">
+                                <span class="post_upload_day">25%</span>
+                                <span class="post_upload_day">·</span>
+                                <span class="post_upload_day">1개의 댓글</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="post_bottom_info_div clear_fix">
+                        <li class="user_profile_img_div">
+                        </li>
+
+                        <li class="user_profile_span_div">
+                            <span class="user_profile_by">by</span>
+                            <span class="user_profile_name">강준모</span>
+                        </li>
+
+                        <li class="post_util_info_div clear_fix">
+                            <div class="view_count_div clear_fix">
+                                <div class="view_count_img">
+
+                                </div>
+
+                                <span class="view_count_span">
+                                        163
+                                    </span>
+                            </div>
+
+                            <div class="like_count_div clear_fix">
+                                <div class="like_count_img">
+
+                                </div>
+
+                                <span class="like_count_span">
+                                        163
+                                    </span>
+                            </div>
+                        </li>
+                    </ul>
+                </a>
+            </div>
+        </li>
+    </script>
+
+    <!-- 썸네일 이미지가 없는 포스트 템플릿 -->
+    <script id=no_thumbnail_post_template"" type="text/x-handlebars-template">
+        <li class="post_board">
+            <div class="post_board_div">
+                <a href="/post?id=959584584" class="post_link">
+                    <div class="no_thumbnail_post_detail_info_box">
+                        <div class="no_thumbnail_post_detail_info_div">
+                            <div class="no_thumbnail_post_title_div">
+                                <h4 class="no_thumbnail_post_title">안녕하세요</h4>
+                                <p class="no_thumbnail_post_desc"></p>
+                            </div>
+                        </div>
+                        <div class="no_thumbnail_post_sub_info_div clear_fix">
+                            <div class="no_thumbnail_post_upload_div">
+                                <span class="no_thumbnail_post_upload_day">25%</span>
+                                <span class="no_thumbnail_post_upload_day">·</span>
+                                <span class="no_thumbnail_post_upload_day">1개의 댓글</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="no_thumbnail_post_bottom_info_div clear_fix">
+                        <li class="no_thumbnail_user_profile_img_div">
+                        </li>
+
+                        <li class="no_thumbnail_user_profile_span_div">
+                            <span class="no_thumbnail_user_profile_by">by</span>
+                            <span class="no_thumbnail_user_profile_name">강준모</span>
+                        </li>
+
+                        <li class="no_thumbnail_post_util_info_div clear_fix">
+                            <div class="no_thumbnail_view_count_div clear_fix">
+                                <div class="no_thumbnail_view_count_img">
+
+                                </div>
+
+                                <span class="no_thumbnail_view_count_span">
+                                        163
+                                    </span>
+                            </div>
+
+                            <div class="no_thumbnail_like_count_div clear_fix">
+                                <div class="no_thumbnail_like_count_img">
+
+                                </div>
+
+                                <span class="no_thumbnail_like_count_span">
+                                        163
+                                    </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="no_thumbnail_post_bottom_info_div">
+                    </div>
+                </a>
+            </div>
+        </li>
+    </script>
+
+</th:block>
+</html>

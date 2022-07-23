@@ -1,0 +1,65 @@
+spring:
+  thymeleaf:
+    cache: false
+
+  devtools:
+    livereload:
+      enabled: true
+
+    remote:
+      restart:
+        enabled: true
+
+  datasource:
+    url: jdbc:mariadb://localhost:3303/jmblog_mariadb
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      username: junmokang
+      password: wnsah12
+
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    hibernate:
+      format_sql: true
+      show_sql: true
+      use_sql_comments: true
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: apdh1709@gmail.com
+    password: huaieadyjdqovgov
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 8400
+
+logging:
+  pattern:
+    console: "[%d] %-5level [${PID:-} - %thread - {%C => %M, %l}] %logger : %msg%n"
+    file: "[%d] %-5level [${PID:-} - %thread - {%C => %M, %l}] %logger : %msg%n"
+
+  file:
+    name: ./logs/JmBlog.log
+    max-history: 30
+
+#  level:
+#    root: ERROR
+#    org.springframework: INFO
+#    org.springframework.web: DEBUG
+#
+
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

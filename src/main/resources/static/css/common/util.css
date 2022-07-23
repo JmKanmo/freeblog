@@ -1,0 +1,192 @@
+@charset "utf-8";
+
+/*기본스타일 정의*/
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-width: 1080px;
+    min-height: 100%;
+    font-family: '나눔 고딕', NanumGothic, '돋움', Dotum, sans-serif;
+}
+
+ul,
+ol,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.clear_fix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.blind {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+}
+
+.center_fix {
+    display: flex;
+    align-items: center;
+}
+
+/* logo-box */
+.logo_box {
+    line-height: 100px;
+}
+
+.logo_box .logo_link {
+    height: 100%;
+    display: block;
+    display: flex;
+    align-items: center;
+}
+
+.logo_box .logo_img {
+    height: 100%;
+    border-radius: 100%;
+    animation: rotate_image 5s linear infinite;
+    transform-origin: 50% 50%;
+}
+
+.logo_box .logo_name {
+    display: block;
+    float: right;
+    margin-left: 10px;
+    color: #03a9f4;
+    font-family: "바른고딕", NanumBarunGothic, NanumBarunGothicWebFont, "NanumBarun Gothic", "맑은 고딕", Dotum, "돋움", Helvetica, "Apple SD Gothic Neo", sans-serif;
+    font-size: 25px;
+}
+
+/* login-popup */
+.openBtn {
+    display: flex;
+    justify-content: left;
+}
+
+.openButton {
+    border: none;
+    border-radius: 5px;
+    background-color: #1c87c9;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+    position: fixed;
+}
+
+.loginPopup {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+.formPopup {
+    display: none;
+    position: fixed;
+    left: 45%;
+    top: 5%;
+    transform: translate(-50%, 5%);
+    border: 3px solid #999999;
+    z-index: 9;
+}
+
+.formContainer {
+    max-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.formContainer .login_popup_title {
+    color: #333;
+}
+
+.formContainer .email_span {
+    color: #333;
+    font-size: 16px;
+}
+
+.formContainer .password_span {
+    color: #333;
+    font-size: 16px;
+}
+
+.formContainer input[type=text],
+.formContainer input[type=password] {
+    width: 100%;
+    padding: 10px 0;
+    margin: 5px 0 10px 0;
+    border: 1px solid #9e9e9e4a;
+    background: #eee;
+    text-indent: 8px;
+}
+
+.formContainer input[type=text]:focus,
+.formContainer input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+.formContainer .btn {
+    padding: 12px 20px;
+    border: none;
+    background-color: #8ebf42;
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.formContainer .cancel {
+    background-color: #cc0000;
+}
+
+.formContainer .btn:hover,
+.openButton:hover {
+    opacity: 1;
+}
+
+.formContainer .option_div {
+    padding-bottom: 10px;
+}
+
+.formContainer .option_div .signup_div {
+    float: left;
+    line-height: 29px;
+    font-size: 13px;
+}
+
+.formContainer .option_div .signup_div:hover {
+    font-weight: bold;
+}
+
+
+.formContainer .option_div .find_pw_div {
+    color: #333;
+    font-size: 13px;
+    line-height: 29px;
+    float: right;
+}
+
+.formContainer .option_div .find_pw_div:hover {
+    font-weight: bold;
+}
+
+.formContainer .option_div .signup_div a,
+.formContainer .option_div .find_pw_div a {
+    color: #333;
+    text-decoration: none;
+}

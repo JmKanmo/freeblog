@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>common-layout</title>
+</head>
+<body>
+<div th:fragment="logo_layout">
+    <div class="logo_box">
+        <a href="/" title="freelog" class="logo_link clear_fix">
+            <img class="logo_img" src="../image/logo.png">
+            <span class="logo_name">freelog</span>
+            <span class="blind">로고(프리로그)</span>
+        </a>
+    </div>
+</div>
+
+<div th:fragment="login_popup">
+    <div class="loginPopup" id="loginPopUp">
+        <div class="formPopup" id="formPopUp">
+            <form th:action="@{/user/login}" method="post" class="formContainer" id="login_popup_form">
+                <h2 class="login_popup_title">로그인 하기</h2>
+                <label for="email">
+                    <span class="email_span">이메일</span>
+                </label>
+                <input type="text" id="email" placeholder="Your Email" name="email" required>
+                <label for="psw">
+                    <span class="password_span">비밀번호</span>
+                </label>
+
+                <input type="password" id="psw" placeholder="Your Password" name="password" autocomplete="on" required>
+
+                <div class="option_div clear_fix">
+                    <div class="signup_div">
+                        <a href="/user/signup">회원가입</a>
+                        <span class="blind">회원가입</span>
+                    </div>
+
+                    <div class="find_pw_div">
+                        <a href="/user/findPw">아이디 / 비밀번호 찾기</a>
+                        <span class="blind">아이디 / 비밀번호 찾기</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="login_popup_button">로그인</button>
+                <span class="blind">로그인</span>
+                <button type="button" class="btn cancel" id="closePopUpButton">닫기</button>
+                <span class="blind">닫기</span>
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

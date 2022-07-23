@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>가입완료 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/complete.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/complete.js}"></script>
+</head>
+
+<body>
+<div class="complete_container">
+    <h1 style="color: #333">회원 가입이 완료되었습니다.</h1>
+    <div class="email_div">
+        <span class="email" th:if="${#strings.isEmpty(userId)} eq true">알수없음</span>
+        <span class="email" th:if="${#strings.isEmpty(userId)} eq false" th:text="${userId}">이메일</span>
+        <span>로 가입인증 메일을 발송했습니다.</span>
+    </div>
+    <h3 style="color: #333">이메일 인증을 완료한 뒤 로그인을 해주세요.</h3>
+
+    <div class="menu_container clear_fix">
+        <a href="/">홈으로 가기 </a>
+        <button type="button" class="login_button" id="login_button">
+            로그인
+            <span class="blind">로그인</span>
+        </button>
+    </div>
+
+    <!-- login popup -->
+    <div th:replace="/fragments/common.html :: login_popup"></div>
+</div>
+</body>
+</html>
