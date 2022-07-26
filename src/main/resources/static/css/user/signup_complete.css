@@ -1,0 +1,70 @@
+.complete_container {
+    width: 988px;
+    margin: 0 auto;
+    padding: 10px 0 20px 0;
+    text-align: center;
+    border: 1px solid #eeeeee;
+}
+
+.complete_container .menu_container {
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.complete_container .menu_container a {
+    float: left;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.complete_container .menu_container .home_link {
+    color: green;
+}
+
+.complete_container .menu_container .login_link {
+    color: white;
+}
+
+.login_button {
+    margin-left: 15px;
+    float: left;
+    padding: 7px 15px 7px 15px;
+    font-size: 1rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    word-break: keep-all;
+    background: #212529;
+    color: white;
+    transition: all 0.125s ease-in 0s;
+    cursor: pointer;
+}
+
+.complete_container .email_div {
+    color: #333;
+    font-size: 14px;
+}
+
+.complete_container .email_div .email {
+    color: #2196f3;
+    font-weight: bold;
+}
+
+.email_not_sent_text {
+    font-size: 13px;
+    color: #333;
+}
+
+.email_resend_button {
+    border: 0;
+    background-color: white;
+    text-decoration-line: underline;
+    color: #8bc34a;
+    cursor: pointer;
+}
+

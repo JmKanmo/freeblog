@@ -2,22 +2,22 @@ package com.service.core.user.model;
 
 public enum UserStatus {
     /**
-     * 미인증
+     * 이메일 미인증 회원
      */
     NOT_AUTH("NOT_AUTH"),
 
     /**
-     * 활성(이용중)
+     * 활성(이용중) 회원
      */
     ACTIVE("ACTIVE"),
 
     /**
-     * 탈퇴
+     * 탈퇴 된 회원
      */
     WITHDRAW("WITHDRAW"),
 
     /**
-     * 정지 된 상태
+     * 정지 된 회원
      */
     STOP("STOP");
 

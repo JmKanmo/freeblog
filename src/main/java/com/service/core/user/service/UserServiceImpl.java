@@ -1,6 +1,9 @@
 package com.service.core.user.service;
 
+import com.service.core.error.model.UserAuthException;
+import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.User;
+import com.service.core.user.model.UserStatus;
 import com.service.core.user.repository.UserRepository;
 import com.service.util.ConstUtil;
 import com.service.util.JmUtil;
@@ -26,11 +29,41 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public boolean emailAuth(String uuid) {
-        return false;
+    public boolean checkActivate(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.USER_INFO_NOT_FOUND));
+
+        if (user.getStatus() != UserStatus.ACTIVE) {
+            throw new UserAuthException(ConstUtil.NOT_AUTH_USER);
+        }
+
+        return true;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean checkSameUser(User user) {
+        if (userRepository.findById(user.getUserId()).isPresent()) {
+            throw new UserManageException(ConstUtil.ALREADY_SAME_USER);
+        }
+        return true;
+    }
+
+    @Override
+    public void emailAuth(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.USER_INFO_NOT_FOUND));
+
+        if (user.isAuth()) {
+            throw new UserAuthException(ConstUtil.ALREADY_AUTHENTICATED_USER);
+        }
+
+        user.setStatus(UserStatus.ACTIVE);
+        user.setAuth(true);
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.USER_INFO_NOT_FOUND));

@@ -9,30 +9,49 @@
         </div>
 
         <div class="user_util_box">
-            <ul>
-                <li class="center_fix">
+            <ul class="user_util_list">
+                <li class="user_util_item center_fix">
                     <button type="button" class="day_night_skin_button" id="day_night_skin_button" title="모드 변경">
-                        <img src="../image/sun.gif"/>
+                        <img src="../images/sun.gif"/>
                         <span class="blind">모드 변경</span>
                     </button>
                 </li>
 
-                <li class="center_fix">
+                <li class="user_util_item center_fix">
                     <button type="button" title="호스팅정보" class="hosting_button" id="hosting_button">
-                        <img src="../image/wifi.png"/>
+                        <img src="../images/wifi.png"/>
                         <span class="blind">호스팅 정보</span>
                     </button>
                 </li>
 
-                <li>
-                    <button type="button" sec:authorize="!isAuthenticated()" class="login_button" id="login_button">
+                <li class="user_util_item">
+                    <a href="/user/login" sec:authorize="!isAuthenticated()" class="login_button" id="login_button">
                         로그인
                         <span class="blind">로그인</span>
-                    </button>
-                    <button type="button" sec:authorize="isAuthenticated()" class="user_profile">유저
-                        프로필
+                    </a>
+                    <button type="button" sec:authorize="isAuthenticated()" class="user_profile_button"
+                            id="user_profile_button">
+                        <img src="../images/user_default_thumbnail.png"/>
                         <span class="blind">프로필</span>
                     </button>
+                </li>
+            </ul>
+
+            <ul class="user_option_div" id="user_option_div">
+                <li class="user_option_item">
+                    <a class="user_option_link" href="/user/">내 블로그</a>
+                </li>
+
+                <li class="user_option_item">
+                    <a class="user_option_link" href="/user/">좋아요누른 글</a>
+                </li>
+
+                <li class="user_option_item">
+                    <a class="user_option_link" href="/user/">설정</a>
+                </li>
+
+                <li class="user_option_item">
+                    <a class="user_option_link" href="/user/logout">로그아웃</a>
                 </li>
             </ul>
         </div>

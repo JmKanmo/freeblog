@@ -59,39 +59,39 @@
 }
 
 .signup_container .signup_form .input_div .email_label {
-    background-image: url(/image/email.png);
+    background-image: url(/images/email.png);
 }
 
 .signup_container .signup_form .input_div .password_label {
-    background-image: url(/image/password.png);
+    background-image: url(/images/password.png);
 }
 
 .signup_container .signup_form .input_div .nickname_label {
-    background-image: url(/image/nickname.png);
+    background-image: url(/images/nickname.png);
 }
 
 .signup_container .signup_form .input_div .greetings_label {
-    background-image: url(/image/greeting.png);
+    background-image: url(/images/greeting.png);
 }
 
 .signup_container .signup_form .input_div .blog_name_label {
-    background-image: url(/image/blog_name.png);
+    background-image: url(/images/blog_name.png);
 }
 
 .signup_container .signup_form .input_div .social_address_label {
-    background-image: url(/image/address.png);
+    background-image: url(/images/address.png);
 }
 
 .signup_container .signup_form .input_div .github_label {
-    background-image: url(/image/github.png);
+    background-image: url(/images/github.png);
 }
 
 .signup_container .signup_form .input_div .twitter_label {
-    background-image: url(/image/twitter.png);
+    background-image: url(/images/twitter.png);
 }
 
 .signup_container .signup_form .input_div .instagram_label {
-    background-image: url(/image/instagram.png);
+    background-image: url(/images/instagram.png);
 }
 
 .signup_container .signup_form .input_div .input_form {

@@ -3,6 +3,8 @@ class HeaderController extends UtilController {
         super();
         this.dayNightSkinButton = document.getElementById("day_night_skin_button");
         this.hostingButton = document.getElementById("hosting_button");
+        this.userOptionDiv = document.getElementById("user_option_div");
+        this.userProfileBtn = document.getElementById("user_profile_button");
     }
 
     initHeaderController() {
@@ -10,9 +12,9 @@ class HeaderController extends UtilController {
             this.dayNightSkinButton.addEventListener("click", evt => {
                 const img = evt.target.closest("img");
                 if (img.src.includes('sun')) {
-                    img.src = '../image/night.png'
+                    img.src = '../images/night.png'
                 } else if (img.src.includes('night')) {
-                    img.src = '../image/sun.gif';
+                    img.src = '../images/sun.gif';
                 }
             });
         }
@@ -20,6 +22,18 @@ class HeaderController extends UtilController {
         if (this.hostingButton != null) {
             this.hostingButton.addEventListener("click", evt => {
                 this.showToastMessage("호스팅 정보는 추후에 공개 예정");
+            });
+        }
+
+        if (this.userProfileBtn != null) {
+            this.userProfileBtn.addEventListener("click", evt => {
+                if (this.userOptionDiv != null) {
+                    if (this.userOptionDiv.style.display === '' || this.userOptionDiv.style.display === 'none') {
+                        this.userOptionDiv.style.display = 'block';
+                    } else {
+                        this.userOptionDiv.style.display = 'none';
+                    }
+                }
             });
         }
     }

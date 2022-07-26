@@ -45,7 +45,7 @@
 
 .blog_view_div .blog_view_search_form .search_blog_button {
     margin-left: 7px;
-    background-image: url(../image/search.gif);
+    background-image: url(../images/search.gif);
     width: 25px;
     height: 25px;
     background-size: cover;
@@ -221,7 +221,7 @@
     float: left;
     width: 25px;
     height: 100%;
-    background-image: url(../image/default_profile.png);
+    background-image: url(../images/default_user_thumbnail.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -261,7 +261,7 @@
     width: 13px;
     margin-right: 5px;
     height: 100%;
-    background-image: url(../image/view.png);
+    background-image: url(../images/view.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -286,7 +286,7 @@
     width: 13px;
     margin-right: 5px;
     height: 100%;
-    background-image: url(../image/like.png);
+    background-image: url(../images/like.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -389,7 +389,7 @@
     float: left;
     width: 25px;
     height: 100%;
-    background-image: url(../image/default_profile.png);
+    background-image: url(../images/default_user_thumbnail.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -429,7 +429,7 @@
     width: 13px;
     margin-right: 5px;
     height: 100%;
-    background-image: url(../image/view.png);
+    background-image: url(../images/view.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -454,7 +454,7 @@
     width: 13px;
     margin-right: 5px;
     height: 100%;
-    background-image: url(../image/like.png);
+    background-image: url(../images/like.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

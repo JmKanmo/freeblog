@@ -1,4 +1,4 @@
-package com.service.config;
+package com.service.config.security;
 
 import com.service.util.JmUtil;
 import org.springframework.security.core.AuthenticationException;

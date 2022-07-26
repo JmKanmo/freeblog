@@ -21,11 +21,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private String userId;
 
     private String password;
+
+    private String email;
 
     private String greetings;
 
@@ -47,6 +48,7 @@ public class User extends BaseTimeEntity {
 
     public static User of(UserSignUpInput userSignUpInput) {
         return User.builder()
+                .userId(userSignUpInput.getUserId())
                 .password(BCrypt.hashpw(userSignUpInput.getPassword(), BCrypt.gensalt()))
                 .greetings(userSignUpInput.getGreetings())
                 .isAuth(false)

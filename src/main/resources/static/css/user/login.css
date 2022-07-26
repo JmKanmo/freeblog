@@ -54,11 +54,11 @@
 }
 
 .login_container .login_form .input_div .email_label {
-    background-image: url(/image/email.png);
+    background-image: url(/images/email.png);
 }
 
 .login_container .login_form .input_div .password_label {
-    background-image: url(/image/password.png);
+    background-image: url(/images/password.png);
 }
 
 .login_container .login_form .input_div .input_form {

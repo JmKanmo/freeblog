@@ -2,6 +2,9 @@ package com.service.util;
 
 public class ConstUtil {
     // auth const variable
+    public static final String ALREADY_SAME_USER = "이미 사용중인 ID 입니다.";
+
+    public static final String ALREADY_AUTHENTICATED_USER = "이미 인증 된 ID 입니다.";
     public static final String USER_INFO_NOT_FOUND = "회원 정보가 존재하지 않습니다.";
     public static final String ID_PW_WRONG = "아이디 또는 비밀번호가 틀립니다.";
     public static final String LOCK_ACCOUNT = "잠긴 계정입니다.";

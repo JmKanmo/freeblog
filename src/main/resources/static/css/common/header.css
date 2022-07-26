@@ -11,24 +11,25 @@
 .header_box .user_util_box {
     float: right;
     line-height: 100px;
+    position: relative;
 }
 
-.header_box .user_util_box ul {
+.header_box .user_util_box .user_util_list {
     float: right;
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-.header_box .user_util_box ul li {
+.header_box .user_util_box .user_util_list .user_util_item {
     height: 35%;
 }
 
-.user_util_box ul li:nth-child(-n+3) {
+.user_util_box .user_util_list .user_util_item:nth-child(-n+3) {
     margin-right: 30px;
 }
 
-.header_box .user_util_box ul li img {
+.header_box .user_util_box .user_util_list .user_util_item img {
     height: 100%;
 }
 
@@ -59,4 +60,47 @@
     border: 0;
     background-color: white;
     cursor: pointer;
+}
+
+.header_box .user_util_box .user_profile_button {
+    outline: 0;
+    border: 0;
+    background-color: #ffffff;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.header_box .user_util_box .user_option_div {
+    position: absolute;
+    top: 74px;
+    right: -16px;
+    width: 120px;
+    text-align: center;
+    z-index: 5;
+    background: #fdfdfd;
+    box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
+    display: none;
+}
+
+.header_box .user_util_box .user_option_div .user_option_item {
+    position: relative;
+    height: 50px;
+}
+
+.header_box .user_util_box .user_option_div .user_option_item .user_option_link {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    right: 0;
+    line-height: 50px;
+    color: #212529;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.header_box .user_util_box .user_option_div .user_option_item .user_option_link:hover {
+    background-color: #eeeeee;
+    color: #6de36d;
 }

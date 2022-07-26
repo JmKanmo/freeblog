@@ -1,4 +1,4 @@
-package com.service.config;
+package com.service.config.security;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

@@ -32,9 +32,6 @@ public class JmUtil {
 
     public static boolean checkUserStatus(UserStatus userStatus) {
         switch (userStatus) {
-            case NOT_AUTH:
-                throw new UserAuthException(ConstUtil.NOT_AUTH_USER);
-
             case WITHDRAW:
                 throw new UserAuthException(ConstUtil.WITHDRAW_USER);
 

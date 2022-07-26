@@ -23,7 +23,7 @@ class UtilController {
         let loadingImg = ``;
 
         loadingImg += "<div id='loadingImg' style='position:absolute; top: calc(50% - (200px / 2)); width:100%; z-index:99999999;'>";
-        loadingImg += `<img src='../image/loading_img.gif' style='position: relative; display: block; margin: 0px auto;'/>`;
+        loadingImg += `<img src='../images/loading_img.gif' style='position: relative; display: block; margin: 0px auto;'/>`;
         loadingImg += `</div>`;
 
         //화면에 레이어 추가

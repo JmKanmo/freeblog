@@ -23,7 +23,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private String id;
+    private Long id;
 
     private String title;
 
@@ -37,6 +37,7 @@ public class Post {
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "post")
     private List<Tag> tagList;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

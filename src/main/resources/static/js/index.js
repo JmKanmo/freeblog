@@ -44,7 +44,4 @@ class BlogViewController extends UtilController {
 document.addEventListener("DOMContentLoaded", () => {
     const blogViewController = new BlogViewController();
     blogViewController.initBlogViewController();
-
-    const loginPolUpController = new LoginPopUpController();
-    loginPolUpController.initLoginPopUpController();
 });
