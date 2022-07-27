@@ -39,7 +39,7 @@ public class Blog extends BaseTimeEntity {
     @OneToMany(mappedBy = "blog")
     private List<Post> postList;
 
-    public static Blog of(UserSignUpInput userSignUpInput) {
+    public static Blog from(UserSignUpInput userSignUpInput) {
         return Blog.builder()
                 .name(userSignUpInput.getBlogName())
                 .build();

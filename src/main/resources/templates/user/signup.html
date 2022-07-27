@@ -5,6 +5,7 @@
     <title>회원가입 페이지</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
     <link th:href="@{/css/user/signup.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/signup.js}"></script>
 </head>
 
 <body>
@@ -18,20 +19,41 @@
           id="signup_form" name="signupForm">
 
         <div class="input_div clear_fix">
-            <label for="user_id" class="input_label email_label">
-                <span class="blind">아이디(이메일)</span>
+            <label for="user_email" class="input_label email_label">
+                <span class="blind">이메일</span>
             </label>
 
-            <input th:field="*{userId}" type="email" id="user_id" class="input_form" maxlength="128"
+            <input th:field="*{email}" type="email" id="user_email" class="input_form"
                    placeholder="이메일을 입력해주세요."
-                   name="userId" required>
+                   name="email" required>
+
+            <button type="button" class="double_check_button" id="email-double_check_button">중복확인</button>
         </div>
 
         <div class="spel_div">
-            <span th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}" id="user_id_validation_error"
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" id="user_email_validation_error"
                   class="validation_error"></span>
             <p class="spel_condition_tag">ex) test@naver.com</p>
             <p class="spel_condition_tag">공백,특수문자 기입 불가</p>
+        </div>
+
+        <div class="input_div clear_fix">
+            <label for="user_id" class="input_label id_label">
+                <span class="blind">아이디</span>
+            </label>
+
+            <input th:field="*{id}" type="text" id="user_id" class="input_form"
+                   placeholder="아이디를 입력해주세요."
+                   name="id" required>
+
+            <button type="button" class="double_check_button" id="id-double_check_button">중복확인</button>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" id="user_id_validation_error"
+                  class="validation_error"></span>
+            <p class="spel_condition_tag">영소문자,숫자로 이루어진 5~12자</p>
+            <p class="spel_condition_tag">시작은 영문으로만,특수문자 불가</p>
         </div>
 
         <div class="input_div clear_fix">
@@ -57,7 +79,7 @@
             </label>
 
             <input th:field="*{nickname}" type="text" id="user_nickname" name="nickname" class="input_form"
-                   maxlength="128" placeholder="닉네임을 입력해주세요(최대 128글자)" required>
+                   maxlength="20" placeholder="닉네임을 입력해주세요 (최대 20글자)" required>
         </div>
 
         <div class="spel_div">
@@ -71,7 +93,7 @@
             </label>
 
             <input th:field="*{greetings}" type="text" id="user_greetings" name="greetings" class="input_form"
-                   maxlength="256" placeholder="인사말을 입력해주세요(최대 256글자)" required>
+                   maxlength="128" placeholder="인사말을 입력해주세요 (최대 128글자)" required>
         </div>
 
         <div class="spel_div">
@@ -85,7 +107,7 @@
             </label>
 
             <input th:field="*{blogName}" type="text" id="user_blog_name" name="blogName" class="input_form"
-                   maxlength="128" placeholder="블로그 이름을 입력해주세요(최대 128글자)" required>
+                   maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)" required>
         </div>
 
         <div class="spel_div">
@@ -103,7 +125,7 @@
                 </label>
 
                 <input th:field="*{address}" type="text" id="user_social_address" name="address" class="input_form"
-                       maxlength="256" placeholder="SNS 주소를 입력해주세요.">
+                       maxlength="128" placeholder="SNS 주소를 입력해주세요.">
             </div>
 
             <div class="spel_div">
@@ -117,7 +139,7 @@
                 </label>
 
                 <input th:field="*{github}" type="text" id="user_github_address" name="github" class="input_form"
-                       maxlength="256" placeholder="github 주소를 입력해주세요.">
+                       maxlength="128" placeholder="github 주소를 입력해주세요.">
             </div>
 
             <div class="spel_div">
@@ -131,7 +153,7 @@
                 </label>
 
                 <input th:field="*{twitter}" type="text" id="user_twitter_address" name="twitter" class="input_form"
-                       maxlength="256" placeholder="twitter 주소를 입력해주세요.">
+                       maxlength="128" placeholder="twitter 주소를 입력해주세요.">
             </div>
 
             <div class="spel_div">
@@ -146,7 +168,7 @@
 
                 <input th:field="*{instagram}" type="text" id="user_instagram_address" name="instagram"
                        class="input_form"
-                       maxlength="256" placeholder="instagram 주소를 입력해주세요.">
+                       maxlength="128" placeholder="instagram 주소를 입력해주세요.">
             </div>
 
             <div class="spel_div">
@@ -158,6 +180,8 @@
         <button type="submit" class="submit_button">
             제출
         </button>
+        <input type="hidden" id="email_check_flag" name="emailCheckFlag" value="false"/>
+        <input type="hidden" id="id_check_flag" name="idCheckFlag" value="false"/>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 </div>

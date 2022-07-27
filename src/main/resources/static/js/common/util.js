@@ -4,6 +4,8 @@
 class UtilController {
     constructor() {
         this.initHandlerbars();
+        this.idRegex = new RegExp('^[a-z]{1}[a-z0-9]{4,11}$');
+        this.emailRegex = new RegExp('^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$');
     }
 
     initHandlerbars() {
@@ -62,6 +64,14 @@ class UtilController {
                 background: "linear-gradient(to right, #00b09b, #96c93d)",
             }
         }).showToast();
+    }
+
+    checkEmailRegExp(email) {
+        return this.emailRegex.test(email);
+    }
+
+    checkIdRegExp(id) {
+        return this.idRegex.test(id);
     }
 }
 

@@ -46,6 +46,7 @@
     align-items: center;
     width: 350px;
     padding-top: 10px;
+    position: relative;
 }
 
 .signup_container .signup_form .input_div .input_label {
@@ -60,6 +61,10 @@
 
 .signup_container .signup_form .input_div .email_label {
     background-image: url(/images/email.png);
+}
+
+.signup_container .signup_form .input_div .id_label {
+    background-image: url(/images/id.png);
 }
 
 .signup_container .signup_form .input_div .password_label {
@@ -142,4 +147,24 @@
     border: 0;
     cursor: pointer;
     transform: translate(-50%, -50%);
+}
+
+.double_check_button {
+    position: absolute;
+    right: -70px;
+    font-size: 12px;
+    height: 30px;
+    border: 1px solid #4ca5eb;
+    background-color: #4ca5eb;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+}
+
+.double_check_button:active{
+    margin-left: 5px;
+    margin-top: 5px;
+    box-shadow: none;
 }

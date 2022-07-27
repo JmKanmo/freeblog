@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -46,9 +45,10 @@ public class User extends BaseTimeEntity {
     @Embedded
     private SocialAddress socialAddress;
 
-    public static User of(UserSignUpInput userSignUpInput) {
+    public static User from(UserSignUpInput userSignUpInput) {
         return User.builder()
-                .userId(userSignUpInput.getUserId())
+                .userId(userSignUpInput.getId())
+                .email(userSignUpInput.getEmail())
                 .password(BCrypt.hashpw(userSignUpInput.getPassword(), BCrypt.gensalt()))
                 .greetings(userSignUpInput.getGreetings())
                 .isAuth(false)

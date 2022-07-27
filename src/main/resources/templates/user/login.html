@@ -18,13 +18,13 @@
     <form method="post" class="login_form" action="/user/login" id="loginForm" name="loginForm">
 
         <div class="input_div clear_fix">
-            <label for="user_id" class="input_label email_label">
+            <label for="user_email" class="input_label email_label">
                 <span class="blind">아이디(이메일)</span>
             </label>
 
-            <input type="email" id="user_id" class="input_form" maxlength="128"
+            <input type="email" id="user_email" class="input_form" maxlength="128"
                    placeholder="이메일을 입력해주세요."
-                   name="userId" required>
+                   name="email" required>
         </div>
 
         <div class="input_div clear_fix">
@@ -38,7 +38,7 @@
 
         <div class="sub_link_div clear_fix">
             <a href="/user/signup" class="signup_link">회원가입</a>
-            <a href="/" class="id_pw_find_link">아이디/비밀번호 찾기</a>
+            <a href="/user/find-info" class="id_pw_find_link">아이디/비밀번호 찾기</a>
         </div>
 
         <button type="submit" class="submit_button" id="login_form_button">

@@ -8,10 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class BlogServiceImpl implements BlogService {
     private final BlogRepository blogRepository;
 
+    @Transactional
     @Override
     public Blog register(Blog blog) {
         blogRepository.save(blog);

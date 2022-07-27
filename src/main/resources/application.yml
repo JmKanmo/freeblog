@@ -1,4 +1,7 @@
 server:
+  servlet:
+    session:
+      timeout: 60m
   port: 8400
   tomcat:
     threads:
@@ -66,6 +69,14 @@ logging:
 #    org.springframework: INFO
 #    org.springframework.web: DEBUG
 #
+
+aws_jm_ec2_sftp:
+  ip: 54.235.18.40
+  port: 22
+  id: ec2-user
+  password: wnsah12
+  directory: jmservice/static_files/images/jmblog
+  timeout: 60
 
 mybatis:
   mapper-locations: mybatis/**/*.xml

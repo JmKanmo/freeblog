@@ -37,23 +37,45 @@
                 </li>
             </ul>
 
-            <ul class="user_option_div" id="user_option_div">
-                <li class="user_option_item">
-                    <a class="user_option_link" href="/user/">내 블로그</a>
-                </li>
+            <th:block th:if="${user != null}">
+                <ul class="user_option_div" id="user_option_div">
+                    <li class="user_option_item">
+                        <a class="user_option_link" th:href="'/blog?id='+${user.id}">내 블로그</a>
+                    </li>
 
-                <li class="user_option_item">
-                    <a class="user_option_link" href="/user/">좋아요누른 글</a>
-                </li>
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/likes/">좋아요누른 글</a>
+                    </li>
 
-                <li class="user_option_item">
-                    <a class="user_option_link" href="/user/">설정</a>
-                </li>
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/settings">설정</a>
+                    </li>
 
-                <li class="user_option_item">
-                    <a class="user_option_link" href="/user/logout">로그아웃</a>
-                </li>
-            </ul>
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/user/logout">로그아웃</a>
+                    </li>
+                </ul>
+            </th:block>
+
+            <th:block th:if="${user == null}">
+                <ul class="user_option_div" id="user_option_div">
+                    <li class="user_option_item">
+                        <a class="user_option_link" th:href="'/blog?id=undefined'">내 블로그</a>
+                    </li>
+
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/likes/">좋아요누른 글</a>
+                    </li>
+
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/settings">설정</a>
+                    </li>
+
+                    <li class="user_option_item">
+                        <a class="user_option_link" href="/user/logout">로그아웃</a>
+                    </li>
+                </ul>
+            </th:block>
         </div>
     </div>
 </header>

@@ -14,13 +14,13 @@ public class EmailController {
     private final EmailService emailService;
 
     @GetMapping(path = "/email/send")
-    public ResponseEntity<String> sendEmail(@RequestParam(value = "userId", required = false, defaultValue = "") String userId) {
+    public ResponseEntity<String> sendEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
-            emailService.sendMail(userId);
+            emailService.sendMail(email);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송해 성공했습니다.");
         } catch (MailException mailException) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("이메일 전송해 실패하였습니다. 원인:%s", mailException.getMessage()));
+                    .body(String.format("이메일 전송에 실패하였습니다.  원인:%s", mailException.getMessage()));
         }
     }
 }

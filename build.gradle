@@ -73,6 +73,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation group: 'com.jcraft', name: 'jsch', version: '0.1.55'
 }
 
 tasks.named('test') {

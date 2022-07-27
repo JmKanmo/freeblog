@@ -1,5 +1,6 @@
 package com.service.config.security;
 
+import com.service.util.ConstUtil;
 import com.service.util.JmUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -19,7 +20,7 @@ public class UserAuthenticationFailureHandler implements AuthenticationFailureHa
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         final FlashMap flashMap = new FlashMap();
-        flashMap.put(JmUtil.AUTHENTICATION_MESSAGE, JmUtil.getLoginFailMessage(exception));
+        flashMap.put(ConstUtil.AUTHENTICATION_MESSAGE, JmUtil.getLoginFailMessage(exception));
         final FlashMapManager flashMapManager = new SessionFlashMapManager();
         flashMapManager.saveOutputFlashMap(flashMap, request, response);
         response.sendRedirect("/error/login_fail");

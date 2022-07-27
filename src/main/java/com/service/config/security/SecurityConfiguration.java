@@ -39,12 +39,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-                .usernameParameter("userId")
+                .usernameParameter("email")
                 .failureHandler(getFailureHandler())
                 .permitAll()
                 .and()
@@ -60,7 +59,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .and()
-                .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
+                .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint())
+                .and()
+                .sessionManagement().invalidSessionUrl("/user/login");
         super.configure(http);
     }
 

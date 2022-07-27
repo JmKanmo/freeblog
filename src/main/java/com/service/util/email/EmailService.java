@@ -13,13 +13,13 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
 
     @Async
-    public Long sendMail(String userId) throws MailException {
+    public Long sendMail(String email) throws MailException {
         javaMailSender.send(mimeMessage -> {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            mimeMessageHelper.setTo(userId);
+            mimeMessageHelper.setTo(email);
             mimeMessageHelper.setSubject("freelog 가입을 축하드립니다.");
             mimeMessageHelper.setText("<p>freelog 사이트 가입을 축하드립니다.<p><p>아래 링크를 클릭하셔서 인증을 완료 하세요.</p>"
-                            + "<div><a target='_blank' href='http://localhost:8400/user/email-auth?userId=" + userId + "'> 가입 완료 </a></div>"
+                            + "<div><a target='_blank' href='http://localhost:8400/user/email-auth?email=" + email + "'> 가입 완료 </a></div>"
                     , true);
         });
         return 200L;
