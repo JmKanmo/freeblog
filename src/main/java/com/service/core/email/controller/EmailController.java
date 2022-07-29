@@ -4,6 +4,10 @@ import com.service.core.email.service.EmailService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.service.UserService;
 import com.service.util.JmUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "이메일", description = "이메일 관련 API")
 @RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
@@ -21,6 +26,11 @@ public class EmailController {
     private final EmailService emailService;
     private final UserService userService;
 
+    @Operation(summary = "회원가입 인증 메일 전송", description = "회원가입 인증 메일 전송 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메일 전송 성공"),
+            @ApiResponse(responseCode = "500", description = "메일전송 실패")
+    })
     @GetMapping(path = "/send/signup")
     public ResponseEntity<String> sendSignUpEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
@@ -33,6 +43,11 @@ public class EmailController {
         }
     }
 
+    @Operation(summary = "인증 메일 전송", description = "인증 메일 전송 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메일 전송 성공"),
+            @ApiResponse(responseCode = "500", description = "메일전송 실패")
+    })
     @GetMapping(path = "/send/auth")
     public ResponseEntity<String> sendAuthEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
@@ -45,6 +60,11 @@ public class EmailController {
         }
     }
 
+    @Operation(summary = "비밀번호 변경 인증 메일 전송", description = "비밀번호 변경 인증 메일 전송 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자 인증, 메일 전송 성공"),
+            @ApiResponse(responseCode = "500", description = "인증, 메일전송 오류로 인한 실패")
+    })
     @GetMapping(path = "/send/find_password")
     public ResponseEntity<String> sendFindPasswordEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {

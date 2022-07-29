@@ -12,6 +12,10 @@ import com.service.core.user.service.UserService;
 import com.service.util.ConstUtil;
 import com.service.core.email.service.EmailService;
 import com.service.util.JmUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +31,7 @@ import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
 
+@Tag(name = "사용자", description = "사용자 관련 API")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
@@ -36,27 +41,47 @@ public class UserController {
     private final EmailService emailService;
     private final BlogService blogService;
 
+    @Operation(summary = "로그인 페이지", description = "로그인 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 페이지")
+    })
     @GetMapping("/login")
     public String login() {
         return "user/login";
     }
 
+    @Operation(summary = "회원가입 완료", description = "회원가입 완료 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원가입 완료 페이지")
+    })
     @GetMapping("/signup_complete")
     public String complete() {
         return "user/signup/signup_complete";
     }
 
+    @Operation(summary = "회원가입", description = "회원가입 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원가입 페이지")
+    })
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("userSignUpInput", UserSignUpInput.builder().build());
         return "user/signup";
     }
 
+    @Operation(summary = "사용자 정보 찾기", description = "사용자 정보 찾기 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자 정보 찾기 페이지")
+    })
     @GetMapping("/find_info")
     public String findInfo() {
         return "user/find/find_info";
     }
 
+    @Operation(summary = "이메일 찾기", description = "이메일 찾기 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자(이메일,닉네임) 목록이 담긴 이메일 찾기 페이지")
+    })
     @GetMapping("/find_email")
     public String findEmail(
             @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname,
@@ -65,18 +90,31 @@ public class UserController {
         return "user/find/find_email";
     }
 
+    @Operation(summary = "비밀번호 업데이트", description = "비밀번호 업데이트 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
+    })
     @GetMapping("/update_password")
     public String updatePassword(Model model) {
         model.addAttribute("userPasswordInput", UserPasswordInput.builder().build());
         return "user/update/update_password";
     }
 
+    @Operation(summary = "이메일 인증", description = "이메일 인증 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일 인증 페이지")
+    })
     @GetMapping("/email_auth")
     public String emailAuth(Model model) {
         model.addAttribute("userAuthInput", UserAuthInput.builder().build());
         return "user/auth/email_auth";
     }
 
+    @Operation(summary = "이메일 사용가능 여부 확인", description = "이메일 사용 가능 여부 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일 사용 가능"),
+            @ApiResponse(responseCode = "500", description = "이미 사용 중으로 불가능")
+    })
     @ResponseBody
     @GetMapping("/check_email")
     public ResponseEntity<String> checkEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
@@ -88,6 +126,11 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "id 사용가능 여부 확인", description = "id 사용 가능 여부 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "id 사용 가능"),
+            @ApiResponse(responseCode = "500", description = "이미 사용 중으로 불가능")
+    })
     @ResponseBody
     @GetMapping("/check_id")
     public ResponseEntity<String> checkId(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
@@ -99,6 +142,11 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "회원가입", description = "회원가입 진행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원가입 완료"),
+            @ApiResponse(responseCode = "500", description = "이메일 or id 인증 오류, 중복 가입 시도, 데이터베이스 오류 등으로 회원가입 실패")
+    })
     @PostMapping("/signup")
     public String signUp(@Valid UserSignUpInput signupForm, BindingResult bindingResult, Model model) {
         try {
@@ -138,6 +186,11 @@ public class UserController {
         return "user/signup/signup_complete";
     }
 
+    @Operation(summary = "이메일 인증", description = "이메일 인증 진행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "이메일 인증 완료"),
+            @ApiResponse(responseCode = "500", description = "이메일 or 발급키 인증 오류로 인증 실패")
+    })
     @PostMapping("/email_auth")
     public String emailAuth(@Valid UserAuthInput userAuthInput, BindingResult bindingResult, Model model) {
         try {
@@ -151,6 +204,11 @@ public class UserController {
         return "user/auth/email_auth_complete";
     }
 
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 진행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 변경 완료"),
+            @ApiResponse(responseCode = "500", description = "이메일 or 인증키 or 비밀번호 인증 오류로 비밀번호 변경 실패")
+    })
     @PostMapping("/update_password")
     public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model) {
         try {

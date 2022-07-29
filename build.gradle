@@ -78,6 +78,10 @@ dependencies {
     implementation group: 'com.jcraft', name: 'jsch', version: '0.1.55'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+    // https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: '1.6.9'
 }
 
 tasks.named('test') {
