@@ -2,7 +2,7 @@
 .blog_view_container {
     max-width: 988px;
     margin: 0 auto;
-    padding: 35px 0 35px 0;
+    padding-top: 35px;
 }
 
 .blog_view_div {
@@ -510,7 +510,6 @@
     border-top: 1px solid #000;
     border-right: 1px solid #000;
     -webkit-transform: rotate(45deg);
-    transform: rotate(133deg);
     vertical-align: middle;
     content: "";
 }

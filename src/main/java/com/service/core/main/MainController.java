@@ -18,12 +18,8 @@ public class MainController {
 
     @GetMapping("/")
     public String main(Model model, Principal principal) {
-        try {
-            if (principal != null) {
-                model.addAttribute("user", userService.findUserByEmail(principal.getName()));
-            }
-        } catch (RuntimeException runtimeException) {
-            log.error("[JmBlog:MainController-main] error happened => ${}", runtimeException.getMessage());
+        if (principal != null) {
+            model.addAttribute("user", userService.findUserByEmail(principal.getName()));
         }
         return "index";
     }

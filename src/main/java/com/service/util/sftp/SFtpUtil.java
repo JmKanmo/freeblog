@@ -1,6 +1,7 @@
 package com.service.util.sftp;
 
 import com.jcraft.jsch.*;
+import com.service.config.SFtpConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/",
                         "/user/**",
                         "/error/**",
-                        "/email/send"
+                        "/email/send/**"
                 )
                 .permitAll()
                 .and()

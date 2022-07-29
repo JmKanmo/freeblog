@@ -6,8 +6,9 @@ body {
     margin: 0;
     padding: 0;
     min-width: 1080px;
-    min-height: 100%;
     font-family: '나눔 고딕', NanumGothic, '돋움', Dotum, sans-serif;
+    position: relative;
+    min-height: 100%;
 }
 
 ul,
@@ -41,6 +42,179 @@ a {
 .center_fix {
     display: flex;
     align-items: center;
+}
+
+.validation_error {
+    color: green;
+    font-size: 11px;
+    padding: 0 0 5px 45px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inherit;
+}
+
+/* common form component
+/* common input label, form*/
+.small_text_font {
+    color: #888;
+    font-size: 11px;
+}
+
+.footer_bottom_padding {
+    padding-bottom: 120px;
+}
+
+.common_form_container {
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.common_form_title {
+    font-size: 25px;
+    color: #333;
+}
+
+.common_form {
+    border: 1px solid #e3e3e3;
+    padding: 10px 0px 10px 0px;
+    position: relative;
+}
+
+.common_input_div {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.common_input_label {
+    float: left;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.common_email_label {
+    background-image: url(/images/email.png);
+}
+
+.common_password_label {
+    background-image: url(/images/password.png);
+}
+
+.common_id_label {
+    background-image: url(/images/id.png);
+}
+
+.common_nickname_label {
+    background-image: url(/images/nickname.png);
+}
+
+.common_greetings_label {
+    background-image: url(/images/greeting.png);
+}
+
+.common_blog_name_label {
+    background-image: url(/images/blog_name.png);
+}
+
+.common_social_address_label {
+    background-image: url(/images/address.png);
+}
+
+.common_github_label {
+    background-image: url(/images/github.png);
+}
+
+.common_twitter_label {
+    background-image: url(/images/twitter.png);
+}
+
+.common_instagram_label {
+    background-image: url(/images/instagram.png);
+}
+
+.common_check_label {
+    background-image: url(/images/check.png);
+}
+
+.common_input_form {
+    float: left;
+    margin-left: 10px;
+    height: 35px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.spel_div {
+    margin: 0 auto;
+    width: 350px;
+    text-align: left;
+}
+
+.spel_div .spel_condition_tag {
+    padding: 5px 0 5px 45px;
+    margin: 0;
+}
+
+.common_sub_link_div {
+    margin: 0 auto;
+    width: 350px;
+    padding-top: 10px;
+}
+
+.common_sub_link_div .common_left_link {
+    float: left;
+    margin-left: 41px;
+}
+
+.common_sub_link_div .common_right_link {
+    float: right;
+}
+
+.common_submit_button {
+    position: absolute;
+    bottom: -80px;
+    left: 50%;
+    width: 140px;
+    height: 40px;
+    background-color: #0074e9;
+    color: #fff;
+    /* box-shadow: inset 0 -2px 0 rgb(0 0 0 / 38%); */
+    /* padding: 16px 17px; */
+    font-family: apple sd gothic neo, malgun gothic, nanumbarungothic, nanumgothic, dotum, sans-serif;
+    font-size: 17px;
+    line-height: 20px;
+    display: block;
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 4px;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+}
+
+.common_check_button {
+    position: absolute;
+    font-size: 12px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+}
+
+.common_check_button:active {
+    margin-left: 5px;
+    margin-top: 5px;
+    box-shadow: none;
 }
 
 /* logo-box */

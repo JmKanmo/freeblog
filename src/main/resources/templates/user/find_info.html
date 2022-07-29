@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보 찾기</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/find_info.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/find_info.js}"></script>
+</head>
+
+<body>
+<div class="find_info_container common_form_container">
+    <!-- logo-box -->
+    <div th:replace="/fragments/common.html :: logo_layout"></div>
+
+    <h1 class="common_form_title">회원정보 찾기</h1>
+
+    <div class="find_info_form common_form" id="find_info_form">
+
+        <div class="input_div common_input_div clear_fix">
+            <label for="user_nickname_input" class="common_input_label common_email_label">
+                <span class="blind">이메일</span>
+            </label>
+
+            <input type="text" id="user_nickname_input" class="common_input_form"
+                   placeholder="닉네임을 입력해주세요."
+                   name="nickname" required>
+
+            <button type="button" class="common_check_button green_check_button" id="email_find_button">이메일찾기</button>
+        </div>
+
+        <div class="input_div common_input_div clear_fix">
+            <label for="user_email" class="common_input_label common_password_label">
+                <span class="blind">비밀번호</span>
+            </label>
+
+            <input type="email" id="user_email" name="email" class="common_input_form" placeholder="이메일을 입력해주세요."
+                   required>
+
+            <button type="button" class="common_check_button orange_check_button" id="find_password_button">비밀번호찾기
+            </button>
+        </div>
+
+        <div class="email_auth_input_div">
+            <button class="email_not_auth_button" id="email_not_auth_button">
+                <span class="email_auth_text">
+                    이메일 인증이 안된 경우, 여기를 클릭하세요.
+                </span>
+            </button>
+        </div>
+
+        <div class="input_div common_input_div auth_email_div clear_fix" id="auth_email_div">
+            <label for="auth_target_email_input" class="common_input_label common_check_label">
+                <span class="blind">이메일</span>
+            </label>
+
+            <input type="email" id="auth_target_email_input" name="email" class="common_input_form" placeholder="이메일을 입력해주세요."
+                   required>
+
+            <button type="button" class="common_check_button blue_check_button" id="auth_target_email_button">이메일인증
+            </button>
+        </div>
+
+        <div class="common_sub_link_div sub_link_div clear_fix">
+            <a href="/user/login" class="common_left_link small_text_font">로그인</a>
+            <a href="/" class="common_right_link small_text_font">홈으로 이동</a>
+        </div>
+    </div>
+</div>
+<div th:replace="/fragments/footer::footer"></div>
+</body>
+</html>

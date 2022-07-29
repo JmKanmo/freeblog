@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>에러 발생</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+
+    <style>
+        .fail_board {
+            min-width: 988px;
+            min-height: 500px;
+            border: 1px solid #e3e3e3;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .fail_board .logo_box .logo_link {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            width: 160px;
+            margin: 0 auto;
+        }
+
+        .fail_board .fail_message {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .fail_board .back_link {
+            color: green;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="fail_board">
+    <div th:replace="/fragments/common.html :: logo_layout"></div>
+    <p class="fail_message" th:if="${error == null} or ${#strings.isEmpty(error)} eq true">알수없음</p>
+    <p class="fail_message" style="color: darkgreen">에러 발생</p>
+    <p class="fail_message" th:if="${#strings.isEmpty(error)} eq false" th:text="${error}">오류메시지</p>
+    <a class="back_link" href="javascript:history.back();">이전페이지로 돌아가기</a>
+    <a style="margin-left: 20px;" class="back_link" href="/">홈으로 돌아가기</a>
+</div>
+</body>
+</html>

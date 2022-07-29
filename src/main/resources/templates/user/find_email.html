@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 찾기</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/find_email.css}" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+<div class="find_email_container">
+    <h1 class="find_email_title">회원 이메일 목록</h1>
+
+    <th:block th:if="${users == null} or ${#lists.isEmpty(users)} eq true">
+        <h3 class="empty_email_text">검색된 회원 목록이 없습니다</h3>
+    </th:block>
+
+    <th:block th:if="${users != null} and ${#lists.isEmpty(users)} eq false">
+        <ul class="user_email_info_list clear_fix">
+            <!-- user info list -->
+            <th:block th:each="user,index: ${users}">
+                <li class="user_email_info">
+                    <div class="user_email_div">
+                        <span class="user_info_text" th:text="${user.email}"></span>
+                    </div>
+
+                    <div class="user_nickname_div">
+                        <span class="user_info_text" th:text="${user.nickname}"></span>
+                    </div>
+                </li>
+
+                <th:block th:if="${#lists.size(users)} - ${index.index} > 1">
+                    <h3 class="underline"></h3>
+                </th:block>
+            </th:block>
+        </ul>
+    </th:block>
+</div>
+</body>
+</html>

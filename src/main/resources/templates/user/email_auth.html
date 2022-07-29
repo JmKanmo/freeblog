@@ -4,90 +4,56 @@
     <meta charset="UTF-8">
     <title>이메일 인증</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-
-    <style>
-        .auth_board {
-            min-width: 988px;
-            min-height: 500px;
-            border: 1px solid #e3e3e3;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .auth_board .logo_box .logo_link {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            width: 160px;
-            margin: 0 auto;
-        }
-
-        .auth_board .fail_message {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .auth_board .back_link {
-            color: green;
-            font-weight: bold;
-            text-decoration: underline;
-        }
-
-        .auth_board .menu_container {
-            width: 200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            margin-top: 100px;
-        }
-
-        .login_button {
-            margin-left: 15px;
-            float: left;
-            padding: 7px 15px 7px 15px;
-            font-size: 1rem;
-            border-radius: 1rem;
-            border: none;
-            outline: none;
-            font-weight: bold;
-            word-break: keep-all;
-            background: #212529;
-            color: white;
-            transition: all 0.125s ease-in 0s;
-            cursor: pointer;
-        }
-
-        .auth_board .menu_container a {
-            float: left;
-            font-weight: bold;
-            font-size: 16px;
-            text-decoration: underline;
-        }
-
-        .auth_board .menu_container .home_link {
-            color: green;
-        }
-
-        .auth_board .menu_container .login_link {
-            color: white;
-        }
-    </style>
+    <link th:href="@{/css/user/email_auth.css}" type="text/css" rel="stylesheet">
 </head>
-<body>
-<div class="auth_board">
-    <div th:replace="/fragments/common.html :: logo_layout"></div>
-    <p class="fail_message" th:if="${error == null} or ${#strings.isEmpty(error)} eq true">이메일 인증이 완료되었습니다.</p>
-    <p class="fail_message" th:if="${#strings.isEmpty(error)} eq false" th:text="${error}">오류메시지</p>
 
-    <div class="menu_container clear_fix">
-        <a class="home_link" href="/">홈으로 가기 </a>
-        <a href="/user/login" class="login_button login_link" id="login_button">
-            로그인
-            <span class="blind">로그인</span>
-        </a>
-    </div>
+<body>
+<div class="email_auth_container common_form_container">
+    <div th:replace="/fragments/common.html :: logo_layout"></div>
+
+    <h1 class="common_form_title">이메일 인증</h1>
+
+    <form method="post" th:object="${userAuthInput}" class="email_auth_form common_form"
+          id="email_auth_form" name="emailAuthForm">
+        <div class="common_input_div input_div clear_fix">
+            <label for="email_auth_input" class="common_input_label common_email_label">
+                <span class="blind">이메일</span>
+            </label>
+
+            <input type="email" id="email_auth_input" class="common_input_form" th:field="*{email}"
+                   placeholder="이메일을 입력하세요."
+                   name="email" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" id="user_email_validation_error"
+                  class="validation_error"></span>
+            <p class="spel_condition_tag small_text_font">ex) test@naver.com</p>
+            <p class="spel_condition_tag small_text_font">공백,특수문자 기입 불가</p>
+        </div>
+
+        <div class="common_input_div input_div clear_fix">
+            <label for="key_auth_input" class="common_input_label common_password_label">
+                <span class="blind">발급키</span>
+            </label>
+
+            <input type="text" id="key_auth_input" class="common_input_form" th:field="*{key}"
+                   placeholder="발급키를 입력하세요."
+                   maxlength="20"
+                   name="email" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('key')}" th:errors="*{key}" id="user_key_validation_error"
+                  class="validation_error"></span>
+            <p class="spel_condition_tag small_text_font">메일로 받은 발급키를 입력해주세요.</p>
+            <p class="spel_condition_tag small_text_font">최대 20글자, 빈칸,공백 입력 불가</p>
+        </div>
+
+        <button type="submit" class="common_submit_button" id="passwordUpdateButton">제출하기</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
 </div>
+<div th:replace="/fragments/footer::footer"></div>
 </body>
 </html>

@@ -4,7 +4,7 @@ import com.service.core.category.domain.Category;
 import com.service.core.post.domain.Post;
 import com.service.core.user.domain.User;
 import com.service.core.user.model.UserSignUpInput;
-import com.service.util.domain.BaseTimeEntity;
+import com.service.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

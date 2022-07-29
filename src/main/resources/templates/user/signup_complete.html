@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>가입완료 페이지</title>
+    <title>가입완료</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
     <link th:href="@{/css/user/signup_complete.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/user/signup_complete.js}"></script>
@@ -11,12 +11,19 @@
 <body>
 <div class="complete_container">
     <h1 style="color: #333">회원 가입이 완료되었습니다.</h1>
-    <div class="email_div">
-        <span class="email" th:if="${#strings.isEmpty(email)} eq true">알수없음</span>
-        <span class="email" th:if="${#strings.isEmpty(email)} eq false" th:text="${email}">이메일</span>
-        <span>로 가입인증 메일을 발송했습니다.</span>
-    </div>
-    <h3 style="color: #333">이메일 인증을 완료한 뒤 로그인을 해주세요.</h3>
+
+    <th:block th:if="${error != null} and ${#strings.isEmpty(error)} eq false">
+        <p style="font-weight: bold; color: darkgreen" th:text="${error}"></p>
+    </th:block>
+
+    <th:block th:if="${error == null} or ${#strings.isEmpty(error)} eq true">
+        <div class="email_div">
+            <span class="email" th:if="${#strings.isEmpty(email)} eq true">알수없음</span>
+            <span class="email" th:if="${#strings.isEmpty(email)} eq false" th:text="${email}">이메일</span>
+            <span>로 가입인증 메일을 발송했습니다.</span>
+        </div>
+        <h3 style="color: #333">이메일 인증을 완료한 뒤 로그인을 해주세요.</h3>
+    </th:block>
 
     <div th:if="${#strings.isEmpty(email)} eq false">
         <span class="email_not_sent_text">이메일이 안온 경우 <button class="email_resend_button" id="email_resend_button"

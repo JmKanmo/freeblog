@@ -20,7 +20,7 @@ class SignUpController extends UtilController {
                 return;
             }
 
-            xhr.open("GET", `/user/check-id?id=${id}`);
+            xhr.open("GET", `/user/check_id?id=${id}`);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;
@@ -51,7 +51,7 @@ class SignUpController extends UtilController {
                 return;
             }
 
-            xhr.open("GET", `/user/check-email?email=${email}`);
+            xhr.open("GET", `/user/check_email?email=${email}`);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;

@@ -1,0 +1,62 @@
+.blue_check_button {
+    border: 1px solid #4ca5eb;
+    background-color: #4ca5eb;
+    right: -85px;
+}
+
+.green_check_button {
+    border: 1px solid #2dd553;
+    background-color: #2dd553;
+    right: -85px;
+}
+
+.orange_check_button {
+    border: 1px solid #e0763c;
+    background-color: #e0763c;
+    right: -97px;
+}
+
+.find_info_container {
+    padding-bottom: 170px;
+}
+
+.find_info_container .logo_box .logo_link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 160px;
+    margin: 0 auto;
+}
+
+.find_info_container .find_info_form {
+    width: 650px;
+}
+
+.find_info_container .find_info_form .input_div {
+    width: 300px;
+    position: relative;
+}
+
+.auth_email_div {
+    display: none;
+}
+
+.email_not_auth_button {
+    border: 0;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.email_not_auth_button:hover {
+    font-weight: bold;
+}
+
+.email_not_auth_button .email_auth_text {
+    font-size: 11px;
+    color: darkgreen;
+}
+
+/* sub link div */
+.find_info_form .sub_link_div {
+    width: 300px;
+}

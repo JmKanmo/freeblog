@@ -1,0 +1,20 @@
+.email_auth_container {
+    padding-bottom: 220px;
+}
+
+.email_auth_container .logo_box .logo_link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 160px;
+    margin: 0 auto;
+}
+
+.email_auth_container .email_auth_form {
+    border: none;
+    width: 600px;
+}
+
+.email_auth_container .email_auth_form .input_div {
+    width: 350px;
+}

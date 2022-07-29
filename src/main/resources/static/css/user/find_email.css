@@ -1,0 +1,44 @@
+.user_info_text {
+    color: #287528;
+    font-size: 13px;
+}
+
+.underline {
+    border: 0.5px solid #caf9d3;
+    margin: 0;
+}
+
+.find_email_container {
+    padding: 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.find_email_container .empty_email_text {
+    text-decoration: underline;
+}
+
+.find_email_title {
+    font-size: 20px;
+    color: darkgreen;
+}
+
+.find_email_container .user_email_info_list {
+    border: 1px solid #88ea9a;
+}
+
+.find_email_container .user_email_info_list .user_email_info {
+    margin: 10px 10px;
+    height: 20px;
+}
+
+.find_email_container .user_email_info_list .user_email_info .user_email_div {
+    float: left;
+}
+
+.find_email_container .user_email_info_list .user_email_info .user_nickname_div {
+    float: right;
+    margin-left: 15px;
+}
+
+

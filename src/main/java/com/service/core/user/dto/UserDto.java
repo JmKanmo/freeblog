@@ -13,6 +13,7 @@ import lombok.Data;
 public class UserDto {
     private final String id;
     private final String email;
+    private final String nickname;
     private final String greetings;
     private final String intro;
     private final boolean isAuth;
@@ -25,16 +26,18 @@ public class UserDto {
             return UserDto.builder()
                     .id(ConstUtil.UNDEFINED)
                     .email(ConstUtil.UNDEFINED)
+                    .nickname(ConstUtil.UNDEFINED)
                     .greetings(ConstUtil.UNDEFINED)
                     .intro(ConstUtil.UNDEFINED)
                     .profileImages(ConstUtil.UNDEFINED)
                     .status(UserStatus.NOT_AUTH.name())
-                    .socialAddress(SocialAddress.from(user.getSocialAddress()))
+                    .socialAddress(SocialAddress.from(user == null ? null : user.getSocialAddress()))
                     .build();
         } else {
             return UserDto.builder()
                     .id(JmUtil.ofNull(user.getUserId()))
                     .email(JmUtil.ofNull(user.getEmail()))
+                    .nickname(JmUtil.ofNull(user.getNickname()))
                     .greetings(JmUtil.ofNull(user.getGreetings()))
                     .intro(JmUtil.ofNull(user.getIntro()))
                     .isAuth(user.isAuth())

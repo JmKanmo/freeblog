@@ -15,7 +15,7 @@ class SignUpCompleteController extends UtilController {
             const xhr = new XMLHttpRequest();
             const email = this.resendButton.value;
 
-            xhr.open("GET", `/email/send?email=${email}`);
+            xhr.open("GET", `/email/send/signup?email=${email}`);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;

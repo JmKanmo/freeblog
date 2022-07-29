@@ -1,17 +1,5 @@
-.validation_error {
-    color: green;
-    font-size: 11px;
-    padding: 0 0 5px 45px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: inherit;
-}
-
 .signup_container {
-    width: 600px;
-    margin: 0 auto;
-    text-align: center;
+    padding-bottom: 220px;
 }
 
 .signup_container .logo_box .logo_link {
@@ -22,96 +10,13 @@
     margin: 0 auto;
 }
 
-.signup_container .signup_title {
-    font-size: 25px;
-    color: #333;
-}
-
 .signup_container .signup_form {
-    border: 1px solid #e3e3e3;
-    padding: 10px 0px 10px 0px;
     width: 600px;
-    position: relative;
-}
-
-.signup_form .spel_div {
-    margin: 0 auto;
-    width: 350px;
-    text-align: left;
 }
 
 .signup_container .signup_form .input_div {
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
     width: 350px;
-    padding-top: 10px;
     position: relative;
-}
-
-.signup_container .signup_form .input_div .input_label {
-    float: left;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.signup_container .signup_form .input_div .email_label {
-    background-image: url(/images/email.png);
-}
-
-.signup_container .signup_form .input_div .id_label {
-    background-image: url(/images/id.png);
-}
-
-.signup_container .signup_form .input_div .password_label {
-    background-image: url(/images/password.png);
-}
-
-.signup_container .signup_form .input_div .nickname_label {
-    background-image: url(/images/nickname.png);
-}
-
-.signup_container .signup_form .input_div .greetings_label {
-    background-image: url(/images/greeting.png);
-}
-
-.signup_container .signup_form .input_div .blog_name_label {
-    background-image: url(/images/blog_name.png);
-}
-
-.signup_container .signup_form .input_div .social_address_label {
-    background-image: url(/images/address.png);
-}
-
-.signup_container .signup_form .input_div .github_label {
-    background-image: url(/images/github.png);
-}
-
-.signup_container .signup_form .input_div .twitter_label {
-    background-image: url(/images/twitter.png);
-}
-
-.signup_container .signup_form .input_div .instagram_label {
-    background-image: url(/images/instagram.png);
-}
-
-.signup_container .signup_form .input_div .input_form {
-    float: left;
-    margin-left: 10px;
-    height: 35px;
-    box-sizing: border-box;
-    width: 100%;
-}
-
-.signup_container .signup_form .spel_condition_tag {
-    color: #888;
-    font-size: 11px;
-    padding: 5px 0 5px 45px;
-    margin: 0;
 }
 
 .signup_form .social_input_div {
@@ -126,45 +31,8 @@
     font-size: 13px;
 }
 
-.signup_form .submit_button {
-    position: absolute;
-    bottom: -80px;
-    left: 50%;
-    width: 140px;
-    height: 40px;
-    background-color: #0074e9;
-    color: #fff;
-    /* box-shadow: inset 0 -2px 0 rgb(0 0 0 / 38%); */
-    /* padding: 16px 17px; */
-    font-family: apple sd gothic neo, malgun gothic, nanumbarungothic, nanumgothic, dotum, sans-serif;
-    font-size: 17px;
-    line-height: 20px;
-    display: block;
-    padding-left: 0;
-    padding-right: 0;
-    border-radius: 4px;
-    outline: 0;
-    border: 0;
-    cursor: pointer;
-    transform: translate(-50%, -50%);
-}
-
-.double_check_button {
-    position: absolute;
+.blue_check_button {
     right: -70px;
-    font-size: 12px;
-    height: 30px;
     border: 1px solid #4ca5eb;
     background-color: #4ca5eb;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 3px;
-    transition-duration: 0.3s;
-    box-shadow: 3px 3px 3px #eeeeee;
-}
-
-.double_check_button:active{
-    margin-left: 5px;
-    margin-top: 5px;
-    box-shadow: none;
 }

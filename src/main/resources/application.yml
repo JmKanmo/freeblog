@@ -69,19 +69,23 @@ logging:
 #    org.springframework: INFO
 #    org.springframework.web: DEBUG
 #
-
-aws_jm_ec2_sftp:
-  ip: 54.235.18.40
-  port: 22
-  id: ec2-user
-  password: wnsah12
-  directory: jmservice/static_files/images/jmblog
-  timeout: 60
-
 mybatis:
   mapper-locations: mybatis/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+
+util-config:
+  aws_jm_ec2_sftp:
+    ip: 54.235.18.40
+    port: 22
+    id: ec2-user
+    password: wnsah12
+    directory: jmservice/static_files/images/jmblog
+    timeout: 60
+
+  user_auth:
+    emailAuth-validTime: 12
+    updatePassword-validTime: 3
 
