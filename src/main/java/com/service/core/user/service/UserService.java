@@ -24,7 +24,7 @@ public interface UserService extends UserDetailsService {
 
     List<UserEmailFindDto> findUsersByNickname(String nickname);
 
-    boolean updateEmailAuthCondition(String email);
+    String updateEmailAuthCondition(String email);
 
     String updatePasswordAuthCondition(String email);
 

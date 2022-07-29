@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping("/signup_complete")
     public String complete() {
-        return "user/signup_complete";
+        return "user/signup/signup_complete";
     }
 
     @GetMapping("/signup")
@@ -54,7 +54,7 @@ public class UserController {
 
     @GetMapping("/find_info")
     public String findInfo() {
-        return "user/find_info";
+        return "user/find/find_info";
     }
 
     @GetMapping("/find_email")
@@ -62,19 +62,19 @@ public class UserController {
             @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname,
             Model model) {
         model.addAttribute("users", userService.findUsersByNickname(nickname));
-        return "user/find_email";
+        return "user/find/find_email";
     }
 
     @GetMapping("/update_password")
     public String updatePassword(Model model) {
         model.addAttribute("userPasswordInput", UserPasswordInput.builder().build());
-        return "user/update_password";
+        return "user/update/update_password";
     }
 
     @GetMapping("/email_auth")
     public String emailAuth(Model model) {
         model.addAttribute("userAuthInput", UserAuthInput.builder().build());
-        return "user/email_auth";
+        return "user/auth/email_auth";
     }
 
     @ResponseBody
@@ -135,32 +135,32 @@ public class UserController {
             return "error/signup_fail";
         }
         model.addAttribute("email", signupForm.getEmail());
-        return "user/signup_complete";
+        return "user/signup/signup_complete";
     }
 
     @PostMapping("/email_auth")
     public String emailAuth(@Valid UserAuthInput userAuthInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
-                return "user/email_auth";
+                return "user/auth/email_auth";
             }
             userService.emailAuth(userAuthInput);
         } catch (UserAuthException | UsernameNotFoundException exception) {
             model.addAttribute("error", String.format("이메일 인증에 실패하였습니다.  원인: %s", exception.getMessage()));
         }
-        return "user/email_auth_complete";
+        return "user/auth/email_auth_complete";
     }
 
     @PostMapping("/update_password")
     public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
-                return "user/update_password";
+                return "user/update/update_password";
             }
             userService.updatePassword(userPasswordInput);
         } catch (UsernameNotFoundException | UserAuthException exception) {
             model.addAttribute("error", String.format("비밀번호 변경에 실패하였습니다.  원인: %s", exception.getMessage()));
         }
-        return "user/update_password_complete";
+        return "user/update/update_password_complete";
     }
 }

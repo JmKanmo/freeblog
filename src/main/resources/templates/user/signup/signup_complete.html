@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>가입완료</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-    <link th:href="@{/css/user/signup_complete.css}" type="text/css" rel="stylesheet">
-    <script type="text/javascript" th:src="@{/js/user/signup_complete.js}"></script>
+    <link th:href="@{/css/user/signup/signup_complete.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/signup/signup_complete.js}"></script>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="menu_container clear_fix">
-        <a class="home_link" href="/">홈으로 가기 </a>
+        <a class="home_link" href="/static">홈으로 가기 </a>
         <a href="/user/login" class="login_button login_link" id="login_button">
             로그인
             <span class="blind">로그인</span>

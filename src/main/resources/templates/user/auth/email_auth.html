@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>이메일 인증</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-    <link th:href="@{/css/user/email_auth.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/user/auth/email_auth.css}" type="text/css" rel="stylesheet">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     <h1 class="common_form_title">이메일 인증</h1>
 
     <form method="post" th:object="${userAuthInput}" class="email_auth_form common_form"
-          id="email_auth_form" name="emailAuthForm">
+          id="email_auth_form" name="emailAuthForm" onsubmit="return confirm('이메일 인증 폼을 제출하시겠습니까?')">
         <div class="common_input_div input_div clear_fix">
             <label for="email_auth_input" class="common_input_label common_email_label">
                 <span class="blind">이메일</span>

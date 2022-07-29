@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>회원가입</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-    <link th:href="@{/css/user/signup.css}" type="text/css" rel="stylesheet">
-    <script type="text/javascript" th:src="@{/js/user/signup.js}"></script>
+    <link th:href="@{/css/user/signup/signup.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/signup/signup.js}"></script>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <h1 class="common_form_title">회원정보 입력</h1>
 
     <form th:object="${userSignUpInput}" method="post" class="signup_form common_form"
-          id="signup_form" name="signupForm">
+          id="signup_form" name="signupForm" onsubmit="return confirm('회원가입 폼을 제출하시겠습니까?')">
 
         <div class="input_div common_input_div clear_fix">
             <label for="user_email" class="common_input_label common_email_label">
@@ -27,7 +27,8 @@
                    placeholder="이메일을 입력해주세요."
                    name="email" required>
 
-            <button type="button" class="blue_check_button common_check_button" id="email-double_check_button">중복확인</button>
+            <button type="button" class="blue_check_button common_check_button" id="email-double_check_button">중복확인
+            </button>
         </div>
 
         <div class="spel_div">
@@ -46,7 +47,8 @@
                    placeholder="아이디를 입력해주세요."
                    name="id" required>
 
-            <button type="button" class="common_check_button blue_check_button" id="id-double_check_button">중복확인</button>
+            <button type="button" class="common_check_button blue_check_button" id="id-double_check_button">중복확인
+            </button>
         </div>
 
         <div class="spel_div">
@@ -124,7 +126,8 @@
                     <span class="blind">sns주소</span>
                 </label>
 
-                <input th:field="*{address}" type="text" id="user_social_address" name="address" class="common_input_form"
+                <input th:field="*{address}" type="text" id="user_social_address" name="address"
+                       class="common_input_form"
                        maxlength="128" placeholder="SNS 주소를 입력해주세요.">
             </div>
 
@@ -152,7 +155,8 @@
                     <span class="blind">트위터주소</span>
                 </label>
 
-                <input th:field="*{twitter}" type="text" id="user_twitter_address" name="twitter" class="common_input_form"
+                <input th:field="*{twitter}" type="text" id="user_twitter_address" name="twitter"
+                       class="common_input_form"
                        maxlength="128" placeholder="twitter 주소를 입력해주세요.">
             </div>
 

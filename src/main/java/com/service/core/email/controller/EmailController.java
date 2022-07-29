@@ -24,8 +24,8 @@ public class EmailController {
     @GetMapping(path = "/send/signup")
     public ResponseEntity<String> sendSignUpEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
-            userService.updateEmailAuthCondition(email);
-            emailService.sendSignUpMail(email, JmUtil.createRandomAlphaNumberString(20));
+            String key = userService.updateEmailAuthCondition(email);
+            emailService.sendSignUpMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (UsernameNotFoundException | MailException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -36,8 +36,8 @@ public class EmailController {
     @GetMapping(path = "/send/auth")
     public ResponseEntity<String> sendAuthEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
-            userService.updateEmailAuthCondition(email);
-            emailService.sendAuthMail(email, JmUtil.createRandomAlphaNumberString(20));
+            String key = userService.updateEmailAuthCondition(email);
+            emailService.sendAuthMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (UsernameNotFoundException | MailException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,7 +49,8 @@ public class EmailController {
     public ResponseEntity<String> sendFindPasswordEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
             if (userService.checkIsActive(email)) {
-                emailService.sendFindPasswordMail(email, userService.updatePasswordAuthCondition(email));
+                String key = userService.updatePasswordAuthCondition(email);
+                emailService.sendFindPasswordMail(email, key);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (MailException | UserAuthException | UsernameNotFoundException exception) {
