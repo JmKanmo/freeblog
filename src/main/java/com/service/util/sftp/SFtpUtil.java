@@ -106,6 +106,7 @@ public class SFtpUtil {
                 channelSftp.disconnect();
             }
         } catch (Exception e) {
+            throw e;
         } finally {
             channelSftp = null;
         }
@@ -115,6 +116,7 @@ public class SFtpUtil {
                 channel.disconnect();
             }
         } catch (Exception e) {
+            throw e;
         } finally {
             channel = null;
         }
@@ -124,6 +126,7 @@ public class SFtpUtil {
                 jschSession.disconnect();
             }
         } catch (Exception e) {
+            throw e;
         } finally {
             jschSession = null;
         }
@@ -135,13 +138,12 @@ public class SFtpUtil {
      * @param fis
      */
     private void close(FileInputStream fis) {
-        try {
-            if (fis != null) {
+        if (fis != null) {
+            try {
                 fis.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-        } finally {
-            fis = null;
         }
     }
 
@@ -151,13 +153,12 @@ public class SFtpUtil {
      * @param bis
      */
     private void close(BufferedInputStream bis) {
-        try {
-            if (bis != null) {
+        if (bis != null) {
+            try {
                 bis.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (Exception e) {
-        } finally {
-            bis = null;
         }
     }
 
@@ -167,22 +168,13 @@ public class SFtpUtil {
      * @param fos
      */
     private void close(FileOutputStream fos) {
-
-        try {
             if (fos != null) {
-                fos.flush();
+                try {
+                    fos.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (Exception e) {
-        }
-
-        try {
-            if (fos != null) {
-                fos.close();
-            }
-        } catch (Exception e) {
-        } finally {
-            fos = null;
-        }
     }
 
     /**
@@ -191,22 +183,13 @@ public class SFtpUtil {
      * @param bos
      */
     private void close(BufferedOutputStream bos) {
-
-        try {
             if (bos != null) {
-                bos.flush();
+                try {
+                    bos.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (Exception e) {
-        }
-
-        try {
-            if (bos != null) {
-                bos.close();
-            }
-        } catch (Exception e) {
-        } finally {
-            bos = null;
-        }
     }
 
     public String fileUpload(String fileUUID, InputStream fileInputStream) throws Exception {

@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("freelog.open.api")
-                        .description("freelog open-api docs")
+                        .description("freelog api documentation")
                         .version("v0.0.1"));
     }
 }

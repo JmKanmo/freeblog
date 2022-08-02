@@ -1,10 +1,10 @@
 package com.service.core.user.dto;
 
 import com.service.core.user.domain.SocialAddress;
-import com.service.core.user.domain.User;
+import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
 import com.service.util.ConstUtil;
-import com.service.util.JmUtil;
+import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class UserDto {
     private final String status;
     private final SocialAddress socialAddress;
 
-    public static UserDto fromEntity(User user) {
+    public static UserDto fromEntity(UserDomain user) {
         if (user == null) {
             return UserDto.builder()
                     .id(ConstUtil.UNDEFINED)
@@ -35,14 +35,14 @@ public class UserDto {
                     .build();
         } else {
             return UserDto.builder()
-                    .id(JmUtil.ofNull(user.getUserId()))
-                    .email(JmUtil.ofNull(user.getEmail()))
-                    .nickname(JmUtil.ofNull(user.getNickname()))
-                    .greetings(JmUtil.ofNull(user.getGreetings()))
-                    .intro(JmUtil.ofNull(user.getIntro()))
+                    .id(BlogUtil.ofNull(user.getUserId()))
+                    .email(BlogUtil.ofNull(user.getEmail()))
+                    .nickname(BlogUtil.ofNull(user.getNickname()))
+                    .greetings(BlogUtil.ofNull(user.getGreetings()))
+                    .intro(BlogUtil.ofNull(user.getIntro()))
                     .isAuth(user.isAuth())
-                    .profileImages(JmUtil.ofNull(user.getProfileImage()))
-                    .status(JmUtil.ofNull(user.getStatus().name()))
+                    .profileImages(BlogUtil.ofNull(user.getProfileImage()))
+                    .status(BlogUtil.ofNull(user.getStatus().name()))
                     .socialAddress(SocialAddress.from(user.getSocialAddress()))
                     .build();
         }

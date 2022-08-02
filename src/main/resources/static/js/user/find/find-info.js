@@ -29,7 +29,7 @@ class FindInfoController extends UtilController {
 
             left += window.screenLeft;
 
-            window.open(`find_email?nickname=${nickname}`, 'popup', `width=${width}, height=${height}, left=${left}, top=${tops}`);
+            window.open(`find-email?nickname=${nickname}`, 'popup', `width=${width}, height=${height}, left=${left}, top=${tops}`);
         });
 
         // password find button event listener

@@ -1,7 +1,7 @@
 package com.service.core.user.domain;
 
 import com.service.util.ConstUtil;
-import com.service.util.JmUtil;
+import com.service.util.BlogUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,10 +30,10 @@ public class SocialAddress {
                     .build();
         } else {
             return SocialAddress.builder()
-                    .address(JmUtil.ofNull(socialAddress.getAddress()))
-                    .github(JmUtil.ofNull(socialAddress.getGithub()))
-                    .twitter(JmUtil.ofNull(socialAddress.getTwitter()))
-                    .instagram(JmUtil.ofNull(socialAddress.getInstagram()))
+                    .address(BlogUtil.ofNull(socialAddress.getAddress()))
+                    .github(BlogUtil.ofNull(socialAddress.getGithub()))
+                    .twitter(BlogUtil.ofNull(socialAddress.getTwitter()))
+                    .instagram(BlogUtil.ofNull(socialAddress.getInstagram()))
                     .build();
         }
     }

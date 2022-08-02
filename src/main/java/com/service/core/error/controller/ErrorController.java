@@ -1,7 +1,6 @@
 package com.service.core.error.controller;
 
 import com.service.util.ConstUtil;
-import com.service.util.JmUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

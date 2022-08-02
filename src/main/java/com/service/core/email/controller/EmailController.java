@@ -3,7 +3,6 @@ package com.service.core.email.controller;
 import com.service.core.email.service.EmailService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.service.UserService;
-import com.service.util.JmUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

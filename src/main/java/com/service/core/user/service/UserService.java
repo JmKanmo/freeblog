@@ -1,6 +1,6 @@
 package com.service.core.user.service;
 
-import com.service.core.user.domain.User;
+import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserDto;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.UserAuthInput;
@@ -10,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
-    boolean register(User user);
+    boolean register(UserDomain user);
 
     boolean checkIsActive(String email);
 
-    boolean checkSameUser(User user);
+    boolean checkSameUser(UserDomain user);
 
     boolean checkSameId(String id);
 

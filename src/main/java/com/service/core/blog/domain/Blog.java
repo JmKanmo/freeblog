@@ -2,7 +2,7 @@ package com.service.core.blog.domain;
 
 import com.service.core.category.domain.Category;
 import com.service.core.post.domain.Post;
-import com.service.core.user.domain.User;
+import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserSignUpInput;
 import com.service.util.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class Blog extends BaseTimeEntity {
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "blog")
-    private User user;
+    private UserDomain user;
 
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "blog")

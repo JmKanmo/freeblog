@@ -5,7 +5,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.user.model.UserSignUpInput;
 import com.service.core.user.model.UserStatus;
 import com.service.util.BaseTimeEntity;
-import com.service.util.JmUtil;
+import com.service.util.BlogUtil;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "blog")
-public class User extends BaseTimeEntity {
+@Table(name = "user")
+public class UserDomain extends BaseTimeEntity {
     @Id
     @Column(name = "user_id")
     private String userId;
@@ -55,14 +56,14 @@ public class User extends BaseTimeEntity {
     private String updatePasswordKey;
     private LocalDateTime updatePasswordExpireDateTime;
 
-    public static User from(UserSignUpInput userSignUpInput) {
-        return User.builder()
+    public static UserDomain from(UserSignUpInput userSignUpInput) {
+        return UserDomain.builder()
                 .userId(userSignUpInput.getId())
                 .email(userSignUpInput.getEmail())
                 .password(BCrypt.hashpw(userSignUpInput.getPassword(), BCrypt.gensalt()))
                 .nickname(userSignUpInput.getNickname())
                 .greetings(userSignUpInput.getGreetings())
-                .authKey(JmUtil.createRandomAlphaNumberString(20))
+                .authKey(BlogUtil.createRandomAlphaNumberString(20))
                 .isAuth(false)
                 .authExpireDateTime(LocalDateTime.now())
                 .status(UserStatus.NOT_AUTH)

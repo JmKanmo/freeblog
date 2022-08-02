@@ -11,25 +11,25 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class JmUtil {
+public class BlogUtil {
     public static String getLoginFailMessage(AuthenticationException exception) {
         if (exception instanceof AuthenticationServiceException) {
-            return ConstUtil.UserAuthMessage.USER_INFO_NOT_FOUND;
+            return ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message();
 
         } else if (exception instanceof BadCredentialsException) {
-            return ConstUtil.UserAuthMessage.ID_PW_WRONG;
+            return ConstUtil.ExceptionMessage.ID_PW_WRONG.message();
 
         } else if (exception instanceof LockedException) {
-            return ConstUtil.UserAuthMessage.LOCK_ACCOUNT;
+            return ConstUtil.ExceptionMessage.LOCK_ACCOUNT.message();
 
         } else if (exception instanceof DisabledException) {
-            return ConstUtil.UserAuthMessage.DEACTIVATE_ACCOUNT;
+            return ConstUtil.ExceptionMessage.DEACTIVATE_ACCOUNT.message();
 
         } else if (exception instanceof AccountExpiredException) {
-            return ConstUtil.UserAuthMessage.EXPIRED_ACCOUNT;
+            return ConstUtil.ExceptionMessage.EXPIRED_ACCOUNT.message();
 
         } else if (exception instanceof CredentialsExpiredException) {
-            return ConstUtil.UserAuthMessage.EXPIRED_PASSWORD;
+            return ConstUtil.ExceptionMessage.EXPIRED_PASSWORD.message();
         }
         return exception.getMessage();
     }
@@ -37,10 +37,10 @@ public class JmUtil {
     public static boolean checkUserStatus(UserStatus userStatus) {
         switch (userStatus) {
             case WITHDRAW:
-                throw new UserAuthException(ConstUtil.UserAuthMessage.WITHDRAW_USER);
+                throw new UserAuthException(ConstUtil.ExceptionMessage.WITHDRAW_USER);
 
             case STOP:
-                throw new UserAuthException(ConstUtil.UserAuthMessage.STOP_USER);
+                throw new UserAuthException(ConstUtil.ExceptionMessage.STOP_USER);
         }
         return true;
     }
