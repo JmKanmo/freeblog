@@ -26,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +46,9 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "로그인 페이지")
     })
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
         return "user/login";
     }
 

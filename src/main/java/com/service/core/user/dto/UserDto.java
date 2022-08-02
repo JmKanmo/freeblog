@@ -42,7 +42,7 @@ public class UserDto {
                     .intro(BlogUtil.ofNull(user.getIntro()))
                     .isAuth(user.isAuth())
                     .profileImages(BlogUtil.ofNull(user.getProfileImage()))
-                    .status(BlogUtil.ofNull(user.getStatus().name()))
+                    .status(BlogUtil.ofNull(user.getStatus() == null ? UserStatus.NOT_AUTH.name() : user.getStatus().name()))
                     .socialAddress(SocialAddress.from(user.getSocialAddress()))
                     .build();
         }
