@@ -1,6 +1,7 @@
 package com.service.util;
 
 import com.service.core.error.model.UserAuthException;
+import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.*;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class BlogUtil {
@@ -80,5 +82,9 @@ public class BlogUtil {
 
     public static String createRandomString(int length) {
         return RandomStringUtils.random(length);
+    }
+
+    public static Integer createUserAuthId(UserDomain userDomain) {
+        return Objects.hashCode(userDomain.getEmail() + ":" + userDomain.getUserId());
     }
 }

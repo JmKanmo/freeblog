@@ -8,7 +8,9 @@ import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserAuthInput;
 import com.service.core.user.model.UserPasswordInput;
 import com.service.core.user.model.UserSignUpInput;
+import com.service.core.user.service.UserAuthService;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.core.email.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,8 +40,6 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
-    private final EmailService emailService;
-    private final BlogService blogService;
 
     @Operation(summary = "로그인 페이지", description = "로그인 페이지 반환 메서드")
     @ApiResponses(value = {
@@ -159,18 +159,10 @@ public class UserController {
                 throw new UserAuthException(String.join(",", stringList));
             }
 
-            UserDomain user = UserDomain.from(signupForm);
-
-            if (userService.checkSameUser(user)) {
-                Blog blog = blogService.register(Blog.from(signupForm));
-                user.setBlog(blog);
-                userService.register(user);
-            }
-
             try {
-                emailService.sendSignUpMail(signupForm.getEmail(), user.getAuthKey());
-            } catch (MailException e) {
-                model.addAttribute("error", String.format("가입 인증 이메일 전송에 실패하였습니다.  원인: %s", e.getMessage()));
+                userService.processSignUp(signupForm, UserDomain.from(signupForm));
+            } catch (MailException mailException) {
+                model.addAttribute("error", String.format("가입 인증 이메일 전송에 실패하였습니다.  원인: %s", mailException.getMessage()));
             }
         } catch (UserAuthException | UserManageException e) {
             model.addAttribute("error", e.getMessage());

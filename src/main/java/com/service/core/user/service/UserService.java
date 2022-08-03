@@ -5,12 +5,15 @@ import com.service.core.user.dto.UserDto;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.UserAuthInput;
 import com.service.core.user.model.UserPasswordInput;
+import com.service.core.user.model.UserSignUpInput;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
-    boolean register(UserDomain user);
+    void processSignUp(UserSignUpInput signupForm, UserDomain userDomain);
+
+    void register(UserDomain user);
 
     boolean checkIsActive(String email);
 
@@ -29,5 +32,6 @@ public interface UserService extends UserDetailsService {
     String updatePasswordAuthCondition(String email);
 
     void updatePassword(UserPasswordInput userPasswordInput);
+
     UserDto findUserByEmail(String email);
 }

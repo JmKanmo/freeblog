@@ -318,7 +318,7 @@ class UserServiceTest {
     void register() {
         UserDomain userDomain = UserDomain.builder().build();
         when(userRepository.save(userDomain)).thenReturn(userDomain);
-        assertTrue(userService.register(userDomain));
+        assertDoesNotThrow(() -> userService.register(userDomain));
         verify(userRepository, times(1)).save(userDomain);
     }
 }
