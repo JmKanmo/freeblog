@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     void processSignUp(UserSignUpInput signupForm, UserDomain userDomain);
 
-    void register(UserDomain user);
+    void register(UserSignUpInput signupForm, UserDomain userDomain);
 
     boolean checkIsActive(String email);
 

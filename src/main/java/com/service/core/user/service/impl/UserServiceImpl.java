@@ -33,9 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * 추후에 Redis 도입 후, 비즈니스 로직 개선
- */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -47,22 +44,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void processSignUp(UserSignUpInput signupForm, UserDomain userDomain) {
         if (checkSameUser(userDomain)) {
-            Blog blog = blogService.register(Blog.from(signupForm));
-            userDomain.setBlog(blog);
-            register(userDomain);
-
-            try {
-                emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)));
-            } catch (MailException mailException) {
-                throw mailException;
-            }
+            register(signupForm, userDomain);
+            userAuthService.saveUserEmailAuth(BlogUtil.createUserAuthId(userDomain));
+            emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)));
         }
     }
 
+    @Transactional
     @Override
-    public void register(UserDomain user) {
-        userInfoService.saveUserDomain(user);
-        userAuthService.saveUserEmailAuth(BlogUtil.createUserAuthId(user));
+    public void register(UserSignUpInput signupForm, UserDomain userDomain) {
+        Blog blog = blogService.register(Blog.from(signupForm));
+        userDomain.setBlog(blog);
+        userInfoService.saveUserDomain(userDomain);
     }
 
     @Override

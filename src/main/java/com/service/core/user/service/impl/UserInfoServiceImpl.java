@@ -47,7 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserDomain findByIdOrThrow(String id) {
+    public UserDomain findUserDomainByIdOrThrow(String id) {
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message()));
     }
 

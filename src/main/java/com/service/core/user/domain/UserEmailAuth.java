@@ -17,19 +17,16 @@ public class UserEmailAuth {
     @Id
     private Integer id;
     private String emailAuthKey;
-    private LocalDateTime emailAuthExpireDateTime;
-
 
     public static UserEmailAuth from(Integer id) {
         return UserEmailAuth.builder()
                 .id(id)
                 .emailAuthKey(BlogUtil.createRandomAlphaNumberString(20))
-                .emailAuthExpireDateTime(LocalDateTime.now())
                 .build();
     }
 
     @TimeToLive
-    public long getTimeToLive() {
+    public long timeToLive() {
         return Duration.ofDays(1).getSeconds();
     }
 }

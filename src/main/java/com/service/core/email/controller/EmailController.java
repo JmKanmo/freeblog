@@ -38,7 +38,7 @@ public class EmailController {
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (UsernameNotFoundException | MailException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("이메일 전송에 실패하였습니다.  원인:%s", exception.getMessage()));
+                    .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
     }
 
@@ -55,7 +55,7 @@ public class EmailController {
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (UsernameNotFoundException | MailException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("이메일 전송에 실패하였습니다.  원인:%s", exception.getMessage()));
+                    .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
     }
 
@@ -74,7 +74,7 @@ public class EmailController {
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (MailException | UserAuthException | UsernameNotFoundException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(String.format("이메일 전송에 실패하였습니다.  원인:%s", exception.getMessage()));
+                    .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
     }
 }

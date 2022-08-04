@@ -162,7 +162,7 @@ public class UserController {
             try {
                 userService.processSignUp(signupForm, UserDomain.from(signupForm));
             } catch (MailException mailException) {
-                model.addAttribute("error", String.format("가입 인증 이메일 전송에 실패하였습니다.  원인: %s", mailException.getMessage()));
+                model.addAttribute("error", String.format("가입 인증 이메일 전송에 실패하였습니다. %s", mailException.getMessage()));
             }
         } catch (UserAuthException | UserManageException e) {
             model.addAttribute("error", e.getMessage());
@@ -185,7 +185,7 @@ public class UserController {
             }
             userService.emailAuth(userAuthInput);
         } catch (UserAuthException | UsernameNotFoundException exception) {
-            model.addAttribute("error", String.format("이메일 인증에 실패하였습니다.  원인: %s", exception.getMessage()));
+            model.addAttribute("error", String.format("이메일 인증에 실패하였습니다. %s", exception.getMessage()));
         }
         return "user/auth/email-auth-complete";
     }
@@ -203,7 +203,7 @@ public class UserController {
             }
             userService.updatePassword(userPasswordInput);
         } catch (UsernameNotFoundException | UserAuthException exception) {
-            model.addAttribute("error", String.format("비밀번호 변경에 실패하였습니다.  원인: %s", exception.getMessage()));
+            model.addAttribute("error", String.format("비밀번호 변경에 실패하였습니다. %s", exception.getMessage()));
         }
         return "user/update/update-password-complete";
     }

@@ -116,8 +116,3 @@ util-config:
     password: wnsah12
     directory: jmservice/static_files/images/jmblog
     timeout: 60
-
-  user_auth:
-    emailAuth-validTime: 12
-    updatePassword-validTime: 3
-

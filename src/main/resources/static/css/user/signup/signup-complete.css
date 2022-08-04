@@ -55,6 +55,11 @@
     font-weight: bold;
 }
 
+.complete_container .auth_alarm_text {
+    color: mediumpurple;
+    text-decoration: underline;
+}
+
 .email_not_sent_text {
     font-size: 13px;
     color: #333;

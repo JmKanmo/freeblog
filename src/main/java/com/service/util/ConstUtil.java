@@ -6,8 +6,7 @@ public class ConstUtil {
 
     public enum ExceptionMessage {
         NOT_CHECKED_EMAIL("이메일 중복 검사를 완료하지 않았습니다"),
-        AUTH_KEY_NOT_FOUND("인증키를 발급 받지 않았습니다"),
-        AUTH_VALID_TIME_EXPIRED("인증키 유효 시간이 만료되었습니다."),
+        AUTH_KEY_NOT_FOUND("인증키가 존재하지 않거나 만료되었습니다. 새로 발급 받아주세요."),
         AUTH_VALID_KEY_MISMATCH("발급 된 인증키 정보가 일치하지 않습니다."),
         RE_PASSWORD_MISMATCH("비밀번호, 재비밀번호 입력 정보가 일치하지 않습니다."),
         NOT_CHECKED_ID("ID 중복 검사를 완료하지 않았습니다."),

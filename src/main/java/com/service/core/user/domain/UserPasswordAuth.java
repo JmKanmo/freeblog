@@ -17,18 +17,16 @@ public class UserPasswordAuth {
     @Id
     private Integer id;
     private String updatePasswordAuthKey;
-    private LocalDateTime updatePasswordExpireDateTime;
 
     public static UserPasswordAuth from(Integer id) {
         return UserPasswordAuth.builder()
                 .id(id)
                 .updatePasswordAuthKey(BlogUtil.createRandomAlphaNumberString(20))
-                .updatePasswordExpireDateTime(LocalDateTime.now())
                 .build();
     }
 
     @TimeToLive
-    public long getTimeToLive() {
+    public long timeToLive() {
         return Duration.ofDays(1).getSeconds();
     }
 }

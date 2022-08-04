@@ -16,7 +16,7 @@ public interface UserInfoService {
 
     UserDomain findUserDomainByEmailOrElse(String email, UserDomain userDomain);
 
-    UserDomain findByIdOrThrow(String id);
+    UserDomain findUserDomainByIdOrThrow(String id);
 
     List<UserEmailFindDto> findUsersByNickName(String nickname);
 }

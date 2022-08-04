@@ -53,7 +53,7 @@
     <div th:replace="/fragments/common.html :: logo_layout"></div>
     <p class="fail_message">회원 가입에 실패하였습니다.</p>
     <p class="fail_message" th:if="${error == null} or ${#strings.isEmpty(error)} eq true">알수없음</p>
-    <p class="caution" th:if="${#strings.isEmpty(error)} eq false">원인: <span class="caution_message" th:text="${error}">오류메시지</span>
+    <p class="caution" th:if="${#strings.isEmpty(error)} eq false"> <span class="caution_message" th:text="${error}">오류메시지</span>
     </p>
     <a class="back_link" href="/user/signup">회원가입 다시 진행</a>
     <a style="margin-left: 20px;" class="back_link" href="/">홈으로 돌아가기</a>
