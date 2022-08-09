@@ -8,6 +8,8 @@ import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 public class UserDto {
@@ -20,6 +22,8 @@ public class UserDto {
     private final String profileImages;
     private final String status;
     private final SocialAddress socialAddress;
+    private final String registerTime;
+    private final String passwordUpdateTime;
 
     public static UserDto fromEntity(UserDomain user) {
         if (user == null) {
@@ -32,6 +36,8 @@ public class UserDto {
                     .profileImages(ConstUtil.UNDEFINED)
                     .status(UserStatus.NOT_AUTH.name())
                     .socialAddress(SocialAddress.from(user == null ? null : user.getSocialAddress()))
+                    .registerTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
+                    .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
                     .build();
         } else {
             return UserDto.builder()
@@ -39,11 +45,12 @@ public class UserDto {
                     .email(BlogUtil.ofNull(user.getEmail()))
                     .nickname(BlogUtil.ofNull(user.getNickname()))
                     .greetings(BlogUtil.ofNull(user.getGreetings()))
-                    .intro(BlogUtil.ofNull(user.getIntro()))
                     .isAuth(user.isAuth())
                     .profileImages(BlogUtil.ofNull(user.getProfileImage()))
                     .status(BlogUtil.ofNull(user.getStatus() == null ? UserStatus.NOT_AUTH.name() : user.getStatus().name()))
                     .socialAddress(SocialAddress.from(user.getSocialAddress()))
+                    .registerTime(BlogUtil.formatLocalDateTimeToStr(user.getRegisterTime()))
+                    .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(user.getPasswordUpdateTime()))
                     .build();
         }
     }

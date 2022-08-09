@@ -87,12 +87,12 @@ class UserServiceTest {
         // 비인증 사용자의 경우
         when(userInfoService.findUserDomainByEmailOrThrow(email)).
                 thenReturn(UserDomain.builder().status(UserStatus.NOT_AUTH).build());
-        assertEquals(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_USER.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
+        assertEquals(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_ACCOUNT.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
 
         // 미등록 회원의 경우
         when(userInfoService.findUserDomainByEmailOrThrow(email)).
-                thenThrow(new UsernameNotFoundException(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message()));
-        assertEquals(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message(), assertThrows(UsernameNotFoundException.class, () -> userService.checkIsActive(email)).getMessage());
+                thenThrow(new UsernameNotFoundException(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(), assertThrows(UsernameNotFoundException.class, () -> userService.checkIsActive(email)).getMessage());
     }
 
     @Test
@@ -168,9 +168,27 @@ class UserServiceTest {
     @ParameterizedTest
     @DisplayName("이메일로 유저 검색 테스트")
     @ValueSource(strings = "nebi25@naver.com")
-    void findUserByEmail(String email) {
+    void findUserDtoByEmail(String email) {
         when(userInfoService.findUserDomainByEmailOrElse(email, null)).thenReturn(UserDomain.builder().email(email).build());
-        assertNotNull(userService.findUserByEmail(email));
+        assertNotNull(userService.findUserDtoByEmail(email));
+        verify(userInfoService, times(1)).findUserDomainByEmailOrElse(email, null);
+    }
+
+    @ParameterizedTest
+    @DisplayName("이메일로 유저 세팅 정보 검색 테스트")
+    @ValueSource(strings = "nebi25@naver.com")
+    void findUserSettingDtoByEmail(String email) {
+        when(userInfoService.findUserDomainByEmailOrElse(email, null)).thenReturn(UserDomain.builder().email(email).build());
+        assertNotNull(userService.findUserSettingDtoByEmail(email));
+        verify(userInfoService, times(1)).findUserDomainByEmailOrElse(email, null);
+    }
+
+    @ParameterizedTest
+    @DisplayName("이메일로 유저 기본 정보 검색 테스트")
+    @ValueSource(strings = "nebi25@naver.com")
+    void findUserBasicDtoByEmail(String email) {
+        when(userInfoService.findUserDomainByEmailOrElse(email, null)).thenReturn(UserDomain.builder().email(email).build());
+        assertNotNull(userService.findUserBasicDtoByEmail(email));
         verify(userInfoService, times(1)).findUserDomainByEmailOrElse(email, null);
     }
 
@@ -184,7 +202,7 @@ class UserServiceTest {
         // 존재하는 id
         when(userInfoService.findUsersByNickName(nickname)).thenReturn(userEmailFindDtoList);
 
-        List<UserEmailFindDto> result = userService.findUsersByNickname(nickname);
+        List<UserEmailFindDto> result = userService.findUserEmailFindDtoListByNickname(nickname);
 
         assertEquals(result.size(), userEmailFindDtoList.size());
 

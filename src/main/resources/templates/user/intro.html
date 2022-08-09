@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>설정 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/post-util.css}">
+
+    <style>
+        .intro_container {
+            max-width: 500px;
+            padding-left: 30px;
+            white-space: nowrap;
+        }
+
+        .settings_title {
+            font-size: 20px;
+            color: #607d8b;
+            text-align: center;
+        }
+
+        .post_container {
+            border: 1px solid #c9c9c9;
+            min-height: 300px;
+            padding: 0px 20px 0px 20px;
+            white-space: pre-line;
+        }
+    </style>
+
+    <script>
+        // Execute all functions
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("post_container").innerHTML = window.opener.document.getElementById("user_basic_info_intro").value;
+        });
+    </script>
+</head>
+
+<body>
+<div class="intro_container">
+    <h1 class="settings_title">내 소개</h1>
+
+    <div class="post_container" id="post_container">
+        <span class="blind">포스트 게시글</span>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>설정 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/settings.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/settings.js}"></script>
+</head>
+
+<body>
+<div th:replace="/fragments/header::header"></div>
+<div class="settings_container common_form_container">
+    <h1 class="settings_title common_form_title">내 정보</h1>
+
+    <div class="common_form settings_form">
+        <div class="user_profile_container clear_fix">
+            <div class="user_profile_image_form" action="register/image" method="POST" enctype="multipart/form-data">
+                <img class="default_user_profile_image" id="default_user_profile_image"
+                     th:src="${#strings.isEmpty(user_setting.profileImages) or #strings.equals(user_setting.profileImages,'<<<undefined>>>') ? '../images/user_default_thumbnail.png' : user_setting.profileImages}"/>
+                <span class="blind">프로필</span>
+                <div class="user_profile_image_option clear_fix">
+                    <form action="/user/upload/profile-image" method="post" enctype="multipart/form-data"
+                          id="profile_image_form"
+                          name="profile_image_form" class="profile_image_file_form">
+                        <input type="file" id="profile_image_file_input" name="profile_image_file_input"
+                               class="profile_image_file_input"
+                               accept="image/jpeg, image/jpg, image/png, image/gif, image/GIF">
+                        <button type="button" class="common_blue_button" id="profile_image_register_button">등록
+                        </button>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    </form>
+
+                    <button type="button" class="profile_image_remove_button common_orange_button"
+                            id="profile_image_remove_button">삭제
+                    </button>
+                </div>
+            </div>
+
+            <div class="user_profile_intro_container">
+                <div class="user_info_block">
+                    <span class="common_plain_text">블로그명:</span>
+                    <span class="common_dark_cyan_text" th:text="${user_setting.blogName}"
+                          th:title="${user_setting.blogName}">블로그명</span>
+                </div>
+
+                <div class="user_info_block">
+                    <span class="common_plain_text">닉네임: </span>
+                    <span class="common_dark_cyan_text" th:text="${user_setting.nickname}"
+                          th:title="${user_setting.nickname}">닉네임</span>
+                </div>
+
+                <div class="windows_block clear_fix">
+                    <span class="common_plain_text">인사말</span>
+                    <button class="greeting_click_button" id="greeting_show_button">보기</button>
+
+                    <div id="greetings_hidden_block" class="window_hidden_block">
+                        <button type="button" class="common_close_label window_hidden_block_close_button"
+                                id="greeting_hidden_block_close_button">
+                            <span class="blind">닫기버튼</span>
+                        </button>
+
+                        <span class="window_text" th:text="${user_setting.greetings}">
+                            인사말
+                        </span>
+                    </div>
+                </div>
+
+                <div class="windows_block clear_fix">
+                    <span class="common_plain_text">소개</span>
+                    <button class="intro_click_button" id="intro_show_button">보기</button>
+                </div>
+            </div>
+
+            <button class="setting_edit_button_style common_edit_label edit_button" id="user_basic_info_edit_button"
+                    title="수정하기">
+                <span class="blind">편집하기</span>
+            </button>
+
+            <input type="hidden" id="user_basic_info_id" th:value="${user_setting.id}">
+            <input type="hidden" id="user_basic_info_email" th:value="${user_setting.email}">
+            <input type="hidden" id="user_basic_info_blog_name" th:value="${user_setting.blogName}">
+            <input type="hidden" id="user_basic_info_nickname" th:value="${user_setting.nickname}">
+            <input type="hidden" id="user_basic_info_greetings" th:value="${user_setting.greetings}">
+            <input type="hidden" id="user_basic_info_intro"
+                   th:value="${#strings.isEmpty(user_setting.intro) or #strings.equals(user_setting.intro,'<<<undefined>>>') ? '<p><br></p>' : user_setting.intro}">
+
+            <input type="hidden" id="user_social_address" th:value="${user_setting.socialAddress.address}">
+            <input type="hidden" id="user_github_address" th:value="${user_setting.socialAddress.github}">
+            <input type="hidden" id="user_twitter_address" th:value="${user_setting.socialAddress.twitter}">
+            <input type="hidden" id="user_instagram_address" th:value="${user_setting.socialAddress.instagram}">
+        </div>
+
+        <div class="user_official_info_container">
+            <div class="user_info_block text_skip_block clear_fix">
+                <div class="clear_fix_block">
+                    <span class="common_plain_text">이메일:</span>
+                    <span class="common_gray_text" th:text="${user_setting.email}"
+                          th:title="${user_setting.email}">이메일</span>
+                </div>
+
+                <button class="email_auth_button" id="email_auth_button" th:if="${#bools.isTrue(user_setting.isAuth)}">
+                    인증 완료
+                </button>
+                <button class="email_not_auth_button" id="email_not_auth_button"
+                        th:if="${#bools.isFalse(user_setting.isAuth)}">인증 하기
+                </button>
+            </div>
+
+            <div class="user_info_block text_skip_block">
+                <span class="common_plain_text">아이디:</span>
+                <span class="common_gray_text" th:text="${user_setting.id}" th:title="${user_setting.id}">userId</span>
+            </div>
+
+            <div class="user_info_block text_skip_block">
+                <span class="common_plain_text">가입일</span>
+                <span class="common_gray_text" th:text="${user_setting.registerTime}"
+                      th:title="${user_setting.registerTime}">2015-04-24 14:25</span>
+            </div>
+        </div>
+
+        <div class="user_profile_link_container">
+            <h3 class="user_profile_link_title">소셜 정보</h3>
+            <div class="user_profile_link_list clear_fix"
+                 th:if="${!#strings.isEmpty(user_setting.socialAddress.address) and !#strings.equals(user_setting.socialAddress.address,'<<<undefined>>>')}">
+                <div class="common_social_address_label user_profile_link_image">
+                    <span class="blind">개인소셜 링크</span>
+                </div>
+
+                <a class="user_profile_link" th:href="${user_setting.socialAddress.address}" target="_blank"
+                   th:title="${user_setting.socialAddress.address}">
+                    <span th:text="${user_setting.socialAddress.address}"></span>
+                </a>
+            </div>
+
+            <div class="user_profile_link_list clear_fix"
+                 th:if="${!#strings.isEmpty(user_setting.socialAddress.github) and !#strings.equals(user_setting.socialAddress.github,'<<<undefined>>>')}">
+                <div class="common_github_label user_profile_link_image">
+                    <span class="blind">깃허브링크</span>
+                </div>
+
+                <a class="user_profile_link" th:href="${user_setting.socialAddress.github}" target="_blank"
+                   th:title="${user_setting.socialAddress.github}">
+                    <span th:text="${user_setting.socialAddress.github}"></span>
+                </a>
+            </div>
+
+            <div class="user_profile_link_list clear_fix"
+                 th:if="${!#strings.isEmpty(user_setting.socialAddress.twitter) and !#strings.equals(user_setting.socialAddress.twitter,'<<<undefined>>>')}">
+                <div class="common_twitter_label user_profile_link_image">
+                    <span class="blind">트위터링크</span>
+                </div>
+
+                <a class="user_profile_link" th:href="${user_setting.socialAddress.twitter}" target="_blank"
+                   th:title="${user_setting.socialAddress.twitter}">
+                    <span th:text="${user_setting.socialAddress.twitter}"></span>
+                </a>
+            </div>
+
+            <div class="user_profile_link_list clear_fix"
+                 th:if="${!#strings.isEmpty(user_setting.socialAddress.instagram) and !#strings.equals(user_setting.socialAddress.instagram,'<<<undefined>>>')}">
+                <div class="common_instagram_label user_profile_link_image">
+                    <span class="blind">인스타링크</span>
+                </div>
+
+                <a class="user_profile_link" th:href="${user_setting.socialAddress.instagram}" target="_blank"
+                   th:title="${user_setting.socialAddress.instagram}">
+                    <span th:text="${user_setting.socialAddress.instagram}"></span>
+                </a>
+            </div>
+
+            <button class="common_edit_label edit_button" title="수정하기" id="user_social_info_edit_button">
+                <span class="blind">편집하기</span>
+            </button>
+        </div>
+
+        <div class="user_profile_admin_container">
+            <div class="user_info_block text_skip_block clear_fix">
+                <button id="password_change_button" class="password_change_button">
+                    비밀번호 변경
+                </button>
+
+                <span class="last_change_text">
+                        마지막 변경일 (<span class="common_plain_text" th:title="${user_setting.passwordUpdateTime}"
+                                       th:text="${#strings.isEmpty(user_setting.passwordUpdateTime) ? '없음' : user_setting.passwordUpdateTime}">2015-04-24 14:25</span>)
+                    </span>
+            </div>
+
+            <div class="user_info_block clear_fix">
+                <button class="with_draw_button" id="with_draw_button">
+                    회원 탈퇴
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="/fragments/footer::footer"></div>
+</body>
+</html>

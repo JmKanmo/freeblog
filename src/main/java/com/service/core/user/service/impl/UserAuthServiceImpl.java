@@ -12,6 +12,7 @@ import com.service.core.user.service.UserAuthService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -58,7 +59,7 @@ public class UserAuthServiceImpl implements UserAuthService {
         if (Objects.isNull(userEmailAuth.getEmailAuthKey()) || !userEmailAuth.getEmailAuthKey().equals(userAuthInput.getKey())) {
             throw new UserAuthException(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH);
         } else if (userDomain.isAuth()) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_USER);
+            throw new UserAuthException(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT);
         }
         userEmailAuth.setEmailAuthKey(BlogUtil.createRandomString(20));
         userEmailAuthRepository.save(userEmailAuth);
@@ -74,6 +75,8 @@ public class UserAuthServiceImpl implements UserAuthService {
             throw new UserAuthException(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH);
         } else if (!userPasswordInput.getPassword().equals(userPasswordInput.getRePassword())) {
             throw new UserAuthException(ConstUtil.ExceptionMessage.RE_PASSWORD_MISMATCH);
+        } else if (BCrypt.checkpw(userPasswordInput.getPassword(), userDomain.getPassword())) {
+            throw new UserAuthException(ConstUtil.ExceptionMessage.COINCIDE_WITH_EACH_PASSWORD);
         }
         userPasswordAuth.setUpdatePasswordAuthKey(BlogUtil.createRandomString(20));
         userPasswordAuthRepository.save(userPasswordAuth);

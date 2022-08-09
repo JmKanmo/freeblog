@@ -15,8 +15,8 @@
 
     <h1 class="common_form_title">회원정보 입력</h1>
 
-    <form th:object="${userSignUpInput}" method="post" class="signup_form common_form"
-          id="signup_form" name="signupForm" onsubmit="return confirm('회원가입 폼을 제출하시겠습니까?')">
+    <form th:object="${userSignUpInput}" method="post" class="signup_form common_form" enctype="multipart/form-data"
+          id="user_signup_form" name="signupForm">
 
         <div class="input_div common_input_div clear_fix">
             <label for="user_email" class="common_input_label common_email_label">
@@ -76,6 +76,20 @@
         </div>
 
         <div class="input_div common_input_div clear_fix">
+            <label for="user_blog_name" class="common_input_label common_blog_name_label">
+                <span class="blind">블로그이름</span>
+            </label>
+
+            <input th:field="*{blogName}" type="text" id="user_blog_name" name="blogName" class="common_input_form"
+                   maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)" required>
+        </div>
+
+        <div class="spel_div">
+            <span th:if="${#fields.hasErrors('blogName')}" th:errors="*{blogName}" id="user_blog_name_validation_error"
+                  class="validation_error"></span>
+        </div>
+
+        <div class="input_div common_input_div clear_fix">
             <label for="user_nickname" class="common_input_label common_nickname_label">
                 <span class="blind">닉네임</span>
             </label>
@@ -89,13 +103,25 @@
                   class="validation_error"></span>
         </div>
 
-        <div class="input_div common_input_div clear_fix">
-            <label for="user_greetings" class="common_input_label common_greetings_label">
+        <div class="input_div common_input_div greeting_textarea_block clear_fix">
+            <label for="user_greeting_textarea" class="common_input_label common_greetings_label">
                 <span class="blind">인사말</span>
             </label>
 
-            <input th:field="*{greetings}" type="text" id="user_greetings" name="greetings" class="common_input_form"
-                   maxlength="128" placeholder="인사말을 입력해주세요 (최대 128글자)" required>
+            <textarea name="greeting" id="user_greeting_textarea" class="common_input_form user_info_greetings"
+                      cols="30"
+                      rows="10"
+                      maxlength="128"
+                      th:field="*{greetings}"
+                      placeholder="사용자 인사말을 입력해주세요. (최대 128글자 입력 가능)" required></textarea>
+
+            <div class="greeting_edit_count_block">
+                <span class="current_text_count common_gray_text" id="current_text_count">0</span>
+                <span class="common_plain_text">/</span>
+                <span class="common_gray_text max_limit_text_count">128</span>
+            </div>
+
+            <span class="greeting_limit_warn validation_error" id="greeting_limit_warn">글자수는 128 글자를 넘어갈 수 없습니다.</span>
         </div>
 
         <div class="spel_div">
@@ -104,17 +130,28 @@
         </div>
 
         <div class="input_div common_input_div clear_fix">
-            <label for="user_blog_name" class="common_input_label common_blog_name_label">
-                <span class="blind">블로그이름</span>
-            </label>
+            <div class="common_note_write_label custom_note_write_label common_input_label">
+                <span class="blind">인사말</span>
+            </div>
 
-            <input th:field="*{blogName}" type="text" id="user_blog_name" name="blogName" class="common_input_form"
-                   maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)" required>
+            <button type="button" class="user_intro_button" id="user_intro_button">소개 작성하기</button>
+        </div>
+
+        <div class="input_div common_input_div intro_block" id="user_intro_block">
+            <div class="editor-board">
+                <!-- Contents Here -->
+                <div id="signup_editor" class="user_intro_editor">
+                    <!-- Contents Here -->
+                </div>
+                <button id="view-editor-source" type="button"
+                        class="common_source_view_label view_editor_source_button" title="텍스트 코드 보기"></button>
+            </div>
+            <input type="hidden" id="user_intro_editor_input" name="intro" value="" th:field="*{intro}">
         </div>
 
         <div class="spel_div">
-            <span th:if="${#fields.hasErrors('blogName')}" th:errors="*{blogName}" id="user_blog_name_validation_error"
-                  class="validation_error"></span>
+            <span th:if="${#fields.hasErrors('greetings')}" th:errors="*{greetings}"
+                  id="user_intro_validation_error" class="validation_error"></span>
         </div>
 
         <!-- SNS 주소 입력 -->

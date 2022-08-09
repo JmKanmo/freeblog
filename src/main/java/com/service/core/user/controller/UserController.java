@@ -1,18 +1,12 @@
 package com.service.core.user.controller;
 
-import com.service.core.blog.domain.Blog;
-import com.service.core.blog.service.BlogService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.UserDomain;
-import com.service.core.user.model.UserAuthInput;
-import com.service.core.user.model.UserPasswordInput;
-import com.service.core.user.model.UserSignUpInput;
-import com.service.core.user.service.UserAuthService;
+import com.service.core.user.model.*;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
-import com.service.core.email.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,14 +16,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +44,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "로그인 페이지")
     })
     @GetMapping("/login")
-    public String login(HttpServletRequest request) {
+    public String login(HttpServletRequest request, Authentication authentication) {
+        if (BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/");
+        }
         String referrer = request.getHeader("Referer");
         request.getSession().setAttribute("prevPage", referrer);
         return "user/login";
@@ -57,7 +58,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원가입 완료 페이지")
     })
     @GetMapping("/signup-complete")
-    public String complete() {
+    public String complete(Authentication authentication) {
+        if (BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/");
+        }
         return "user/signup/signup-complete";
     }
 
@@ -66,7 +70,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원가입 페이지")
     })
     @GetMapping("/signup")
-    public String signup(Model model) {
+    public String signup(Model model, Authentication authentication) {
+        if (BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/");
+        }
         model.addAttribute("userSignUpInput", UserSignUpInput.builder().build());
         return "user/signup";
     }
@@ -76,7 +83,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "사용자 정보 찾기 페이지")
     })
     @GetMapping("/find-info")
-    public String findInfo() {
+    public String findInfo(Authentication authentication) {
+        if (BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/");
+        }
         return "user/find/find-info";
     }
 
@@ -87,19 +97,51 @@ public class UserController {
     @GetMapping("/find-email")
     public String findEmail(
             @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname,
-            Model model) {
-        model.addAttribute("users", userService.findUsersByNickname(nickname));
+            Model model, Authentication authentication) {
+        if (BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/");
+        }
+        model.addAttribute("users", userService.findUserEmailFindDtoListByNickname(nickname));
         return "user/find/find-email";
     }
 
-    @Operation(summary = "비밀번호 업데이트", description = "비밀번호 업데이트 페이지 반환 메서드")
+    @Operation(summary = "비밀번호 업데이트 페이지", description = "비밀번호 업데이트 페이지 반환 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
     })
-    @GetMapping("/update-password")
+    @GetMapping("/update/password")
     public String updatePassword(Model model) {
         model.addAttribute("userPasswordInput", UserPasswordInput.builder().build());
-        return "user/update/update-password";
+        return "user/update/password";
+    }
+
+    @Operation(summary = "소셜 계정 업데이트 페이지", description = "소셜계정 업데이트 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
+    })
+    @GetMapping("/update/social-address")
+    public String updateSocialAddress(Model model) {
+        model.addAttribute("userSocialAddressInput", UserSocialAddressInput.builder().build());
+        return "user/update/social-address";
+    }
+
+    @Operation(summary = "소셜 계정 업데이트 페이지", description = "소셜계정 업데이트 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
+    })
+    @PostMapping("/update/social-address")
+    public String updateSocialAddress(@Valid UserSocialAddressInput userSocialAddressInput, BindingResult bindingResult, Model model) {
+        try {
+            if (bindingResult.hasErrors()) {
+                return "user/update/password";
+            }
+            userService.updateUserSocialAddress(userSocialAddressInput);
+            model.addAttribute("result", "소셜 정보 변경 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
+        } catch (UsernameNotFoundException | UserAuthException exception) {
+            model.addAttribute("result", "소셜 정보 변경 작업 실패");
+            model.addAttribute("error", String.format("소셜 정보 변경에 실패하였습니다. %s", exception.getMessage()));
+        }
+        return "user/update/update-info-complete";
     }
 
     @Operation(summary = "이메일 인증", description = "이메일 인증 페이지 반환 메서드")
@@ -120,8 +162,12 @@ public class UserController {
     @ResponseBody
     @GetMapping("/check-email")
     public ResponseEntity<String> checkEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
-        userService.checkSameEmail(email);
-        return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일 입니다.");
+        try {
+            userService.checkSameEmail(email);
+            return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일 입니다.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+        }
     }
 
     @Operation(summary = "id 사용가능 여부 확인", description = "id 사용 가능 여부 반환 메서드")
@@ -132,8 +178,52 @@ public class UserController {
     @ResponseBody
     @GetMapping("/check-id")
     public ResponseEntity<String> checkId(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
-        userService.checkSameId(id);
-        return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 id 입니다.");
+        try {
+            userService.checkSameId(id);
+            return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 id 입니다.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+        }
+    }
+
+    @Operation(summary = "사용자 소개 페이지 반환", description = "사용자 소개 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자 소개 페이지")
+    })
+    @GetMapping("/intro")
+    public String userIntro() {
+        return "user/intro";
+    }
+
+    @Operation(summary = "기본 정보 수정 페이지", description = "기본 정보 수정 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "기본 정보 수정 페이지")
+    })
+    @GetMapping("/update/basic-info")
+    public String basicInfoEdit(Model model) {
+        model.addAttribute("userBasicInfoInput", UserBasicInfoInput.builder().build());
+        return "user/update/basic-info";
+    }
+
+    @Operation(summary = "기본 정보 수정 작업 진행", description = "기본 정보 수정 작업 진행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "기본 정보 수정 작업 성공 페이지"),
+            @ApiResponse(responseCode = "500", description = "기본 정보 수정 실패 페이지")
+    })
+    @PostMapping("/update/basic-info")
+    public String basicInfoUpdate(@Valid UserBasicInfoInput userBasicInfoInput, BindingResult bindingResult, Model model) {
+        try {
+            if (bindingResult.hasErrors()) {
+                return "user/update/basic-info";
+            }
+
+            userService.updateUserBasicInfo(userBasicInfoInput);
+            model.addAttribute("result", "기본 정보 수정 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
+        } catch (UsernameNotFoundException exception) {
+            model.addAttribute("result", "기본 정보 수정 작업 실패");
+            model.addAttribute("error", exception.getMessage());
+        }
+        return "user/update/update-info-complete";
     }
 
     @Operation(summary = "회원가입", description = "회원가입 진행 메서드")
@@ -166,10 +256,47 @@ public class UserController {
             }
         } catch (UserAuthException | UserManageException e) {
             model.addAttribute("error", e.getMessage());
-            return "error/signup_fail";
+            return "error/signup-fail";
         }
         model.addAttribute("email", signupForm.getEmail());
         return "user/signup/signup-complete";
+    }
+
+    @Operation(summary = "회원 탈퇴 페이지 반환", description = "회원 탈퇴 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 탈퇴 페이지")
+    })
+    @GetMapping("/withdraw")
+    public String withdraw(Model model, Authentication authentication) {
+        if (!BlogUtil.isAuth(authentication)) {
+            return BlogUtil.redirect("/user/login");
+        }
+        model.addAttribute("userWithdrawInput", UserWithdrawInput.builder().build());
+        return "user/withdraw";
+    }
+
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 진행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 탈퇴 완료"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 작업 실패 등의 오류로 회원 탈퇴 실패")
+    })
+    @PostMapping("/withdraw")
+    public String withdraw(@Valid UserWithdrawInput userWithdrawInput, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest, Authentication authentication) {
+        try {
+            if (bindingResult.hasErrors()) {
+                return "user/withdraw";
+            }
+            userService.withdraw(userWithdrawInput, authentication);
+            model.addAttribute("result", "회원탈퇴 작업 완료");
+            httpServletRequest.logout();
+        } catch (UsernameNotFoundException | UserAuthException exception) {
+            model.addAttribute("result", "회원탈퇴 작업 실패");
+            model.addAttribute("error", exception.getMessage());
+        } catch (ServletException e) {
+            model.addAttribute("result", "회원탈퇴 후 로그아웃 작업 실패");
+            model.addAttribute("error", e.getMessage());
+        }
+        return "user/withdraw/withdraw-complete";
     }
 
     @Operation(summary = "이메일 인증", description = "이메일 인증 진행 메서드")
@@ -195,16 +322,50 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "비밀번호 변경 완료"),
             @ApiResponse(responseCode = "500", description = "이메일 or 인증키 or 비밀번호 인증 오류로 비밀번호 변경 실패")
     })
-    @PostMapping("/update-password")
+    @PostMapping("/update/password")
     public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
-                return "user/update/update-password";
+                return "user/update/password";
             }
             userService.updatePassword(userPasswordInput);
+            model.addAttribute("result", "비밀번호 변경 작업 완료");
         } catch (UsernameNotFoundException | UserAuthException exception) {
+            model.addAttribute("result", "비밀번호 변경 작업 실패");
             model.addAttribute("error", String.format("비밀번호 변경에 실패하였습니다. %s", exception.getMessage()));
         }
         return "user/update/update-password-complete";
+    }
+
+    @Operation(summary = "사용자 프로필 이미지 업로드", description = "사용자 프로필 이미지 업로드 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "프로필 이미지 업로드 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 사용자 프로필 이미지 업로드 실패")
+    })
+    @PostMapping("/upload/profile-image")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
+                                                     @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id) {
+        try {
+            String profileImageSrc = userService.uploadProfileImageById(multipartFile, id);
+            return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
+        }
+    }
+
+    @Operation(summary = "사용자 프로필 이미지 삭제", description = "사용자 프로필 이미지 삭제 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "프로필 이미지 삭제 완료"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 조회,삭제 작업 실패 등의 이유로 사용자 프로필 이미지 삭제 실패")
+    })
+    @ResponseBody
+    @GetMapping("/remove/profile-image")
+    public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id) {
+        try {
+            userService.removeProfileImageById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", exception.getMessage()));
+        }
     }
 }

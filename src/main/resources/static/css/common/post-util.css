@@ -1,0 +1,19 @@
+/*
+포스팅 관련 종합 CSS 범용 컴포넌트 스타일 정의
+*/
+img {
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    text-decoration: underline;
+    color: #06c;
+}
+
+pre {
+    white-space: pre-wrap;
+    border: 1px solid #c9c9c9;
+    padding: 10px;
+    background-color: #ffffff;
+}

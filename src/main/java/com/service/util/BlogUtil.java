@@ -5,18 +5,36 @@ import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
 public class BlogUtil {
+    public static String mappingRedirectUrl(String redirectUrl) {
+        if (redirectUrl.endsWith("/user/email-auth")
+                || redirectUrl.endsWith("/user/update/password")) {
+            return "/";
+        }
+        return redirectUrl;
+    }
+
+    public static boolean isAuth(Authentication authentication) {
+        return authentication != null && authentication.isAuthenticated();
+    }
+
+    public static String redirect(String url) {
+        return String.format("redirect:%s", url);
+    }
+
     public static String getLoginFailMessage(AuthenticationException exception) {
         if (exception instanceof AuthenticationServiceException) {
-            return ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message();
+            return exception.getMessage();
 
         } else if (exception instanceof BadCredentialsException) {
             return ConstUtil.ExceptionMessage.ID_PW_WRONG.message();
@@ -39,10 +57,10 @@ public class BlogUtil {
     public static boolean checkUserStatus(UserStatus userStatus) {
         switch (userStatus) {
             case WITHDRAW:
-                throw new UserAuthException(ConstUtil.ExceptionMessage.WITHDRAW_USER);
+                throw new UserAuthException(ConstUtil.ExceptionMessage.WITHDRAW_ACCOUNT);
 
             case STOP:
-                throw new UserAuthException(ConstUtil.ExceptionMessage.STOP_USER);
+                throw new UserAuthException(ConstUtil.ExceptionMessage.STOP_ACCOUNT);
         }
         return true;
     }
@@ -86,5 +104,10 @@ public class BlogUtil {
 
     public static Integer createUserAuthId(UserDomain userDomain) {
         return Objects.hashCode(userDomain.getEmail() + ":" + userDomain.getUserId());
+    }
+
+    public static String formatLocalDateTimeToStr(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return localDateTime != null ? localDateTime.format(formatter) : "";
     }
 }

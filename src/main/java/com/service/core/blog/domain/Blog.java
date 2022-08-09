@@ -28,6 +28,9 @@ public class Blog extends BaseTimeEntity {
 
     private String name;
 
+    @Lob
+    private String intro;
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "blog")
     private UserDomain user;
 
@@ -42,6 +45,7 @@ public class Blog extends BaseTimeEntity {
     public static Blog from(UserSignUpInput userSignUpInput) {
         return Blog.builder()
                 .name(userSignUpInput.getBlogName())
+                .intro(userSignUpInput.getIntro())
                 .build();
     }
 }

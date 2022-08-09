@@ -1,10 +1,8 @@
 package com.service.core.user.service;
 
 
-import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
-import com.service.core.user.model.UserPasswordInput;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
 import com.service.util.ConstUtil;
@@ -70,7 +68,7 @@ public class UserInfoServiceTest {
     @ValueSource(strings = "nebi25@naver.com")
     public void findUserDomainByEmailOrThrow(String email) {
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message(),
+        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
                 assertThrows(UsernameNotFoundException.class,
                         () -> userInfoService.findUserDomainByEmailOrThrow(email)).getMessage());
 
@@ -95,7 +93,7 @@ public class UserInfoServiceTest {
     @ValueSource(strings = "nebi25")
     public void findUserDomainByIdOrThrow(String id) {
         when(userRepository.findById(id)).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message(),
+        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
                 assertThrows(UsernameNotFoundException.class,
                         () -> userInfoService.findUserDomainByIdOrThrow(id)).getMessage());
 

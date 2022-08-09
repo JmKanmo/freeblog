@@ -5,6 +5,7 @@ class HeaderController extends UtilController {
         this.hostingButton = document.getElementById("hosting_button");
         this.userOptionDiv = document.getElementById("user_option_div");
         this.userProfileBtn = document.getElementById("user_profile_button");
+        this.headerProfileImage = document.getElementById("header_profile_image");
     }
 
     initHeaderController() {
@@ -36,6 +37,26 @@ class HeaderController extends UtilController {
                 }
             });
         }
+
+        /**
+         * 추후에 JS es6 코드로 대체 ...
+         */
+        $('body').click(function (e) {
+            if (!$('#user_option_div').has(e.target).length) {
+                const button = e.target.closest("button");
+                if (button == null || button.className !== "user_profile_button") {
+                    $('#user_option_div').hide();
+                }
+            }
+        });
+    }
+
+    removeHeaderUserProfileImage() {
+        this.headerProfileImage.src = this.getDefaultUserProfileThumbnail();
+    }
+
+    setHeaderUserProfileImage(src) {
+        this.headerProfileImage.src = src;
     }
 }
 

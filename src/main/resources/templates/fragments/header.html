@@ -31,7 +31,9 @@
                     </a>
                     <button type="button" sec:authorize="isAuthenticated()" class="user_profile_button"
                             id="user_profile_button">
-                        <img src="../images/user_default_thumbnail.png"/>
+                        <img id="header_profile_image" class="header_profile_image" th:src="${#strings.isEmpty(user_basic.profileImages) or #strings.equals(user_basic.profileImages,'<<<undefined>>>')
+                        ? '../images/user_default_thumbnail.png' : user_basic.profileImages}"
+                             style="    cursor: pointer; object-fit: cover; width: 3rem; height: 3rem;border-radius: 50%;"/>
                         <span class="blind">프로필</span>
                     </button>
                 </li>
@@ -40,11 +42,11 @@
             <th:block th:if="${user != null}">
                 <ul class="user_option_div" id="user_option_div">
                     <li class="user_option_item">
-                        <a class="user_option_link" th:href="'/blog?id='+${user.id}">내 블로그</a>
+                        <a class="user_option_link" th:href="'/blog?id='+${user_basic.id}">내 블로그</a>
                     </li>
 
                     <li class="user_option_item">
-                        <a class="user_option_link" href="/likes/">좋아요누른 글</a>
+                        <a class="user_option_link" href="testLoad.do">좋아요누른 글</a>
                     </li>
 
                     <li class="user_option_item">

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>정보 수정 완료</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+
+    <style>
+        .update_complete_container {
+            width: 500px;
+            text-align: center;
+        }
+
+        .update_complete_container .basic_info_complete_title {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .update_complete_container .menu_container {
+            width: 200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .update_complete_container .menu_container a {
+            float: left;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: underline;
+        }
+
+        .back_link {
+            color: green;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="update_complete_container">
+    <th:block th:if="${result != null} and ${#strings.isEmpty(result)} eq false">
+        <h1 class="basic_info_complete_title" th:text="${result}">작업이 완료되었습니다.</h1>
+    </th:block>
+
+    <th:block th:if="${error != null} and ${#strings.isEmpty(error)} eq false">
+        <p style="font-weight: bold; color: darkgreen" th:text="${error}"></p>
+    </th:block>
+
+    <div class="menu_container clear_fix">
+        <a class="back_link" href="javascript:history.back();">이전페이지</a>
+        <a style="margin-left: 20px;" class="common_dark_cyan_text" href="/">홈으로 가기 </a>
+    </div>
+</div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -30,9 +31,6 @@ public class UserDomain extends BaseTimeEntity {
 
     private String greetings;
 
-    @Lob
-    private String intro;
-
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
@@ -45,6 +43,9 @@ public class UserDomain extends BaseTimeEntity {
     private SocialAddress socialAddress;
 
     private boolean isAuth;
+
+    private LocalDateTime passwordUpdateTime;
+    private LocalDateTime withdrawTime;
 
     public static UserDomain from(UserSignUpInput userSignUpInput) {
         return UserDomain.builder()

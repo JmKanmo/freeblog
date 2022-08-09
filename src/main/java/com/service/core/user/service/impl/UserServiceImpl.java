@@ -5,30 +5,29 @@ import com.service.core.blog.service.BlogService;
 import com.service.core.email.service.EmailService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
+import com.service.core.user.domain.SocialAddress;
 import com.service.core.user.domain.UserDomain;
+import com.service.core.user.dto.UserBasicDto;
 import com.service.core.user.dto.UserDto;
 import com.service.core.user.dto.UserEmailFindDto;
-import com.service.core.user.model.UserAuthInput;
-import com.service.core.user.model.UserPasswordInput;
-import com.service.core.user.model.UserSignUpInput;
-import com.service.core.user.model.UserStatus;
-import com.service.core.user.repository.UserRepository;
-import com.service.core.user.repository.mapper.UserMapper;
+import com.service.core.user.dto.UserSettingDto;
+import com.service.core.user.model.*;
 import com.service.core.user.service.UserAuthService;
 import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
 import com.service.util.ConstUtil;
 import com.service.util.BlogUtil;
+import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.MailException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,6 +39,8 @@ public class UserServiceImpl implements UserService {
     private final BlogService blogService;
     private final UserInfoService userInfoService;
     private final UserAuthService userAuthService;
+
+    private final SftpService sftpService;
 
     @Override
     public void processSignUp(UserSignUpInput signupForm, UserDomain userDomain) {
@@ -59,11 +60,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void withdraw(UserWithdrawInput userWithdrawInput, Authentication authentication) {
+        UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(userWithdrawInput.getId());
+
+        if (!userDomain.getEmail().equals(authentication.getName())) {
+            throw new UserAuthException(ConstUtil.ExceptionMessage.MISMATCH_EMAIL);
+        } else if (!BCrypt.checkpw(userWithdrawInput.getPassword(), userDomain.getPassword())) {
+            throw new UserAuthException(ConstUtil.ExceptionMessage.MISMATCH_PASSWORD);
+        }
+
+        userDomain.setStatus(UserStatus.WITHDRAW);
+        userDomain.setWithdrawTime(LocalDateTime.now());
+        userInfoService.saveUserDomain(userDomain);
+    }
+
+    @Override
     public boolean checkIsActive(String email) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
 
         if (user.getStatus() != UserStatus.ACTIVE) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_USER);
+            throw new UserAuthException(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_ACCOUNT);
         }
 
         return true;
@@ -109,20 +125,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEmailFindDto> findUsersByNickname(String nickname) {
-        List<UserEmailFindDto> userEmailFindDtoList = userInfoService.findUsersByNickName(nickname);
-        userEmailFindDtoList.forEach(userEmailFindDto -> {
-            userEmailFindDto.setEmail(BlogUtil.encryptEmail(userEmailFindDto.getEmail()));
-        });
-        return userEmailFindDtoList;
-    }
-
-    @Override
-    public UserDto findUserByEmail(String email) {
-        return UserDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
-    }
-
-    @Override
     public String updateEmailAuthCondition(String email) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
         userInfoService.saveUserDomain(user);
@@ -144,9 +146,36 @@ public class UserServiceImpl implements UserService {
 
         if (userAuthService.checkUserPasswordAuth(user, userPasswordInput)) {
             user.setPassword(BCrypt.hashpw(userPasswordInput.getPassword(), BCrypt.gensalt()));
-            user.setUpdateTime(LocalDateTime.now());
+            user.setPasswordUpdateTime(LocalDateTime.now());
             userInfoService.saveUserDomain(user);
         }
+    }
+
+    @Transactional
+    @Override
+    public void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput) {
+        UserDomain user = userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId());
+        Blog blog = user.getBlog();
+        blog.setName(userBasicInfoInput.getBlogName());
+        blog.setIntro(userBasicInfoInput.getIntro());
+        blogService.register(blog);
+        user.setNickname(userBasicInfoInput.getNickname());
+        user.setGreetings(userBasicInfoInput.getGreetings());
+        user.setBlog(blog);
+        userInfoService.saveUserDomain(user);
+    }
+
+    @Override
+    public void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput) {
+        UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(userSocialAddressInput.getId());
+        SocialAddress socialAddress = userDomain.getSocialAddress();
+
+        socialAddress.setAddress(userSocialAddressInput.getAddress());
+        socialAddress.setGithub(userSocialAddressInput.getGithub());
+        socialAddress.setTwitter(userSocialAddressInput.getTwitter());
+        socialAddress.setInstagram(userSocialAddressInput.getInstagram());
+
+        userInfoService.saveUserDomain(userDomain);
     }
 
     @Override
@@ -159,5 +188,50 @@ public class UserServiceImpl implements UserService {
         grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new User(user.getEmail(), user.getPassword(), grantedAuthorityList);
+    }
+
+    @Override
+    public List<UserEmailFindDto> findUserEmailFindDtoListByNickname(String nickname) {
+        List<UserEmailFindDto> userEmailFindDtoList = userInfoService.findUsersByNickName(nickname);
+        userEmailFindDtoList.forEach(userEmailFindDto -> {
+            userEmailFindDto.setEmail(BlogUtil.encryptEmail(userEmailFindDto.getEmail()));
+        });
+        return userEmailFindDtoList;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserSettingDto findUserSettingDtoByEmail(String email) {
+        return UserSettingDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
+    }
+
+    @Override
+    public UserDto findUserDtoByEmail(String email) {
+        return UserDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
+    }
+
+    @Override
+    public UserBasicDto findUserBasicDtoByEmail(String email) {
+        return UserBasicDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
+    }
+
+    @Override
+    public String uploadProfileImageById(MultipartFile multipartFile, String id) throws Exception {
+        try {
+            String profileImageSrc = sftpService.sftpFileUpload(multipartFile);
+            UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+            userDomain.setProfileImage(profileImageSrc);
+            userInfoService.saveUserDomain(userDomain);
+            return profileImageSrc;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Override
+    public void removeProfileImageById(String id) {
+        UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+        userDomain.setProfileImage(null);
+        userInfoService.saveUserDomain(userDomain);
     }
 }

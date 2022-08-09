@@ -66,10 +66,6 @@
             text-decoration: underline;
         }
 
-        .auth_board .menu_container .home_link {
-            color: green;
-        }
-
         .auth_board .menu_container .login_link {
             color: white;
         }
@@ -82,8 +78,9 @@
     <p class="fail_message" th:if="${#strings.isEmpty(error)} eq false" th:text="${error}">오류메시지</p>
 
     <div class="menu_container clear_fix">
-        <a class="home_link" href="/static">홈으로 가기 </a>
-        <a href="/user/login" class="login_button login_link" id="login_button">
+        <a class="common_home_link" href="/">홈으로 가기 </a>
+
+        <a href="/user/login" class="login_button login_link" id="login_button" sec:authorize="!isAuthenticated()">
             로그인
             <span class="blind">로그인</span>
         </a>

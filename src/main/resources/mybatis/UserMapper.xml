@@ -7,5 +7,6 @@
         SELECT email, nickname
         from user
         WHERE nickname LIKE CONCAT(#{nickname}, '%')
+          and status not in ('WITHDRAW', 'STOP')
     </select>
 </mapper>

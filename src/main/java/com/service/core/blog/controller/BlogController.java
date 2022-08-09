@@ -28,5 +28,4 @@ public class BlogController {
         model.addAttribute("id", id);
         return "blog/myblog";
     }
-
 }

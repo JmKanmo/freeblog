@@ -21,10 +21,6 @@
     text-decoration: underline;
 }
 
-.complete_container .menu_container .home_link {
-    color: green;
-}
-
 .complete_container .menu_container .login_link {
     color: white;
 }

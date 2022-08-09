@@ -20,6 +20,6 @@ public class UserAuthenticationFailureHandler implements AuthenticationFailureHa
         flashMap.put(ConstUtil.AUTHENTICATION_MESSAGE, BlogUtil.getLoginFailMessage(exception));
         final FlashMapManager flashMapManager = new SessionFlashMapManager();
         flashMapManager.saveOutputFlashMap(flashMap, request, response);
-        response.sendRedirect("/error/login_fail");
+        response.sendRedirect("/error/login-fail");
     }
 }

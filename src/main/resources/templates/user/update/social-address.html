@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>소셜 계정 정보 변경</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/update/social-address.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/update/social-address.js}"></script>
+</head>
+
+<body>
+<form method="post" class="social_address_container" id="social_address_info_form" name="socialAddressInput"
+      th:object="${userSocialAddressInput}">
+    <h1 class="form_title common_gray_text">소셜 계정 정보 수정</h1>
+
+    <div class="common_input_div input_block clear_fix">
+        <label for="user_social_address" class="common_input_label common_social_address_label">
+            <span class="blind">SNS 주소</span>
+        </label>
+        <input type="text" id="user_social_address" name="socialAddress" class="social_address_input"
+               th:field="*{address}"
+               maxlength="128" placeholder="SNS 주소를 입력해주세요" required>
+    </div>
+
+    <div class="social_address_spel_div">
+            <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}"
+                  id="user_social_address_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+
+    <div class="common_input_div input_block clear_fix">
+        <label for="user_github_address" class="common_input_label common_github_label">
+            <span class="blind">github 주소</span>
+        </label>
+        <input type="text" id="user_github_address" name="github" class="social_address_input"
+               th:field="*{github}"
+               maxlength="128" placeholder="github 주소를 입력해주세요" required>
+    </div>
+
+    <div class="social_address_spel_div">
+            <span th:if="${#fields.hasErrors('github')}" th:errors="*{github}"
+                  id="user_github_address_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+    <div class="common_input_div input_block clear_fix">
+        <label for="user_twitter_address" class="common_input_label common_twitter_label">
+            <span class="blind">twitter 주소</span>
+        </label>
+        <input type="text" id="user_twitter_address" name="twitter" class="social_address_input"
+               th:field="*{twitter}"
+               maxlength="128" placeholder="twitter 주소를 입력해주세요" required>
+    </div>
+
+    <div class="social_address_spel_div">
+            <span th:if="${#fields.hasErrors('twitter')}" th:errors="*{twitter}"
+                  id="user_twitter_address_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+
+    <div class="common_input_div input_block clear_fix">
+        <label for="user_instagram_address" class="common_input_label common_instagram_label">
+            <span class="blind">instagram 주소</span>
+        </label>
+        <input type="text" id="user_instagram_address" name="instagram" class="social_address_input"
+               th:field="*{instagram}"
+               maxlength="128" placeholder="instagram 주소를 입력해주세요" required>
+    </div>
+
+    <div class="social_address_spel_div">
+            <span th:if="${#fields.hasErrors('instagram')}" th:errors="*{instagram}"
+                  id="user_instagram_address_validation_error"
+                  class="validation_error"></span>
+    </div>
+    <input type="hidden" id="user_id_input" name="id" value="">
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" id="user_intro_validation_error"
+                  class="basic_info_validation_err validation_error"></span>
+    </div>
+
+    <button type="submit" class="social_address_edit_button">수정하기</button>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원탈퇴 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common/post-util.css}">
+
+    <style>
+        .withdraw_container {
+            max-width: 500px;
+            padding-left: 30px;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .withdraw_title {
+            font-size: 20px;
+            color: #607d8b;
+            text-align: center;
+        }
+
+        .password_input, .id_input {
+            float: left;
+            margin-left: 30px;
+            height: 35px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .withdraw_text {
+            margin-left: 55px;
+            margin-top: 10px;
+        }
+
+        .withdraw_text .withdraw_condition_tag {
+            padding: 5px;
+            margin: 0;
+        }
+
+        .withdraw_validation_error {
+            padding-left: 5px;
+        }
+
+        .withdraw_container .withdraw_edit_button {
+            font-size: 14px;
+            border: 0;
+            background-color: #4caf50;
+            color: #ffffff;
+            border-radius: 10px;
+            position: absolute;
+            padding: 2px;
+            bottom: -60px;
+            cursor: pointer;
+            left: 45%;
+            width: 100px;
+            height: 45px;
+        }
+
+    </style>
+
+    <script>
+        // Execute all functions
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("withdraw_form").addEventListener("submit", evt => {
+                evt.preventDefault();
+
+                if (confirm('회원탈퇴를 진행하겠습니까?') === true) {
+                    document.getElementById("withdraw_form").submit();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+<form class="withdraw_container" id="withdraw_form" name="withdrawForm" method="post" th:object="${userWithdrawInput}">
+    <h1 class="withdraw_title">회원 탈퇴</h1>
+
+    <div class="common_input_div clear_fix">
+        <label for="user_id" class="common_input_label common_id_label">
+            <span class="blind">아이디</span>
+        </label>
+
+        <input th:field="*{id}" type="text" id="user_id" class="id_input"
+               placeholder="아이디를 입력해주세요."
+               name="id" required>
+    </div>
+
+    <div class="withdraw_text">
+            <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" id="user_id_validation_error"
+                  class="validation_error withdraw_validation_error"></span>
+        <p class="withdraw_condition_tag small_text_font">영소문자,숫자로 이루어진 5~12자</p>
+        <p class="withdraw_condition_tag small_text_font">시작은 영문으로만,특수문자 불가</p>
+    </div>
+
+    <div class="common_input_div clear_fix">
+        <label for="user_password" class="common_input_label common_password_label">
+            <span class="blind">비밀번호</span>
+        </label>
+
+        <input th:field="*{password}" type="password" id="user_password" name="password" class="password_input"
+               maxlength="20" minlength="8" placeholder="비밀번호를 입력해주세요." autocomplete="on" required>
+    </div>
+
+    <div class="withdraw_text">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" id="user_password_validation_error"
+                  class="validation_error withdraw_validation_error"></span>
+        <p class="withdraw_condition_tag small_text_font">하나 이상의 숫자(0~9), 알파벳(a~z | A~Z) 포함</p>
+        <p class="withdraw_condition_tag small_text_font">하나 이상의 특수문자 포함 ! @ # &amp; ( ).</p>
+        <p class="withdraw_condition_tag small_text_font">최소 8자 ~ 최대 20자로 작성</p>
+    </div>
+
+    <button type="submit" class="withdraw_edit_button">수정하기</button>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+</body>
+</html>

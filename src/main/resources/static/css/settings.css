@@ -1,0 +1,252 @@
+.edit_button {
+    position: absolute;
+    top: 15px;
+    right: 50px;
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background-color: #ffffff;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.setting_edit_button_style {
+    top: 5px;
+}
+
+.user_info_block {
+    text-align: left;
+}
+
+.text_skip_block {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user_info_block:nth-child(n+2) {
+    margin-top: 15px;
+}
+
+.settings_container {
+    width: 500px;
+    padding-bottom: 220px;
+}
+
+.settings_title {
+    color: #1e1e1e;
+    font-size: 23px;
+}
+
+/* 이미지 변경 블록 */
+.user_profile_container {
+    position: relative;
+    padding: 0 50px 0 50px;
+}
+
+.user_profile_image_form {
+    float: left;
+}
+
+.user_profile_image_form .default_user_profile_image {
+    cursor: pointer;
+    object-fit: cover;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+}
+
+.user_profile_container .user_profile_image_option {
+    margin-top: 5px;
+}
+
+.user_profile_container .user_profile_image_form .profile_image_file_form {
+    float: left;
+}
+
+.user_profile_container .user_profile_image_form .profile_image_remove_button {
+    float: right;
+}
+
+.user_profile_container .user_profile_image_form .profile_image_file_input {
+    display: none;
+}
+
+/* 소개 블록 */
+.settings_container .settings_form .user_profile_intro_container {
+    max-width: 50%;
+    float: left;
+    margin-left: 40px;
+    border-left: 1px solid #eeeeee;
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.settings_container .settings_form .user_profile_intro_container .nickname {
+    color: darkgreen;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.settings_container .settings_form .greeting_click_button {
+    border: 0;
+    background-color: #e76893;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.settings_container .settings_form .windows_block {
+    position: relative;
+    margin-top: 15px;
+    text-align: left;
+}
+
+.settings_container .settings_form .windows_block .window_hidden_block {
+    padding: 10px 15px 10px 15px;
+    position: absolute;
+    display: none;
+    font-size: 15px;
+    color: #333333;
+    min-width: 180px;
+    min-height: 35px;
+    border: 1px solid #c1c1c1;
+    right: 0;
+    top: 6px;
+    left: 75px;
+    word-break: break-all;
+    background-color: #fefefe;
+    z-index: 3;
+}
+
+.settings_container .settings_form .windows_block .window_hidden_block .window_text {
+    line-height: 25px;
+}
+
+.settings_container .settings_form .windows_block .window_hidden_block .window_hidden_block_close_button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 0;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.settings_container .settings_form .intro_click_button {
+    border: 0;
+    background-color: #5cc260;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* 주요정보 블록 */
+.settings_container .user_official_info_container {
+    margin-top: 20px;
+    border-top: 1px solid #eeeeee;
+    padding: 15px 50px 0 50px;
+}
+
+.settings_container .user_official_info_container .email_auth_button {
+    float: left;
+    margin-left: 10px;
+    border: 0;
+    background-color: #3197da;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.settings_container .user_official_info_container .email_not_auth_button {
+    border: 0;
+    background-color: #d52756;
+    border-radius: 5px;
+    color: #ffffff;
+    float: left;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* 소셜 정보 블록 */
+.settings_container .user_profile_link_container {
+    margin-top: 20px;
+    border-top: 1px solid #eeeeee;
+    padding: 15px 50px 0 50px;
+    position: relative;
+}
+
+.settings_container .user_profile_link_container .user_profile_link_title {
+    font-size: 16px;
+    text-align: left;
+    color: #76909ddb;
+    margin: 0;
+}
+
+.settings_container .user_profile_link_container .user_profile_link_list {
+    margin-top: 15px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settings_container .user_profile_link_container .user_profile_link_list .user_profile_link_image {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    float: left;
+}
+
+.settings_container .user_profile_link_container .user_profile_link_list .user_profile_link {
+    float: left;
+    margin-left: 8px;
+    line-height: 30px;
+    color: #607d8b;
+    font-size: 15px;
+}
+
+/* 관리 옵션 블록 */
+.settings_container .user_profile_admin_container {
+    margin-top: 15px;
+    border-top: 1px solid #eeeeee;
+    padding: 15px 50px 0 50px;
+}
+
+.settings_container .user_profile_admin_container .password_change_button {
+    border: 0;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+    border: 1px solid #65cac0;
+    background-color: #65cac0;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 3px 4px 3px 4px;
+    transition-duration: 0.3s;
+    height: 30px;
+    cursor: pointer;
+}
+
+.settings_container .user_profile_admin_container .last_change_text {
+    font-size: 15px;
+    margin-left: 8px;
+}
+
+.settings_container .user_profile_admin_container .with_draw_button {
+    border: 0;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+    border: 1px solid #f8786e;
+    background-color: #f8786e;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 3px 4px 3px 4px;
+    transition-duration: 0.3s;
+    height: 30px;
+    cursor: pointer;
+}

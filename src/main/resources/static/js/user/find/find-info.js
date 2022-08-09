@@ -21,46 +21,39 @@ class FindInfoController extends UtilController {
                 return;
             }
 
-            const width = 500;
-            const height = 500;
-
-            let left = (document.body.offsetWidth / 2) - (width / 2);
-            let tops = (document.body.offsetHeight / 2) - (height / 2);
-
-            left += window.screenLeft;
-
-            window.open(`find-email?nickname=${nickname}`, 'popup', `width=${width}, height=${height}, left=${left}, top=${tops}`);
+            this.openPopUp(500, 500, `find-email?nickname=${nickname}`, 'popup');
         });
 
         // password find button event listener
         this.passwordFindButton.addEventListener("click", evt => {
-            const xhr = new XMLHttpRequest();
-            const email = this.emailInput.value;
+            if (confirm("해당 이메일 주소로 비밀번호 재설정 메일을 전송하겠습니까?")) {
+                const xhr = new XMLHttpRequest();
+                const email = this.emailInput.value;
 
-
-            if (!email) {
-                this.showToastMessage("이메일 입력폼이 비어있습니다.");
-                return;
-            }
-
-            xhr.open("GET", `/email/send/find_password?email=${email}`);
-
-            xhr.addEventListener("loadend", event => {
-                let status = event.target.status;
-                const responseValue = event.target.responseText;
-
-                if (status >= 400 && status <= 500) {
-                    this.showToastMessage(`${responseValue}`);
-                } else {
-                    this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
-                    this.passwordFindButton.disabled = true;
+                if (!email) {
+                    this.showToastMessage("이메일 입력폼이 비어있습니다.");
+                    return;
                 }
-            });
 
-            xhr.addEventListener("error", event => {
-                this.showToastMessage('이메일 전송에 실패하였습니다.');
-            });
-            xhr.send();
+                xhr.open("GET", `/email/send/find-password?email=${email}`);
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = event.target.responseText;
+
+                    if (status >= 400 && status <= 500) {
+                        this.showToastMessage(responseValue);
+                    } else {
+                        this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
+                        this.passwordFindButton.disabled = true;
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('이메일 전송에 실패하였습니다.');
+                });
+                xhr.send();
+            }
         });
 
         // email not auth button set event listener
@@ -74,32 +67,34 @@ class FindInfoController extends UtilController {
 
         // email target auth button set event listener
         this.authTargetEmailButton.addEventListener("click", evt => {
-            const xhr = new XMLHttpRequest();
-            const email = this.authTargetEmailInput.value;
+            if (confirm("해당 이메일 주소로 인증 메일을 전송하겠습니까?")) {
+                const xhr = new XMLHttpRequest();
+                const email = this.authTargetEmailInput.value;
 
-            if (!email) {
-                this.showToastMessage("이메일 입력폼이 비어있습니다.");
-                return;
-            }
-
-            xhr.open("GET", `/email/send/auth?email=${email}`);
-
-            xhr.addEventListener("loadend", event => {
-                let status = event.target.status;
-                const responseValue = event.target.responseText;
-
-                if (status >= 400 && status <= 500) {
-                    this.showToastMessage(`${responseValue}`);
-                } else {
-                    this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
-                    this.authTargetEmailButton.disabled = true;
+                if (!email) {
+                    this.showToastMessage("이메일 입력폼이 비어있습니다.");
+                    return;
                 }
-            });
 
-            xhr.addEventListener("error", event => {
-                this.showToastMessage('이메일 전송에 실패하였습니다.');
-            });
-            xhr.send();
+                xhr.open("GET", `/email/send/auth?email=${email}`);
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = event.target.responseText;
+
+                    if (status >= 400 && status <= 500) {
+                        this.showToastMessage(responseValue);
+                    } else {
+                        this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
+                        this.authTargetEmailButton.disabled = true;
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('이메일 전송에 실패하였습니다.');
+                });
+                xhr.send();
+            }
         });
     }
 }

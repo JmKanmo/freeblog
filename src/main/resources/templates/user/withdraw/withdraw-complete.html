@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴 완료</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+
+    <style>
+        .withdraw_complete_container {
+            width: 500px;
+            text-align: center;
+        }
+
+        .withdraw_complete_container .withdraw_complete_title {
+            color: #333;
+            font-size: 20px;
+        }
+
+        .signup_text {
+            font-size: 15px;
+            color: darkgreen;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+<div class="withdraw_complete_container">
+    <th:block th:if="${result != null} and ${#strings.isEmpty(result)} eq false">
+        <h1 class="withdraw_complete_title" th:text="${result}">작업이 완료되었습니다.</h1>
+    </th:block>
+
+    <th:block th:if="${error == null} or ${#strings.isEmpty(error)} eq true">
+        <p class="signup_text">회원탈퇴 후, 재가입을 하기까지 약 1개월의 시간이 소요될 수 있습니다.</p>
+    </th:block>
+
+    <th:block th:if="${error != null} and ${#strings.isEmpty(error)} eq false">
+        <p style="font-weight: bold; color: darkgreen" th:text="${error}"></p>
+    </th:block>
+
+    <a class="common_dark_cyan_text" href="/">홈으로 가기 </a>
+</div>
+</body>
+</html>

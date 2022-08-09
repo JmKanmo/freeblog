@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기본 정보 변경</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/user/update/basic-info.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/user/update/basic-info.js}"></script>
+</head>
+
+<body>
+<form method="post" class="basic_info_edit_container" id="user_basic_info_form" name="userBasicInfoInput"
+      enctype="multipart/form-data"
+      th:object="${userBasicInfoInput}">
+    <h1 class="form_title common_gray_text">기본 정보 수정</h1>
+
+    <div class="common_input_div input_block clear_fix">
+        <label for="user_blog_name" class="common_input_label common_blog_name_label" title="블로그명">
+            <span class="blind">블로그이름</span>
+        </label>
+        <input type="text" id="user_blog_name" name="blogName" class="blog_name_input" th:field="*{blogName}"
+               maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)" required>
+    </div>
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('blogName')}" th:errors="*{blogName}" id="user_blog_name_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+    <div class="common_input_div clear_fix interval_block">
+        <label for="user_nickname" class="common_input_label common_nickname_label" title="닉네임">
+            <span class="blind">닉네임</span>
+        </label>
+
+        <input type="text" id="user_nickname" name="nickname" class="nickname_input" th:field="*{nickname}"
+               maxlength="20" placeholder="닉네임을 입력해주세요 (최대 20글자)" required>
+    </div>
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" id="user_nickname_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+    <div class="common_input_div greeting_textarea_block clear_fix interval_block">
+        <label for="user_greeting_textarea" class="common_input_label common_greetings_label" title="인사말">
+            <span class="blind">인사말</span>
+        </label>
+
+        <textarea name="greeting" id="user_greeting_textarea" class="user_greeting_textarea" cols="30" rows="10"
+                  maxlength="128"
+                  th:field="*{greetings}"
+                  placeholder="사용자 인사말을 입력해주세요. (최대 128글자 입력 가능)" required></textarea>
+
+        <div class="greeting_edit_count_block">
+            <span class="current_text_count common_gray_text" id="current_text_count">0</span>
+            <span class="common_plain_text">/</span>
+            <span class="common_gray_text max_limit_text_count">128</span>
+        </div>
+
+        <span class="greeting_limit_warn validation_error" id="greeting_limit_warn">글자수는 128 글자를 넘어갈 수 없습니다.</span>
+    </div>
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('greetings')}" th:errors="*{greetings}"
+                  id="user_greetings_validation_error"
+                  class="validation_error"></span>
+    </div>
+
+    <div class="interval_block_padding"></div>
+
+    <label class="user_intro_label common_input_label common_edit_label" for="user_intro_board" title="소개">
+        <span class="blind">소개</span>
+    </label>
+
+    <div class="intro_block" id="user_intro_board">
+        <span class="blind">소개</span>
+
+        <div class="editor-board">
+            <!-- Contents Here -->
+            <div id="basic_info_editor" class="user_intro_editor">
+                <!-- Contents Here -->
+            </div>
+            <button id="view-editor-source" type="button"
+                    class="common_source_view_label view_editor_source_button" title="텍스트 코드 보기"></button>
+        </div>
+        <input type="hidden" id="user_intro_editor_input" name="contents" value="" th:field="*{intro}">
+    </div>
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('intro')}" th:errors="*{intro}" id="user_intro_validation_error"
+                  class="basic_info_validation_err validation_error"></span>
+    </div>
+
+    <input type="hidden" id="user_id" name="id" value="">
+
+    <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" id="user_intro_validation_error"
+                  class="basic_info_validation_err validation_error"></span>
+    </div>
+
+    <button type="submit" class="basic_info_edit_button">수정하기</button>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+</body>
+</html>

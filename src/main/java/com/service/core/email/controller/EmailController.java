@@ -36,7 +36,7 @@ public class EmailController {
             String key = userService.updateEmailAuthCondition(email);
             emailService.sendSignUpMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
-        } catch (UsernameNotFoundException | MailException exception) {
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
@@ -53,7 +53,7 @@ public class EmailController {
             String key = userService.updateEmailAuthCondition(email);
             emailService.sendAuthMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
-        } catch (UsernameNotFoundException | MailException exception) {
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
@@ -64,7 +64,7 @@ public class EmailController {
             @ApiResponse(responseCode = "200", description = "사용자 인증, 메일 전송 성공"),
             @ApiResponse(responseCode = "500", description = "인증, 메일전송 오류로 인한 실패")
     })
-    @GetMapping(path = "/send/find_password")
+    @GetMapping(path = "/send/find-password")
     public ResponseEntity<String> sendFindPasswordEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
             if (userService.checkIsActive(email)) {
@@ -72,7 +72,7 @@ public class EmailController {
                 emailService.sendFindPasswordMail(email, key);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
-        } catch (MailException | UserAuthException | UsernameNotFoundException exception) {
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }

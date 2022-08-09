@@ -1,0 +1,132 @@
+.basic_info_spel_div {
+    margin-left: 15px;
+    text-align: left;
+}
+
+.basic_info_validation_err {
+    padding-left: 0;
+}
+
+.basic_info_edit_container {
+    padding: 10px 0px 0px 15px;
+    position: relative;
+    width: 500px;
+}
+
+.form_title {
+    font-size: 20px;
+    padding: 15px;
+    text-align: center;
+}
+
+.blog_name_input {
+    float: left;
+    margin-left: 30px;
+    height: 35px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.nickname_input {
+    float: left;
+    margin-left: 30px;
+    height: 35px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.greeting_textarea_block {
+    position: relative;
+}
+
+.basic_info_edit_container .greeting_edit_count_block {
+    position: absolute;
+    bottom: 5px;
+    left: 70px;
+}
+
+.basic_info_edit_container .greeting_limit_warn {
+    position: absolute;
+    bottom: 1px;
+    right: 50px;
+    visibility: hidden;
+}
+
+.basic_info_edit_container .basic_info_edit_button {
+    font-size: 14px;
+    border: 0;
+    background-color: #4caf50;
+    color: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 2px;
+    bottom: -50px;
+    right: 50%;
+    cursor: pointer;
+    left: 50%;
+    width: 80px;
+    height: 40px;
+}
+
+.user_greeting_textarea {
+    float: left;
+    margin-left: 30px;
+    height: 100px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.intro_block {
+    margin-top: 40px;
+}
+
+.interval_block_padding {
+    padding-top: 15px;
+}
+
+.user_intro_label {
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin-top: 5px;
+    position: relative;
+}
+
+.user_intro_label::after {
+    content: "소개";
+    position: absolute;
+    white-space: pre;
+    left: 29px;
+    top: 7px;
+    font-size: 12px;
+    color: #407b97;
+}
+
+.intro_block .editor-board {
+    position: relative;
+}
+
+.intro_block .user_intro_editor {
+    padding-right: 15px;
+    padding-top: 15px;
+    min-height: 150px;
+}
+
+.intro_block .view_editor_source_button {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: 0;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    cursor: pointer;
+}
+
+.interval_block {
+    margin-top: 20px;
+}
+

@@ -11,11 +11,10 @@ import java.util.Properties;
 
 @Component
 @RequiredArgsConstructor
-public class SFtpUtil {
+public class SftpUtil {
     private Session jschSession;
     private Channel channel;
     private ChannelSftp channelSftp;
-
     private final SFtpConfig sFtpConfig;
 
     /**

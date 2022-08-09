@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +27,21 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model, Principal principal) {
         if (principal != null) {
-            model.addAttribute("user", userService.findUserByEmail(principal.getName()));
+            model.addAttribute("user_basic", userService.findUserBasicDtoByEmail(principal.getName()));
         }
         return "index";
+    }
+
+    @Operation(summary = "설정 페이지", description = "설정 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "설정 페이지")
+    })
+    @GetMapping("/settings")
+    public String settings(Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("user_basic", userService.findUserBasicDtoByEmail(principal.getName()));
+            model.addAttribute("user_setting", userService.findUserSettingDtoByEmail(principal.getName()));
+        }
+        return "settings";
     }
 }

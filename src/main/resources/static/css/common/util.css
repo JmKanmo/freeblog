@@ -39,6 +39,10 @@ a {
     clip: rect(0 0 0 0);
 }
 
+.clear_fix_block {
+    float: left;
+}
+
 .center_fix {
     display: flex;
     align-items: center;
@@ -99,6 +103,14 @@ a {
     cursor: pointer;
 }
 
+.common_note_write_label {
+    background-image: url(/images/note_write.png);
+}
+
+.common_close_label {
+    background-image: url(/images/close.png);
+}
+
 .common_email_label {
     background-image: url(/images/email.png);
 }
@@ -141,6 +153,14 @@ a {
 
 .common_check_label {
     background-image: url(/images/check.png);
+}
+
+.common_edit_label {
+    background-image: url(/images/edit.png);
+}
+
+.common_source_view_label {
+    background-image: url(/images/source_view.png);
 }
 
 .common_input_form {
@@ -215,6 +235,64 @@ a {
     margin-left: 5px;
     margin-top: 5px;
     box-shadow: none;
+}
+
+.common_orange_button {
+    font-size: 12px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+    border: 1px solid #d78252;
+    background-color: #d78252;
+}
+
+.common_blue_button {
+    font-size: 12px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+    border: 1px solid #4ca5eb;
+    background-color: #4ca5eb;
+}
+
+.common_gray_text {
+    color: #9e9e9e;
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+    font-weight: bold;
+}
+
+.common_dark_green_text {
+    color: darkgreen;
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+    font-weight: bold;
+}
+
+.common_dark_cyan_text {
+    color: #607d8b;
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+    font-weight: bold;
+}
+
+.common_plain_text {
+    color: #333;
+    font-size: 15px;
+}
+
+.common_home_link {
+    width: 100%;
+    color: green;
 }
 
 /* logo-box */

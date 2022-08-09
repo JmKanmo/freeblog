@@ -22,7 +22,7 @@ class SignUpCompleteController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if (status >= 400 && status <= 500) {
-                    this.showToastMessage(`${responseValue}`);
+                    this.showToastMessage(responseValue);
                 } else {
                     this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
                 }

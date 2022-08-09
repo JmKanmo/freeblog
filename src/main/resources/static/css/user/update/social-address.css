@@ -1,0 +1,56 @@
+.social_adddress_spel_div {
+    margin-left: 15px;
+    text-align: left;
+}
+
+.social_address_container {
+    padding: 10px 0px 0px 15px;
+    position: relative;
+    width: 500px;
+}
+
+.form_title {
+    font-size: 20px;
+    padding: 15px;
+    text-align: center;
+}
+
+.social_address_container .input_block:nth-child(n+3) {
+    margin-top: 15px;
+}
+
+.social_address_spel_div {
+    margin-left: 15px;
+    text-align: left;
+}
+
+.social_address_validation_err {
+    padding-left: 0;
+}
+
+.interval_block {
+    margin-top: 20px;
+}
+
+.social_address_input {
+    float: left;
+    margin-left: 30px;
+    height: 35px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.social_address_container .social_address_edit_button {
+    font-size: 14px;
+    border: 0;
+    background-color: #4caf50;
+    color: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    padding: 2px;
+    bottom: -60px;
+    cursor: pointer;
+    left: 45%;
+    width: 100px;
+    height: 45px;
+}

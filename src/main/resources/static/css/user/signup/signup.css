@@ -36,3 +36,72 @@
     border: 1px solid #4ca5eb;
     background-color: #4ca5eb;
 }
+
+.signup_form .greeting_textarea_block {
+    position: absolute;
+}
+
+.signup_form .user_info_greetings {
+    height: 135px;
+}
+
+.signup_form .greeting_textarea_block .greeting_edit_count_block {
+    position: absolute;
+    bottom: 5px;
+    left: 46px;
+}
+
+.signup_form .greeting_textarea_block .greeting_limit_warn {
+    position: absolute;
+    bottom: 1px;
+    right: 10px;
+    visibility: hidden;
+}
+
+.signup_form .editor-board {
+    margin-top: 0px;
+    text-align: left;
+    position: relative;
+    width: 100%;
+}
+
+.signup_form .custom_note_write_label {
+    width: 25px;
+    height: 25px;
+}
+
+.signup_form .editor-board .user_intro_editor {
+    min-height: 150px;
+    padding-bottom: 10px;
+}
+
+.signup_form .user_intro_button {
+    float: left;
+    box-sizing: border-box;
+    border: 0;
+    background-color: #ffffff;
+    color: #009688;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 15px;
+}
+
+.signup_form .intro_block {
+    display: none;
+}
+
+.signup_form .intro_block .view_editor_source_button {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: 0;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    cursor: pointer;
+}

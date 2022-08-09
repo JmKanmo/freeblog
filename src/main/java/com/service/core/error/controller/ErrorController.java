@@ -30,9 +30,9 @@ public class ErrorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "에러 메시지가 담긴 로그인 오류 페이지 반환")
     })
-    @GetMapping("/error/login_fail")
+    @GetMapping("/error/login-fail")
     public String accessFail(@ModelAttribute(ConstUtil.AUTHENTICATION_MESSAGE) final String authenticationMessage, final Model model) {
         model.addAttribute("error", authenticationMessage);
-        return "error/login_fail";
+        return "error/login-fail";
     }
 }

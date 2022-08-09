@@ -5,6 +5,7 @@ import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
 import com.service.core.user.service.UserInfoService;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,7 +39,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserDomain findUserDomainByEmailOrThrow(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message()));
+        UserDomain userDomain = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain;
     }
 
     @Override
@@ -48,7 +51,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserDomain findUserDomainByIdOrThrow(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.ExceptionMessage.USER_INFO_NOT_FOUND.message()));
+        UserDomain userDomain = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain;
     }
 
     @Override

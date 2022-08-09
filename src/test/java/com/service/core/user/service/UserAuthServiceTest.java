@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Optional;
 
@@ -114,7 +115,7 @@ public class UserAuthServiceTest {
 
         // 이미 인증 된 사용자
         when(userEmailAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserEmailAuth.builder().emailAuthKey("nebiros").build()));
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_USER.message(),
+        assertEquals(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserEmailAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(true).build(),
                                 UserAuthInput.builder().email("nebi25@naver.com").key("nebiros").build())).getMessage());
@@ -158,10 +159,17 @@ public class UserAuthServiceTest {
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(true).build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").key("nebiros").password("sarami").rePassword("namiss").build())).getMessage());
 
+        // 비밀번호가 이전 비밀번호와 똑같은 경우
+        when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey("nebiros").build()));
+        assertEquals(ConstUtil.ExceptionMessage.COINCIDE_WITH_EACH_PASSWORD.message(),
+                assertThrows(UserAuthException.class,
+                        () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").password(BCrypt.hashpw("sarami", BCrypt.gensalt())).isAuth(true).build(),
+                                UserPasswordInput.builder().email("nebi25@naver.com").key("nebiros").password("sarami").rePassword("sarami").build())).getMessage());
+
         // 정상적으로 인증
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey("nebiros").build()));
         when(userPasswordAuthRepository.save(any())).thenReturn(UserPasswordAuth.builder().build());
-        assertDoesNotThrow(() -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(false).build(),
+        assertDoesNotThrow(() -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(false).password(BCrypt.hashpw("Ww44226003!@", BCrypt.gensalt())).build(),
                 UserPasswordInput.builder().email("nebi25@naver.com").key("nebiros").password("sarami").rePassword("sarami").build()));
         verify(userPasswordAuthRepository, times(1)).save(any());
     }
