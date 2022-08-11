@@ -2,7 +2,6 @@ package com.service.core.user.service;
 
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserBasicDto;
-import com.service.core.user.dto.UserDto;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.dto.UserSettingDto;
 import com.service.core.user.model.*;
@@ -40,8 +39,6 @@ public interface UserService extends UserDetailsService {
     void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput);
 
     List<UserEmailFindDto> findUserEmailFindDtoListByNickname(String nickname);
-
-    UserDto findUserDtoByEmail(String email);
 
     UserSettingDto findUserSettingDtoByEmail(String email);
 

@@ -2,6 +2,7 @@ package com.service.util.sftp;
 
 import com.jcraft.jsch.*;
 import com.service.config.SFtpConfig;
+import com.service.util.ConstUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -167,13 +168,13 @@ public class SftpUtil {
      * @param fos
      */
     private void close(FileOutputStream fos) {
-            if (fos != null) {
-                try {
-                    fos.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        if (fos != null) {
+            try {
+                fos.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+        }
     }
 
     /**
@@ -182,18 +183,18 @@ public class SftpUtil {
      * @param bos
      */
     private void close(BufferedOutputStream bos) {
-            if (bos != null) {
-                try {
-                    bos.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        if (bos != null) {
+            try {
+                bos.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+        }
     }
 
     public String fileUpload(String fileUUID, InputStream fileInputStream) throws Exception {
         connectSFTP();
         uploadFile(fileUUID, fileInputStream);
-        return String.format("http://%s/jmblog/%s", sFtpConfig.getIp(), fileUUID);
+        return String.format(ConstUtil.SFTP_USER_PROFILE_IMAGE_URL, sFtpConfig.getIp(), fileUUID);
     }
 }

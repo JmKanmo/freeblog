@@ -1,5 +1,6 @@
 package com.service.util;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
@@ -37,19 +38,19 @@ public class BlogUtil {
             return exception.getMessage();
 
         } else if (exception instanceof BadCredentialsException) {
-            return ConstUtil.ExceptionMessage.ID_PW_WRONG.message();
+            return ServiceExceptionMessage.ID_PW_WRONG.message();
 
         } else if (exception instanceof LockedException) {
-            return ConstUtil.ExceptionMessage.LOCK_ACCOUNT.message();
+            return ServiceExceptionMessage.LOCK_ACCOUNT.message();
 
         } else if (exception instanceof DisabledException) {
-            return ConstUtil.ExceptionMessage.DEACTIVATE_ACCOUNT.message();
+            return ServiceExceptionMessage.DEACTIVATE_ACCOUNT.message();
 
         } else if (exception instanceof AccountExpiredException) {
-            return ConstUtil.ExceptionMessage.EXPIRED_ACCOUNT.message();
+            return ServiceExceptionMessage.EXPIRED_ACCOUNT.message();
 
         } else if (exception instanceof CredentialsExpiredException) {
-            return ConstUtil.ExceptionMessage.EXPIRED_PASSWORD.message();
+            return ServiceExceptionMessage.EXPIRED_PASSWORD.message();
         }
         return exception.getMessage();
     }
@@ -57,10 +58,10 @@ public class BlogUtil {
     public static boolean checkUserStatus(UserStatus userStatus) {
         switch (userStatus) {
             case WITHDRAW:
-                throw new UserAuthException(ConstUtil.ExceptionMessage.WITHDRAW_ACCOUNT);
+                throw new UserAuthException(ServiceExceptionMessage.WITHDRAW_ACCOUNT);
 
             case STOP:
-                throw new UserAuthException(ConstUtil.ExceptionMessage.STOP_ACCOUNT);
+                throw new UserAuthException(ServiceExceptionMessage.STOP_ACCOUNT);
         }
         return true;
     }

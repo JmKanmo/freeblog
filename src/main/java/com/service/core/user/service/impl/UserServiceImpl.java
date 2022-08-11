@@ -3,12 +3,12 @@ package com.service.core.user.service.impl;
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.email.service.EmailService;
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.SocialAddress;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserBasicDto;
-import com.service.core.user.dto.UserDto;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.dto.UserSettingDto;
 import com.service.core.user.model.*;
@@ -64,9 +64,9 @@ public class UserServiceImpl implements UserService {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(userWithdrawInput.getId());
 
         if (!userDomain.getEmail().equals(authentication.getName())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.MISMATCH_EMAIL);
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
         } else if (!BCrypt.checkpw(userWithdrawInput.getPassword(), userDomain.getPassword())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.MISMATCH_PASSWORD);
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_PASSWORD);
         }
 
         userDomain.setStatus(UserStatus.WITHDRAW);
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
 
         if (user.getStatus() != UserStatus.ACTIVE) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_ACCOUNT);
+            throw new UserAuthException(ServiceExceptionMessage.NOT_AUTHENTICATED_ACCOUNT);
         }
 
         return true;
@@ -88,10 +88,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkSameUser(UserDomain user) {
         if (userInfoService.checkUserDomainByEmail(user.getEmail())) {
-            throw new UserManageException(ConstUtil.ExceptionMessage.ALREADY_SAME_EMAIL);
+            throw new UserManageException(ServiceExceptionMessage.ALREADY_SAME_EMAIL);
         }
         if (userInfoService.checkUserDomainById(user.getUserId())) {
-            throw new UserManageException(ConstUtil.ExceptionMessage.ALREADY_SAME_ID);
+            throw new UserManageException(ServiceExceptionMessage.ALREADY_SAME_ID);
         }
 
         return true;
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkSameId(String id) {
         if (userInfoService.checkUserDomainById(id)) {
-            throw new UserManageException(ConstUtil.ExceptionMessage.ALREADY_SAME_ID);
+            throw new UserManageException(ServiceExceptionMessage.ALREADY_SAME_ID);
         }
         return true;
     }
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkSameEmail(String email) {
         if (userInfoService.checkUserDomainByEmail(email)) {
-            throw new UserManageException(ConstUtil.ExceptionMessage.ALREADY_SAME_EMAIL);
+            throw new UserManageException(ServiceExceptionMessage.ALREADY_SAME_EMAIL);
         }
         return true;
     }
@@ -120,6 +120,7 @@ public class UserServiceImpl implements UserService {
         if (userAuthService.checkUserEmailAuth(user, userAuthInput)) {
             user.setStatus(UserStatus.ACTIVE);
             user.setAuth(true);
+            user.setEmailAuthTime(LocalDateTime.now());
             userInfoService.saveUserDomain(user);
         }
     }
@@ -127,7 +128,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updateEmailAuthCondition(String email) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
-        userInfoService.saveUserDomain(user);
         String emailAuthKey = userAuthService.saveUserEmailAuth(BlogUtil.createUserAuthId(user));
         return emailAuthKey;
     }
@@ -135,7 +135,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String updatePasswordAuthCondition(String email) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
-        userInfoService.saveUserDomain(user);
         String passwordAuthKey = userAuthService.saveUserPasswordAuth(BlogUtil.createUserAuthId(user));
         return passwordAuthKey;
     }
@@ -203,11 +202,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserSettingDto findUserSettingDtoByEmail(String email) {
         return UserSettingDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
-    }
-
-    @Override
-    public UserDto findUserDtoByEmail(String email) {
-        return UserDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
     }
 
     @Override

@@ -39,10 +39,10 @@
                 </li>
             </ul>
 
-            <th:block th:if="${user != null}">
+            <th:block th:if="${user_basic != null}">
                 <ul class="user_option_div" id="user_option_div">
                     <li class="user_option_item">
-                        <a class="user_option_link" th:href="'/blog?id='+${user_basic.id}">내 블로그</a>
+                        <a class="user_option_link" th:href="'/blog?id=' + ${user_basic.id}">내 블로그</a>
                     </li>
 
                     <li class="user_option_item">
@@ -59,7 +59,7 @@
                 </ul>
             </th:block>
 
-            <th:block th:if="${user == null}">
+            <th:block th:if="${user_basic == null}">
                 <ul class="user_option_div" id="user_option_div">
                     <li class="user_option_item">
                         <a class="user_option_link" th:href="'/blog?id=undefined'">내 블로그</a>

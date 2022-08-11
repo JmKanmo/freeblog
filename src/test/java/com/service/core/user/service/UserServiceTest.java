@@ -3,16 +3,16 @@ package com.service.core.user.service;
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.email.service.EmailService;
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
+import com.service.core.user.domain.SocialAddress;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
-import com.service.core.user.model.UserAuthInput;
-import com.service.core.user.model.UserPasswordInput;
-import com.service.core.user.model.UserSignUpInput;
-import com.service.core.user.model.UserStatus;
+import com.service.core.user.model.*;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
+import com.service.util.sftp.SftpService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,10 +21,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -45,6 +50,9 @@ class UserServiceTest {
 
     @MockBean
     private UserAuthService userAuthService;
+
+    @MockBean
+    private SftpService sftpService;
 
     @Test
     @DisplayName("회원가입 정상 진행 테스트")
@@ -87,12 +95,22 @@ class UserServiceTest {
         // 비인증 사용자의 경우
         when(userInfoService.findUserDomainByEmailOrThrow(email)).
                 thenReturn(UserDomain.builder().status(UserStatus.NOT_AUTH).build());
-        assertEquals(ConstUtil.ExceptionMessage.NOT_AUTHENTICATED_ACCOUNT.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
+        assertEquals(ServiceExceptionMessage.NOT_AUTHENTICATED_ACCOUNT.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
+
+        // 정지 사용자의 경우
+        when(userInfoService.findUserDomainByEmailOrThrow(email)).
+                thenReturn(UserDomain.builder().status(UserStatus.STOP).build());
+        assertEquals(ServiceExceptionMessage.NOT_AUTHENTICATED_ACCOUNT.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
+
+        // 탈퇴 사용자의 경우
+        when(userInfoService.findUserDomainByEmailOrThrow(email)).
+                thenReturn(UserDomain.builder().status(UserStatus.WITHDRAW).build());
+        assertEquals(ServiceExceptionMessage.NOT_AUTHENTICATED_ACCOUNT.message(), assertThrows(UserAuthException.class, () -> userService.checkIsActive(email)).getMessage());
 
         // 미등록 회원의 경우
         when(userInfoService.findUserDomainByEmailOrThrow(email)).
-                thenThrow(new UsernameNotFoundException(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
-        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(), assertThrows(UsernameNotFoundException.class, () -> userService.checkIsActive(email)).getMessage());
+                thenThrow(new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        assertEquals(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(), assertThrows(UsernameNotFoundException.class, () -> userService.checkIsActive(email)).getMessage());
     }
 
     @Test
@@ -112,12 +130,12 @@ class UserServiceTest {
         // 이미 사용 중인 이메일
         when(userInfoService.checkUserDomainByEmail(userDomain.getEmail())).
                 thenReturn(true);
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_SAME_EMAIL.message(), assertThrows(UserManageException.class, () -> userService.checkSameUser(userDomain)).getMessage());
+        assertEquals(ServiceExceptionMessage.ALREADY_SAME_EMAIL.message(), assertThrows(UserManageException.class, () -> userService.checkSameUser(userDomain)).getMessage());
 
         // 이미 사용 중인 ID
         when(userInfoService.checkUserDomainByEmail(userDomain.getEmail())).thenReturn(false);
         when(userInfoService.checkUserDomainById(userDomain.getUserId())).thenReturn(true);
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_SAME_ID.message(), assertThrows(UserManageException.class, () -> userService.checkSameUser(userDomain)).getMessage());
+        assertEquals(ServiceExceptionMessage.ALREADY_SAME_ID.message(), assertThrows(UserManageException.class, () -> userService.checkSameUser(userDomain)).getMessage());
     }
 
     @ParameterizedTest
@@ -131,7 +149,7 @@ class UserServiceTest {
 
         // 이미 존재하는 ID
         when(userInfoService.checkUserDomainById(id)).thenReturn(true);
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_SAME_ID.message(), assertThrows(UserManageException.class, () -> userService.checkSameId(id)).getMessage());
+        assertEquals(ServiceExceptionMessage.ALREADY_SAME_ID.message(), assertThrows(UserManageException.class, () -> userService.checkSameId(id)).getMessage());
     }
 
     @ParameterizedTest
@@ -145,7 +163,7 @@ class UserServiceTest {
 
         // 이미 존재하는 이메일
         when(userInfoService.checkUserDomainByEmail(email)).thenReturn(true);
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_SAME_EMAIL.message(), assertThrows(UserManageException.class, () -> userService.checkSameEmail(email)).getMessage());
+        assertEquals(ServiceExceptionMessage.ALREADY_SAME_EMAIL.message(), assertThrows(UserManageException.class, () -> userService.checkSameEmail(email)).getMessage());
     }
 
     @ParameterizedTest
@@ -163,15 +181,6 @@ class UserServiceTest {
         assertDoesNotThrow(() -> userService.emailAuth(normalUserAuthInput));
         verify(userAuthService, times(1)).checkUserEmailAuth(normalUserDomain, normalUserAuthInput);
         verify(userInfoService, times(1)).saveUserDomain(normalUserDomain);
-    }
-
-    @ParameterizedTest
-    @DisplayName("이메일로 유저 검색 테스트")
-    @ValueSource(strings = "nebi25@naver.com")
-    void findUserDtoByEmail(String email) {
-        when(userInfoService.findUserDomainByEmailOrElse(email, null)).thenReturn(UserDomain.builder().email(email).build());
-        assertNotNull(userService.findUserDtoByEmail(email));
-        verify(userInfoService, times(1)).findUserDomainByEmailOrElse(email, null);
     }
 
     @ParameterizedTest
@@ -251,6 +260,138 @@ class UserServiceTest {
         when(userAuthService.checkUserPasswordAuth(userDomain, userPasswordInput)).thenReturn(true);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
         assertDoesNotThrow(() -> userService.updatePassword(userPasswordInput));
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @Test
+    @DisplayName("회원 등록 테스트")
+    void register() {
+        UserSignUpInput signUpInput = UserSignUpInput.builder()
+                .id("nebi25")
+                .build();
+        UserDomain userDomain = UserDomain.builder().build();
+        Blog blog = Blog.from(signUpInput);
+        when(blogService.register(blog)).thenReturn(blog);
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.register(signUpInput, userDomain));
+
+        verify(blogService, times(1)).register(blog);
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @Test
+    @DisplayName("회원탈퇴 테스트")
+    void withdraw() {
+        UserWithdrawInput userWithdrawInput = UserWithdrawInput.builder().id("nebi25").password("hello world").build();
+        // 로그인 정보(이메일)가 다른 경우
+        when(userInfoService.findUserDomainByIdOrThrow(userWithdrawInput.getId())).thenReturn(UserDomain.builder().email("apdh1709@gmail.com").password(BCrypt.hashpw("hello world", BCrypt.gensalt())).build());
+        Authentication authentication = mock(Authentication.class);
+        when(authentication.getName()).thenReturn("nebi25@naver.com");
+        assertEquals(ServiceExceptionMessage.MISMATCH_EMAIL.message(), assertThrows(UserAuthException.class,
+                () -> userService.withdraw(userWithdrawInput, authentication)).getMessage());
+
+        // 로그인 정보(비밀번호)가 다른 경우
+        UserWithdrawInput userWithdrawInput1 = UserWithdrawInput.builder().id("akxk25").password("hello world~").build();
+        when(userInfoService.findUserDomainByIdOrThrow(userWithdrawInput1.getId())).thenReturn(
+                UserDomain.builder().email("nebi25@naver.com").password(BCrypt.hashpw("yamedara", BCrypt.gensalt())).build());
+        Authentication authentication1 = mock(Authentication.class);
+        when(authentication1.getName()).thenReturn("nebi25@naver.com");
+        assertEquals(ServiceExceptionMessage.MISMATCH_PASSWORD.message(), assertThrows(UserAuthException.class,
+                () -> userService.withdraw(userWithdrawInput1, authentication1)).getMessage());
+
+
+        // 정상적인 입력
+        UserWithdrawInput userWithdrawInput2 = UserWithdrawInput.builder().id("akxk25").password("hello world~").build();
+        UserDomain userDomain = UserDomain.builder().email("apdh1709@gmail.com").password(BCrypt.hashpw("hello world~", BCrypt.gensalt())).build();
+        when(userInfoService.findUserDomainByIdOrThrow(userWithdrawInput2.getId())).thenReturn(userDomain);
+        Authentication authentication2 = mock(Authentication.class);
+        when(authentication2.getName()).thenReturn("apdh1709@gmail.com");
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.withdraw(userWithdrawInput2, authentication2));
+        assertEquals(userDomain.getStatus(), UserStatus.WITHDRAW);
+        assertTrue(userDomain.getWithdrawTime() != null);
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @Test
+    @DisplayName("기본 정보 수정 테스트")
+    public void updateBasicInfo() {
+        UserBasicInfoInput userBasicInfoInput = UserBasicInfoInput.builder()
+                .id("nebi25").blogName("nebi's blog")
+                .greetings("hello").nickname("nebiros")
+                .intro("https://play.afreecatv.com/kimseah94/242129288").build();
+
+        Blog blog = Blog.builder().build();
+        UserDomain userDomain = UserDomain.builder().blog(blog).build();
+
+        when(userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId())).thenReturn(userDomain);
+        when(blogService.register(blog)).thenReturn(blog);
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.updateUserBasicInfo(userBasicInfoInput));
+
+        assertTrue(blog.getName().equals(userBasicInfoInput.getBlogName()));
+        assertTrue(blog.getIntro().equals(userBasicInfoInput.getIntro()));
+        assertTrue(userDomain.getNickname().equals(userBasicInfoInput.getNickname()));
+        assertTrue(userDomain.getGreetings().equals(userBasicInfoInput.getGreetings()));
+        assertTrue(Objects.equals(userDomain.getBlog(), blog));
+
+        verify(blogService, times(1)).register(blog);
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @Test
+    @DisplayName("소셜 정보 수정 테스트")
+    public void updateSocialAddress() {
+        UserSocialAddressInput userSocialAddressInput = UserSocialAddressInput.builder()
+                .id("nebi25")
+                .address("https://blog/nebi25")
+                .github("https://github.com/JmKanmo")
+                .twitter("https://twitter.com/nebi25")
+                .instagram("https://instagram.com/nebi25")
+                .build();
+
+        SocialAddress socialAddress = SocialAddress.builder().build();
+        UserDomain userDomain = UserDomain.builder()
+                .socialAddress(socialAddress)
+                .build();
+        when(userInfoService.findUserDomainByIdOrThrow(userSocialAddressInput.getId())).thenReturn(userDomain);
+        assertDoesNotThrow(() -> userService.updateUserSocialAddress(userSocialAddressInput));
+        assertTrue(socialAddress.getAddress().equals(userSocialAddressInput.getAddress()));
+        assertTrue(socialAddress.getGithub().equals(userSocialAddressInput.getGithub()));
+        assertTrue(socialAddress.getTwitter().equals(userSocialAddressInput.getTwitter()));
+        assertTrue(socialAddress.getInstagram().equals(userSocialAddressInput.getInstagram()));
+        verify(userInfoService, times(1)).findUserDomainByIdOrThrow(userSocialAddressInput.getId());
+    }
+
+    @ParameterizedTest
+    @DisplayName("프로필 이미지 업로드 테스트")
+    @ValueSource(strings = "nebi25")
+    public void uploadProfileImageById(String id) throws Exception {
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        String profileImageSrc = "http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif";
+        UserDomain userDomain = UserDomain.builder().userId(id).build();
+
+        when(sftpService.sftpFileUpload(multipartFile)).thenReturn(profileImageSrc);
+        when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.uploadProfileImageById(multipartFile, id));
+        assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
+
+        verify(sftpService, times(1)).sftpFileUpload(multipartFile);
+        verify(userInfoService, times(1)).findUserDomainByIdOrThrow(id);
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @ParameterizedTest
+    @DisplayName("프로필 이미지 삭제 테스트")
+    @ValueSource(strings = "nebi25")
+    public void removeProfileImageById(String id) {
+        // TODO
+        UserDomain userDomain = UserDomain.builder().userId(id).profileImage("http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif").build();
+        when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.removeProfileImageById(id));
+        assertTrue(userDomain.getProfileImage() == null);
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }
 }

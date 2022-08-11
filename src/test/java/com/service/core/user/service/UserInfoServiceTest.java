@@ -1,8 +1,11 @@
 package com.service.core.user.service;
 
 
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
+import com.service.core.user.model.UserStatus;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
 import com.service.util.ConstUtil;
@@ -68,11 +71,24 @@ public class UserInfoServiceTest {
     @ValueSource(strings = "nebi25@naver.com")
     public void findUserDomainByEmailOrThrow(String email) {
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
+        assertEquals(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
                 assertThrows(UsernameNotFoundException.class,
                         () -> userInfoService.findUserDomainByEmailOrThrow(email)).getMessage());
 
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(UserDomain.builder().build()));
+        // 정지 된 상태 회원
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.STOP).build()));
+        assertEquals(ServiceExceptionMessage.STOP_ACCOUNT.message(),
+                assertThrows(UserAuthException.class,
+                        () -> userInfoService.findUserDomainByEmailOrThrow(email)).getMessage());
+
+        // 탈퇴 된 상태 회원
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.WITHDRAW).build()));
+        assertEquals(ServiceExceptionMessage.WITHDRAW_ACCOUNT.message(),
+                assertThrows(UserAuthException.class,
+                        () -> userInfoService.findUserDomainByEmailOrThrow(email)).getMessage());
+
+        // 활성 된 상태 회원
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.ACTIVE).build()));
         assertDoesNotThrow(() -> userInfoService.findUserDomainByEmailOrThrow(email));
     }
 
@@ -93,11 +109,24 @@ public class UserInfoServiceTest {
     @ValueSource(strings = "nebi25")
     public void findUserDomainByIdOrThrow(String id) {
         when(userRepository.findById(id)).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
+        assertEquals(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(),
                 assertThrows(UsernameNotFoundException.class,
                         () -> userInfoService.findUserDomainByIdOrThrow(id)).getMessage());
 
-        when(userRepository.findById(id)).thenReturn(Optional.of(UserDomain.builder().build()));
+        /// 정지 된 상태 회원
+        when(userRepository.findById(id)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.STOP).build()));
+        assertEquals(ServiceExceptionMessage.STOP_ACCOUNT.message(),
+                assertThrows(UserAuthException.class,
+                        () -> userInfoService.findUserDomainByIdOrThrow(id)).getMessage());
+
+        // 탈퇴 된 상태 회원
+        when(userRepository.findById(id)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.WITHDRAW).build()));
+        assertEquals(ServiceExceptionMessage.WITHDRAW_ACCOUNT.message(),
+                assertThrows(UserAuthException.class,
+                        () -> userInfoService.findUserDomainByIdOrThrow(id)).getMessage());
+
+        // 활성 된 상태 회원
+        when(userRepository.findById(id)).thenReturn(Optional.of(UserDomain.builder().status(UserStatus.ACTIVE).build()));
         assertDoesNotThrow(() -> userInfoService.findUserDomainByIdOrThrow(id));
     }
 

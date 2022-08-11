@@ -1,5 +1,6 @@
 package com.service.core.error.model;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.util.ConstUtil;
 
 public class SftpFileHandleException extends RuntimeException {
@@ -7,7 +8,7 @@ public class SftpFileHandleException extends RuntimeException {
         super(error);
     }
 
-    public SftpFileHandleException(ConstUtil.ExceptionMessage exceptionMessage) {
+    public SftpFileHandleException(ServiceExceptionMessage exceptionMessage) {
         super(exceptionMessage.message());
     }
 }

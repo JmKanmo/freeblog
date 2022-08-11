@@ -44,6 +44,7 @@ public class UserDomain extends BaseTimeEntity {
 
     private boolean isAuth;
 
+    private LocalDateTime emailAuthTime;
     private LocalDateTime passwordUpdateTime;
     private LocalDateTime withdrawTime;
 

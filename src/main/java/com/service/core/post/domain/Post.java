@@ -3,6 +3,7 @@ package com.service.core.post.domain;
 import com.service.core.blog.domain.Blog;
 import com.service.core.category.domain.Category;
 import com.service.core.tag.domain.Tag;
+import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")

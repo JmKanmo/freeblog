@@ -1,5 +1,6 @@
 package com.service.core.user.service;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.domain.UserEmailAuth;
@@ -82,7 +83,7 @@ public class UserAuthServiceTest {
     public void findUserEmailAuthKey(int id) {
         // 인증키가 없거나 만료된 경우
         when(userEmailAuthRepository.findById(id)).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND.message(), assertThrows(UserAuthException.class, () -> userAuthService.findUserEmailAuthKey(id)).getMessage());
+        assertEquals(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND.message(), assertThrows(UserAuthException.class, () -> userAuthService.findUserEmailAuthKey(id)).getMessage());
 
         // 인증키가 있는 경우
         when(userEmailAuthRepository.findById(id)).thenReturn(Optional.of(UserEmailAuth.builder().emailAuthKey("nebiros").build()));
@@ -94,28 +95,28 @@ public class UserAuthServiceTest {
     public void checkUserEmailAuth() {
         // 인증키가 없거나 만료된 경우
         when(userEmailAuthRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserEmailAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserAuthInput.builder().email("nebi25@naver.com").key("nebiros").build())).getMessage());
 
         // 인증키 정보가 올바르지 않은 경우 (널값)
         when(userEmailAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserEmailAuth.builder().emailAuthKey(null).build()));
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserEmailAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserAuthInput.builder().email("nebi25@naver.com").key("nebiros").build())).getMessage());
 
         // 인증키 정보가 올바르지 않은 경우 (사용자 입력값, 발급 인증키 정보 불일치)
         when(userEmailAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserEmailAuth.builder().emailAuthKey("dark night").build()));
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserEmailAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserAuthInput.builder().email("nebi25@naver.com").key("nebiros").build())).getMessage());
 
         // 이미 인증 된 사용자
         when(userEmailAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserEmailAuth.builder().emailAuthKey("nebiros").build()));
-        assertEquals(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT.message(),
+        assertEquals(ServiceExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserEmailAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(true).build(),
                                 UserAuthInput.builder().email("nebi25@naver.com").key("nebiros").build())).getMessage());
@@ -133,35 +134,35 @@ public class UserAuthServiceTest {
     public void checkUserPasswordAuth() {
         // 인증키가 없거나 만료된 경우
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").password("sarami").rePassword("sarami").key("nebiros").build())).getMessage());
 
         // 인증키 정보가 올바르지 않은 경우 (널값)
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey(null).build()));
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").password("sarami").rePassword("sarami").key("nebiros").build())).getMessage());
 
         // 인증키 정보가 올바르지 않은 경우 (사용자 입력값, 발급 인증키 정보 불일치)
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey("dark night").build()));
-        assertEquals(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
+        assertEquals(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").password("sarami").rePassword("sarami").key("nebiros").build())).getMessage());
 
         // 비밀번호,재비밀번호 불일치
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey("nebiros").build()));
-        assertEquals(ConstUtil.ExceptionMessage.RE_PASSWORD_MISMATCH.message(),
+        assertEquals(ServiceExceptionMessage.RE_PASSWORD_MISMATCH.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").isAuth(true).build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").key("nebiros").password("sarami").rePassword("namiss").build())).getMessage());
 
         // 비밀번호가 이전 비밀번호와 똑같은 경우
         when(userPasswordAuthRepository.findById(anyInt())).thenReturn(Optional.of(UserPasswordAuth.builder().updatePasswordAuthKey("nebiros").build()));
-        assertEquals(ConstUtil.ExceptionMessage.COINCIDE_WITH_EACH_PASSWORD.message(),
+        assertEquals(ServiceExceptionMessage.COINCIDE_WITH_EACH_PASSWORD.message(),
                 assertThrows(UserAuthException.class,
                         () -> userAuthService.checkUserPasswordAuth(UserDomain.builder().userId("nebi25").email("nebi25@naver.com").password(BCrypt.hashpw("sarami", BCrypt.gensalt())).isAuth(true).build(),
                                 UserPasswordInput.builder().email("nebi25@naver.com").key("nebiros").password("sarami").rePassword("sarami").build())).getMessage());

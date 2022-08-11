@@ -23,6 +23,7 @@ public class UserSettingDto {
     private final String profileImages;
     private final String status;
     private final SocialAddress socialAddress;
+    private final String emailAuthTime;
     private final String registerTime;
     private final String passwordUpdateTime;
 
@@ -40,6 +41,7 @@ public class UserSettingDto {
                     .socialAddress(SocialAddress.from(user == null ? null : user.getSocialAddress()))
                     .registerTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
                     .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
+                    .emailAuthTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
                     .build();
         } else {
             return UserSettingDto.builder()
@@ -55,6 +57,7 @@ public class UserSettingDto {
                     .socialAddress(SocialAddress.from(user.getSocialAddress()))
                     .registerTime(BlogUtil.formatLocalDateTimeToStr(user.getRegisterTime()))
                     .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(user.getPasswordUpdateTime()))
+                    .emailAuthTime(BlogUtil.formatLocalDateTimeToStr(user.getEmailAuthTime()))
                     .build();
         }
     }

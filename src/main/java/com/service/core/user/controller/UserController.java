@@ -1,5 +1,6 @@
 package com.service.core.user.controller;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.UserDomain;
@@ -240,11 +241,11 @@ public class UserController {
                 List<String> stringList = new LinkedList<>();
 
                 if (!signupForm.isEmailCheckFlag()) {
-                    stringList.add(ConstUtil.ExceptionMessage.NOT_CHECKED_EMAIL.message());
+                    stringList.add(ServiceExceptionMessage.NOT_CHECKED_EMAIL.message());
                 }
 
                 if (!signupForm.isIdCheckFlag()) {
-                    stringList.add(ConstUtil.ExceptionMessage.NOT_CHECKED_ID.message());
+                    stringList.add(ServiceExceptionMessage.NOT_CHECKED_ID.message());
                 }
                 throw new UserAuthException(String.join(",", stringList));
             }

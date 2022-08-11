@@ -1,5 +1,6 @@
 package com.service.core.user.service.impl;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.domain.UserEmailAuth;
@@ -47,19 +48,19 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public String findUserEmailAuthKey(int id) {
-        UserEmailAuth userEmailAuth = userEmailAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND));
+        UserEmailAuth userEmailAuth = userEmailAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND));
         return userEmailAuth.getEmailAuthKey();
     }
 
     @Override
     public boolean checkUserEmailAuth(UserDomain userDomain, UserAuthInput userAuthInput) {
         int id = BlogUtil.createUserAuthId(userDomain);
-        UserEmailAuth userEmailAuth = userEmailAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND));
+        UserEmailAuth userEmailAuth = userEmailAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND));
 
         if (Objects.isNull(userEmailAuth.getEmailAuthKey()) || !userEmailAuth.getEmailAuthKey().equals(userAuthInput.getKey())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH);
+            throw new UserAuthException(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH);
         } else if (userDomain.isAuth()) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT);
+            throw new UserAuthException(ServiceExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT);
         }
         userEmailAuth.setEmailAuthKey(BlogUtil.createRandomString(20));
         userEmailAuthRepository.save(userEmailAuth);
@@ -69,14 +70,14 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public boolean checkUserPasswordAuth(UserDomain userDomain, UserPasswordInput userPasswordInput) {
         int id = BlogUtil.createUserAuthId(userDomain);
-        UserPasswordAuth userPasswordAuth = userPasswordAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ConstUtil.ExceptionMessage.AUTH_KEY_NOT_FOUND));
+        UserPasswordAuth userPasswordAuth = userPasswordAuthRepository.findById(id).orElseThrow(() -> new UserAuthException(ServiceExceptionMessage.AUTH_KEY_NOT_FOUND));
 
         if (Objects.isNull(userPasswordAuth.getUpdatePasswordAuthKey()) || !userPasswordAuth.getUpdatePasswordAuthKey().equals(userPasswordInput.getKey())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.AUTH_VALID_KEY_MISMATCH);
+            throw new UserAuthException(ServiceExceptionMessage.AUTH_VALID_KEY_MISMATCH);
         } else if (!userPasswordInput.getPassword().equals(userPasswordInput.getRePassword())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.RE_PASSWORD_MISMATCH);
+            throw new UserAuthException(ServiceExceptionMessage.RE_PASSWORD_MISMATCH);
         } else if (BCrypt.checkpw(userPasswordInput.getPassword(), userDomain.getPassword())) {
-            throw new UserAuthException(ConstUtil.ExceptionMessage.COINCIDE_WITH_EACH_PASSWORD);
+            throw new UserAuthException(ServiceExceptionMessage.COINCIDE_WITH_EACH_PASSWORD);
         }
         userPasswordAuth.setUpdatePasswordAuthKey(BlogUtil.createRandomString(20));
         userPasswordAuthRepository.save(userPasswordAuth);

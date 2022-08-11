@@ -2,6 +2,7 @@ package com.service.core.tag.domain;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.post.domain.Post;
+import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +18,10 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag {
+public class Tag extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tag_id")
     private Long id;
 
     @NotEmpty(message = "카테고리명이 비어있습니다!")

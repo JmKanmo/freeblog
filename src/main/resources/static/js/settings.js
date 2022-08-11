@@ -26,6 +26,8 @@ class SettingsController extends HeaderController {
         this.passwordChangeButton = document.getElementById("password_change_button");
 
         this.withDrawButton = document.getElementById("with_draw_button");
+
+        this.emailAuthTime = document.getElementById("user_email_auth_time");
     }
 
     initSettingsController() {
@@ -57,7 +59,11 @@ class SettingsController extends HeaderController {
 
         if (this.emailAuthButton) {
             this.emailAuthButton.addEventListener("click", () => {
-                this.showToastMessage("이메일 인증이 완료 된 계정입니다.");
+                if (this.emailAuthTime.value === "") {
+                    this.showToastMessage("이메일 인증이 완료 된 계정입니다.");
+                } else {
+                    this.showToastMessage(`${this.emailAuthTime.value} 시간에 이메일 인증이 완료 된 계정입니다.`);
+                }
             });
         } else if (this.emailNotAuthButton) {
             this.emailNotAuthButton.addEventListener("click", evt => {
