@@ -27,7 +27,7 @@ spring:
       max-file-size: 20MB
 
   datasource:
-    url: jdbc:mariadb://54.235.18.40:3303/jmblog_mariadb
+    url: jdbc:mariadb://localhost:3303/jmblog_mariadb
     driver-class-name: org.mariadb.jdbc.Driver
     hikari:
       username: junmokang
@@ -68,7 +68,7 @@ spring:
         min-idle: 2
         max-wait: 500
     port: 6379
-    host: 54.235.18.40
+    host: localhost
     connect-timeout: 5000
     timeout: 1500
 
@@ -114,7 +114,7 @@ mybatis:
 
 util-config:
   aws_jm_ec2_sftp:
-    ip: 54.235.18.40
+    ip: localhost
     port: 22
     id: ec2-user
     password: wnsah12
