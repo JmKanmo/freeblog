@@ -25,8 +25,9 @@ public class Category extends BaseTimeEntity {
     @Column(name = "category_id")
     private Long id;
 
-    private String name;
+    private Long parentId;
 
+    private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id")
     private Blog blog;

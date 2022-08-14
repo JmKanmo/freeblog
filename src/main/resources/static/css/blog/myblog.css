@@ -1,0 +1,9 @@
+.myblog_container {
+    margin: 0 auto;
+    width: 988px;
+    padding-bottom: 220px;
+}
+
+.myblog_container .myblog_container_div {
+    border: 1px solid #e3e3e3;
+}

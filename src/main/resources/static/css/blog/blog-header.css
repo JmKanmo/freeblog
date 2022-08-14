@@ -1,0 +1,89 @@
+.blog_header_container {
+    float: left;
+    width: 160px;
+    border-right: 1px solid #e3e3e3;
+}
+
+.blog_header_container .blog_header_container_div {
+    argin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* 사용자 프로필 스타일 정의 */
+.blog_header_container .blog_header_profile_container {
+    text-align: center;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.blog_header_plain_text {
+    margin: 0;
+    color: #333;
+    font-size: 15px;
+}
+
+.log_header_plain_nickname {
+    font-weight: bold;
+}
+
+.blog_header_container .blog_header_profile_container .blog_header_user_profile_name .blog_header_plain_intro {
+    font-size: 13px;
+    color: #333;
+    padding: 13px 13px 10px 13px;
+    line-height: 20px;
+}
+
+
+/* 카테고리 스타일 정의 */
+.category_count_text {
+    font-size: 11px;
+}
+
+.sub_category_count_text {
+    font-size: 10px;
+}
+
+.blog_header_category_container .blog_header_category_list {
+    padding: 16px 0px 5px 13px;
+}
+
+.blog_header_category_container .blog_header_category_list .total_category_search_title {
+    cursor: pointer;
+    margin: 0;
+    font-weight: bold;
+    font-size: 13px;
+    color: #333;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem {
+    margin-top: 17px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_category_title {
+    cursor: pointer;
+    font-size: 13px;
+    color: #4a4a4a;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_category_title:hover {
+    font-weight: bold;
+}
+
+/* 서브 카테고리 스타일 정의 */
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list {
+    margin-left: 10px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem:nth-child(n+2) {
+    margin-top: 5px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem .blog_header_sub_category_title {
+    cursor: pointer;
+    font-size: 12px;
+    color: #818181;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem .blog_header_sub_category_title:hover {
+    font-weight: bold;
+}
+
