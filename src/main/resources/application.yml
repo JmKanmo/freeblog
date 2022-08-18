@@ -27,11 +27,21 @@ spring:
       max-file-size: 20MB
 
   datasource:
-    url: jdbc:mariadb://localhost:3303/jmblog_mariadb
-    driver-class-name: org.mariadb.jdbc.Driver
-    hikari:
-      username: junmokang
-      password: wnsah12
+    master:
+      hikari:
+        username: root
+        password: wnsah12
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://localhost:3310/jmblog_mariadb
+        pool-name: jmblog_mariadb_master
+
+    slave:
+      hikari:
+        username: root
+        password: wnsah12
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://localhost:3311/jmblog_mariadb
+        pool-name: jmblog_mariadb_slave
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
@@ -42,7 +52,13 @@ spring:
       ddl-auto: update
       use-new-id-generator-mappings: true
     open-in-view: false
-
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 10000
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
 
   mail:
     host: smtp.gmail.com

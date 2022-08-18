@@ -126,6 +126,23 @@ class UtilController {
         });
     }
 
+    initCalendar() {
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+            titleFormat: function (date) {
+                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+            },
+            //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+            selectable: true, // 달력 일자 드래그 설정가능
+            droppable: true,
+            editable: true,
+            nowIndicator: true, // 현재 시간 마크
+            locale: 'ko' // 한국어 설정
+        });
+        calendar.render();
+    }
+
     getDefaultUserProfileThumbnail() {
         return this.defaultUserProfileThumbnail;
     }

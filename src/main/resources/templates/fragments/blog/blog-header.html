@@ -18,84 +18,144 @@
             </div>
         </div>
 
+        <div class="search_container">
+            <form action="/" method="get" class="blog_view_search_form">
+                <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog"
+                       placeholder="검색어를 입력해주세요." required>
+                <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색">
+                    <img class="search_blog_button_img" src="../images/search.gif"/>
+                </button>
+                <span class="blind">게시글 검색</span>
+            </form>
+        </div>
+
         <div class="blog_header_category_container">
             <ul class="blog_header_category_list">
                 <li>
-                    <p class="total_category_search_title">전체 카테고리 <span class="category_count_text">(25)</span></p>
+                    <a href="/" class="total_category_search_title">전체 카테고리 <span
+                            class="category_count_text">(25)</span></a>
                 </li>
 
                 <li class="blog_header_category_elem">
-                    <span class="blog_header_category_title">C++ <span class="category_count_text">(25)</span></span>
+                    <a href="/" class="blog_header_category_title">C++ <span class="category_count_text">(25)</span></a>
 
                     <ul class="blog_header_sub_category_list">
                         <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
+                            <a href="/" class="blog_header_sub_category_title">- 앙 기모띠 <span
+                                    class="sub_category_count_text">(25)</span></a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="blog_header_category_elem">
-                    <span class="blog_header_category_title">REDIS <span class="category_count_text">(25)</span></span>
+                    <a href="/" class="blog_header_category_title">REDIS <span
+                            class="category_count_text">(25)</span></a>
 
                     <ul class="blog_header_sub_category_list">
                         <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
+                            <a href="/" class="blog_header_sub_category_title">- 앙 기모띠 <span
+                                    class="sub_category_count_text">(25)</span></a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="blog_header_category_elem">
-                    <span class="blog_header_category_title">KAFKA <span class="category_count_text">(25)</span></span>
+                    <a href="/" class="blog_header_category_title">KAFKA <span
+                            class="category_count_text">(25)</span></a>
 
                     <ul class="blog_header_sub_category_list">
                         <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
+                            <a href="/" class="blog_header_sub_category_title">- 앙 기모띠 <span
+                                    class="sub_category_count_text">(25)</span></a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="blog_header_category_elem">
-                    <span class="blog_header_category_title">HTTP <span class="category_count_text">(25)</span></span>
+                    <a href="/" class="blog_header_category_title">HTTP <span
+                            class="category_count_text">(25)</span></a>
 
                     <ul class="blog_header_sub_category_list">
                         <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
-                        </li>
-
-                        <li class="blog_header_sub_category_elem">
-                            <span class="blog_header_sub_category_title">- 앙 기모띠 <span class="sub_category_count_text">(25)</span></span>
+                            <a href="/" class="blog_header_sub_category_title">- 앙 기모띠 <span
+                                    class="sub_category_count_text">(25)</span></a>
                         </li>
                     </ul>
                 </li>
             </ul>
+        </div>
+
+        <ul class="recent_popular_post_container">
+            <div class="recent_popular_post_title_container clear_fix">
+                <h3 class="recent_popular_post_title recent_post_title" id="recent_post_title">최신글</h3>
+                <h3 class="recent_popular_post_title popular_post_title" id="popular_post_title">인기글</h3>
+            </div>
+
+            <!-- 최신 글 최대 10개 보여줄 것 -->
+            <li class="recent_popular_post_block recent_post_block" id="recent_post_container">
+                <a href="/" class="post_link_container clear_fix">
+                    <div class="post_text_block">
+                        <p class="post_text">테스트 포스트입니다.</p>
+                        <p class="post_date">2022.02.15</p>
+                    </div>
+
+                    <div class="post_image_block">
+                        <img src="../images/default_thumbnail.gif" alt="" class="post_image">
+                    </div>
+                </a>
+            </li>
+
+            <!-- 인기 글 최대 10개 보여줄 것 -->
+            <li class="recent_popular_post_block popular_post_block" id="popular_post_container">
+                <a href="/" class="recent_popular_post"></a>
+            </li>
+        </ul>
+
+        <div class="recent_comment_container">
+            <h3 class="recent_comment_title">최신 댓글</h3>
+
+            <ul class="recent_comment_block">
+                <li class="comment_div">
+                    <a href="/" class="comment_link">dfs로 푸는 방법 아주 귀하네요</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tag_container">
+            <h3 class="tag_title">태그 <span class="tag_count">(0)</span></h3>
+
+            <div class="tag_scroll_container">
+                <div class="tag_box">
+                    <div class="tag_div">
+                        <a href="" class="tag">#안녕하세요</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="visitor_notice_container clear_fix">
+            <div class="total_visitor_container">
+                <p class="visitor_notice_title total_visitor_text">전체 방문자</p>
+                <p class="visitor_notice_title total_visitor_count_text"
+                   th:text="${#numbers.formatInteger(1534560, 0, 'COMMA')}">undefined</p>
+            </div>
+
+            <div class="day_visitor_container">
+                <div class="today_visitor_container">
+                    <span class="today_visitor_text">오늘: </span> <span class="today_visitor_count_text"
+                                                                       th:text="${#numbers.formatInteger(594, 0, 'COMMA')}">undefined</span>
+                </div>
+
+                <div class="yesterday_visitor_container">
+                    <span class="yesterday_visitor_text">어제: </span> <span class="yesterday_visitor_count_text"
+                                                                           th:text="${#numbers.formatInteger(365, 0, 'COMMA')}">undefined</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="calender_container">
+            <div id='calendar'></div>
         </div>
     </div>
 </header>

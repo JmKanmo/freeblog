@@ -1,4 +1,4 @@
-package com.service.config;
+package com.service.config.sftp;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

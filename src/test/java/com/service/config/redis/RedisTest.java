@@ -1,4 +1,4 @@
-package com.service.util;
+package com.service.config.redis;
 
 import com.service.core.user.domain.UserEmailAuth;
 import com.service.core.user.domain.UserPasswordAuth;

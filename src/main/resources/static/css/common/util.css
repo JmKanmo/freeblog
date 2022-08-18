@@ -442,3 +442,43 @@ a {
     color: #333;
     text-decoration: none;
 }
+
+/* calendar style */
+.fc-scroller {
+    margin-bottom: 0px !important;
+}
+
+/* SCROLLBAR - START - */
+/* width */
+.fc-scroller::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+.fc-scroller::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #afaaaa;
+    border-radius: 0px;
+}
+
+/* Handle */
+.fc-scroller::-webkit-scrollbar-thumb {
+    background: linear-gradient(#ffffff, #164e79);
+}
+
+/* Handle on hover */
+.fc-scroller::-webkit-scrollbar-thumb:hover {
+    background: #103E62;
+}
+
+/* Firefox Integration */
+
+.fc-scroller{
+    scrollbar-color: #103E62 #fff;
+}
+
+/* SCROLLBAR - END - */
+.fc .fc-toolbar-title {
+    font-size: 1.70em;
+    margin: 0;
+    color: #777777;
+}

@@ -6,6 +6,7 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.UserStatus;
+import com.service.core.user.repository.CustomUserRepository;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
 import com.service.util.ConstUtil;
@@ -33,8 +34,11 @@ public class UserInfoServiceTest {
     @MockBean
     private UserRepository userRepository;
 
+//    @MockBean
+//    private UserMapper userMapper;
+
     @MockBean
-    private UserMapper userMapper;
+    private CustomUserRepository customUserRepository;
 
     @Test
     @DisplayName("특정 사용자 정보 저장")
@@ -141,7 +145,7 @@ public class UserInfoServiceTest {
                 UserEmailFindDto.builder().build(),
                 UserEmailFindDto.builder().build());
 
-        when(userMapper.findUsersByNickName(nickname)).thenReturn(list);
+        when(customUserRepository.findUsersByNickName(nickname)).thenReturn(list);
         assertEquals(userInfoService.findUsersByNickName(nickname).size(), list.size());
     }
 }

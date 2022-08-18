@@ -3,6 +3,7 @@ package com.service.core.user.service.impl;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
+import com.service.core.user.repository.CustomUserRepository;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
 import com.service.core.user.service.UserInfoService;
@@ -20,7 +21,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final CustomUserRepository customUserRepository;
+
+    //    private final UserMapper userMapper;
 
     @Transactional
     @Override
@@ -59,6 +62,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public List<UserEmailFindDto> findUsersByNickName(String nickname) {
-        return userMapper.findUsersByNickName(nickname);
+        return customUserRepository.findUsersByNickName(nickname);
     }
 }

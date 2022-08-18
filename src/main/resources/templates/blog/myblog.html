@@ -4,12 +4,18 @@
     <meta charset="UTF-8">
     <title>블로그</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
+    <link href='/fullcalendar-5.11.2/lib/main.css' rel='stylesheet' />
+    <script src='/fullcalendar-5.11.2/lib/main.js'></script>
     <link th:href="@{/css/blog/myblog.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/blog/blog-header.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/blog/myblog.js}"></script>
+    <script type="text/javascript" th:src="@{/js/blog/blog-header.js}"></script>
 </head>
 <body>
 <div th:replace="/fragments/header::header"></div>
+
+<input type="hidden" id="blog_user_nickname" th:value="우정잉">
+
 <div class="myblog_container">
     <div class="myblog_container_div clear_fix">
         <div th:replace="/fragments/blog/blog-header::blog-header"></div>
