@@ -130,7 +130,7 @@ mybatis:
 
 util-config:
   aws_jm_ec2_sftp:
-    ip: localhost
+    ip: 54.235.18.40
     port: 22
     id: ec2-user
     password: wnsah12

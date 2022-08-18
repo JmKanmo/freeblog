@@ -126,6 +126,34 @@ class UtilController {
         });
     }
 
+    initAudioPlayer() {
+        const ap = new APlayer({
+            container: document.getElementById('audio_player'),
+            listFolded: true,
+            listMaxHeight: 90,
+            lrcType: 3,
+            audio: [
+                {
+                    name: '솜사탕',
+                    artist: '풍댕이',
+                    url: 'http://54.235.18.40/audio/jmblog/sweetcandy.mp3',
+                    cover: 'http://54.235.18.40/images/jmblog/가르강튀아.jpg',
+                    lrc: '가사 없음',
+                    theme: '청순섹시'
+                },
+                {
+                    name: '익명의 노래',
+                    artist: '익명의 아티스트',
+                    url: 'http://54.235.18.40/audio/jmblog/backsound.mp3',
+                    cover: '../images/default_thumbnail.gif',
+                    lrc: '가사 없음',
+                    theme: '익명의 테마'
+                }
+            ]
+        });
+        return ap;
+    }
+
     initCalendar() {
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {

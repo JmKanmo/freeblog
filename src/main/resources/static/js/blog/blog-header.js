@@ -5,6 +5,7 @@ class BlogHeaderController extends UtilController {
         this.popularPostTitle = document.getElementById("popular_post_title");
         this.recentPostBlock = document.getElementById("recent_post_container");
         this.popularPostBlock = document.getElementById("popular_post_container");
+        this.audioPlayer = this.initAudioPlayer();
     }
 
     initBlogHeaderController() {

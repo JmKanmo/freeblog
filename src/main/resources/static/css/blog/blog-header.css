@@ -388,5 +388,26 @@
     margin-top: 3px;
 }
 
+/* audio player 스타일 */
+.audioPlayerBlock {
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
 
+/* SNS 스타일 */
+.user_sns_container {
+    padding: 22px 20px 0px 13px;
+}
+
+.user_sns_container .user_sns_link {
+    float: left;
+    width: 25px;
+    height: 25px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.user_sns_container .user_sns_link:nth-child(n+2) {
+    margin-left: 20px;
+}
 

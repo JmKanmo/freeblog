@@ -4,7 +4,7 @@ public class ConstUtil {
     public static final String AUTHENTICATION_MESSAGE = "FLASH_AUTHENTICATION_MESSAGE";
     public static final String UNDEFINED = "<<<undefined>>>";
 
-    public static final String SFTP_USER_PROFILE_IMAGE_URL = "http://%s/jmblog/%s";
+    public static final String SFTP_USER_PROFILE_IMAGE_URL = "http://%s/images/jmblog/%s";
 
     public static final String[] SIGNUP_MAIL_TEXT = {
             "[freelog] 가입을 축하드립니다.",
