@@ -2,7 +2,19 @@ server:
   servlet:
     session:
       timeout: 60m
+  http:
+    port: 8080
   port: 8400
+
+  ssl:
+    enabled: true
+    key-alias: freelog-keystore
+    key-store: freelog-keystore.pkcs12
+    key-store-password: 'Ww44226003!@'
+    key-password: 'Ww44226003!@'
+    trust-store: freelog-trust.pkcs12
+    trust-store-password: 'Ww44226003!@'
+
   tomcat:
     threads:
       max: 1000
