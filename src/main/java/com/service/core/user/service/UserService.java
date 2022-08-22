@@ -44,7 +44,9 @@ public interface UserService extends UserDetailsService {
 
     UserBasicDto findUserBasicDtoByEmail(String email);
 
-    String uploadProfileImageById(MultipartFile multipartFile, String id) throws Exception;
+    String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
+
+    String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 
     void removeProfileImageById(String id);
 }

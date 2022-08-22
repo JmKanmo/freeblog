@@ -347,7 +347,7 @@ public class UserController {
     public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
                                                      @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id) {
         try {
-            String profileImageSrc = userService.uploadProfileImageById(multipartFile, id);
+            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));

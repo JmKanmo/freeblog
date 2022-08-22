@@ -22,9 +22,11 @@ spring:
     remote:
       restart:
         enabled: true
+
   servlet:
     multipart:
       max-file-size: 20MB
+      max-request-size: 20MB
 
   datasource:
     master:
@@ -129,10 +131,16 @@ mybatis:
 
 
 util-config:
-  aws_jm_ec2_sftp:
+  aws_ec2_sftp:
     ip: 54.235.18.40
     port: 22
     id: ec2-user
     password: wnsah12
     directory: jmservice/static_files/images/jmblog
     timeout: 60
+
+  aws_s3-bucket:
+    access_key_id: AKIA3Y4KG56CSZH7JPWR
+    secret_access_key_id: yqoNogJhlu+ifSJqJJkUU4W6oTtw6R9gj6ZrCgDt
+    bucket_name: freelog-s3-bucket
+

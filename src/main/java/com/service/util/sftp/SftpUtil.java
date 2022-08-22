@@ -195,6 +195,6 @@ public class SftpUtil {
     public String fileUpload(String fileUUID, InputStream fileInputStream) throws Exception {
         connectSFTP();
         uploadFile(fileUUID, fileInputStream);
-        return String.format(ConstUtil.SFTP_USER_PROFILE_IMAGE_URL, sFtpConfig.getIp(), fileUUID);
+        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), fileUUID);
     }
 }

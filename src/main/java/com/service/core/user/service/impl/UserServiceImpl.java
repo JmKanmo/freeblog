@@ -17,6 +17,7 @@ import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
 import com.service.util.ConstUtil;
 import com.service.util.BlogUtil;
+import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -41,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private final UserAuthService userAuthService;
 
     private final SftpService sftpService;
+
+    private final AwsS3Service awsS3Service;
 
     @Override
     public void processSignUp(UserSignUpInput signupForm, UserDomain userDomain) {
@@ -210,9 +213,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadProfileImageById(MultipartFile multipartFile, String id) throws Exception {
+    public String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception {
         try {
             String profileImageSrc = sftpService.sftpFileUpload(multipartFile);
+            UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+            userDomain.setProfileImage(profileImageSrc);
+            userInfoService.saveUserDomain(userDomain);
+            return profileImageSrc;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Override
+    public String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id) throws Exception {
+        try {
+            String profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);

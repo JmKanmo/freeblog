@@ -1,5 +1,6 @@
 package com.service.util;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
@@ -75,6 +76,12 @@ public class BlogUtil {
         String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
         String uuid = LocalDateTime.now().toString() + UUID.nameUUIDFromBytes(fileName.getBytes(StandardCharsets.UTF_8)) + "." + extension;
         return uuid;
+    }
+
+    public static ObjectMetadata initObjectMetaData(MultipartFile multipartFile) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(multipartFile.getContentType());
+        return objectMetadata;
     }
 
     public static String encryptEmail(String email) {

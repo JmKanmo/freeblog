@@ -12,6 +12,7 @@ import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.*;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
+import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.sftp.SftpService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,9 @@ class UserServiceTest {
 
     @MockBean
     private SftpService sftpService;
+
+    @MockBean
+    private AwsS3Service awsS3Service;
 
     @Test
     @DisplayName("회원가입 정상 진행 테스트")
@@ -364,9 +368,9 @@ class UserServiceTest {
     }
 
     @ParameterizedTest
-    @DisplayName("프로필 이미지 업로드 테스트")
+    @DisplayName("SFTP를 이용한 프로필 이미지 업로드 테스트")
     @ValueSource(strings = "nebi25")
-    public void uploadProfileImageById(String id) throws Exception {
+    public void uploadSftpProfileImageById(String id) throws Exception {
         MultipartFile multipartFile = mock(MultipartFile.class);
         String profileImageSrc = "http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif";
         UserDomain userDomain = UserDomain.builder().userId(id).build();
@@ -374,10 +378,29 @@ class UserServiceTest {
         when(sftpService.sftpFileUpload(multipartFile)).thenReturn(profileImageSrc);
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.uploadProfileImageById(multipartFile, id));
+        assertDoesNotThrow(() -> userService.uploadSftpProfileImageById(multipartFile, id));
         assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
 
         verify(sftpService, times(1)).sftpFileUpload(multipartFile);
+        verify(userInfoService, times(1)).findUserDomainByIdOrThrow(id);
+        verify(userInfoService, times(1)).saveUserDomain(userDomain);
+    }
+
+    @ParameterizedTest
+    @DisplayName("AWS S3를 이용한 프로필 이미지 업로드 테스트")
+    @ValueSource(strings = "nebi25")
+    public void uploadAwsS3ProfileImageById(String id) throws Exception {
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        String profileImageSrc = "https://freelog-s3-bucket.s3.amazonaws.com/image/3fsdfskdfkjgkldfjglkkfdmbfgd.gif";
+        UserDomain userDomain = UserDomain.builder().userId(id).build();
+
+        when(awsS3Service.uploadImageFile(multipartFile)).thenReturn(profileImageSrc);
+        when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
+        doNothing().when(userInfoService).saveUserDomain(userDomain);
+        assertDoesNotThrow(() -> userService.uploadAwsS3ProfileImageById(multipartFile, id));
+        assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
+
+        verify(awsS3Service, times(1)).uploadImageFile(multipartFile);
         verify(userInfoService, times(1)).findUserDomainByIdOrThrow(id);
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }
