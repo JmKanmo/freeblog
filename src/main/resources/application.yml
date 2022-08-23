@@ -17,11 +17,11 @@ server:
 
   tomcat:
     threads:
-      max: 1000
+      max: 500
       min-spare: 30
     max-connections: 10000
     accept-count: 200
-
+    max-http-form-post-size: 20MB
 
 spring:
   thymeleaf:
@@ -78,7 +78,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: apdh1709@gmail.com
-    password: huaieadyjdqovgov
+    password: peroixuyuocvnsze
     properties:
       mail:
         smtp:
@@ -144,12 +144,12 @@ mybatis:
 
 util-config:
   aws_ec2_sftp:
-    ip: 54.235.18.40
+    ip: 192.584.34.343
     port: 22
-    id: ec2-user
-    password: wnsah12
-    directory: jmservice/static_files/images/jmblog
-    timeout: 60
+    id: id
+    password: password
+    directory: directory
+    timeout: 100
 
   aws_s3-bucket:
     access_key_id: AKIA3Y4KG56CSZH7JPWR

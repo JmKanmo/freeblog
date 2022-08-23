@@ -345,9 +345,9 @@ public class UserController {
     })
     @PostMapping("/upload/profile-image")
     public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
-                                                     @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id) {
+                                                     @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
-            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id);
+            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id,principal);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
@@ -361,9 +361,9 @@ public class UserController {
     })
     @ResponseBody
     @GetMapping("/remove/profile-image")
-    public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id) {
+    public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
-            userService.removeProfileImageById(id);
+            userService.removeProfileImageById(id, principal);
             return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
         } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", exception.getMessage()));

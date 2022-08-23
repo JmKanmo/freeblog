@@ -18,8 +18,11 @@ import com.service.core.user.service.UserService;
 import com.service.util.ConstUtil;
 import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
+import com.service.util.redis.CacheKey;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -207,6 +211,7 @@ public class UserServiceImpl implements UserService {
         return UserSettingDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
     }
 
+    @Cacheable(key = "#email", value = CacheKey.USER_BASIC_DTO)
     @Override
     public UserBasicDto findUserBasicDtoByEmail(String email) {
         return UserBasicDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
@@ -226,7 +231,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id) throws Exception {
+    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_BASIC_DTO)
+    public String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception {
         try {
             String profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
@@ -239,7 +245,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeProfileImageById(String id) {
+    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_BASIC_DTO)
+    public void removeProfileImageById(String id, Principal principal) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
         userDomain.setProfileImage(null);
         userInfoService.saveUserDomain(userDomain);

@@ -70,8 +70,8 @@
         <div class="spel_div">
             <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" id="user_password_validation_error"
                   class="validation_error"></span>
-            <p class="spel_condition_tag small_text_font">하나 이상의 숫자(0~9), 알파벳(a~z | A~Z) 포함</p>
-            <p class="spel_condition_tag small_text_font">하나 이상의 특수문자 포함 ! @ # &amp; ( ).</p>
+            <p class="spel_condition_tag small_text_font">하나 이상의 숫자(0~9), 알파벳(a~z , A~Z) 대소문자 포함</p>
+            <p class="spel_condition_tag small_text_font">하나 이상의 특수문자 포함</p>
             <p class="spel_condition_tag small_text_font">최소 8자 ~ 최대 20자로 작성</p>
         </div>
 

@@ -11,7 +11,6 @@ import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.*;
 import com.service.util.BlogUtil;
-import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.sftp.SftpService;
 import org.junit.jupiter.api.DisplayName;
@@ -26,12 +25,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -397,7 +394,7 @@ class UserServiceTest {
         when(awsS3Service.uploadImageFile(multipartFile)).thenReturn(profileImageSrc);
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.uploadAwsS3ProfileImageById(multipartFile, id));
+        assertDoesNotThrow(() -> userService.uploadAwsS3ProfileImageById(multipartFile, id, mock(Principal.class)));
         assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
 
         verify(awsS3Service, times(1)).uploadImageFile(multipartFile);
@@ -410,10 +407,10 @@ class UserServiceTest {
     @ValueSource(strings = "nebi25")
     public void removeProfileImageById(String id) {
         // TODO
-        UserDomain userDomain = UserDomain.builder().userId(id).profileImage("http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif").build();
+        UserDomain userDomain = UserDomain.builder().userId(id).profileImage("https://freelog-s3-bucket.s3.amazonaws.com/image/3fsdfskdfkjgkldfjglkkfdmbfgd.gif").build();
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.removeProfileImageById(id));
+        assertDoesNotThrow(() -> userService.removeProfileImageById(id, mock(Principal.class)));
         assertTrue(userDomain.getProfileImage() == null);
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }

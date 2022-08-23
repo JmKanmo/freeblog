@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -46,7 +47,7 @@ public interface UserService extends UserDetailsService {
 
     String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 
-    String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id) throws Exception;
+    String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception;
 
-    void removeProfileImageById(String id);
+    void removeProfileImageById(String id, Principal principal);
 }
