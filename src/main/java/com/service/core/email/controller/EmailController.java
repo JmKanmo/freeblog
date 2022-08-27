@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
+@Slf4j
 public class EmailController {
     private final EmailService emailService;
     private final UserService userService;
@@ -37,6 +39,7 @@ public class EmailController {
             emailService.sendSignUpMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
+            log.error("[freelog-sendSignUpEmail] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
@@ -54,6 +57,7 @@ public class EmailController {
             emailService.sendAuthMail(email, key);
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
+            log.error("[freelog-sendAuthEmail] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }
@@ -73,6 +77,7 @@ public class EmailController {
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
+            log.error("[freelog-sendFindPasswordEmail] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", exception.getMessage()));
         }

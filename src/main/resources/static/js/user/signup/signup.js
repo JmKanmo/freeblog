@@ -23,15 +23,16 @@ class SignUpController extends UtilController {
 
     initSignUpController() {
         this.idCheckButton.addEventListener("click", evt => {
-            const xhr = new XMLHttpRequest();
             const id = this.idInput.value;
-
 
             if (this.checkIdRegExp(id) === false) {
                 this.showToastMessage('id 패턴에 적합하지 않습니다.');
                 return;
             }
 
+            this.idCheckButton.disabled = true;
+
+            const xhr = new XMLHttpRequest();
             xhr.open("GET", `/user/check-id?id=${id}`);
 
             xhr.addEventListener("loadend", event => {
@@ -39,16 +40,22 @@ class SignUpController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if (status >= 400 && status <= 500) {
-                    this.showToastMessage(`${responseValue}`);
+                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                        this.idCheckButton.disabled = false;
+                    });
                     this.idCheckFlagInput.value = false;
                 } else {
-                    this.showToastMessage(`${responseValue}`);
+                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                        this.idCheckButton.disabled = false;
+                    });
                     this.idCheckFlagInput.value = true;
                 }
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('id 중복확인에 실패하였습니다.');
+                this.showToastMessage('id 중복확인에 실패하였습니다.', false, 5000, () => {
+                    this.idCheckButton.disabled = false;
+                });
             });
             xhr.send();
         });
@@ -58,15 +65,16 @@ class SignUpController extends UtilController {
         });
 
         this.emailCheckButton.addEventListener("click", evt => {
-            const xhr = new XMLHttpRequest();
             const email = this.emailInput.value;
-
 
             if (this.checkEmailRegExp(email) === false) {
                 this.showToastMessage('이메일 패턴에 적합하지 않습니다.');
                 return;
             }
 
+            this.emailCheckButton.disabled = true;
+
+            const xhr = new XMLHttpRequest();
             xhr.open("GET", `/user/check-email?email=${email}`);
 
             xhr.addEventListener("loadend", event => {
@@ -74,16 +82,22 @@ class SignUpController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if (status >= 400 && status <= 500) {
-                    this.showToastMessage(`${responseValue}`);
+                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                        this.emailCheckButton.disabled = false;
+                    });
                     this.emailCheckFlagInput.value = false;
                 } else {
-                    this.showToastMessage(`${responseValue}`);
+                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                        this.emailCheckButton.disabled = false;
+                    });
                     this.emailCheckFlagInput.value = true;
                 }
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('이메일 중복확인에 실패하였습니다.');
+                this.showToastMessage('이메일 중복확인에 실패하였습니다.', false, 5000, () => {
+                    this.emailCheckButton.disabled = false;
+                });
             });
             xhr.send();
         });

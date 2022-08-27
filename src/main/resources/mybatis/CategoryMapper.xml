@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.service.core.category.repository.mapper.CategoryMapper">
+    <select id="findCategories" resultType="com.service.core.category.domain.CategoryMapperDto">
+        select category.category_id,
+               category.parent_id,
+               category.name,
+               category.seq,
+               count(p.post_id) as postCount
+        from category
+                 left join post p on category.category_id = p.category_id
+        where category.category_id in (select sorted_category.category_id
+                                       from (select * from category order by blog_id) sorted_category
+                                       where sorted_category.blog_id = (select user.blog_id
+                                                                        from user
+                                                                                 inner join blog on user.blog_id = blog.blog_id
+                                                                        where user.user_id = #{userId}))
+        group by category.category_id
+        order by category.seq
+    </select>
+</mapper>

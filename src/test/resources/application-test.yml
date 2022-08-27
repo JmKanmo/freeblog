@@ -6,15 +6,6 @@ server:
     port: 8080
   port: 8400
 
-  ssl:
-    enabled: true
-    key-alias: freelog-keystore
-    key-store: freelog-keystore.pkcs12
-    key-store-password: 'Ww44226003!@'
-    key-password: 'Ww44226003!@'
-    trust-store: freelog-trust.pkcs12
-    trust-store-password: 'Ww44226003!@'
-
   tomcat:
     threads:
       max: 500
@@ -24,6 +15,9 @@ server:
     max-http-form-post-size: 20MB
 
 spring:
+  cache:
+    type: none
+
   thymeleaf:
     cache: false
 
@@ -74,21 +68,6 @@ spring:
         order_inserts: true
         order_updates: true
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: apdh1709@gmail.com
-    password: peroixuyuocvnsze
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          timeout: 100000
-          connectiontimeout: 60000
-          writetimeout: 60000
-
 
   redis:
     lettuce:
@@ -107,17 +86,6 @@ spring:
       store-type: redis
       redis:
         flush-mode: on_save
-
-
-springdoc:
-  cache:
-    disabled: true
-  swagger-ui:
-    path: swagger-ui-custom.html
-  api-docs:
-    path: /api-docs
-  packages-to-scan: com.service.core
-
 
 logging:
   pattern:
@@ -142,6 +110,7 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
+
 scheduler:
   find-user-info: "* * 0 * * *"
 
@@ -155,7 +124,7 @@ util-config:
     timeout: 100
 
   aws_s3-bucket:
-    access_key_id: AKIA3Y4KG56CSZH7JPWR
-    secret_access_key_id: yqoNogJhlu+ifSJqJJkUU4W6oTtw6R9gj6ZrCgDt
-    bucket_name: freelog-s3-bucket
+    access_key_id: test
+    secret_access_key_id: test
+    bucket_name: test
 

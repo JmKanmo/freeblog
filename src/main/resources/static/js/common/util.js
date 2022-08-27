@@ -67,6 +67,20 @@ class UtilController {
         }).showToast();
     }
 
+    showToastMessage(message, isClose, duration, dismissListener) {
+        Toastify({
+            text: message,
+            duration: duration,
+            close: isClose,
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+            callback: dismissListener
+        }).showToast();
+    }
+
     checkEmailRegExp(email) {
         return this.emailRegex.test(email);
     }
@@ -136,18 +150,34 @@ class UtilController {
                 {
                     name: '솜사탕',
                     artist: '풍댕이',
-                    url: 'http://54.235.18.40/audio/jmblog/sweetcandy.mp3',
-                    cover: 'http://54.235.18.40/images/jmblog/가르강튀아.jpg',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%ED%92%8D%EB%8C%95%EC%9D%B4+-+cotton+candy.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/2022-08-23T08%3A59%3A46.89279060054c6e247-cac0-37da-af49-8a1950e4f618.jpg',
                     lrc: '가사 없음',
                     theme: '청순섹시'
                 },
                 {
-                    name: '익명의 노래',
-                    artist: '익명의 아티스트',
-                    url: 'http://54.235.18.40/audio/jmblog/backsound.mp3',
-                    cover: '../images/default_thumbnail.gif',
+                    name: 'strawberry moon',
+                    artist: 'IU',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%95%84%EC%9D%B4%EC%9C%A0+-+strawberry+moon.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/iu_strawberrymoon.jpg',
                     lrc: '가사 없음',
-                    theme: '익명의 테마'
+                    theme: '달콤'
+                },
+                {
+                    name: '불가살 - 하루',
+                    artist: '포맨',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/4MEN+(%ED%8F%AC%EB%A7%A8)+-+%ED%95%98%EB%A3%A8+(Bulgasal_+Immortal+Souls+%EB%B6%88%EA%B0%80%EC%82%B4+OST+Part+1).mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%B6%88%EA%B0%80%EC%82%B4_%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg',
+                    lrc: '가사 없음',
+                    theme: '불가살 테마'
+                },
+                {
+                    name: '너,너',
+                    artist: '스트레이',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4++%EB%84%88+%EB%84%88.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4+%EB%84%88+%EB%84%88.jpg',
+                    lrc: '가사 없음',
+                    theme: '불가살 테마'
                 }
             ]
         });

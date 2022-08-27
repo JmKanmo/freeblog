@@ -1,6 +1,9 @@
 package com.service.core.blog.controller;
 
+import com.service.core.category.service.CategoryService;
+import com.service.core.user.dto.UserBasicDto;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,6 +27,7 @@ import java.security.Principal;
 @Slf4j
 public class BlogController {
     private final UserService userService;
+    private final CategoryService categoryService;
 
     @Operation(summary = "블로그 페이지 반환", description = "블로그 페이지를 반환하는 GET 메서드")
     @ApiResponses(value = {
@@ -31,8 +35,13 @@ public class BlogController {
     })
     @GetMapping("/{id}")
     public String blog(@PathVariable String id, Model model, Principal principal) {
-        model.addAttribute("user_basic", userService.findUserBasicDtoByEmail(principal.getName()));
-        // TODO id를 기준으로 실질적인 블로그 정보 + 해당 블로그 정보의 id,email <-> Authentication 정보를 비교 및 동일 여부 저장
+        if (principal != null) {
+            UserBasicDto userBasicDto = userService.findUserBasicDtoByEmail(principal.getName());
+            model.addAttribute("user_basic", userBasicDto);
+            model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userBasicDto.getEmailHash()));
+        }
+        model.addAttribute("category", categoryService.findCategoryDto(id));
+        // TODO 최신글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
         return "blog/myblog";
     }
 }

@@ -8,12 +8,14 @@ import com.service.core.user.model.*;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
+import com.service.util.redis.CacheKey;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -167,6 +169,7 @@ public class UserController {
             userService.checkSameEmail(email);
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일 입니다.");
         } catch (Exception exception) {
+            log.error("[freelog-checkEmail] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
         }
     }
@@ -183,6 +186,7 @@ public class UserController {
             userService.checkSameId(id);
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 id 입니다.");
         } catch (Exception exception) {
+            log.error("[freelog-checkId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
         }
     }
@@ -347,9 +351,10 @@ public class UserController {
     public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
                                                      @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
-            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id,principal);
+            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
+            log.error("[freelog-uploadProfileImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
         }
     }
@@ -366,6 +371,7 @@ public class UserController {
             userService.removeProfileImageById(id, principal);
             return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
         } catch (Exception exception) {
+            log.error("[freelog-removeProfileImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", exception.getMessage()));
         }
     }

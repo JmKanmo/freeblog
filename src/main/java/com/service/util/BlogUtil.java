@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -26,6 +27,12 @@ public class BlogUtil {
         return redirectUrl;
     }
 
+    public static boolean checkBlogOwner(Principal principal, int emailHash) {
+        if(principal == null || Objects.hashCode(principal.getName()) != emailHash) {
+            return false;
+        }
+        return true;
+    }
     public static boolean isAuth(Authentication authentication) {
         return authentication != null && authentication.isAuthenticated();
     }

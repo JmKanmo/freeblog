@@ -17,7 +17,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "blog")
-@Table(name = "user")
+@Table(name = "user", indexes = {
+        @Index(name = "user_idx_email", columnList = "email"),
+        @Index(name = "user_idx_nickname", columnList = "nickname")
+})
 public class UserDomain extends BaseTimeEntity {
     @Id
     @Column(name = "user_id")

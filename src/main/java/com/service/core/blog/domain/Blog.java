@@ -25,12 +25,9 @@ public class Blog extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blog_id")
     private Long id;
-
     private String name;
-
     @Lob
     private String intro;
-
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "blog")
     private UserDomain user;
 
