@@ -1,8 +1,10 @@
 package com.service.core.user.service;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.user.domain.UserDomain;
-import com.service.core.user.dto.UserBasicDto;
+import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.dto.UserEmailFindDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.dto.UserSettingDto;
 import com.service.core.user.model.*;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,8 @@ public interface UserService extends UserDetailsService {
 
     boolean checkSameEmail(String email);
 
+    boolean checkExistUserId(String id);
+
     void emailAuth(UserAuthInput userAuthInput);
 
     String updateEmailAuthCondition(String email);
@@ -43,7 +47,9 @@ public interface UserService extends UserDetailsService {
 
     UserSettingDto findUserSettingDtoByEmail(String email);
 
-    UserBasicDto findUserBasicDtoByEmail(String email);
+    UserHeaderDto findUserHeaderDtoByEmail(String email);
+
+    UserProfileDto findUserProfileDtoById(String id);
 
     String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 

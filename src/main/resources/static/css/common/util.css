@@ -60,6 +60,12 @@ a {
 
 /* common form component
 /* common input label, form*/
+.common_category_button {
+    background: #ffffff;
+    border: none;
+    padding: 0;
+}
+
 .small_text_font {
     color: #888;
     font-size: 11px;
@@ -101,6 +107,10 @@ a {
     width: 35px;
     height: 35px;
     cursor: pointer;
+}
+
+.common_notice_bell_label {
+    background-image: url(/images/notice_bell.png);
 }
 
 .common_note_write_label {
@@ -472,7 +482,7 @@ a {
 
 /* Firefox Integration */
 
-.fc-scroller{
+.fc-scroller {
     scrollbar-color: #103E62 #fff;
 }
 
@@ -481,4 +491,21 @@ a {
     font-size: 1.70em;
     margin: 0;
     color: #777777;
+}
+
+/* blog title style */
+.blog-title-style {
+    display: inline-block;
+    background: linear-gradient(40deg, #2096ff, #05ffa3) !important;
+    font-size: 3rem;
+    -webkit-background-clip: text !important;
+    color: transparent;
+    cursor: pointer;
+}
+
+.blog-title-style:hover {
+    display: inline-block;
+    background: linear-gradient(40deg, #ffd86f, #fc6262) !important;
+    -webkit-background-clip: text !important;
+    color: transparent;
 }

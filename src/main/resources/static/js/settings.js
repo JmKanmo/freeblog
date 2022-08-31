@@ -149,7 +149,7 @@ class SettingsController extends HeaderController {
                 }
                 this.removeUserProfileImage();
                 this.removeHeaderUserProfileImage();
-                this.removeRemoteUserProfileImage();
+                this.#removeRemoteUserProfileImage();
             }
         });
 
@@ -199,7 +199,7 @@ class SettingsController extends HeaderController {
         this.defaultUserProfileImage.src = this.getDefaultUserProfileThumbnail();
     }
 
-    removeRemoteUserProfileImage() {
+    #removeRemoteUserProfileImage() {
         const xhr = new XMLHttpRequest();
         const id = this.userId.value;
 

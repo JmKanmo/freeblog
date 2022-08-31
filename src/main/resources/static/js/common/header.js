@@ -6,6 +6,7 @@ class HeaderController extends UtilController {
         this.userOptionDiv = document.getElementById("user_option_div");
         this.userProfileBtn = document.getElementById("user_profile_button");
         this.headerProfileImage = document.getElementById("header_profile_image");
+        this.noticeButton = document.getElementById("notice_button");
     }
 
     initHeaderController() {
@@ -23,6 +24,12 @@ class HeaderController extends UtilController {
         if (this.hostingButton != null) {
             this.hostingButton.addEventListener("click", evt => {
                 this.showToastMessage("호스팅 정보는 추후에 공개 예정");
+            });
+        }
+
+        if (this.noticeButton != null) {
+            this.noticeButton.addEventListener("click", evt => {
+                this.showToastMessage("공지알림,리다이렉트 기능 추후 추가 예정");
             });
         }
 

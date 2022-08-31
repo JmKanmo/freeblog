@@ -3,7 +3,9 @@ package com.service.util;
 public class ConstUtil {
     public static final String AUTHENTICATION_MESSAGE = "FLASH_AUTHENTICATION_MESSAGE";
     public static final String UNDEFINED = "<<<undefined>>>";
-
+    public static final String NOT_EXIST_CATEGORY = "분류 없음";
+    public static final String TOTAL_CATEGORY = "전체 카테고리";
+    public static final String TOTAL_POST = "전체글";
     public static final String SFTP_IMAGE_URL = "https://%s/images/jmblog/%s";
 
     public static final String AWS_S3_IMAGE_URL = "https://freelog-s3-bucket.s3.amazonaws.com/image/%s";

@@ -10,8 +10,8 @@ class UtilController {
     }
 
     initHandlerbars() {
-        Handlebars.registerHelper('isDiscountZero', discount => {
-            return discount <= 0 ? true : false;
+        Handlebars.registerHelper('existImage', image => {
+            return image != null && image != '<<<undefined>>>';
         });
     }
 
@@ -145,14 +145,13 @@ class UtilController {
             container: document.getElementById('audio_player'),
             listFolded: true,
             listMaxHeight: 90,
-            lrcType: 3,
+            lrcType: 0,
             audio: [
                 {
                     name: '솜사탕',
                     artist: '풍댕이',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%ED%92%8D%EB%8C%95%EC%9D%B4+-+cotton+candy.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/2022-08-23T08%3A59%3A46.89279060054c6e247-cac0-37da-af49-8a1950e4f618.jpg',
-                    lrc: '가사 없음',
                     theme: '청순섹시'
                 },
                 {
@@ -160,7 +159,6 @@ class UtilController {
                     artist: 'IU',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%95%84%EC%9D%B4%EC%9C%A0+-+strawberry+moon.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/iu_strawberrymoon.jpg',
-                    lrc: '가사 없음',
                     theme: '달콤'
                 },
                 {
@@ -168,7 +166,6 @@ class UtilController {
                     artist: '포맨',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/4MEN+(%ED%8F%AC%EB%A7%A8)+-+%ED%95%98%EB%A3%A8+(Bulgasal_+Immortal+Souls+%EB%B6%88%EA%B0%80%EC%82%B4+OST+Part+1).mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%B6%88%EA%B0%80%EC%82%B4_%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg',
-                    lrc: '가사 없음',
                     theme: '불가살 테마'
                 },
                 {
@@ -176,7 +173,6 @@ class UtilController {
                     artist: '스트레이',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4++%EB%84%88+%EB%84%88.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4+%EB%84%88+%EB%84%88.jpg',
-                    lrc: '가사 없음',
                     theme: '불가살 테마'
                 }
             ]

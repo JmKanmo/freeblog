@@ -27,11 +27,14 @@ public class CategoryDto {
             }
             SubCategoryDto subCategoryDto = subCategoryDtoList.get(categoryMapperDto.getSeq().intValue() - 1);
             subCategoryDto.add(categoryMapperDto, userId);
-            totalCategoryCount++;
+        }
+
+        for (SubCategoryDto subCategoryDto : subCategoryDtoList) {
+            totalCategoryCount += subCategoryDto.getPostCount();
         }
 
         return CategoryDto.builder()
-                .totalCategoryDto(TotalCategoryDto.fromEntity(userId, totalCategoryCount))
+                .totalCategoryDto(TotalCategoryDto.fromEntity(totalCategoryCount))
                 .subCategoryDtoList(subCategoryDtoList)
                 .build();
     }

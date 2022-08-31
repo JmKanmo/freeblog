@@ -30,6 +30,8 @@ public class Post extends BaseTimeEntity {
 
     private String writer;
 
+    private String thumbnailImage;
+
     @Lob
     private String contents;
 

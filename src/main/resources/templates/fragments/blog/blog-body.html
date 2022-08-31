@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="blog-body" class="blog_body_container">
+    <div class="blog_title_container">
+        <a href="" class="blog-title-style" th:href="'/blog/' + ${user_profile.id}">
+            <h3 class="blog_title text" th:text="${blog_info.name}"></h3>
+        </a>
+
+        <div class="banner_container">
+            <a th:href="'/guestbook/' + ${user_profile.id}" class="banner_link">방명록</a>
+        </div>
+    </div>
+
+    <div class="blog_post_container">
+        <div class="blog_post_error_container" id="blog_post_error_container">
+            <!-- 블로그 포스트 에러 메시지 템플릿 -->
+        </div>
+
+        <div class="blog_post_category_text_box" id="blog_post_category_text_box">
+            <!-- 카테고리 포스트 게시글 템플릿 -->
+        </div>
+
+        <ul class="blog_post_list" id="blog_post_list">
+            <!-- 포스트 게시글 -->
+        </ul>
+    </div>
+</div>
+</html>

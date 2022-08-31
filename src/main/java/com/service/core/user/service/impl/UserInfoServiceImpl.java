@@ -1,5 +1,6 @@
 package com.service.core.user.service.impl;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
@@ -61,7 +62,22 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public UserDomain findUserDomainByIdOrElse(String id, UserDomain defaultValue) {
+        return userRepository.findById(id).orElse(defaultValue);
+    }
+
+    @Override
     public List<UserEmailFindDto> findUsersByNickName(String nickname) {
         return customUserRepository.findUsersByNickName(nickname);
+    }
+
+    @Override
+    public boolean checkExistById(String id) {
+        return userRepository.existsById(id);
+    }
+
+    @Override
+    public Blog findBlogByIdOrThrow(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())).getBlog();
     }
 }

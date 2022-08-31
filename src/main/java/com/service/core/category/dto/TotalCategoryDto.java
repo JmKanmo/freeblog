@@ -13,10 +13,10 @@ public class TotalCategoryDto {
     private int totalCount;
     private String link;
 
-    public static TotalCategoryDto fromEntity(String userId, int totalCount) {
+    public static TotalCategoryDto fromEntity(int totalCount) {
         return TotalCategoryDto.builder()
                 .totalCount(totalCount)
-                .link(String.format("/blog/%s/category/all", userId))
+                .link(String.format("/category/all"))
                 .build();
     }
 }

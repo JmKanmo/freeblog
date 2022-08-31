@@ -27,7 +27,7 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model, Principal principal) {
         if (principal != null) {
-            model.addAttribute("user_basic", userService.findUserBasicDtoByEmail(principal.getName()));
+            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }
         return "index";
     }
@@ -39,7 +39,7 @@ public class MainController {
     @GetMapping("/settings")
     public String settings(Model model, Principal principal) {
         if (principal != null) {
-            model.addAttribute("user_basic", userService.findUserBasicDtoByEmail(principal.getName()));
+            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
             model.addAttribute("user_setting", userService.findUserSettingDtoByEmail(principal.getName()));
         }
         return "settings";

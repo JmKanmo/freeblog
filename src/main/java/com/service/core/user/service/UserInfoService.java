@@ -1,5 +1,6 @@
 package com.service.core.user.service;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
 
@@ -18,5 +19,10 @@ public interface UserInfoService {
 
     UserDomain findUserDomainByIdOrThrow(String id);
 
+    UserDomain findUserDomainByIdOrElse(String id, UserDomain userDomain);
     List<UserEmailFindDto> findUsersByNickName(String nickname);
+
+    boolean checkExistById(String id);
+
+    Blog findBlogByIdOrThrow(String id);
 }

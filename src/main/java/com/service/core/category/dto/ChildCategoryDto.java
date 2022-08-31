@@ -36,7 +36,7 @@ public class ChildCategoryDto {
                     .parentId(categoryMapperDto.getParentId())
                     .name(BlogUtil.ofNull(categoryMapperDto.getName()))
                     .seq(categoryMapperDto.getSeq())
-                    .link(String.format("/blog/%s/category/%d", userId, categoryMapperDto.getCategoryId()))
+                    .link(String.format("/category/%d", categoryMapperDto.getCategoryId()))
                     .postCount(categoryMapperDto.getPostCount())
                     .build();
         }

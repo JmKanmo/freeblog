@@ -5,8 +5,9 @@
 
 <th:block th:fragment="template">
     <!-- handlebars templates -->
+
     <!-- 썸네일 이미지가 있는 포스트 템플릿 -->
-    <script id=thumbnail_post_template"" type="text/x-handlebars-template">
+    <script id="thumbnail_post_template" type="text/x-handlebars-template">
         <li class="post_board">
             <div class="post_board_div">
                 <a href="/post?id=959584584" class="post_link">
@@ -69,7 +70,7 @@
     </script>
 
     <!-- 썸네일 이미지가 없는 포스트 템플릿 -->
-    <script id=no_thumbnail_post_template"" type="text/x-handlebars-template">
+    <script id="no_thumbnail_post_template" type="text/x-handlebars-template">
         <li class="post_board">
             <div class="post_board_div">
                 <a href="/post?id=959584584" class="post_link">
@@ -125,6 +126,79 @@
                 </a>
             </div>
         </li>
+    </script>
+
+    <!-- 블로그 포스트 에러 메시지 템플릿 -->
+    <script id="blog-post-error-message-template" type="text/x-handlebars-template">
+        <h3 class="blog_post_error">
+            게시글을 로드하는데 실패하였습니다.
+        </h3>
+
+        <p class="blog_post_error_message_text">
+            {{message}}
+        </p>
+    </script>
+
+    <!-- 카테고리 포스트 게시글 템플릿 -->
+    <script id="blog-post-category-template" type="text/x-handlebars-template">
+        <h3 class="blog_post_category_text">
+            {{type}} <span class="blog_post_category_count">({{count}})</span>
+        </h3>
+    </script>
+
+    <!--포스트 게시글 by image -->
+    <script id="blog-post-image-template" type="text/x-handlebars-template">
+        {{#each postDtoList}}
+        {{#if (existImage thumbnailImage)}}
+        <li class="blog_post_box" id="blog_post_box_exist_image">
+            <a href="/post/{{id}}" class="blog_post_image_link clear_fix">
+                <div class="blog_post_text_box">
+                    <h3 class="blog_post_title">{{title}}</h3>
+
+                    <div class="blog_post_upper_block">
+                        <p class="blog_post_text">
+                            {{contents}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="blog_post_image_box">
+                    <img class="blog_post_image"
+                         src="{{thumbnailImage}}"
+                         alt="포스트 이미지">
+                </div>
+            </a>
+
+            <div>
+                <button value="/category/{{categoryId}}" class="common_category_button blog_post_category_link">
+                    {{category}}
+                </button>
+                <span class="blog_post_post_date_text">{{registerTime}}</span>
+            </div>
+        </li>
+        {{else}}
+        <li class="blog_post_box" id="blog_post_box_no_image">
+            <a href="/post/{{id}}" class="blog_post_image_link clear_fix">
+                <div class="blog_post_text_box blog_post_no_image">
+                    <h3 class="blog_post_title">{{title}}</h3>
+
+                    <div class="blog_post_upper_block">
+                        <p class="blog_post_text">
+                            {{contents}}
+                        </p>
+                    </div>
+                </div>
+            </a>
+
+            <div>
+                <button value="/category/{{categoryId}}" class="common_category_button blog_post_category_link">
+                    {{category}}
+                </button>
+                <span class="blog_post_post_date_text">{{registerTime}}</span>
+            </div>
+        </li>
+        {{/if}}
+        {{/each}}
     </script>
 </th:block>
 </html>

@@ -1,10 +1,10 @@
 package com.service.core.blog.controller;
 
+import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
-import com.service.core.user.dto.UserBasicDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
-import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -26,6 +25,7 @@ import java.security.Principal;
 @RequestMapping("/blog")
 @Slf4j
 public class BlogController {
+    private final BlogService blogService;
     private final UserService userService;
     private final CategoryService categoryService;
 
@@ -36,12 +36,15 @@ public class BlogController {
     @GetMapping("/{id}")
     public String blog(@PathVariable String id, Model model, Principal principal) {
         if (principal != null) {
-            UserBasicDto userBasicDto = userService.findUserBasicDtoByEmail(principal.getName());
-            model.addAttribute("user_basic", userBasicDto);
-            model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userBasicDto.getEmailHash()));
+            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }
+
+        UserProfileDto userProfileDto = userService.findUserProfileDtoById(id);
+        model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
+        model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("category", categoryService.findCategoryDto(id));
-        // TODO 최신글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
+        model.addAttribute("blog_info", blogService.findBlogInfoDto(id));
+        // TODO 최신글, 전체글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
         return "blog/myblog";
     }
 }

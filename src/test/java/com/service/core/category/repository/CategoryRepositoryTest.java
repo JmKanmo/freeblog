@@ -6,6 +6,7 @@ import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.repository.mapper.CategoryMapper;
 import com.service.core.category.service.CategoryService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ class CategoryRepositoryTest {
 
     @Test
     @Transactional(readOnly = true)
+    @Disabled
     void findCategoriesRepo() {
         try {
             List<CategoryMapperDto> categoryList = categoryMapper.findCategories("akxk25");

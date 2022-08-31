@@ -8,14 +8,14 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.SocialAddress;
 import com.service.core.user.domain.UserDomain;
-import com.service.core.user.dto.UserBasicDto;
+import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.dto.UserEmailFindDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.dto.UserSettingDto;
 import com.service.core.user.model.*;
 import com.service.core.user.service.UserAuthService;
 import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
-import com.service.util.ConstUtil;
 import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.redis.CacheKey;
@@ -121,6 +121,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkExistUserId(String id) {
+        return userInfoService.checkExistById(id);
+    }
+
+    @Override
     public void emailAuth(UserAuthInput userAuthInput) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(userAuthInput.getEmail());
 
@@ -212,10 +217,15 @@ public class UserServiceImpl implements UserService {
         return UserSettingDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
     }
 
-    @Cacheable(key = "#email", value = CacheKey.USER_BASIC_DTO)
+    @Cacheable(key = "#email", value = CacheKey.USER_HEADER_DTO)
     @Override
-    public UserBasicDto findUserBasicDtoByEmail(String email) {
-        return UserBasicDto.fromEntity(userInfoService.findUserDomainByEmailOrElse(email, null));
+    public UserHeaderDto findUserHeaderDtoByEmail(String email) {
+        return UserHeaderDto.fromEntity(userInfoService.findUserDomainByEmailOrThrow(email));
+    }
+
+    @Override
+    public UserProfileDto findUserProfileDtoById(String id) {
+        return UserProfileDto.fromEntity(userInfoService.findUserDomainByIdOrThrow(id));
     }
 
     @Override
@@ -232,7 +242,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_BASIC_DTO)
+    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
     public String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception {
         try {
             String profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
@@ -246,7 +256,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_BASIC_DTO)
+    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
     public void removeProfileImageById(String id, Principal principal) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
         userDomain.setProfileImage(null);

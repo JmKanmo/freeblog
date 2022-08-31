@@ -17,11 +17,14 @@ public class SubCategoryDto {
     private ParentCategoryDto parentCategoryDto;
     private List<ChildCategoryDto> childCategoryDtoList = new ArrayList<>();
 
+    private int postCount;
+
     public void add(CategoryMapperDto categoryMapperDto, String userId) {
         if (categoryMapperDto.getParentId() == 0) {
             parentCategoryDto = ParentCategoryDto.fromEntity(categoryMapperDto, userId);
         } else {
             childCategoryDtoList.add(ChildCategoryDto.fromEntity(categoryMapperDto, userId));
         }
+        postCount += categoryMapperDto.getPostCount();
     }
 }

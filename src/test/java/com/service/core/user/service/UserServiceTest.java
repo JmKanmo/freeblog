@@ -196,9 +196,9 @@ class UserServiceTest {
     @ParameterizedTest
     @DisplayName("이메일로 유저 기본 정보 검색 테스트")
     @ValueSource(strings = "nebi25@naver.com")
-    void findUserBasicDtoByEmail(String email) {
+    void findUserHeaderDtoByEmail(String email) {
         when(userInfoService.findUserDomainByEmailOrElse(email, null)).thenReturn(UserDomain.builder().email(email).build());
-        assertNotNull(userService.findUserBasicDtoByEmail(email));
+        assertNotNull(userService.findUserHeaderDtoByEmail(email));
         verify(userInfoService, times(1)).findUserDomainByEmailOrElse(email, null);
     }
 

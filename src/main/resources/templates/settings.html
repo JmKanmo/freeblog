@@ -82,7 +82,7 @@
             <input type="hidden" id="user_basic_info_blog_name" th:value="${user_setting.blogName}">
             <input type="hidden" id="user_basic_info_nickname" th:value="${user_setting.nickname}">
             <input type="hidden" id="user_basic_info_greetings" th:value="${user_setting.greetings}">
-            <input type="hidden" id="user_basic_info_intro"
+            <input type="hidden" id="user_info_intro"
                    th:value="${#strings.isEmpty(user_setting.intro) or #strings.equals(user_setting.intro,'<<<undefined>>>') ? '<p><br></p>' : user_setting.intro}">
             <input type="hidden" id="user_email_auth_time" th:value="${user_setting.emailAuthTime}">
 

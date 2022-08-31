@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers("/favicon.ico", "/fullcalendar-5.11.2/**");
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
@@ -61,7 +62,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/",
                         "/api-docs/**",
                         "/swagger-ui-custom/**",
-                        "/user/**",
+                        // user
+                        "/user/intro", "/user/login", "/user/signup",
+                        "/user/signup-complete", "/user/find-info", "/user/find-email",
+                        "/user/check-id", "/user/check-email", "/user/email-auth",
+                        // blog
+                        "/blog/{id}",
+                        // category
+                        "/category/all/{blogId}", "/category/{id}",
+                        // post
+                        "/post/all/{blogId}",
                         "/error/**",
                         "/email/send/**"
                 )

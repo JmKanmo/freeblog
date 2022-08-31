@@ -28,18 +28,63 @@
 .blog_header_container .blog_header_profile_container .default_user_profile_image {
     cursor: pointer;
     object-fit: cover;
-    width: 4rem;
-    height: 4rem;
+    width: 4.5rem;
+    height: 4.5rem;
     border-radius: 50%;
 }
 
 .blog_header_container .blog_header_profile_container .blog_header_user_profile_name .blog_header_plain_intro {
     font-size: 13px;
     color: #333;
-    padding: 10px 13px 10px 13px;
+    padding: 10px 13px 3px 13px;
     line-height: 20px;
 }
 
+/* 소개 스타일 정의 */
+.blog_header_container .intro_container {
+    padding: 13px 0px 10px 13px
+}
+
+.blog_header_container .intro_container .intro_button {
+    color: #607d8b;
+    font-size: 11px;
+    margin-left: 3px;
+    float: left;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: none;
+}
+
+.blog_header_container .intro_container .intro_button:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* 글쓰기 스타일 정의 */
+.blog_header_container .post_write_container {
+    padding: 0px 0px 5px 13px;
+}
+
+.blog_header_container .post_write_container .post_write_link_container {
+    display: flex;
+    align-items: center;
+}
+
+.blog_header_container .post_write_container .post_write_link_container .post_write_image {
+    width: 13px;
+    height: 13px;
+}
+
+.blog_header_container .post_write_container .post_write_link_container .post_write_link {
+    color: #333333;
+    font-size: 11px;
+    margin-left: 3px;
+    font-weight: bold;
+}
+
+.blog_header_container .post_write_container .post_write_link_container .post_write_link:hover {
+    text-decoration: underline;
+}
 
 /* 카테고리 스타일 정의 */
 .category_count_text {
@@ -56,6 +101,7 @@
 }
 
 .blog_header_category_container .blog_header_category_list .total_category_search_title {
+    cursor: pointer;
     margin: 0;
     font-size: 13px;
     color: #333;

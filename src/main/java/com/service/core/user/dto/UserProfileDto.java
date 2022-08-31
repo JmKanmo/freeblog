@@ -14,18 +14,17 @@ import java.util.Random;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserBasicDto {
+public class UserProfileDto {
     private String id;
     private String nickname;
-
     private int emailHash;
     private String greetings;
     private String profileImages;
 
 
-    public static UserBasicDto fromEntity(UserDomain user) {
+    public static UserProfileDto fromEntity(UserDomain user) {
         if (user == null) {
-            return UserBasicDto.builder()
+            return UserProfileDto.builder()
                     .id(ConstUtil.UNDEFINED)
                     .nickname(ConstUtil.UNDEFINED)
                     .greetings(ConstUtil.UNDEFINED)
@@ -33,7 +32,7 @@ public class UserBasicDto {
                     .emailHash(new Random().nextInt())
                     .build();
         } else {
-            return UserBasicDto.builder()
+            return UserProfileDto.builder()
                     .id(BlogUtil.ofNull(user.getUserId()))
                     .emailHash(user.getEmail().hashCode())
                     .nickname(BlogUtil.ofNull(user.getNickname()))

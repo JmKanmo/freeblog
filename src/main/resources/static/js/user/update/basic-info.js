@@ -15,7 +15,7 @@ class BasicInfoController extends UtilController {
         this.prevUserBasicInfoBlogName = window.opener.document.getElementById("user_basic_info_blog_name").value;
         this.prevUserBasicInfoNickName = window.opener.document.getElementById("user_basic_info_nickname").value;
         this.prevUserBasicInfoGreetings = window.opener.document.getElementById("user_basic_info_greetings").value;
-        this.prevUserBasicInfoIntro = window.opener.document.getElementById("user_basic_info_intro").value;
+        this.prevUserBasicInfoIntro = window.opener.document.getElementById("user_info_intro").value;
     }
 
     initBasicInfoController() {
@@ -28,7 +28,7 @@ class BasicInfoController extends UtilController {
         document.getElementById("user_nickname").value = window.opener.document.getElementById("user_basic_info_nickname").value;
         document.getElementById("user_greeting_textarea").value = window.opener.document.getElementById("user_basic_info_greetings").value;
         this.setTextCount(this.greetingTextArea);
-        this.introEditor.root.innerHTML = window.opener.document.getElementById("user_basic_info_intro").value;
+        this.introEditor.root.innerHTML = window.opener.document.getElementById("user_info_intro").value;
         document.getElementById("user_id").value = window.opener.document.getElementById("user_basic_info_id").value;
     }
 

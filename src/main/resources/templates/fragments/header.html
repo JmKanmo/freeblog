@@ -10,17 +10,26 @@
 
         <div class="user_util_box">
             <ul class="user_util_list">
+                <!-- 추후에 dark/light 모드 기능 구현 후, 활성화 예정
                 <li class="user_util_item center_fix">
                     <button type="button" class="day_night_skin_button" id="day_night_skin_button" title="모드 변경">
                         <img src="../images/sun.gif"/>
                         <span class="blind">모드 변경</span>
                     </button>
                 </li>
+                -->
 
                 <li class="user_util_item center_fix">
                     <button type="button" title="호스팅정보" class="hosting_button" id="hosting_button">
                         <img src="../images/wifi.png"/>
                         <span class="blind">호스팅 정보</span>
+                    </button>
+                </li>
+
+                <li class="user_util_item center_fix">
+                    <button type="button" title="공지알림" class="hosting_button" id="notice_button">
+                        <img src="../images/notice_bell.png"/>
+                        <span class="blind">공지 알림</span>
                     </button>
                 </li>
 
@@ -31,18 +40,18 @@
                     </a>
                     <button type="button" sec:authorize="isAuthenticated()" class="user_profile_button"
                             id="user_profile_button">
-                        <img id="header_profile_image" class="header_profile_image" th:src="${#strings.isEmpty(user_basic.profileImages) or #strings.equals(user_basic.profileImages,'<<<undefined>>>')
-                        ? '../images/user_default_thumbnail.png' : user_basic.profileImages}"
+                        <img id="header_profile_image" class="header_profile_image" th:src="${#strings.isEmpty(user_header.profileImages) or #strings.equals(user_header.profileImages,'<<<undefined>>>')
+                        ? '../images/user_default_thumbnail.png' : user_header.profileImages}"
                              style="    cursor: pointer; object-fit: cover; width: 3rem; height: 3rem;border-radius: 50%;"/>
                         <span class="blind">프로필</span>
                     </button>
                 </li>
             </ul>
 
-            <th:block th:if="${user_basic != null}">
+            <th:block th:if="${user_header != null}">
                 <ul class="user_option_div" id="user_option_div">
                     <li class="user_option_item">
-                        <a class="user_option_link" th:href="'/blog/' + ${user_basic.id}">내 블로그</a>
+                        <a class="user_option_link" th:href="'/blog/' + ${user_header.id}">내 블로그</a>
                     </li>
 
                     <li class="user_option_item">
@@ -59,7 +68,7 @@
                 </ul>
             </th:block>
 
-            <th:block th:if="${user_basic == null}">
+            <th:block th:if="${user_header == null}">
                 <ul class="user_option_div" id="user_option_div">
                     <li class="user_option_item">
                         <a class="user_option_link" th:href="'/blog?id=undefined'">내 블로그</a>

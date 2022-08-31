@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>설정 페이지</title>
+    <title>소개 페이지</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/post-util.css}">
 
@@ -10,6 +10,7 @@
         .intro_container {
             max-width: 500px;
             padding-left: 30px;
+            padding-bottom: 30px;
             white-space: nowrap;
         }
 
@@ -30,7 +31,7 @@
     <script>
         // Execute all functions
         document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("post_container").innerHTML = window.opener.document.getElementById("user_basic_info_intro").value;
+            document.getElementById("post_container").innerHTML = window.opener.document.getElementById("user_info_intro").value;
         });
     </script>
 </head>
