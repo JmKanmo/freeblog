@@ -26,7 +26,9 @@
                 <div class="post_write_container clear_fix">
                     <div class="post_write_link_container">
                         <img class="post_write_image" src="../images/write.png" alt="글쓰기버튼">
-                        <a class="post_write_link" th:href="'/post/write/' + ${user_profile.id}">글쓰기</a>
+                        <a class="post_write_link" id="post_write_button" target="_blank"
+                           th:href="'/post/write/' + ${user_profile.id}">글쓰기
+                        </a>
                     </div>
                 </div>
             </th:block>
@@ -47,7 +49,7 @@
             <ul class="blog_header_category_list" id="blog_header_category_list">
                 <li>
                     <button th:value="${category.totalCategoryDto.link}"
-                            class="common_category_button total_category_search_title" id="total_category_search_title">
+                            class="common_button_text total_category_search_title" id="total_category_search_title">
                         전체 카테고리
                         <span class="category_count_text" th:text="'(' + ${category.totalCategoryDto.totalCount} + ')'">전체개수</span>
                     </button>
@@ -56,7 +58,7 @@
                 <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
                     <li class="blog_header_category_elem">
                         <button th:value="${subCategoryDtoList.parentCategoryDto.link}"
-                                class="common_category_button blog_header_category_title"
+                                class="common_button_text blog_header_category_title"
                                 th:text="${subCategoryDtoList.parentCategoryDto.name}">
                             카테고리명
                         </button>
@@ -67,7 +69,7 @@
                             <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
                                 <li class="blog_header_sub_category_elem">
                                     <button th:value="${childCategoryDtoList.link}"
-                                            class="common_category_button blog_header_sub_category_title"
+                                            class="common_button_text blog_header_sub_category_title"
                                             th:text="${'- ' + childCategoryDtoList.name}"> 카테고리명
                                     </button>
                                     <span class="sub_category_count_text"

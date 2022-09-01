@@ -54,7 +54,7 @@ class BlogBodyController extends UtilController {
 
     initBlogBodyEventListener() {
         this.blogPostList.addEventListener("click", evt => {
-            const clickedCategoryButton = evt.target.closest(".common_category_button");
+            const clickedCategoryButton = evt.target.closest(".common_button_text");
             const prevClickedCategory = document.querySelector('[value = "' + localStorage.getItem("clickedCategoryButton") + '"]');
 
             if (prevClickedCategory != null) {

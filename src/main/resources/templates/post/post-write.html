@@ -1,10 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 쓰기</title>
+    <title>게시글 작성</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/post/post-write.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/post/post-write.js}"></script>
 </head>
 <body>
+<div class="post_write_container">
+    <div class="post_write_top_container clear_fix">
+        <h3 class="post_write_title">
+            게시글 작성
+        </h3>
 
+        <button type="submit" class="post_write_register_button">발행</button>
+    </div>
+
+    <form method="post" class="post_write_form" id="post_write_form" name="post_write_form"
+          enctype="multipart/form-data"
+          th:object="${blogPostInput}">
+
+        <div class="common_input_div input_block clear_fix">
+            <label for="post_name" class="common_input_label common_blog_name_label" title="블로그명">
+                <span class="blind">블로그이름</span>
+            </label>
+            <input type="text" id="post_name" name="postName" class="post_name_input" th:field="*{title}"
+                   maxlength="128" placeholder="제목을 입력해주세요 (최대 128글자)" required>
+        </div>
+
+        <div class="basic_info_spel_div">
+            <span id="user_post_name_validation_error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                  class="validation_error"></span>
+        </div>
+
+
+        <div class="post_write_block">
+            <div class="editor-board">
+                <!-- Contents Here -->
+                <div id="post_write_editor" class="post_write_editor">
+                    <!-- Contents Here -->
+                </div>
+                <button id="view-editor-source" type="button"
+                        class="common_source_view_label view_editor_source_button" title="텍스트 코드 보기"></button>
+            </div>
+        </div>
+
+        <div class="basic_info_spel_div">
+            <span th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}" id="post_write_validation_error"
+                  class="post_write_validation_err validation_error"></span>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+</div>
 </body>
 </html>

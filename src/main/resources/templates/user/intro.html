@@ -7,10 +7,13 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/common/post-util.css}">
 
     <style>
+        .container {
+            padding: 35px;
+        }
+
         .intro_container {
-            max-width: 500px;
-            padding-left: 30px;
-            padding-bottom: 30px;
+            max-width: 550px;
+            margin: 0 auto;
             white-space: nowrap;
         }
 
@@ -22,7 +25,6 @@
 
         .post_container {
             border: 1px solid #c9c9c9;
-            min-height: 300px;
             padding: 0px 20px 0px 20px;
             white-space: pre-line;
         }
@@ -37,11 +39,13 @@
 </head>
 
 <body>
-<div class="intro_container">
-    <h1 class="settings_title">내 소개</h1>
+<div class="container">
+    <div class="intro_container">
+        <h1 class="settings_title">내 소개</h1>
 
-    <div class="post_container" id="post_container">
-        <span class="blind">포스트 게시글</span>
+        <div class="post_container" id="post_container">
+            <span class="blind">포스트 게시글</span>
+        </div>
     </div>
 </div>
 </body>

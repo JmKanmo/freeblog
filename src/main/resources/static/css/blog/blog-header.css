@@ -76,6 +76,7 @@
 }
 
 .blog_header_container .post_write_container .post_write_link_container .post_write_link {
+    cursor: pointer;
     color: #333333;
     font-size: 11px;
     margin-left: 3px;

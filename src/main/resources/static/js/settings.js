@@ -50,7 +50,7 @@ class SettingsController extends HeaderController {
         });
 
         this.introShowButton.addEventListener("click", evt => {
-            this.openPopUp(570, 750, '/user/intro', 'popup')
+            this.openPopUp(988, 750, '/user/intro', 'popup')
         });
 
         this.userBasicInfoEditButton.addEventListener("click", evt => {

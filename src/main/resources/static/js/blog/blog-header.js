@@ -39,12 +39,12 @@ class BlogHeaderController extends BlogBodyController {
         });
 
         this.introButton.addEventListener("click", evt => {
-            this.openPopUp(570, 750, '/user/intro', 'popup');
+            this.openPopUp(988, 750, '/user/intro', 'popup');
         });
 
         // category button event listener
         this.blogHeaderCategoryList.addEventListener("click", evt => {
-            const clickedCategoryButton = evt.target.closest(".common_category_button");
+            const clickedCategoryButton = evt.target.closest(".common_button_text");
 
             if (clickedCategoryButton != null) {
                 if (this.clickedCategoryButton != clickedCategoryButton) {

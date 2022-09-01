@@ -13,6 +13,8 @@ public enum ServiceExceptionMessage {
     ALREADY_AUTHENTICATED_ACCOUNT("이미 이메일 인증 된 계정 입니다."),
     ACCOUNT_INFO_NOT_FOUND("계정 정보가 존재하지 않습니다."),
     MISMATCH_EMAIL("접속 중인 계정의 이메일 정보와 입력 값이 일치하지 않습니다."),
+
+    MISMATCH_ID("접속 중인 계정의 아이디 정보와 입력 값이 일치하지 않습니다."),
     MISMATCH_PASSWORD("접속 중인 계정의 비밀번호 정보와 입력 값이 일치하지 않습니다."),
     ID_PW_WRONG("아이디 또는 비밀번호가 틀립니다."),
     LOCK_ACCOUNT("잠긴 계정입니다."),
