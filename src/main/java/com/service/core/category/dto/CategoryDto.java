@@ -17,7 +17,7 @@ public class CategoryDto {
     private TotalCategoryDto totalCategoryDto;
     private List<SubCategoryDto> subCategoryDtoList;
 
-    public static CategoryDto fromEntity(List<CategoryMapperDto> categoryMapperDtoList, String userId) {
+    public static CategoryDto fromEntity(List<CategoryMapperDto> categoryMapperDtoList) {
         List<SubCategoryDto> subCategoryDtoList = new ArrayList<>();
         int totalCategoryCount = 0;
 
@@ -26,7 +26,7 @@ public class CategoryDto {
                 subCategoryDtoList.add(new SubCategoryDto());
             }
             SubCategoryDto subCategoryDto = subCategoryDtoList.get(categoryMapperDto.getSeq().intValue() - 1);
-            subCategoryDto.add(categoryMapperDto, userId);
+            subCategoryDto.add(categoryMapperDto);
         }
 
         for (SubCategoryDto subCategoryDto : subCategoryDtoList) {

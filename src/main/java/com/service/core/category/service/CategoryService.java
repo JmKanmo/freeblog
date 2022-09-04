@@ -5,7 +5,9 @@ import com.service.core.category.dto.CategoryDto;
 import com.service.core.post.dto.PostTotalDto;
 
 public interface CategoryService {
-    CategoryDto findCategoryDto(String userId);
+    CategoryDto findCategoryDtoByUserId(String userId);
+
+    CategoryDto findCategoryDtoByBlogId(Long blogId);
 
     PostTotalDto findPostByCategoryId(Long categoryId);
 

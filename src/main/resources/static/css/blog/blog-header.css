@@ -2,6 +2,7 @@
     float: left;
     max-width: 220px;
     border-right: 1px solid #e3e3e3;
+    border-bottom: 1px solid #e3e3e3;
 }
 
 .blog_header_container .blog_header_container_div {

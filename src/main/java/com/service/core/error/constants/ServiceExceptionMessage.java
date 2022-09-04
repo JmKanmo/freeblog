@@ -27,6 +27,10 @@ public enum ServiceExceptionMessage {
 
     // 카테고리 처리 관련 에러 메시지
     CATEGORY_NOT_FOUND("카테고리 정보가 존재하지 않습니다."),
+
+    // 블로그 처리 관련 에러 메시지
+    BLOG_NOT_FOUND("블로그 정보가 존재하지 않습니다."),
+
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다.");
     private final String message;

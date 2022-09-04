@@ -16,7 +16,7 @@ public class TotalCategoryDto {
     public static TotalCategoryDto fromEntity(int totalCount) {
         return TotalCategoryDto.builder()
                 .totalCount(totalCount)
-                .link(String.format("/category/all"))
+                .link(String.format("/category/post/all"))
                 .build();
     }
 }

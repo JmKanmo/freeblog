@@ -29,12 +29,16 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final PostService postService;
-
     private final BlogService blogService;
 
     @Override
-    public CategoryDto findCategoryDto(String userId) {
-        return CategoryDto.fromEntity(categoryMapper.findCategories(userId), userId);
+    public CategoryDto findCategoryDtoByUserId(String userId) {
+        return CategoryDto.fromEntity(categoryMapper.findCategoriesByUserId(userId));
+    }
+
+    @Override
+    public CategoryDto findCategoryDtoByBlogId(Long blogId) {
+        return CategoryDto.fromEntity(categoryMapper.findCategoriesByBlogId(blogId));
     }
 
     @Override

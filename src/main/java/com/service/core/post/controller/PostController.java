@@ -1,5 +1,6 @@
 package com.service.core.post.controller;
 
+import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
@@ -58,9 +59,10 @@ public class PostController {
             throw new UserAuthException(ServiceExceptionMessage.MISMATCH_ID);
         }
 
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(userHeaderDto.getId());
+
         model.addAttribute("user_header", userHeaderDto);
-        model.addAttribute("category", categoryService.findCategoryDto(userId));
-        model.addAttribute("blogPostInput", BlogPostInput.builder().build());
+        model.addAttribute("blogPostInput", BlogPostInput.builder().id(blogInfoDto.getId()).build());
         return "post/post-write";
     }
 

@@ -26,7 +26,34 @@ class PostWriteController extends UtilController {
     }
 
     initPostWriteController() {
+        this.#initTemplate();
         this.initEventListener();
+    }
+
+    #initTemplate() {
+        const xhr = new XMLHttpRequest();
+        const blogId = document.getElementById("hidden_blog_id").value;
+
+        xhr.open("GET", `/category/all/${blogId}`);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (status >= 400 && status <= 500) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                const categorySelectorOptionTemplate = document.getElementById("category-selector-option-template").innerHTML;
+                const categorySelectorOptionTemplateObject = Handlebars.compile(categorySelectorOptionTemplate);
+                const categorySelectorOptionTemplateHTML = categorySelectorOptionTemplateObject(responseValue["categoryDto"]);
+                this.postCategory.innerHTML = categorySelectorOptionTemplateHTML;
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 카테고리 데이터 수집에 실패하였습니다.');
+        });
+        xhr.send();
     }
 
     initEventListener() {
@@ -193,15 +220,14 @@ class PostWriteController extends UtilController {
             evt.preventDefault();
 
             if (confirm('게시글을 발행하겟습니까?')) {
-                this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
-                this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
-                this.hiddenBlogPostCategory.value = this.postCategory.value;
-                this.setTagText();
-
                 if (this.checkPostSubmitInfo()) {
-                    this.showToastMessage("게시글 정보가 올바르지 않습니다.");
+                    this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
                     return false;
                 } else {
+                    this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
+                    this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
+                    this.hiddenBlogPostCategory.value = this.postCategory.value;
+                    this.setTagText();
                     this.postWriteForm.submit();
                     return true;
                 }
@@ -231,7 +257,10 @@ class PostWriteController extends UtilController {
     }
 
     checkPostSubmitInfo() {
-        if (!this.postTitle.value || !this.hiddenBlogPostCategory.value || !this.hiddenBlogPostContents.value) {
+        if (!this.postTitle.value || !this.postCategory.value ||
+            (this.postWriterEditor.root.innerText === '\n' ||
+                this.postWriterEditor.root.innerText.replace(/ /g, "") === '\n') ||
+            !this.postWriterEditor.root.innerText.replace(/ /g, "")) {
             return true;
         } else {
             return false;

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>게시글 작성</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
+    <th:block th:replace="/fragments/template :: template"></th:block>
     <link th:href="@{/css/post/post-write.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/post/post-write.js}"></script>
 </head>
@@ -36,17 +37,7 @@
             </label>
 
             <select class="common_select_form post_select_form" id="post_category" name="category">
-                <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
-                    <option th:value="${subCategoryDtoList.parentCategoryDto.id}"
-                            th:text="${subCategoryDtoList.parentCategoryDto.name}">카테고리명
-                    </option>
-
-                    <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
-                        <option th:value="${childCategoryDtoList.id}" th:text="' - ' + ${childCategoryDtoList.name}">
-                            카테고리명
-                        </option>
-                    </th:block>
-                </th:block>
+                <!-- 카테고리 셀렉터 옵션 템플릿 -->
             </select>
         </div>
 
@@ -85,6 +76,7 @@
                   class="post_write_validation_err validation_error"></span>
         </div>
 
+        <input type="hidden" id="hidden_blog_id" name="id" th:value="${blogPostInput.id}">
         <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">
         <input type="hidden" id="hidden_blog_post_thumbnail_image" name="postThumbnailImage"
                th:field="*{postThumbnailImage}">

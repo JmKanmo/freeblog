@@ -24,4 +24,6 @@ public class BlogPostInput {
     private final String tag;
 
     private final String postThumbnailImage;
+
+    private final Long id;
 }

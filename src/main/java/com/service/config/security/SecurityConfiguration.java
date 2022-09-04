@@ -69,7 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // blog
                         "/blog/{id}",
                         // category
-                        "/category/all/{blogId}", "/category/{id}",
+                        "/category/post/all/{blogId}", "/category/post/{categoryId}", "/category/all/{blogId}",
                         // post
                         "/post/all/{blogId}",
                         "/error/**",

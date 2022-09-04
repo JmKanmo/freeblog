@@ -20,7 +20,7 @@ public class ParentCategoryDto {
     private String link;
     private Long postCount;
 
-    public static ParentCategoryDto fromEntity(CategoryMapperDto categoryMapperDto, String userId) {
+    public static ParentCategoryDto fromEntity(CategoryMapperDto categoryMapperDto) {
         if (categoryMapperDto == null) {
             return ParentCategoryDto.builder()
                     .id(Long.MAX_VALUE)
@@ -36,7 +36,7 @@ public class ParentCategoryDto {
                     .parentId(categoryMapperDto.getParentId())
                     .name(BlogUtil.ofNull(categoryMapperDto.getName()))
                     .seq(categoryMapperDto.getSeq())
-                    .link(String.format("/category/%d", categoryMapperDto.getCategoryId()))
+                    .link(String.format("/category/post/%d", categoryMapperDto.getCategoryId()))
                     .postCount(categoryMapperDto.getPostCount())
                     .build();
         }

@@ -4,4 +4,6 @@ import com.service.core.blog.domain.Blog;
 
 public interface BlogInfoService {
     Blog register(Blog blog);
+
+    Blog findBlogByIdOrThrow(Long blogId);
 }

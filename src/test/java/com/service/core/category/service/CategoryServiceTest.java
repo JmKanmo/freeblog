@@ -17,7 +17,7 @@ public class CategoryServiceTest {
     @Disabled
     void findCategoriesService() {
         try {
-            CategoryDto categoryDto = categoryService.findCategoryDto("nebi25");
+            CategoryDto categoryDto = categoryService.findCategoryDtoByUserId("nebi25");
             Assertions.assertNotNull(categoryDto);
         } catch (Exception e) {
             e.printStackTrace();

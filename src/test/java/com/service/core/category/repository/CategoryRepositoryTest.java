@@ -1,10 +1,7 @@
 package com.service.core.category.repository;
 
-import com.service.core.category.domain.Category;
 import com.service.core.category.domain.CategoryMapperDto;
-import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.repository.mapper.CategoryMapper;
-import com.service.core.category.service.CategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -24,7 +21,7 @@ class CategoryRepositoryTest {
     @Disabled
     void findCategoriesRepo() {
         try {
-            List<CategoryMapperDto> categoryList = categoryMapper.findCategories("akxk25");
+            List<CategoryMapperDto> categoryList = categoryMapper.findCategoriesByUserId("akxk25");
             Assertions.assertNotNull(categoryList);
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,11 +19,11 @@ public class SubCategoryDto {
 
     private int postCount;
 
-    public void add(CategoryMapperDto categoryMapperDto, String userId) {
+    public void add(CategoryMapperDto categoryMapperDto) {
         if (categoryMapperDto.getParentId() == 0) {
-            parentCategoryDto = ParentCategoryDto.fromEntity(categoryMapperDto, userId);
+            parentCategoryDto = ParentCategoryDto.fromEntity(categoryMapperDto);
         } else {
-            childCategoryDtoList.add(ChildCategoryDto.fromEntity(categoryMapperDto, userId));
+            childCategoryDtoList.add(ChildCategoryDto.fromEntity(categoryMapperDto));
         }
         postCount += categoryMapperDto.getPostCount();
     }

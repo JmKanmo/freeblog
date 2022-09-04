@@ -33,4 +33,9 @@ public class BlogServiceImpl implements BlogService {
         Blog blog = userInfoService.findBlogByEmailOrThrow(email);
         return blog;
     }
+
+    @Override
+    public Blog findBlogById(Long blogId) {
+        return blogInfoService.findBlogByIdOrThrow(blogId);
+    }
 }

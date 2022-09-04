@@ -4,12 +4,10 @@ class BlogBodyController extends UtilController {
         this.blogId = document.getElementById("blog_info_id").value;
         this.blogPostCategoryTextBox = document.getElementById("blog_post_category_text_box");
         this.blogPostList = document.getElementById("blog_post_list");
-        this.blogPostErrorContainer = document.getElementById("blog_post_error_container");
         this.prevClickedCategoryValue = null;
     }
 
     initBlogBodyController() {
-        this.initBlogPostDocument();
         this.requestAllBlogPost(`/post/all/${this.blogId}`);
         this.initBlogBodyEventListener();
     }
@@ -24,11 +22,7 @@ class BlogBodyController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (status >= 400 && status <= 500) {
-                this.blogPostErrorContainer.style.display = 'block';
-                const blogPostErrorMessageTemplate = document.getElementById("blog-post-error-message-template").innerHTML;
-                const blogPostErrorMessageTemplateObject = Handlebars.compile(blogPostErrorMessageTemplate);
-                const blogPostErrorMessageTemplateHTML = blogPostErrorMessageTemplateObject(responseValue);
-                this.blogPostErrorContainer.innerHTML = blogPostErrorMessageTemplateHTML;
+                this.showToastMessage(JSON.stringify(responseValue));
             } else {
                 const blogPostCategoryTemplate = document.getElementById("blog-post-category-template").innerHTML;
                 const blogPostCategoryTemplateObject = Handlebars.compile(blogPostCategoryTemplate);
@@ -46,10 +40,6 @@ class BlogBodyController extends UtilController {
             this.showToastMessage("블로그 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
-    }
-
-    initBlogPostDocument() {
-        this.blogPostErrorContainer.style.display = 'none';
     }
 
     initBlogBodyEventListener() {
@@ -70,7 +60,6 @@ class BlogBodyController extends UtilController {
     }
 }
 
-// document.getElementById("blog_info_id").value
 document.addEventListener('DOMContentLoaded', function () {
     const blogBodyController = new BlogBodyController();
     blogBodyController.initBlogBodyController();

@@ -7,5 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
-    List<CategoryMapperDto> findCategories(String userId);
+    List<CategoryMapperDto> findCategoriesByUserId(String userId);
+
+    List<CategoryMapperDto> findCategoriesByBlogId(Long blogId);
 }

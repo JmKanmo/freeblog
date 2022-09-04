@@ -128,17 +128,6 @@
         </li>
     </script>
 
-    <!-- 블로그 포스트 에러 메시지 템플릿 -->
-    <script id="blog-post-error-message-template" type="text/x-handlebars-template">
-        <h3 class="blog_post_error">
-            게시글을 로드하는데 실패하였습니다.
-        </h3>
-
-        <p class="blog_post_error_message_text">
-            {{message}}
-        </p>
-    </script>
-
     <!-- 카테고리 포스트 게시글 템플릿 -->
     <script id="blog-post-category-template" type="text/x-handlebars-template">
         <h3 class="blog_post_category_text">
@@ -170,7 +159,7 @@
             </a>
 
             <div>
-                <button value="/category/{{categoryId}}" class="common_button_text blog_post_category_link">
+                <button value="/category/post/{{categoryId}}" class="common_button_text blog_post_category_link">
                     {{category}}
                 </button>
                 <span class="blog_post_post_date_text">{{registerTime}}</span>
@@ -191,13 +180,29 @@
             </a>
 
             <div>
-                <button value="/category/{{categoryId}}" class="common_button_text blog_post_category_link">
+                <button value="/category/post/{{categoryId}}" class="common_button_text blog_post_category_link">
                     {{category}}
                 </button>
                 <span class="blog_post_post_date_text">{{registerTime}}</span>
             </div>
         </li>
         {{/if}}
+        {{/each}}
+    </script>
+
+
+    <!-- 카테고리 셀렉터 옵션 템플릿 -->
+    <script id="category-selector-option-template" type="text/x-handlebars-template">
+        {{#each subCategoryDtoList}}
+        <option value={{parentCategoryDto.id}}>
+            {{parentCategoryDto.name}}
+        </option>
+
+        {{#each childCategoryDtoList}}
+        <option value={{id}}>
+            - {{name}}
+        </option>
+        {{/each}}
         {{/each}}
     </script>
 </th:block>
