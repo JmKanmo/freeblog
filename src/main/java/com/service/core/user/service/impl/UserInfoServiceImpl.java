@@ -80,4 +80,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     public Blog findBlogByIdOrThrow(String id) {
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())).getBlog();
     }
+
+    @Override
+    public Blog findBlogByEmailOrThrow(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())).getBlog();
+    }
 }

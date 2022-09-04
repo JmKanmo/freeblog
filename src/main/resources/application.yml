@@ -133,8 +133,8 @@ logging:
     com.service: INFO
 
     org.hibernate:
-      SQL: debug
-      type.descriptor.sql: trace
+#      SQL: debug
+#      type.descriptor.sql: trace
 
 mybatis:
   mapper-locations: mybatis/**/*.xml

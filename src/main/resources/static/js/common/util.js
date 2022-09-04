@@ -13,9 +13,16 @@ class UtilController {
         Handlebars.registerHelper('existImage', image => {
             return image != null && image != '<<<undefined>>>';
         });
+
+        Handlebars.registerHelper('getInnerText', tag => {
+            return tag.replace(/(<([^>]+)>)/ig, "");
+        });
     }
 
-    /** 오픈소스 참조 (로딩 중 화면 만들기) **/
+    /**
+     * 오픈소스 참조 (로딩 중 화면 만들기)
+     * 추후 다른 라이브러리 대체
+     * **/
     loadingWithMask(width, height) {
         //화면의 높이와 너비를 구합니다.
         const maskHeight = height;
@@ -81,6 +88,16 @@ class UtilController {
         }).showToast();
     }
 
+    checkSpecialCharacter(text) {
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+
+        if (regExp.test(text)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     checkEmailRegExp(email) {
         return this.emailRegex.test(email);
     }
@@ -136,7 +153,7 @@ class UtilController {
             'image-tooltip': true,
             'link-tooltip': true,
             theme: 'snow',
-            placeholder: '소개를 입력해주세요.'
+            placeholder: '원하는 문장을 자유롭게 입력하세요. :)'
         });
     }
 

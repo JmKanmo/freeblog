@@ -43,7 +43,7 @@ public class BlogController {
         model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
         model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("category", categoryService.findCategoryDto(id));
-        model.addAttribute("blog_info", blogService.findBlogInfoDto(id));
+        model.addAttribute("blog_info", blogService.findBlogInfoDtoById(id));
         // TODO 최신글, 전체글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
         return "blog/myblog";
     }

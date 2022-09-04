@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -28,11 +30,12 @@ public class BlogUtil {
     }
 
     public static boolean checkBlogOwner(Principal principal, int emailHash) {
-        if(principal == null || Objects.hashCode(principal.getName()) != emailHash) {
+        if (principal == null || Objects.hashCode(principal.getName()) != emailHash) {
             return false;
         }
         return true;
     }
+
     public static boolean isAuth(Authentication authentication) {
         return authentication != null && authentication.isAuthenticated();
     }
@@ -124,5 +127,13 @@ public class BlogUtil {
     public static String formatLocalDateTimeToStr(LocalDateTime localDateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
         return localDateTime != null ? localDateTime.format(formatter) : "";
+    }
+
+    public static <T> List<T> convertArrayToList(T[] array) {
+        List<T> list = new ArrayList<>();
+        for (T item : array) {
+            list.add(item);
+        }
+        return list;
     }
 }

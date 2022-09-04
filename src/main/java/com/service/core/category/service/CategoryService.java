@@ -12,4 +12,6 @@ public interface CategoryService {
     PostTotalDto findPostByBlogId(Long blogId);
 
     String findCategoryName(Category category);
+
+    Category findCategoryById(String email, Long categoryId);
 }

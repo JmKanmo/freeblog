@@ -1,41 +1,188 @@
+body {
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+/* post_write container 정의 */
 .post_write_container {
     margin: 0 auto;
     width: 988px;
-    padding: 20px 0px 30px 0px;
-}
-
-.post_write_container .post_write_title {
-    font-size: 20px;
-    text-align: center;
-    color: #628ca1;
-    margin: 0;
+    padding: 20px 20px 30px 20px;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
 }
 
 .post_write_container .post_write_top_container {
-    padding-bottom: 13px
+    padding-bottom: 25px
+}
+
+.post_write_container .post_write_form .input_block {
+    padding-bottom: 45px;
 }
 
 .post_write_container .post_write_register_button {
     float: right;
-    width: 83px;
-    height: 33px;
-    border: 1px solid #08a600;
-    background-color: #4ec53d;
-    font-size: 15px;
+    width: 90px;
+    height: 40px;
+    border: 1px solid #6194ac;
+    background-color: #6194ac;
+    font-size: 17px;
     color: #fff;
     cursor: pointer;
     border-radius: 5px;
 }
 
 .post_write_container .post_write_form {
-    border: 1px solid #eeeeee;
     padding: 20px 30px 20px 30px;
 }
 
 .post_write_container .post_write_form .post_name_input {
     border: 0;
-    border-bottom: 1px solid #efefef;
-    width: 100%;
+    border-bottom: 1px solid #9e9e9e;
+    width: 390px;
     padding-bottom: 5px;
+    font-size: 14px;
+    margin-left: 10px;
 }
 
+/* 포스트 카테고리 정의 */
+.post_write_container .post_write_form .category_input_block {
+    padding-bottom: 40px;
+}
+
+.post_write_container .post_write_form .category_input_block .post_select_form {
+    margin-left: 10px;
+}
+
+/* 포스트 태그 정의 */
+.post_write_container .post_write_form .post_tag_block {
+    padding-bottom: 35px;
+    align-items: flex-start;
+}
+
+.post_write_container .post_write_form .post_tag_block .tag_input_box {
+    margin-left: 10px;
+}
+
+.post_write_container .post_write_form .post_tag_block .tag_input_box .tag_name_input {
+    width: 150px;
+    border: 0;
+    border-bottom: 1px solid #9e9e9e;
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+
+.post_write_container .post_write_form .post_tag_block .tag_input_box .tag_input_block .tag_register_button {
+    margin-left: 5px;
+}
+
+.post_write_container .post_write_form .post_tag_block .tag_input_box .created_tag_box {
+    display: none;
+    margin-top: 15px;
+    padding: 0px 10px 10px 10px;
+    max-height: 75px;
+    overflow-y: scroll;
+    border: 1px solid #d9d9d9;
+    border-radius: 1px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 13px;
+    height: 72px;
+    line-height: 22px;
+    overflow-y: auto;
+    padding: 8px;
+    width: 390px;
+}
+
+.post_write_container .post_write_form .post_tag_block .tag_input_box .created_tag_box .created_tag_text {
+    font-size: 13px;
+    color: #607d8b;
+    background-color: #eee;
+    word-wrap: break-word;
+    background-color: #eee;
+    border-radius: 2px;
+    display: inline-block;
+    margin: 0 5px 6px 0;
+    padding: 0 3px;
+    position: relative;
+    vertical-align: top;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+/* 포스트 editor 폼 정의 */
+.post_write_container .post_write_form .post_write_block .editor-board {
+    position: relative;
+}
+
+.post_write_container .post_write_form .post_write_block .editor-board .post_write_editor {
+    padding-right: 15px;
+    padding-top: 15px;
+    min-height: 150px;
+}
+
+.post_write_container .post_write_form .post_write_block .view_editor_source_button {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: 0;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    cursor: pointer;
+}
+
+/* 포스트 썸네일 이미지 폼 정의 */
+.post_thumbnail_image_form {
+    padding: 10px 30px 0px 30px;
+}
+
+.post_thumbnail_image_form .post_thumbnail_input_button {
+    cursor: pointer;
+}
+
+.post_thumbnail_image_form .common_button_text {
+    font-size: 14px;
+    color: darkcyan;
+}
+
+.post_thumbnail_image_form .post_thumbnail_image_input {
+    display: none;
+}
+
+.post_thumbnail_image_form .post_thumbnail_image_box .post_thumbnail_image {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+/* 포스트 썸네일 이미지 박스 */
+.post_thumbnail_image_box {
+    position: relative;
+    padding: 15px 15px 15px 15px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #d9d9d9;
+    margin: 10px 0px 0px 30px;
+    display: none;
+}
+
+.post_thumbnail_image_box .post_thumbnail_image_delete_button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    border: 0;
+    cursor: pointer;
+}
+
+.post_thumbnail_image_box .post_thumbnail_image {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}

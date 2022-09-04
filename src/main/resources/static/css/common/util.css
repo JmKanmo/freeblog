@@ -109,6 +109,25 @@ a {
     cursor: pointer;
 }
 
+.common_select_form {
+    width: 298px;
+    height: 30px;
+    border: 1px solid #d9d9d9;
+    font-size: 12px;
+}
+
+.common_post_thumbnail_label {
+    background-image: url(/images/post_thumbnail.png);
+}
+
+.common_tag_label {
+    background-image: url(/images/tag.png);
+}
+
+.common_category_label {
+    background-image: url(/images/category.png);
+}
+
 .common_notice_bell_label {
     background-image: url(/images/notice_bell.png);
 }

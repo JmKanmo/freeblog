@@ -9,15 +9,16 @@
                post.thumbnail_image,
                post.contents,
                post.writer,
-               date_format(post.register_time, '%Y.%m.%d %h:%m:%s') as register_time,
+               date_format(post.register_time, '%y.%m.%d %H:%i:%s') as register_time,
                CASE
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
                        THEN c.name
                    ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
-                   END as category,
+                   END                                              as category,
                c.category_id
         from post
                  inner join category c on post.category_id = c.category_id
         where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
+        order by register_time desc
     </select>
 </mapper>

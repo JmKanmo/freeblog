@@ -25,4 +25,6 @@ public interface UserInfoService {
     boolean checkExistById(String id);
 
     Blog findBlogByIdOrThrow(String id);
+
+    Blog findBlogByEmailOrThrow(String email);
 }

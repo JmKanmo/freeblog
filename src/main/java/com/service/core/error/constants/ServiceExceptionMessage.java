@@ -13,7 +13,7 @@ public enum ServiceExceptionMessage {
     ALREADY_AUTHENTICATED_ACCOUNT("이미 이메일 인증 된 계정 입니다."),
     ACCOUNT_INFO_NOT_FOUND("계정 정보가 존재하지 않습니다."),
     MISMATCH_EMAIL("접속 중인 계정의 이메일 정보와 입력 값이 일치하지 않습니다."),
-
+    NOT_LOGIN_STATUS_ACCESS("로그인 되어있지 않은 상태에서 접속하였습니다."),
     MISMATCH_ID("접속 중인 계정의 아이디 정보와 입력 값이 일치하지 않습니다."),
     MISMATCH_PASSWORD("접속 중인 계정의 비밀번호 정보와 입력 값이 일치하지 않습니다."),
     ID_PW_WRONG("아이디 또는 비밀번호가 틀립니다."),
@@ -25,6 +25,8 @@ public enum ServiceExceptionMessage {
     WITHDRAW_ACCOUNT("탈퇴 된 계정입니다."),
     STOP_ACCOUNT("정지 된 계정입니다."),
 
+    // 카테고리 처리 관련 에러 메시지
+    CATEGORY_NOT_FOUND("카테고리 정보가 존재하지 않습니다."),
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다.");
     private final String message;

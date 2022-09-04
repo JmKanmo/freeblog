@@ -6,5 +6,7 @@ import com.service.core.blog.dto.BlogInfoDto;
 public interface BlogService {
     Blog register(Blog blog);
 
-    BlogInfoDto findBlogInfoDto(String id);
+    BlogInfoDto findBlogInfoDtoById(String id);
+
+    Blog findBlogByEmail(String email);
 }

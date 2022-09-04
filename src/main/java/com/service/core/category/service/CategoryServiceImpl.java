@@ -1,21 +1,24 @@
 package com.service.core.category.service;
 
+import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.repository.CategoryRepository;
 import com.service.core.category.repository.mapper.CategoryMapper;
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.CategoryManageException;
+import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.service.PostService;
 import com.service.util.ConstUtil;
-import com.service.util.redis.CacheKey;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.util.ArrayUtils;
 
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,7 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
     private final PostService postService;
 
-    @Cacheable(value = CacheKey.CATEGORY_DTO, key = "#userId")
+    private final BlogService blogService;
+
     @Override
     public CategoryDto findCategoryDto(String userId) {
         return CategoryDto.fromEntity(categoryMapper.findCategories(userId), userId);
@@ -41,7 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
             return PostTotalDto.fromPostDtoList(Collections.emptyList(), ConstUtil.NOT_EXIST_CATEGORY);
         } else {
             Category category = categoryOptional.get();
-            return PostTotalDto.fromPostDtoList(category.getPostList().stream().map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category));
+            return PostTotalDto.fromPostDtoList(category.getPostList().stream().sorted(Comparator.comparing(Post::getRegisterTime).reversed())
+                    .map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category));
         }
     }
 
@@ -62,5 +67,17 @@ public class CategoryServiceImpl implements CategoryService {
             String parentCategoryName = parentCategory.getName();
             return parentCategoryName + "/" + categoryName;
         }
+    }
+
+    @Override
+    public Category findCategoryById(String email, Long categoryId) {
+        List<Category> categoryList = blogService.findBlogByEmail(email).getCategoryList();
+
+        for (Category category : categoryList) {
+            if (category.getId() == categoryId) {
+                return category;
+            }
+        }
+        throw new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND);
     }
 }

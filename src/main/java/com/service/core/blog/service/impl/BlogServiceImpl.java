@@ -11,19 +11,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BlogServiceImpl implements BlogService {
     private final BlogInfoService blogInfoService;
     private final UserInfoService userInfoService;
 
+    @Transactional
     @Override
     public Blog register(Blog blog) {
         return blogInfoService.register(blog);
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public BlogInfoDto findBlogInfoDto(String id) {
+    public BlogInfoDto findBlogInfoDtoById(String id) {
         Blog blog = userInfoService.findBlogByIdOrThrow(id);
         return BlogInfoDto.fromEntity(blog);
+    }
+
+    @Override
+    public Blog findBlogByEmail(String email) {
+        Blog blog = userInfoService.findBlogByEmailOrThrow(email);
+        return blog;
     }
 }

@@ -9,24 +9,20 @@
 </head>
 <body>
 <div class="post_write_container">
-    <div class="post_write_top_container clear_fix">
-        <h3 class="post_write_title">
-            게시글 작성
-        </h3>
-
-        <button type="submit" class="post_write_register_button">발행</button>
-    </div>
-
     <form method="post" class="post_write_form" id="post_write_form" name="post_write_form"
           enctype="multipart/form-data"
           th:object="${blogPostInput}">
 
+        <div class="post_write_top_container clear_fix">
+            <button type="submit" class="post_write_register_button">발행</button>
+        </div>
+
         <div class="common_input_div input_block clear_fix">
-            <label for="post_name" class="common_input_label common_blog_name_label" title="블로그명">
+            <label for="post_title" class="common_input_label common_blog_name_label" title="블로그명">
                 <span class="blind">블로그이름</span>
             </label>
-            <input type="text" id="post_name" name="postName" class="post_name_input" th:field="*{title}"
-                   maxlength="128" placeholder="제목을 입력해주세요 (최대 128글자)" required>
+            <input type="text" id="post_title" name="postName" class="post_name_input" th:field="*{title}"
+                   maxlength="128" placeholder="제목을 입력해주세요. (최대 128글자)" required>
         </div>
 
         <div class="basic_info_spel_div">
@@ -34,6 +30,44 @@
                   class="validation_error"></span>
         </div>
 
+        <div class="category_input_block">
+            <label for="post_category" class="common_input_label common_category_label" title="카테고리">
+                <span class="blind">카테고리</span>
+            </label>
+
+            <select class="common_select_form post_select_form" id="post_category" name="category">
+                <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
+                    <option th:value="${subCategoryDtoList.parentCategoryDto.id}"
+                            th:text="${subCategoryDtoList.parentCategoryDto.name}">카테고리명
+                    </option>
+
+                    <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
+                        <option th:value="${childCategoryDtoList.id}" th:text="' - ' + ${childCategoryDtoList.name}">
+                            카테고리명
+                        </option>
+                    </th:block>
+                </th:block>
+            </select>
+        </div>
+
+        <div class="common_input_div post_tag_block clear_fix">
+            <label for="post_tag_input" class="common_input_label common_tag_label" title="태그">
+                <span class="blind">테그</span>
+            </label>
+
+            <div class="tag_input_box">
+                <div class="tag_input_block clear_fix">
+                    <input type="text" id="post_tag_input" class="tag_name_input" maxlength="100"
+                           placeholder="#태그 입력 (최대 30개)">
+                    <button type="button" class="common_orange_button tag_register_button" id="tag_register_button">등록
+                    </button>
+                </div>
+
+                <div class="created_tag_box" id="created_tag_box">
+                    <!-- created tag text template -->
+                </div>
+            </div>
+        </div>
 
         <div class="post_write_block">
             <div class="editor-board">
@@ -50,8 +84,38 @@
             <span th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}" id="post_write_validation_error"
                   class="post_write_validation_err validation_error"></span>
         </div>
+
+        <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">
+        <input type="hidden" id="hidden_blog_post_thumbnail_image" name="postThumbnailImage"
+               th:field="*{postThumbnailImage}">
+        <input type="hidden" id="hidden_blog_post_category" name="category" th:field="*{category}">
+        <input type="hidden" id="hidden_blog_post_contents" name="contents" th:field="*{contents}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
+
+    <form action="/post/upload/post-thumbnail-image" method="post" enctype="multipart/form-data"
+          id="post_thumbnail_image_form"
+          name="post_thumbnail_image_form" class="common_input_div post_thumbnail_image_form clear_fix">
+        <div class="common_input_label common_post_thumbnail_label"
+             title="포스트 썸네일 이미지">
+            <span class="blind">포스트 썸네일 이미지</span>
+        </div>
+
+        <button type="button" class="common_button_text post_thumbnail_input_button" id="post_thumbnail_input_button">
+            썸네일 이미지 지정
+        </button>
+
+        <input type="file" id="post_thumbnail_image_input" name="post_thumbnail_image_input"
+               class="post_thumbnail_image_input" accept="image/jpeg, image/jpg, image/png, image/gif, image/GIF">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+
+    <div class="post_thumbnail_image_box" id="post_thumbnail_image_box">
+        <img class="post_thumbnail_image" id="post_thumbnail_image" src="" alt="게시글 썸네일 이미지">
+        <button class="post_thumbnail_image_delete_button common_close_label" id="post_thumbnail_image_delete_button">
+            <span class="blind">이미지 삭제</span>
+        </button>
+    </div>
 </div>
 </body>
 </html>
