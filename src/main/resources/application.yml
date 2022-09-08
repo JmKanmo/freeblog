@@ -125,7 +125,7 @@ logging:
     file: "[%d] %-5level [${PID:-} - %thread - {%C => %M, %l}] %logger : %msg%n"
 
   file:
-    name: ./logs/JmBlog.log
+    name: ./logs/freelog.log
     max-history: 30
 
   level:
@@ -144,18 +144,3 @@ mybatis:
 
 scheduler:
   find-user-info: "* * 0 * * *"
-
-util-config:
-  aws_ec2_sftp:
-    ip: 192.584.34.343
-    port: 22
-    id: id
-    password: password
-    directory: directory
-    timeout: 100
-
-  aws_s3-bucket:
-    access_key_id: AKIA3Y4KG56CSZH7JPWR
-    secret_access_key_id: yqoNogJhlu+ifSJqJJkUU4W6oTtw6R9gj6ZrCgDt
-    bucket_name: freelog-s3-bucket
-

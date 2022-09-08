@@ -18,7 +18,7 @@
                                                                                  inner join blog on user.blog_id = blog.blog_id
                                                                         where user.user_id = #{userId}))
         group by category.category_id
-        order by category.seq
+        order by category.seq, category.register_time
     </select>
 
     <select id="findCategoriesByBlogId" resultType="com.service.core.category.domain.CategoryMapperDto">
@@ -33,6 +33,6 @@
                                        from (select * from category order by blog_id) sorted_category
                                        where sorted_category.blog_id = #{blogId})
         group by category.category_id
-        order by category.seq
+        order by category.seq, category.register_time
     </select>
 </mapper>
