@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class BlogUtil {
     public static String mappingRedirectUrl(String redirectUrl) {
@@ -135,5 +136,13 @@ public class BlogUtil {
             list.add(item);
         }
         return list;
+    }
+
+    public static <T> Stream<T> getSlice(Stream<T> stream, int fromIndex, int toIndex) {
+        return stream
+                // 건너뛸 요소의 총 개수 지정
+                .skip(fromIndex)
+                // 스트림이 제한되어야 하는 요소의 총 수를 지정합니다.
+                .limit(toIndex - fromIndex + 1);
     }
 }

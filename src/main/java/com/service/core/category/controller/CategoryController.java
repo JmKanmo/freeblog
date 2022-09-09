@@ -3,7 +3,9 @@ package com.service.core.category.controller;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.dto.CategoryResponseDto;
 import com.service.core.category.service.CategoryService;
+import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.dto.PostResponseDto;
+import com.service.util.paging.SearchDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -43,12 +45,12 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
     })
     @GetMapping("/post/all/{blogId}")
-    public ResponseEntity<PostResponseDto> findTotalPostByBlogId(@PathVariable Long blogId) {
+    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute SearchDto searchDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(categoryService.findPostByBlogId(blogId)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByBlogId(blogId, searchDto)));
         } catch (Exception exception) {
             log.error("[freelog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(exception));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
 
@@ -58,12 +60,12 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
     })
     @GetMapping("/post/{categoryId}")
-    public ResponseEntity<PostResponseDto> findTotalPostByCategoryId(@PathVariable Long categoryId) {
+    public ResponseEntity<PostPagingResponseDto> findTotalPostByCategoryId(@PathVariable Long categoryId, @ModelAttribute SearchDto searchDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(categoryService.findPostByCategoryId(categoryId)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByCategoryId(categoryId, searchDto)));
         } catch (Exception exception) {
             log.error("[freelog-findTotalPostByCategoryId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(exception));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
 }

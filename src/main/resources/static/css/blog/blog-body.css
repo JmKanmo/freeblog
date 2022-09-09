@@ -12,6 +12,7 @@
 .blog_body_container .blog_title_container .blog_title {
     margin: 0;
     font-size: 25px;
+    font-weight: bold;
 }
 
 /* 블로그 제목 배너 스타일 */

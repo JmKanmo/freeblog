@@ -5,6 +5,7 @@ class BlogBodyController extends UtilController {
         this.blogPostCategoryTextBox = document.getElementById("blog_post_category_text_box");
         this.blogPostList = document.getElementById("blog_post_list");
         this.prevClickedCategoryValue = null;
+        this.pagination = document.getElementById("pagination");
     }
 
     initBlogBodyController() {
@@ -12,10 +13,11 @@ class BlogBodyController extends UtilController {
         this.initBlogBodyEventListener();
     }
 
-    requestAllBlogPost(url) {
+    requestAllBlogPost(url, page) {
         const xhr = new XMLHttpRequest();
+        const queryParam = this.getQueryParam(page);
 
-        xhr.open("GET", url);
+        xhr.open("GET", url + '?' + queryParam.toString());
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -24,15 +26,15 @@ class BlogBodyController extends UtilController {
             if (status >= 400 && status <= 500) {
                 this.showToastMessage(JSON.stringify(responseValue));
             } else {
-                const blogPostCategoryTemplate = document.getElementById("blog-post-category-template").innerHTML;
-                const blogPostCategoryTemplateObject = Handlebars.compile(blogPostCategoryTemplate);
-                const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["postTotalDto"]["postSummaryDto"]);
-                this.blogPostCategoryTextBox.innerHTML = blogPostCategoryTemplateHTML;
+                if (responseValue["paginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                    this.#handleTemplateList(responseValue, true);
+                    this.#clearPagination();
+                    return;
+                }
 
-                const blogPostListTemplate = document.getElementById("blog-post-image-template").innerHTML;
-                const blogPostListTemplateObject = Handlebars.compile(blogPostListTemplate);
-                const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["postTotalDto"]);
-                this.blogPostList.innerHTML = blogPostListTemplateHTML;
+                this.#handleTemplateList(responseValue);
+                this.#clearPagination();
+                this.#handlePagination(responseValue["paginationResponse"]["pagination"], queryParam, url);
             }
         });
 
@@ -40,6 +42,34 @@ class BlogBodyController extends UtilController {
             this.showToastMessage("블로그 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
+    }
+
+    #handleTemplateList(responseValue, empty = false) {
+        const blogPostCategoryTemplate = document.getElementById("blog-post-category-template").innerHTML;
+        const blogPostCategoryTemplateObject = Handlebars.compile(blogPostCategoryTemplate);
+        const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["paginationResponse"]["postTotalDto"]["postSummaryDto"]);
+        this.blogPostCategoryTextBox.innerHTML = blogPostCategoryTemplateHTML;
+
+        if (empty) {
+            this.blogPostList.innerHTML = `<h3 class="common_gray_text">게시글이 존재하지 않습니다.</h3>`;
+        } else {
+            const blogPostListTemplate = document.getElementById("blog-post-image-template").innerHTML;
+            const blogPostListTemplateObject = Handlebars.compile(blogPostListTemplate);
+            const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["paginationResponse"]["postTotalDto"]);
+            this.blogPostList.innerHTML = blogPostListTemplateHTML;
+        }
+    }
+
+    #handlePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.pagination.innerHTML = '';
+            return;
+        }
+        this.pagination.innerHTML = this.drawPagination(pagination, queryParam, url);
+    }
+
+    #clearPagination() {
+        this.pagination.innerHTML = ``;
     }
 
     initBlogBodyEventListener() {
@@ -55,6 +85,19 @@ class BlogBodyController extends UtilController {
             if (clickedCategoryButton != null && this.prevClickedCategoryValue != clickedCategoryButton.innerText) {
                 this.requestAllBlogPost(clickedCategoryButton.value);
                 this.prevClickedCategoryValue = clickedCategoryButton.innerText;
+            }
+        });
+
+        this.pagination.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+
+            if (button && !button.closest("li").classList.contains("active")) {
+                const url = button.getAttribute("url");
+                const page = button.getAttribute("page");
+
+                if (url && page) {
+                    this.requestAllBlogPost(url, page);
+                }
             }
         });
     }

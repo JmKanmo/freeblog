@@ -17,4 +17,11 @@ public class PostTotalDto {
                 .postDtoList(postDtoList)
                 .build();
     }
+
+    public static PostTotalDto fromPostDtoList(List<PostDto> postDtoList, int count, String type) {
+        return PostTotalDto.builder()
+                .postSummaryDto(PostSummaryDto.from(count, type))
+                .postDtoList(postDtoList)
+                .build();
+    }
 }

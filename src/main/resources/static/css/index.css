@@ -10,6 +10,11 @@
     align-items: center;
 }
 
+.blog_view_div .blog_view_select_text {
+    font-size: 15px;
+    text-align: center;
+}
+
 .blog_view_div .blog_view_select {
     background: #1e1e1e;
     color: #eeeeee;

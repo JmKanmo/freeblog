@@ -130,6 +130,7 @@
 /* 서브 카테고리 스타일 정의 */
 .blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list {
     margin-left: 10px;
+    margin-top: 4px;
 }
 
 .blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem:nth-child(n+2) {

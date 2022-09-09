@@ -17,4 +17,11 @@ public class PostSummaryDto {
                 .count(postDtoList.size())
                 .build();
     }
+
+    public static PostSummaryDto from(int count, String type) {
+        return PostSummaryDto.builder()
+                .type(type)
+                .count(count)
+                .build();
+    }
 }

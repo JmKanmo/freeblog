@@ -84,6 +84,8 @@ a {
 .common_form_title {
     font-size: 25px;
     color: #333;
+    font-weight: bold;
+    padding-bottom: 15px;
 }
 
 .common_form {
@@ -198,6 +200,8 @@ a {
     height: 35px;
     box-sizing: border-box;
     width: 100%;
+    font-size: 13px;
+    padding-left: 3px;
 }
 
 .spel_div {
@@ -527,4 +531,10 @@ a {
     background: linear-gradient(40deg, #ffd86f, #fc6262) !important;
     -webkit-background-clip: text !important;
     color: transparent;
+}
+
+/* pagination style */
+.common-pagination-justify-content-center {
+    display: flex;
+    justify-content: center;
 }

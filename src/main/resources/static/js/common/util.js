@@ -236,6 +236,64 @@ class UtilController {
         }
         return true;
     }
+
+    getQueryParam(page) {
+        return new URLSearchParams({
+            page: (page) ? page : 1,
+            recordSize: 7,
+            pageSize: 7
+            // TODO 필요에 따라 keyword, searchType 등등 추가로 정의
+        });
+    }
+
+    drawPagination(pagination, queryParam, url) {
+        let html = '';
+
+        // 첫 페이지, 이전 페이지
+        if (pagination["existPrevPage"]) {
+            html += `
+               <li class="page-item">
+                    <button class="page-link" aria-label="Previous" url="${url}" page="1">
+                    <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                
+                <li class="page-item">
+                    <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["startPage"] - 1}">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    </button>
+                </li>
+            `;
+        }
+
+        // 페이지 번호
+        for (let i = pagination["startPage"]; i <= pagination["endPage"]; i++) {
+            const active = (i === parseInt(queryParam.get("page"))) ? 'active' : '';
+            html += `
+             <li class="page-item ${active}">
+                    <button class="page-link" url="${url}" page="${i}">${i}</button>
+                </li>
+            `;
+        }
+
+        // 다음 페이지, 마지막 페이지
+        if (pagination["existNextPage"]) {
+            html += `
+             <li class="page-item">
+                    <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["endPage"] + 1}">
+                    <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                
+                <li class="page-item">
+                    <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["totalPageCount"]}">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    </button>
+                </li>
+            `;
+        }
+        return html;
+    }
 }
 
 /**
