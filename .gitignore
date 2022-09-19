@@ -41,3 +41,6 @@ application-prod.yml
 
 ### application-util.yml ###
 application-util.yml
+
+### application-env.yml ###
+application-env.yml
