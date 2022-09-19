@@ -31,6 +31,9 @@ public enum ServiceExceptionMessage {
     // 블로그 처리 관련 에러 메시지
     BLOG_NOT_FOUND("블로그 정보가 존재하지 않습니다."),
 
+    // 포스트 처리 관련 에러 메시지
+    POST_NOT_FOUND("포스트 정보가 존재하지 않습니다."),
+
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다.");
     private final String message;

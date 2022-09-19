@@ -60,19 +60,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers(
                         "/",
-                        "/api-docs/**",
-                        "/swagger-ui-custom/**",
                         // user
-                        "/user/intro", "/user/login", "/user/signup",
-                        "/user/signup-complete", "/user/find-info", "/user/find-email",
+                        "/user/intro", "/user/login",
+                        "/user/signup", "/user/signup-complete",
+                        "/user/find-info", "/user/find-email",
                         "/user/check-id", "/user/check-email", "/user/email-auth",
                         // blog
                         "/blog/{id}",
                         // category
-                        "/category/post/all/{blogId}", "/category/post/{categoryId}", "/category/all/{blogId}",
+                        "/category/post/**", "/category/all/{blogId}",
                         // post
-                        "/post/all/{blogId}",
+                        "/post/all/{blogId}", "/post/{postId}",
+                        // error
                         "/error/**",
+                        // email
                         "/email/send/**"
                 )
                 .permitAll()

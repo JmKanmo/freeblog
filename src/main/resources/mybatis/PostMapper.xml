@@ -15,9 +15,11 @@
                        THEN c.name
                    ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
                    END                                              as category,
-               c.category_id
+               c.category_id,
+               b.blog_id
         from post
                  inner join category c on post.category_id = c.category_id
+                 inner join blog b on b.blog_id = #{blogId}
         where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
         order by register_time desc
     </select>
@@ -35,9 +37,11 @@
                        THEN c.name
                    ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
                    END                                              as category,
-               c.category_id
+               c.category_id,
+               b.blog_id
         from post
                  inner join category c on post.category_id = c.category_id
+                 inner join blog b on b.blog_id = #{blogId}
         where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
         order by register_time desc LIMIT #{searchDto.pagination.limitStart}, #{searchDto.recordSize}
     </select>

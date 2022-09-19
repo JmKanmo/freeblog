@@ -364,8 +364,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "프로필 이미지 삭제 완료"),
             @ApiResponse(responseCode = "500", description = "데이터베이스 조회,삭제 작업 실패 등의 이유로 사용자 프로필 이미지 삭제 실패")
     })
-    @ResponseBody
-    @GetMapping("/remove/profile-image")
+    @PostMapping("/remove/profile-image")
     public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
             userService.removeProfileImageById(id, principal);

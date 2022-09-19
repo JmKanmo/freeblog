@@ -203,7 +203,7 @@ class SettingsController extends HeaderController {
         const xhr = new XMLHttpRequest();
         const id = this.userId.value;
 
-        xhr.open('GET', `/user/remove/profile-image?id=${id}`);
+        xhr.open('POST', `/user/remove/profile-image?id=${id}`);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;

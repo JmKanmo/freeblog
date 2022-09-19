@@ -140,7 +140,7 @@
         {{#each postDtoList}}
         {{#if (existImage thumbnailImage)}}
         <li class="blog_post_box" id="blog_post_box_exist_image">
-            <a href="/post/{{id}}" class="blog_post_image_link clear_fix">
+            <a href="/post/{{id}}?blogId={{blogId}}" class="blog_post_image_link clear_fix">
                 <div class="blog_post_text_box">
                     <h3 class="blog_post_title">{{title}}</h3>
 
@@ -167,7 +167,7 @@
         </li>
         {{else}}
         <li class="blog_post_box" id="blog_post_box_no_image">
-            <a href="/post/{{id}}" class="blog_post_image_link clear_fix">
+            <a href="/post/{{id}}?blogId={{blogId}}" class="blog_post_image_link clear_fix">
                 <div class="blog_post_text_box blog_post_no_image">
                     <h3 class="blog_post_title">{{title}}</h3>
 

@@ -3,8 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세 페이지</title>
+    <th:block th:replace="/fragments/config :: config"></th:block>
+    <link th:href="@{/css/post/post-detail.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/post/post-detail.js}"></script>
 </head>
 <body>
+<div th:replace="/fragments/header::header"></div>
+<!--<input type="hidden" id="blog_post_title" th:value="${post_detail.title}">-->
 
+<div class="post_detail_container">
+    <div class="post_title_container">
+        <div class="clear_fix">
+            <h3 class="post_title_text">아즈텍 문명, 잉카인이 세웠다.</h3>
+
+            <div class="post_title_category_block">
+                <span class="post_title_space_text"> | </span>
+
+                <button class="post_title_category_button" id="post_title_category_button">
+                    <span class="post_title_category_text"> 흥미백과</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="post_writer_profile_container">
+            <a th:href="'/blog/' + ${user_profile.id}" class="post_writer_profile_img_link">
+                <img class="post_writer_profile_img"
+                     th:src="${#strings.isEmpty(user_profile.profileImages) or #strings.equals(user_profile.profileImages,'<<<undefined>>>') ? '../images/user_default_thumbnail.png' : user_profile.profileImages}"
+                     alt="게시글 작성자 프로필 사진">
+            </a>
+
+            <a th:href="'/blog/' + ${user_profile.id}" th:text="${user_profile.nickname}"
+               class="post_writer_profile_nickname_link">게시글 작성자 닉네임</a>
+
+            <span class="post_register_date_text" th:text="${postDetail.registerTime}">게시글 작성 날짜</span>
+
+            <button class="post_url_button" id="post_url_button" th:title="${postDetail.currentUrl}">
+                <span class="post_url_text">URL 복사</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="post_contents_container">
+        <div class="post_contents" th:utext="${postDetail.contents}">
+            테스트
+        </div>
+    </div>
+
+    <div class="post_tag_container">
+        <th:block th:each="postTag: ${postDetail.tags}">
+            <a class="post_tag_link" th:href="'/tag/' + ${postTag} + '?blogId=' + ${user_profile.id}">
+                <span class="tag_text" th:text="${postTag}">포스트 태그</span>
+            </a>
+        </th:block>
+    </div>
+
+    <div class="post_util_container clear_fix">
+        <div class="post_like_container">
+            <button class="post_like_button" id="post_like_button">
+                <img class="common_button_image_style" src="../images/heart.gif" alt="">
+            </button>
+
+            <span class="post_like_text">공감</span>
+            <span class="post_like_text">0</span>
+
+            <button class="post_like_user_check_button" id="post_like_user_check_button">
+                <img class="common_button_image_style" src="../images/like_check.png" alt="">
+            </button>
+        </div>
+
+        <div class="post_share_container">
+            <button class="post_share_button" id="post_share_button">
+                <img class="common_button_image_style" src="../images/share.png" alt="">
+            </button>
+        </div>
+    </div>
+
+    <!-- 댓글 추가 -->
+
+    <!-- 카테고리 관련글 목록 추가 -->
+</div>
+</div>
+
+<div th:replace="/fragments/footer::footer"></div>
 </body>
 </html>

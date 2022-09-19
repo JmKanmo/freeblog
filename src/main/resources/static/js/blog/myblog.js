@@ -2,6 +2,11 @@ class MyBlogController extends UtilController {
     constructor() {
         super();
         this.blocUserNickName = document.getElementById("blog_user_nickname");
+        this.initLocalStorage();
+    }
+
+    initLocalStorage() {
+        localStorage.removeItem("prevClickedValue");
     }
 
     initMyBlogController() {

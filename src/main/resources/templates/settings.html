@@ -52,7 +52,7 @@
 
                 <div class="windows_block clear_fix">
                     <span class="common_plain_text">인사말</span>
-                    <button class="greeting_click_button" id="greeting_show_button">보기</button>
+                    <button class="greeting_click_button common_badge_button_style" id="greeting_show_button">보기</button>
 
                     <div id="greetings_hidden_block" class="window_hidden_block">
                         <button type="button" class="common_close_label window_hidden_block_close_button"
@@ -68,7 +68,7 @@
 
                 <div class="windows_block clear_fix">
                     <span class="common_plain_text">소개</span>
-                    <button class="intro_click_button" id="intro_show_button">보기</button>
+                    <button class="intro_click_button common_badge_button_style" id="intro_show_button">보기</button>
                 </div>
             </div>
 
@@ -100,7 +100,7 @@
                           th:title="${user_setting.email}">이메일</span>
                 </div>
 
-                <button class="email_auth_button" id="email_auth_button" th:if="${#bools.isTrue(user_setting.isAuth)}">
+                <button class="email_auth_button common_badge_button_style" id="email_auth_button" th:if="${#bools.isTrue(user_setting.isAuth)}">
                     인증 완료
                 </button>
                 <button class="email_not_auth_button" id="email_not_auth_button"

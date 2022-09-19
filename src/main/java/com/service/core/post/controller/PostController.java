@@ -43,6 +43,22 @@ public class PostController {
     private final CategoryService categoryService;
     private final BlogService blogService;
 
+    @Operation(summary = "포스트 상세 페이지 반환", description = "포스트 상세 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "포스트 상세 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "포스트 상세 페이지 반환 실패")
+    })
+    @GetMapping("/{postId}")
+    public String postDetailPage(@PathVariable Long postId, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
+                                 Model model, Principal principal) {
+        if (principal != null) {
+            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+        }
+
+        model.addAttribute("user_profile", userService.findUserProfileDtoByBlogId(blogId));
+        model.addAttribute("postDetail", postService.findPostDetailInfo(blogId, postId));
+        return "post/post-detail";
+    }
 
     @Operation(summary = "블로그 포스트 작성 페이지 반환", description = "블로그 포스트 작성 페이지 반환 메서드")
     @ApiResponses(value = {

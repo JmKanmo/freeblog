@@ -51,6 +51,7 @@ public interface UserService extends UserDetailsService {
 
     UserProfileDto findUserProfileDtoById(String id);
 
+    UserProfileDto findUserProfileDtoByBlogId(Long blogId);
     String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 
     String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception;

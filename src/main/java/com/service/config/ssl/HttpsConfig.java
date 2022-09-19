@@ -14,10 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties
 public class HttpsConfig {
-    @Value("${server.http.port}")
-    private int httpPort;
-    @Value("${server.port}")
-    private int port;
 
     @Bean
     public ServletWebServerFactory servletContainer() {
@@ -32,16 +28,6 @@ public class HttpsConfig {
                 context.addConstraint(securityConstraint);
             }
         };
-        tomcat.addAdditionalTomcatConnectors(httpToHttpsRedirectConnector());
         return tomcat;
-    }
-
-    private Connector httpToHttpsRedirectConnector() {
-        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-        connector.setScheme("http");
-        connector.setPort(httpPort);
-        connector.setSecure(false);
-        connector.setRedirectPort(port);
-        return connector;
     }
 }

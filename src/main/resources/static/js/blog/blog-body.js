@@ -4,7 +4,6 @@ class BlogBodyController extends UtilController {
         this.blogId = document.getElementById("blog_info_id").value;
         this.blogPostCategoryTextBox = document.getElementById("blog_post_category_text_box");
         this.blogPostList = document.getElementById("blog_post_list");
-        this.prevClickedCategoryValue = null;
         this.pagination = document.getElementById("pagination");
     }
 
@@ -75,16 +74,16 @@ class BlogBodyController extends UtilController {
     initBlogBodyEventListener() {
         this.blogPostList.addEventListener("click", evt => {
             const clickedCategoryButton = evt.target.closest(".common_button_text");
-            const prevClickedCategory = document.querySelector('[value = "' + localStorage.getItem("clickedCategoryButton") + '"]');
+            const prevClickedCategory = document.querySelector('[value = "' + localStorage.getItem("prevClickedValue") + '"]');
 
             if (prevClickedCategory != null) {
                 prevClickedCategory.style.fontWeight = "normal";
                 prevClickedCategory.style.textDecoration = "none";
             }
 
-            if (clickedCategoryButton != null && this.prevClickedCategoryValue != clickedCategoryButton.innerText) {
+            if (clickedCategoryButton != null && localStorage.getItem("prevClickedValue") !== clickedCategoryButton.value) {
                 this.requestAllBlogPost(clickedCategoryButton.value);
-                this.prevClickedCategoryValue = clickedCategoryButton.innerText;
+                localStorage.setItem("prevClickedValue", clickedCategoryButton.value);
             }
         });
 

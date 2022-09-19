@@ -74,9 +74,12 @@ public class CategoryServiceImpl implements CategoryService {
             Pagination pagination = new Pagination(postCount, searchDto);
             searchDto.setPagination(pagination);
 
-            return new PaginationResponse<>(PostTotalDto.fromPostDtoList(BlogUtil.getSlice(postList.stream(), searchDto.getPagination().getLimitStart(), searchDto.getRecordSize())
-                    .sorted(Comparator.comparing(Post::getRegisterTime).reversed())
-                    .map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category)), pagination);
+            return new PaginationResponse<>(PostTotalDto.fromPostDtoList(
+                    BlogUtil.getSlice(
+                                    category.getPostList().stream().sorted(Comparator.comparing(Post::getRegisterTime).reversed()),
+                                    searchDto.getPagination().getLimitStart(),
+                                    searchDto.getRecordSize())
+                            .map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category)), pagination);
         }
     }
 

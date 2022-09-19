@@ -9,8 +9,11 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -144,5 +147,17 @@ public class BlogUtil {
                 .skip(fromIndex)
                 // 스트림이 제한되어야 하는 요소의 총 수를 지정합니다.
                 .limit(toIndex - fromIndex + 1);
+    }
+
+    public static String currentRequestUrl() {
+        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        StringBuilder requestURL = new StringBuilder(httpServletRequest.getRequestURL().toString());
+        String queryString = httpServletRequest.getQueryString();
+
+        if (queryString == null) {
+            return requestURL.toString();
+        } else {
+            return requestURL.append('?').append(queryString).toString();
+        }
     }
 }

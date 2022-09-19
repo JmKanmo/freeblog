@@ -1,0 +1,196 @@
+.post_detail_container {
+    margin: 0 auto;
+    width: 988px;
+    padding-bottom: 140px;
+}
+
+/* post title container 스타일 */
+.post_detail_container .post_title_container {
+    padding: 30px 0px 13px 0;
+    border-bottom-width: 0.3px;
+    border-bottom-style: solid;
+    border-bottom-color: #d9d9d9;
+}
+
+.post_detail_container .post_title_container .post_title_text {
+    font-size: 20px;
+    display: inline;
+    letter-spacing: -1px;
+    font-weight: bold;
+    font-family: se-nanumgothic, \\B098\B214\ACE0\B515, nanumgothic, sans-serif, Meiryo;
+    float: left;
+    color: #3e3e3e;
+}
+
+.post_detail_container .post_title_container .post_title_category_block {
+    float: left;
+    line-height: 20px;
+    margin-left: 5px;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .post_title_space_text {
+    margin: 0 3px 0 7px;
+    color: #9e9e9e;
+    font-family: "Lato", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 11px;
+}
+
+.post_detail_container .post_title_container .post_title_category_button {
+    background-color: #ffffff;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.post_detail_container .post_title_container .post_title_category_button:hover {
+    font-weight: bold;
+    color: #9e9e9e;
+    text-decoration: underline;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .post_title_category_text {
+    font-size: 13px;
+    color: #555;
+}
+
+/* post writer container 스타일 */
+.post_detail_container .post_title_container .post_writer_profile_container {
+    padding-top: 16px;
+    margin-left: 3px;
+    position: relative;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_writer_profile_img_link {
+    text-decoration-line: none;
+    display: inline-block;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_writer_profile_img {
+    cursor: pointer;
+    object-fit: cover;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_writer_profile_nickname_link {
+    color: #557A74;
+    font-size: 13px;
+    margin-left: 5px;
+    text-decoration-line: none;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_register_date_text {
+    color: #557A74;
+    opacity: .5;
+    font-size: 12px;
+    margin-left: 3px;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_url_button {
+    background-color: #ffffff;
+    border: 0;
+    position: absolute;
+    right: 0;
+    top: 24px;
+    cursor: pointer;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_url_button:hover {
+    text-decoration: underline;
+    text-decoration-color: #9e9e9e;
+}
+
+.post_detail_container .post_title_container .post_writer_profile_container .post_url_button .post_url_text {
+    color: #9e9e9e;
+    font-size: 12px;
+}
+
+/* post contents 스타일 */
+.post_detail_container .post_contents_container {
+    padding: 30px 0px 30px 0px;
+}
+
+/* post tag 스타일 */
+.post_tag_container {
+    margin-top: 15px;
+    max-height: 75px;
+    overflow-y: scroll;
+    border-radius: 1px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 13px;
+    /* height: 72px; */
+    line-height: 22px;
+    overflow-y: auto;
+    padding-bottom: 10px;
+    width: 390px;
+}
+
+.post_tag_container .post_tag_link {
+    font-size: 13px;
+    color: #607d8b;
+    background-color: #eee;
+    word-wrap: break-word;
+    background-color: #eee;
+    border-radius: 2px;
+    display: inline-block;
+    margin: 0 5px 6px 0;
+    padding: 0 3px;
+    position: relative;
+    vertical-align: top;
+    word-break: break-all;
+    cursor: pointer;
+}
+
+/* post util 스타일 */
+
+/* post like 스타일 */
+.post_detail_container .post_util_container .post_like_container {
+    float: left;
+    border-radius: 16px;
+    border: 1px solid #959595;
+    border-color: rgba(185, 185, 185, 0.5);
+    padding: 0px 10px 0 10px;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_button {
+    background-color: #ffffff;
+    border: 0;
+    width: 15px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_check_button {
+    background-color: #ffffff;
+    border: 0;
+    width: 25px;
+    padding: 0;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_text {
+    font-family: "나눔고딕", NanumGothic, NanumGothicWebFont, "Malgun Gothic", "맑은 고딕", Dotum, "돋움", Helvetica, "Apple SD Gothic Neo", sans-serif;
+    font-size: 11px;
+    line-height: 29px;
+    font-weight: normal;
+    color: #557A74;
+}
+
+/* post share 스타일 */
+.post_detail_container .post_util_container .post_share_container {
+    float: right;
+}
+
+.post_detail_container .post_util_container .post_share_container .post_share_button {
+    background-color: #ffffff;
+    border: 0;
+    width: 23px;
+    padding: 0;
+    cursor: pointer;
+}
+
+
+

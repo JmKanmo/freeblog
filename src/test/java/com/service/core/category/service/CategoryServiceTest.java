@@ -38,6 +38,7 @@ public class CategoryServiceTest {
     }
 
     @Test
+    @Disabled
     void findTotalPostByBlogId() {
         try{
             PostTotalDto postTotalDto = categoryService.findPostByBlogId(1L);

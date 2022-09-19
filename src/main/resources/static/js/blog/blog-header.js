@@ -47,7 +47,7 @@ class BlogHeaderController extends BlogBodyController {
             const clickedCategoryButton = evt.target.closest(".common_button_text");
 
             if (clickedCategoryButton != null) {
-                if (this.clickedCategoryButton != clickedCategoryButton) {
+                if (localStorage.getItem("prevClickedValue") != clickedCategoryButton.value) {
                     if (this.clickedCategoryButton != null) {
                         this.clickedCategoryButton.style.fontWeight = "normal";
                         this.clickedCategoryButton.style.textDecoration = "none";
@@ -60,7 +60,7 @@ class BlogHeaderController extends BlogBodyController {
                     } else {
                         this.requestAllBlogPost(clickedCategoryButton.value);
                     }
-                    localStorage.setItem("clickedCategoryButton", clickedCategoryButton.value);
+                    localStorage.setItem("prevClickedValue", clickedCategoryButton.value);
                 }
                 this.clickedCategoryButton = clickedCategoryButton;
             }

@@ -60,6 +60,11 @@ a {
 
 /* common form component
 /* common input label, form*/
+.common_button_image_style {
+    width: 100%;
+    height: 100%;
+}
+
 .common_button_text {
     background: #ffffff;
     border: none;
@@ -213,6 +218,11 @@ a {
 .spel_div .spel_condition_tag {
     padding: 5px 0 5px 45px;
     margin: 0;
+}
+
+.common_badge_button_style {
+    padding: 3px 5px 3px 5px;
+    font-size: 15px;
 }
 
 .common_sub_link_div {

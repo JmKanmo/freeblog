@@ -38,6 +38,7 @@
     border: 0;
     background-color: #ffffff;
     cursor: pointer;
+    line-height: normal;
 }
 
 .header_box .user_util_box .login_button {

@@ -1,6 +1,7 @@
 package com.service.core.post.service;
 
 import com.service.core.post.domain.Post;
+import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.model.BlogPostInput;
 import com.service.util.paging.PaginationResponse;
@@ -16,4 +17,8 @@ public interface PostService {
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;
 
     void register(Post post, BlogPostInput blogPostInput);
+
+    PostDetailDto findPostDetailInfo(Long blogId, Long postId);
+
+    Post findPostById(Long postId);
 }

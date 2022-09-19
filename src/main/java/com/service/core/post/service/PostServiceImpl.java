@@ -1,6 +1,9 @@
 package com.service.core.post.service;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
+import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostSearchDto;
 import com.service.core.post.dto.PostTotalDto;
@@ -27,7 +30,6 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final AwsS3Service awsS3Service;
     private final PostRepository postRepository;
-
     private final TagService tagService;
 
     @Override
@@ -54,5 +56,26 @@ public class PostServiceImpl implements PostService {
     public void register(Post post, BlogPostInput blogPostInput) {
         postRepository.save(post);
         tagService.register(BlogUtil.convertArrayToList(blogPostInput.getTag().split(",")), post);
+    }
+
+    @Override
+    public PostDetailDto findPostDetailInfo(Long blogId, Long postId) {
+        if (!checkPostId(blogId, postId)) {
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
+        }
+        return PostDetailDto.from(findPostById(postId));
+    }
+
+    @Override
+    public Post findPostById(Long postId) {
+        if (!postRepository.existsById(postId)) {
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
+        }
+        return postRepository.findById(postId).get();
+    }
+
+    private boolean checkPostId(Long blogId, Long postId) {
+        Post post = findPostById(postId);
+        return post.getBlog().getId() == blogId;
     }
 }

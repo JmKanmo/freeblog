@@ -19,11 +19,13 @@ public class PostDto {
     private final String registerTime;
     private final String category;
     private final Long categoryId;
+    private final Long blogId;
 
     public static PostDto fromEntity(Post post) {
         if (post == null) {
             return PostDto.builder()
                     .id(Long.MAX_VALUE)
+                    .blogId(Long.MAX_VALUE)
                     .title(ConstUtil.UNDEFINED)
                     .thumbnailImage(ConstUtil.UNDEFINED)
                     .contents(ConstUtil.UNDEFINED)
@@ -35,6 +37,7 @@ public class PostDto {
         } else {
             return PostDto.builder()
                     .id(post.getId())
+                    .blogId(post.getBlog().getId())
                     .title(BlogUtil.ofNull(post.getTitle()))
                     .thumbnailImage(BlogUtil.ofNull(post.getThumbnailImage()))
                     .contents(BlogUtil.ofNull(post.getContents()))

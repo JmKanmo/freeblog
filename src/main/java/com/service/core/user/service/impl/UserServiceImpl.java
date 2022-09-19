@@ -229,6 +229,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserProfileDto findUserProfileDtoByBlogId(Long blogId) {
+        Blog blog = blogService.findBlogById(blogId);
+        return UserProfileDto.fromEntity(blog.getUser());
+    }
+
+    @Override
     public String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception {
         try {
             String profileImageSrc = sftpService.sftpFileUpload(multipartFile);

@@ -9,7 +9,7 @@ public class SearchDto {
     private int pageSize;             // 화면 하단에 출력할 페이지 사이즈
 
 //    private String keyword;           // 검색 키워드
-//    private int searchIndex; // 검색 인덱스
+//    private int searchIndex;          // 검색 인덱스
 //    private String searchType;        // 검색 유형
 
     private Pagination pagination;    // 페이지네이션 정보
