@@ -1,6 +1,7 @@
 class PostDetailController extends UtilController {
     constructor() {
         super();
+        this.postTitle = document.getElementById("blog_post_title");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
         this.postLikeButton = document.getElementById("post_like_button");
         this.postLikeUserCheckButton = document.getElementById("post_like_user_check_button");
@@ -9,7 +10,12 @@ class PostDetailController extends UtilController {
     }
 
     initPostDetailController() {
+        this.initPostTitle();
         this.initEventController();
+    }
+
+    initPostTitle() {
+        document.title = `게시글: ${this.postTitle.value}`;
     }
 
     initEventController() {

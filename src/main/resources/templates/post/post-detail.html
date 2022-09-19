@@ -9,18 +9,19 @@
 </head>
 <body>
 <div th:replace="/fragments/header::header"></div>
-<!--<input type="hidden" id="blog_post_title" th:value="${post_detail.title}">-->
+<input type="hidden" id="blog_post_title" th:value="${postDetail.title}">
 
 <div class="post_detail_container">
     <div class="post_title_container">
         <div class="clear_fix">
-            <h3 class="post_title_text">아즈텍 문명, 잉카인이 세웠다.</h3>
+            <h3 class="post_title_text" th:text="${postDetail.title}">포스트 제목</h3>
 
             <div class="post_title_category_block">
                 <span class="post_title_space_text"> | </span>
 
-                <button class="post_title_category_button" id="post_title_category_button">
-                    <span class="post_title_category_text"> 흥미백과</span>
+                <button class="post_title_category_button" id="post_title_category_button"
+                        th:value="'/category/' + ${postDetail.categoryId} + '?blogId=' + ${postDetail.blogId}">
+                    <span class="post_title_category_text" th:text="${postDetail.categoryName}">포스트 카테고리</span>
                 </button>
             </div>
         </div>
@@ -51,7 +52,7 @@
 
     <div class="post_tag_container">
         <th:block th:each="postTag: ${postDetail.tags}">
-            <a class="post_tag_link" th:href="'/tag/' + ${postTag} + '?blogId=' + ${user_profile.id}">
+            <a class="post_tag_link" th:href="'/tag/' + ${postTag} + '?blogId=' + ${postDetail.blogId}">
                 <span class="tag_text" th:text="${postTag}">포스트 태그</span>
             </a>
         </th:block>

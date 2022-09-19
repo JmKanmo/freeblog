@@ -16,6 +16,7 @@ public class PostDetailDto {
     private final String contents;
     private final String categoryName;
     private final Long categoryId;
+    private final Long blogId;
     private final String registerTime;
     private final String currentUrl;
     private final List<String> tags;
@@ -28,6 +29,7 @@ public class PostDetailDto {
                 .contents(post.getContents())
                 .categoryName(post.getCategory().getName())
                 .categoryId(post.getCategory().getId())
+                .blogId(post.getBlog().getId())
                 .registerTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()))
                 .currentUrl(BlogUtil.currentRequestUrl())
                 .tags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()))
