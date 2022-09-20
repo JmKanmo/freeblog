@@ -29,12 +29,28 @@
             padding: 20px;
             white-space: pre-line;
         }
+
+        .post_container .intro_post_editor {
+            border: none;
+        }
     </style>
 
     <script>
+        class IntroController extends UtilController {
+            constructor() {
+                super();
+                this.postContainer = this.getReadOnlyQuillEditor('intro_post_editor');
+            }
+
+            initIntroController() {
+                document.getElementById("intro_post_editor").innerHTML = window.opener.document.getElementById("user_info_intro").value;
+            }
+        }
+
         // Execute all functions
         document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("post_container").innerHTML = window.opener.document.getElementById("user_info_intro").value;
+            const introController = new IntroController();
+            introController.initIntroController();
         });
     </script>
 </head>
@@ -44,8 +60,10 @@
     <div class="intro_container">
         <h1 class="settings_title">내 소개</h1>
 
-        <div class="post_container" id="post_container">
-            <span class="blind">포스트 게시글</span>
+        <div class="post_container">
+            <div class="intro_post_editor" id="intro_post_editor">
+                <span class="blind">포스트 게시글</span>
+            </div>
         </div>
     </div>
 </div>

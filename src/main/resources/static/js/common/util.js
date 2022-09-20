@@ -113,6 +113,19 @@ class UtilController {
         return window.open(url, target, `width=${width}, height=${height}, left=${left}, top=${tops}`);
     }
 
+    getReadOnlyQuillEditor(id) {
+        Quill.register("modules/imageCompressor", imageCompressor);
+
+        return new Quill(`#${id}`, {
+            modules: {
+                syntax: true,
+                toolbar: false
+            },
+            theme: 'snow',
+            readOnly: true
+        });
+    }
+
     getQuillEditor(id) {
         Quill.register("modules/imageCompressor", imageCompressor);
 
@@ -164,6 +177,41 @@ class UtilController {
             listMaxHeight: 90,
             lrcType: 0,
             audio: [
+                {
+                    name: '가을 안부',
+                    artist: '먼데이키즈',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%B0%80%EC%9D%84+%EC%95%88%EB%B6%80.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EA%B0%80%EC%9D%84%EC%95%88%EB%B6%80.jpg',
+                    theme: '발라드'
+                },
+                {
+                    name: '겨울..그다음 봄',
+                    artist: '로시(Rothy)',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EB%A1%9C%EC%8B%9C(Rothy)+-+%EA%B2%A8%EC%9A%B8..+%EA%B7%B8%EB%8B%A4%EC%9D%8C+%EB%B4%84.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%B4%84%EA%B7%B8%EB%A6%AC%EA%B3%A0%EA%B2%A8%EC%9A%B8.jpg',
+                    theme: '발라드'
+                },
+                {
+                    name: 'Nostalgia',
+                    artist: '요조',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%9A%94%EC%A1%B0++Nostalgia.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EA%B0%80%EC%9D%84%EC%95%88%EB%B6%80.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '우주를 줄게',
+                    artist: '볼빨간사춘기',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/Bolbbalgan4+(%EB%B3%BC%EB%B9%A8%EA%B0%84%EC%82%AC%EC%B6%98%EA%B8%B0)-+Galaxy+(%EC%9A%B0%EC%A3%BC%EB%A5%BC+%EC%A4%84%EA%B2%8C)+(3D+Audio%2C+Use+Headphones!).mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%B3%BC%EB%B9%A8%EA%B0%84%EC%82%AC%EC%B6%98%EA%B8%B0.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: 'rainyday',
+                    artist: '파테코(PATEKO)',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/PATEKO+(%ED%8C%8C%ED%85%8C%EC%BD%94)+-+Rainy+day+(Feat.+ASH+ISLAND%2C+Skinny+Brown).mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/rainyday.jpg',
+                    theme: '힙합'
+                },
                 {
                     name: '솜사탕',
                     artist: '풍댕이',

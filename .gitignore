@@ -36,6 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+### log file ###
+logs
+
 ### application-prod.yml ###
 application-prod.yml
 
