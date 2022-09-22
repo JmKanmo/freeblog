@@ -178,6 +178,27 @@ class UtilController {
             lrcType: 0,
             audio: [
                 {
+                    name: '너에게 쓰는 편지',
+                    artist: 'MC몽(Feat.린)',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/02.MC%EB%AA%BD+-+%EB%84%88%EC%97%90%EA%B2%8C+%EC%93%B0%EB%8A%94+%ED%8E%B8%EC%A7%80+(Feat.%EB%A6%B0).mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-AJN3y0tBC4l8aVPf-3lk1MQ-original.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '그리워하다',
+                    artist: '비투비',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/BTOB(%EB%B9%84%ED%88%AC%EB%B9%84)+-+%EA%B7%B8%EB%A6%AC%EC%9B%8C%ED%95%98%EB%8B%A4.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '인기',
+                    artist: 'MC몽',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/MC%EB%AA%BD+-+%EC%9D%B8%EA%B8%B0.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/ssongya.png',
+                    theme: '알앤비'
+                },
+                {
                     name: '가을 안부',
                     artist: '먼데이키즈',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%B0%80%EC%9D%84+%EC%95%88%EB%B6%80.mp3',
@@ -238,6 +259,14 @@ class UtilController {
                     artist: '스트레이',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4++%EB%84%88+%EB%84%88.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4+%EB%84%88+%EB%84%88.jpg',
+                    theme: '불가살 테마'
+                }
+                ,
+                {
+                    name: 'dynamite',
+                    artist: 'BTS',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/BTS_-_Dynamite.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/2022-08-23T09%3A02%3A46.012406500cfe847cc-b1cd-3a80-afd9-b2e5e6e183c0.png',
                     theme: '불가살 테마'
                 }
             ]

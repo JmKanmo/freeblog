@@ -2,6 +2,7 @@ package com.service.core.post.domain;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.category.domain.Category;
+import com.service.core.comment.domain.Comment;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.tag.domain.Tag;
 import com.service.util.ConstUtil;
@@ -42,6 +43,9 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post")
     private List<Tag> tagList;
 
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;

@@ -145,3 +145,4 @@ mybatis:
 
 scheduler:
   find-user-info: "* * 0 * * *"
+  blog-day-views: "* * 0 * * *"
