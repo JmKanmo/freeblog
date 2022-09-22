@@ -1,21 +1,27 @@
 package com.service.config.redis;
 
+import com.service.core.like.model.LikePostInput;
+
 import java.io.Serializable;
 
 public class LikePost implements Serializable {
+    private static final long serialVersionUID = -6584044926029805156L;
+    private Long postId;
     private String title;
-    private String category;
+    private String thumbnailImage;
 
-    public LikePost(String title, String category) {
+    public LikePost(Long postId, String title, String thumbnailImage) {
+        this.postId = postId;
         this.title = title;
-        this.category = category;
+        this.thumbnailImage = thumbnailImage;
     }
 
     @Override
     public String toString() {
         return "LikePost{" +
-                "title='" + title + '\'' +
-                ", category='" + category + '\'' +
+                "postId=" + postId +
+                ", title='" + title + '\'' +
+                ", thumbnailImage='" + thumbnailImage + '\'' +
                 '}';
     }
 }

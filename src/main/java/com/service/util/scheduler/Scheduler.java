@@ -1,7 +1,7 @@
 package com.service.util.scheduler;
 
 import com.service.util.redis.CacheKey;
-import com.service.util.redis.RedisTemplateUtil;
+import com.service.util.redis.service.RedisTemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class Scheduler {
-    private final RedisTemplateUtil redisTemplateUtil;
+    private final RedisTemplateService redisTemplateService;
 
     @CacheEvict(value = CacheKey.FIND_USER_LIST_DTO, allEntries = true)
     @Scheduled(cron = "${scheduler.find-user-info}")
@@ -27,10 +27,7 @@ public class Scheduler {
     @Scheduled(cron = "${scheduler.blog-day-views}")
     public void initBlogDayViews() {
         try {
-            /**
-             * TODO
-             * 24시정각 Redis에 저장 된 모든 blog-day-views(일일 방문자) 데이터 0으로 초기화
-             */
+            redisTemplateService.initDayBlogViews();
         } catch (Exception exception) {
             log.error("[freelog-initBlogDayViews] exception occurred! ", exception);
         }

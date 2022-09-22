@@ -8,14 +8,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
 
-import java.io.Serializable;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @SpringBootTest
 public class RedisTemplateTest {
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Test
+    void incrementBlogViewTest() {
+        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
+        long dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L) + 1;
+        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 1L, dayVisit);
+        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L));
+
+        dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L) + 1;
+        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 2L, dayVisit);
+        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L));
+
+        dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L) + 1;
+        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 3L, dayVisit);
+        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L));
+    }
+
+    @Test
+    void initBlotViewTest() {
+        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
+
+        List<Long> keyList = new ArrayList<>();
+
+        hashOperations.entries(RedisTemplateKey.BLOG_DAY_VIEWS).forEach((k, v) -> {
+            keyList.add(k);
+        });
+
+        for (Long key : keyList) {
+            hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, key, 0L);
+        }
+    }
 
     @Test
     void commentLikeEmptyTest() {
@@ -49,23 +80,79 @@ public class RedisTemplateTest {
     }
 
 
-//    @Test
-//    void postViewTest() throws Exception {
-//        ValueOperations<String, LikePost> valueOperations = redisTemplate.opsForValue();
-//        String key = String.format(RedisTemplateKey.USER_LIKE_POST, "apdh1709@gmail.com", 1L);
-//        valueOperations.set(key, new LikePost("안녕하세요", "반갑습니다."), 10, TimeUnit.SECONDS);
-//        Thread.sleep(1500);
-//        LikePost likePost = valueOperations.get(key);
-//        System.out.println(likePost);
-//
-//        ScanOptions scanOptions = ScanOptions.scanOptions().match("*" + RedisTemplateKey.POST_VIEWS + ":apdh1709@gmail.com:*").count(10).build();
-//        Cursor<LikePost> cursor = redisTemplate.scan(scanOptions);
-//
-//        while (cursor.hasNext()) {
-//            String likePost1 = String.valueOf(cursor.next());
-//            System.out.println(likePost1);
-//        }
-//    }
+    @Test
+    void rightInsertAndGetPostTest() throws Exception {
+        ListOperations<String, LikePost> likePostListOperations = redisTemplate.opsForList();
+        String key1 = String.format(RedisTemplateKey.LIKE_POST, "apdh1709@gmail.com");
+        Long listSize = likePostListOperations.size(key1);
+
+        likePostListOperations.rightPush(key1, new LikePost(1L, "반갑수다1", "apdh1709"));
+        likePostListOperations.rightPush(key1, new LikePost(2L, "반갑수다2", "apdh1709"));
+        likePostListOperations.rightPush(key1, new LikePost(3L, "반갑수다3", "apdh1709"));
+
+
+        String key2 = String.format(RedisTemplateKey.LIKE_POST, "nebi25@naver.com");
+
+
+        likePostListOperations.rightPush(key2, new LikePost(4L, "어솨요1", "nebi25"));
+        likePostListOperations.rightPush(key2, new LikePost(5L, "어솨요2", "nebi25"));
+        likePostListOperations.rightPush(key2, new LikePost(6L, "어솨요3", "nebi25"));
+
+
+        likePostListOperations.rightPush(key2, new LikePost(7L, "어솨요4", "nebi25"));
+        likePostListOperations.rightPush(key2, new LikePost(8L, "어솨요5", "nebi25"));
+        likePostListOperations.rightPush(key2, new LikePost(9L, "어솨요6", "nebi25"));
+
+        likePostListOperations.range(key1, 0, 3).forEach(likePost -> System.out.println(likePost.toString()));
+
+        likePostListOperations.range(key2, 0, 6).forEach(likePost -> System.out.println(likePost.toString()));
+    }
+
+    @Test
+    void leftInsertAndGetTest() {
+        ListOperations<String, LikePost> likePostListOperations = redisTemplate.opsForList();
+        String key = String.format(RedisTemplateKey.LIKE_POST, "apdh1709@gmail.com");
+
+        likePostListOperations.leftPush(key, new LikePost(1L, "반갑수다1", "apdh1709"));
+        likePostListOperations.leftPush(key, new LikePost(2L, "반갑수다2", "apdh1709"));
+        likePostListOperations.leftPush(key, new LikePost(3L, "반갑수다3", "apdh1709"));
+
+        likePostListOperations.range(key, 0, likePostListOperations.size(key)).forEach(likePost -> System.out.println(likePost.toString()));
+        System.out.println("제거 후\n");
+        likePostListOperations.rightPop(key);
+        likePostListOperations.range(key, 0, likePostListOperations.size(key)).forEach(likePost -> System.out.println(likePost.toString()));
+    }
+
+    @Test
+    void rightInsertAndGetTest() {
+        ListOperations<String, LikePost> likePostListOperations = redisTemplate.opsForList();
+        String key = String.format(RedisTemplateKey.LIKE_POST, "apdh1709@gmail.com");
+
+        likePostListOperations.rightPush(key, new LikePost(1L, "반갑수다1", "apdh1709"));
+        likePostListOperations.rightPush(key, new LikePost(2L, "반갑수다2", "apdh1709"));
+        likePostListOperations.rightPush(key, new LikePost(3L, "반갑수다3", "apdh1709"));
+
+        likePostListOperations.range(key, likePostListOperations.size(key), 0).forEach(likePost -> System.out.println(likePost.toString()));
+        likePostListOperations.leftPop(key);
+
+        System.out.println("제거 후\n");
+
+        likePostListOperations.range(key, likePostListOperations.size(key), 0).forEach(likePost -> System.out.println(likePost.toString()));
+    }
+
+    @Test
+    void deleteLikePostTest() {
+        ListOperations<String, LikePost> likePostListOperations = redisTemplate.opsForList();
+        String key2 = String.format(RedisTemplateKey.LIKE_POST, "nebi25@naver.com");
+
+        likePostListOperations.range(key2, 0, likePostListOperations.size(key2)).forEach(likePost -> System.out.println(likePost.toString()));
+
+        likePostListOperations.rightPop(key2, likePostListOperations.size(key2));
+
+        System.out.println();
+
+        likePostListOperations.range(key2, 0, likePostListOperations.size(key2)).forEach(likePost -> System.out.println(likePost.toString()));
+    }
 
     @Test
     void deleteTest() {

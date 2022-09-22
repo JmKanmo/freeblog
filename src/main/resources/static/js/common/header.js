@@ -2,7 +2,7 @@ class HeaderController extends UtilController {
     constructor() {
         super();
         this.dayNightSkinButton = document.getElementById("day_night_skin_button");
-        this.hostingButton = document.getElementById("hosting_button");
+        this.likePostButton = document.getElementById("like_post_button");
         this.userOptionDiv = document.getElementById("user_option_div");
         this.userProfileBtn = document.getElementById("user_profile_button");
         this.headerProfileImage = document.getElementById("header_profile_image");
@@ -21,9 +21,9 @@ class HeaderController extends UtilController {
             });
         }
 
-        if (this.hostingButton != null) {
-            this.hostingButton.addEventListener("click", evt => {
-                this.showToastMessage("호스팅 정보는 추후에 공개 예정");
+        if (this.likePostButton != null) {
+            this.likePostButton.addEventListener("click", evt => {
+                this.showToastMessage("좋아요 누른 글 버튼 기능 추가 예정");
             });
         }
 

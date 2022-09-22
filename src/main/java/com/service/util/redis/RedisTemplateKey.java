@@ -7,7 +7,9 @@ public class RedisTemplateKey {
     //    public static final String POST_LIKE_USERS = "post-like-users";
     public static final String POST_VIEWS = "post-views";
 
-    public static final String USER_LIKE_POST = "user-like-posts:%s:%d";
+    public static final String LIKE_POST = "like-posts:%s";
 
-    public static final String BLOG_VIEWS = "blog-views:%s";
+    public static final String BLOG_DAY_VIEWS = "blog-day-views";
+
+    public static final String BLOG_TOTAL_VIEWS = "blog-total-views";
 }
