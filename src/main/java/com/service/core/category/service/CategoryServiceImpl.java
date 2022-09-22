@@ -1,5 +1,6 @@
 package com.service.core.category.service;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
@@ -117,5 +118,11 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         throw new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND);
+    }
+
+    @Transactional
+    @Override
+    public Category registerBasicCategory(Blog blog) {
+        return categoryRepository.save(Category.from(blog));
     }
 }

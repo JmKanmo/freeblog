@@ -1,5 +1,6 @@
 package com.service.core.category.service;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.post.dto.PostTotalDto;
@@ -22,4 +23,6 @@ public interface CategoryService {
     String findCategoryName(Category category);
 
     Category findCategoryById(String email, Long categoryId);
+
+    Category registerBasicCategory(Blog blog);
 }

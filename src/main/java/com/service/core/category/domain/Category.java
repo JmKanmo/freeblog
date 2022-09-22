@@ -1,6 +1,7 @@
 package com.service.core.category.domain;
 
 import com.service.core.blog.domain.Blog;
+import com.service.core.category.model.CategoryInput;
 import com.service.core.post.domain.Post;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
@@ -33,4 +34,22 @@ public class Category extends BaseTimeEntity {
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "category")
     private List<Post> postList;
+
+    public static Category from(CategoryInput categoryInput, Blog blog) {
+        return Category.builder()
+                .parentId(categoryInput.getParentId())
+                .name(categoryInput.getName())
+                .seq(categoryInput.getSeq())
+                .blog(blog)
+                .build();
+    }
+
+    public static Category from(Blog blog) {
+        return Category.builder()
+                .parentId(0L)
+                .name("게시판")
+                .seq(1L)
+                .blog(blog)
+                .build();
+    }
 }

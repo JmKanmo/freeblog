@@ -2,6 +2,7 @@ package com.service.core.user.service.impl;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
+import com.service.core.category.service.CategoryService;
 import com.service.core.email.service.EmailService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
@@ -42,6 +43,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final BlogService blogService;
+
+    private final CategoryService categoryService;
     private final UserInfoService userInfoService;
     private final UserAuthService userAuthService;
 
@@ -62,6 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserSignUpInput signupForm, UserDomain userDomain) {
         Blog blog = blogService.register(Blog.from(signupForm));
+        categoryService.registerBasicCategory(blog);
         userDomain.setBlog(blog);
         userInfoService.saveUserDomain(userDomain);
     }
