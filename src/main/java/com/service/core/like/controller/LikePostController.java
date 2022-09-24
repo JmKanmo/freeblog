@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "좋아요누른글", description = "좋아요 누른 글 관련 API")
+@Tag(name = "좋아요", description = "좋아요 관련 API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/like-post")
+@RequestMapping("/like")
 @Slf4j
 public class LikePostController {
 

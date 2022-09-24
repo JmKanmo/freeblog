@@ -1,3 +1,8 @@
+/* common style */
+.ql-editor {
+    padding: 5px 0 5px 0;
+}
+
 .post_detail_container {
     margin: 0 auto;
     width: 988px;
@@ -117,7 +122,6 @@
 
 /* post tag 스타일 */
 .post_tag_container {
-    margin-top: 15px;
     max-height: 75px;
     overflow-y: scroll;
     border-radius: 1px;
@@ -186,6 +190,7 @@
 /* post share 스타일 */
 .post_detail_container .post_util_container .post_share_container {
     float: right;
+    margin-top: 4px;
 }
 
 .post_detail_container .post_util_container .post_share_container .post_share_button {
@@ -194,6 +199,125 @@
     width: 23px;
     padding: 0;
     cursor: pointer;
+}
+
+/* post comment 스타일 */
+.post_detail_container .post_comment_container {
+    border-top: 1px solid #e3e3e3;
+    margin-top: 17px;
+}
+
+/* post comment header 스타일 */
+.post_detail_container .post_comment_container .post_comment_count_text_block {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.post_detail_container .post_comment_container .post_comment_count_text_block .post_comment_count {
+    color: #f25555;
+}
+
+.post_detail_container .post_comment_container .post_comment_list {
+    margin: 20px 0 20px 0px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block:nth-child(n+2) {
+    margin-top: 20px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_image_block {
+    float: left;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block {
+    overflow: hidden;
+    color: rgba(0, 0, 0, .86);
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .comment_user_profile_name_block {
+    margin-bottom: 3px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .comment_user_profile_name_block .comment_user_profile_name_link {
+    float: left;
+    font-weight: bold;
+    color: rgba(0, 0, 0, .86);
+    font-size: 14px;
+    font-family: Noto Sans KR, sans-serif;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .comment_user_profile_name_block .user_profile_owner_badge {
+    height: 17px;
+    margin: 3px 0 0 6px;
+    padding: 3px;
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-radius: 17px;
+    font-size: 10px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .comment_user_profile_name_block .user_profile_owner_badge .user_profile_owner_text {
+    height: 17px;
+    line-height: 17px;
+    margin: 0;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .post_comment_date_text {
+    font-size: 13px;
+    line-height: 1.38;
+    color: #797979;
+    margin-top: 5px;
+}
+
+/* post comment body 스타일 */
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body {
+    padding: 11px 3px 0px 3px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block {
+    line-height: 22px;
+    word-break: break-word;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block .post_comment_text {
+    font-size: 13px;
+    color: rgb(99, 99, 99) !important;
+}
+
+/* post comment util 스타일 */
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_util_block {
+    margin-top: 12px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_util_block .post_comment_update_delete_block {
+    float: left;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_util_block .post_comment_util_button {
+    cursor: pointer;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_util_block .post_comment_reply_button {
+    margin-left: 15px;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_util_block .post_comment_util_button_text {
+    font-size: 11px;
+    color: #607d8b;
 }
 
 
