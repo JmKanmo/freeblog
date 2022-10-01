@@ -234,11 +234,15 @@
 .post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_image_block {
     float: left;
     overflow: hidden;
-    width: 40px;
-    height: 40px;
-    margin-right: 16px;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
     border-radius: 50%;
     background-color: #f2f2f2;
+}
+
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_image_block .comment_user_profile_image_link {
+    display: block;
 }
 
 .post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block {
@@ -256,7 +260,7 @@
     float: left;
     font-weight: bold;
     color: rgba(0, 0, 0, .86);
-    font-size: 14px;
+    font-size: 13px;
     font-family: Noto Sans KR, sans-serif;
 }
 
@@ -277,7 +281,7 @@
 }
 
 .post_detail_container .post_comment_container .post_comment_list .post_comment_block .comment_user_profile_block .post_comment_date_text {
-    font-size: 13px;
+    font-size: 10px;
     line-height: 1.38;
     color: #797979;
     margin-top: 5px;
@@ -295,7 +299,7 @@
 
 .post_detail_container .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block .post_comment_text {
     font-size: 13px;
-    color: rgb(99, 99, 99) !important;
+    color: rgb(61 61 61) !important;
 }
 
 /* post comment util 스타일 */
@@ -320,5 +324,101 @@
     color: #607d8b;
 }
 
+/* post comment paging 스타일 */
+.post_detail_container .post_comment_container .post_comment_page_container {
+    padding: 15px 0px 30px 0px;
+}
 
+.post_detail_container .post_comment_container .post_comment_form_container {
+    padding-top: 10px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form {
+    border: 1px solid #ced4da;
+    min-height: 6.125rem;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_text_area_block {
+    padding: 16px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_text_area {
+    resize: none;
+    font-size: 13px;
+    outline: 0;
+    width: 100%;
+    color: #000;
+    border: none;
+    background: 0 0;
+    min-height: 120px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container {
+    padding: 0px 10px 12px 10px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container {
+    float: left;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .post_comment_input_style {
+    float: left;
+    width: 200px;
+    height: 30px;
+    font-size: 13px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .post_comment_input_style:nth-child(n+2) {
+    margin-left: 15px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container {
+    float: right;
+    margin-top: 5px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button {
+    background-color: #ffffff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_lock_button {
+    margin-right: 10px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button .post_image_container {
+    float: left;
+    width: 19px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button .post_image_container .post_comment_image {
+    width: 100%;
+    height: 100%;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button .post_comment_image_text {
+    font-size: 11px;
+    margin-left: 3px;
+    color: #9e9e9e;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_submit_button {
+    background-color: #2C3E50;
+    outline: none;
+    border: none;
+    padding: 6px 14px 6px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_submit_button .post_comment_submit_button_text {
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_image_form {
+    visibility: hidden;
+}
 

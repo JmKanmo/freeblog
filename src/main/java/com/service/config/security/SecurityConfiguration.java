@@ -78,9 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 )
                 .permitAll()
                 .and()
-                .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint())
-                .and()
-                .sessionManagement().invalidSessionUrl("/user/login");
+                .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
         super.configure(http);
     }
 

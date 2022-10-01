@@ -16,7 +16,7 @@ public class AsyncConfig extends AsyncConfigurerSupport {
         threadPoolExecutor.setCorePoolSize(10);
         threadPoolExecutor.setCorePoolSize(20);
         threadPoolExecutor.setQueueCapacity(500);
-        threadPoolExecutor.setThreadNamePrefix("freelog-async-");
+        threadPoolExecutor.setThreadNamePrefix("freeblog-async-");
         threadPoolExecutor.initialize();
         return threadPoolExecutor;
     }

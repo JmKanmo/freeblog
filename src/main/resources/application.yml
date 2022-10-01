@@ -126,7 +126,7 @@ logging:
     file: "[%d] %-5level [${PID:-} - %thread - {%C => %M, %l}] %logger : %msg%n"
 
   file:
-    name: ./logs/freelog.log
+    name: ./logs/freeblog.log
     max-history: 30
 
   level:

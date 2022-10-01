@@ -169,7 +169,7 @@ public class UserController {
             userService.checkSameEmail(email);
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일 입니다.");
         } catch (Exception exception) {
-            log.error("[freelog-checkEmail] exception occurred ", exception.getMessage());
+            log.error("[freeblog-checkEmail] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
         }
     }
@@ -186,7 +186,7 @@ public class UserController {
             userService.checkSameId(id);
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 id 입니다.");
         } catch (Exception exception) {
-            log.error("[freelog-checkId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-checkId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
         }
     }
@@ -354,7 +354,7 @@ public class UserController {
             String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
-            log.error("[freelog-uploadProfileImage] exception occurred ", exception);
+            log.error("[freeblog-uploadProfileImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
         }
     }
@@ -370,7 +370,7 @@ public class UserController {
             userService.removeProfileImageById(id, principal);
             return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
         } catch (Exception exception) {
-            log.error("[freelog-removeProfileImage] exception occurred ", exception);
+            log.error("[freeblog-removeProfileImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", exception.getMessage()));
         }
     }

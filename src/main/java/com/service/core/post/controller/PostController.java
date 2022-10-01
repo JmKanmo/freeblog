@@ -121,7 +121,7 @@ public class PostController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogId, searchDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
-            log.error("[freelog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -140,7 +140,7 @@ public class PostController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freelog-uploadPostThumbnailImage] exception occurred ", exception);
+            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
         }
     }

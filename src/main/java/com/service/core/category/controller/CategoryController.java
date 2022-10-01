@@ -34,7 +34,7 @@ public class CategoryController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(categoryService.findCategoryDtoByBlogId(blogId)));
         } catch (Exception exception) {
-            log.error("[freelog-findTotalCategoryByBlogId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-findTotalCategoryByBlogId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CategoryResponseDto.fail(exception));
         }
     }
@@ -49,7 +49,7 @@ public class CategoryController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByBlogId(blogId, searchDto)));
         } catch (Exception exception) {
-            log.error("[freelog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -64,7 +64,7 @@ public class CategoryController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByCategoryId(categoryId, searchDto)));
         } catch (Exception exception) {
-            log.error("[freelog-findTotalPostByCategoryId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-findTotalPostByCategoryId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }

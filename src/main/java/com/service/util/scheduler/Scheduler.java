@@ -20,7 +20,7 @@ public class Scheduler {
         try {
             // TODO
         } catch (Exception exception) {
-            log.error("[freelog-deleteFindUserList] exception occurred! ", exception);
+            log.error("[freeblog-deleteFindUserList] exception occurred! ", exception);
         }
     }
 
@@ -29,7 +29,7 @@ public class Scheduler {
         try {
             redisTemplateService.initDayBlogViews();
         } catch (Exception exception) {
-            log.error("[freelog-initBlogDayViews] exception occurred! ", exception);
+            log.error("[freeblog-initBlogDayViews] exception occurred! ", exception);
         }
     }
 }

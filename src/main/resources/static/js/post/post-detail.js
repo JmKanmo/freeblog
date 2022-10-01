@@ -8,6 +8,7 @@ class PostDetailController extends UtilController {
         this.post_share_button = document.getElementById("post_share_button");
         this.postUrlButton = document.getElementById("post_url_button");
         this.postContents = this.getReadOnlyQuillEditor('post_contents');
+
     }
 
     initPostDetailController() {

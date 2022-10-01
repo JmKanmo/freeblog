@@ -13,7 +13,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicApi(@Value("${springdoc.packages-to-scan}") String scanPackage) {
         return GroupedOpenApi.builder()
-                .group("freelog.open.api")
+                .group("freeblog.open.api")
                 .packagesToScan(scanPackage)
                 .build();
     }
@@ -21,8 +21,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("freelog.open.api")
-                        .description("freelog api documentation")
+                .info(new Info().title("freeblog.open.api")
+                        .description("freeblog api documentation")
                         .version("v0.0.1"));
     }
 }
