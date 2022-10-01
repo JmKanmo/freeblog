@@ -9,7 +9,7 @@
 </head>
 <body>
 <div th:replace="/fragments/header::header"></div>
-<input type="hidden" id="blog_post_title" th:value="${postDetail.title}">
+<input type="hidden" id="blog_post_title" readonly th:value="${postDetail.title}">
 
 <div class="post_detail_container">
     <div class="post_title_container">
@@ -140,7 +140,7 @@
         </div>
 
         <div class="post_comment_form_container">
-            <form action="/" class="post_comment_form" id="post_comment_form" name="post_comment_form">
+            <form action="/comment/register" class="post_comment_form" id="post_comment_form" name="post_comment_form">
                 <div class="post_comment_text_area_block">
                     <textarea class="post_comment_text_area" id="post_comment_text_input" name="post_comment_text_input"
                               placeholder="여러분의 소중한 댓글을 입력해주세요 :)"></textarea>
@@ -157,14 +157,19 @@
                 </div>
 
                 <div class="post_comment_form_info_container clear_fix">
-                    <div class="user_input_form_container clear_fix">
+                    <div sec:authorize="!isAuthenticated()" class="user_input_form_container clear_fix">
                         <input type="text" class="post_comment_input_style"
-                               id="post_comment_user_nickname" name="post_comment_user_nickname" placeholder="닉네임"
+                               id="comment_user_nickname" name="comment_user_nickname" placeholder="닉네임"
                                maxlength="255">
 
-                        <input type="password" class="post_comment_input_style "
-                               id="post_comment_user_password" name="post_comment_user_password" placeholder="비밀번호"
+                        <input type="password" class="post_comment_input_style"
+                               id="comment_user_password" name="comment_user_password" placeholder="비밀번호"
                                maxlength="255">
+
+                        <div class="post_comment_input_style user_comment_anonymous_input_box">
+                            <input type="checkbox" id="comment_is_anonymous" name="comment_is_anonymous">
+                            <span class="common_gray_text user_comment_anonymous_input_text">익명</span>
+                        </div>
                     </div>
 
                     <div class="util_input_form_container clear_fix">
@@ -198,6 +203,8 @@
                     </div>
                 </div>
 
+                <input type="hidden" id="post_comment_postId" readonly name="commentPostId"
+                       th:value="${postDetail.id}"/>
                 <input type="hidden" id="post_comment_thumbnail_image_value_input" name="commentThumbnailImage"/>
                 <input type="hidden" id="post_comment_is_secret_input" name="secretComment"/>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

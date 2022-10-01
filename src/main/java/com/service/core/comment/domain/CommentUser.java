@@ -18,5 +18,6 @@ public class CommentUser {
     private String targetUserNickname;
     private boolean isOwner;
     private String userId;
+    private String userPassword;
     private String userNickname;
 }

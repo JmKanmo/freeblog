@@ -1,5 +1,6 @@
 package com.service.core.comment.controller;
 
+import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.service.CommentService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserManageException;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -21,6 +23,23 @@ import java.security.Principal;
 @Slf4j
 public class CommentController {
     private final CommentService commentService;
+
+    @Operation(summary = "댓글 썸네일 이미지 업로드", description = "댓글 썸네일 이미지 업로드 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 썸네일 이미지 업로드 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
+    })
+    @ResponseBody
+    @PostMapping("/register")
+    public ResponseEntity<String> registerComment(@Valid CommentInput commentInput, Principal principal) {
+        try {
+            // TODO
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 작성에 실패하였습니다. %s", "fdsf"));
+        } catch (Exception exception) {
+            log.error("[freeblog-registerComment] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 작성에 실패하였습니다. %s", exception.getMessage()));
+        }
+    }
 
     @Operation(summary = "댓글 썸네일 이미지 업로드", description = "댓글 썸네일 이미지 업로드 수행 메서드")
     @ApiResponses(value = {

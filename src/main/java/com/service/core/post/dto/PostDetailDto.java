@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Data
 @Builder
 public class PostDetailDto {
+    private final Long id;
     private final String title;
     private final String contents;
     private final String categoryName;
@@ -25,6 +26,7 @@ public class PostDetailDto {
 
     public static PostDetailDto from(Post post) {
         return PostDetailDto.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .categoryName(post.getCategory().getName())

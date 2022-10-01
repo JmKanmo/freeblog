@@ -381,6 +381,16 @@
     float: left;
 }
 
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container .user_comment_anonymous_input_box {
+    display: flex;
+    align-items: center;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container .user_comment_anonymous_input_box .user_comment_anonymous_input_text {
+    margin-left: 5px;
+    font-size: 13px;
+}
+
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .post_comment_input_style {
     float: left;
     width: 200px;

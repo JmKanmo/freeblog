@@ -8,4 +8,9 @@ import lombok.Data;
 public class CommentInput {
     private final String commentThumbnailImage;
     private final boolean secretComment;
+    private final String commentUserNickname;
+    private final String commentUserPassword;
+    private final String commentUserId;
+    private final boolean commentIsAnonymous;
+    private final Long commentPostId;
 }
