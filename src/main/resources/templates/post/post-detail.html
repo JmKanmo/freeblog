@@ -46,7 +46,7 @@
 
     <div class="post_contents_container">
         <div class="post_contents" id="post_contents" th:utext="${postDetail.contents}">
-            테스트
+            포스트 컨텐츠
         </div>
     </div>
 
@@ -133,100 +133,6 @@
                     </div>
                 </div>
             </li>
-
-            <li class="post_comment_block">
-                <div class="post_comment_header clear_fix">
-                    <div class="comment_user_profile_image_block">
-                        <a class="comment_user_profile_image_link" href="/">
-                            <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">
-                        </a>
-                    </div>
-
-                    <div class="comment_user_profile_block">
-                        <div class="comment_user_profile_name_block clear_fix">
-                            <a class="comment_user_profile_name_link" href="/">삼백딱</a>
-                            <span class="user_profile_owner_badge"><span
-                                    class="user_profile_owner_text">블로그 주인</span></span>
-                        </div>
-
-                        <p class="post_comment_date_text">
-                            2022.08.20 11:40
-                        </p>
-                    </div>
-                </div>
-
-                <div class="post_comment_body">
-                    <div class="post_comment_text_block">
-                        <span class="post_comment_text">
-                            너무 싫어요 정말 ... 진심으로
-                        </span>
-                    </div>
-
-                    <div class="post_comment_util_block clear_fix">
-                        <div class="post_comment_update_delete_block clear_fix">
-                            <button class="post_comment_util_button common_button_text">
-                                <span class="post_comment_util_button_text">수정</span>
-                            </button>
-
-                            <span class="post_comment_util_button_text">|</span>
-
-                            <button class="post_comment_util_button common_button_text">
-                                <span class="post_comment_util_button_text">삭제</span>
-                            </button>
-                        </div>
-
-                        <button class="post_comment_util_button post_comment_reply_button common_button_text">
-                            <span class="post_comment_util_button_text">답글 쓰기</span>
-                        </button>
-                    </div>
-                </div>
-            </li>
-
-            <li class="post_comment_block">
-                <div class="post_comment_header clear_fix">
-                    <div class="comment_user_profile_image_block">
-                        <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">
-                    </div>
-
-                    <div class="comment_user_profile_block">
-                        <div class="comment_user_profile_name_block clear_fix">
-                            <a class="comment_user_profile_name_link" href="/">삼백딱</a>
-                            <span class="user_profile_owner_badge"><span
-                                    class="user_profile_owner_text">블로그 주인</span></span>
-                        </div>
-
-                        <p class="post_comment_date_text">
-                            2022.08.20 11:40
-                        </p>
-                    </div>
-                </div>
-
-                <div class="post_comment_body">
-                    <div class="post_comment_text_block">
-                        <span class="post_comment_text">
-                            뭐하시는거에요 지금?
-                        </span>
-                    </div>
-
-                    <div class="post_comment_util_block clear_fix">
-                        <div class="post_comment_update_delete_block clear_fix">
-                            <button class="post_comment_util_button common_button_text">
-                                <span class="post_comment_util_button_text">수정</span>
-                            </button>
-
-                            <span class="post_comment_util_button_text">|</span>
-
-                            <button class="post_comment_util_button common_button_text">
-                                <span class="post_comment_util_button_text">삭제</span>
-                            </button>
-                        </div>
-
-                        <button class="post_comment_util_button post_comment_reply_button common_button_text">
-                            <span class="post_comment_util_button_text">답글 쓰기</span>
-                        </button>
-                    </div>
-                </div>
-            </li>
         </ul>
 
         <div class="post_comment_page_container">
@@ -236,8 +142,18 @@
         <div class="post_comment_form_container">
             <form action="/" class="post_comment_form" id="post_comment_form" name="post_comment_form">
                 <div class="post_comment_text_area_block">
-                    <textarea class="post_comment_text_area" id="post_comment_text" name="post_comment_text"
+                    <textarea class="post_comment_text_area" id="post_comment_text_input" name="post_comment_text_input"
                               placeholder="여러분의 소중한 댓글을 입력해주세요 :)"></textarea>
+
+                    <div class="post_comment_thumbnail_image_box" id="post_comment_thumbnail_image_box">
+                        <img class="common_button_image_style" id="post_comment_thumbnail_image" src="" alt="">
+
+                        <button type="button" class="post_comment_thumbnail_image_delete_button"
+                                id="post_comment_thumbnail_image_delete_button">
+                            <img class="common_button_image_style" src="../images/close.png" alt="">
+                            <span class="blind">커멘트 썸네일 이미지 삭제</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="post_comment_form_info_container clear_fix">
@@ -254,7 +170,7 @@
                     <div class="util_input_form_container clear_fix">
                         <button type="button" class="post_comment_image_button" id="post_comment_image_button">
                             <div class="post_image_container clear_fix">
-                                <img src="../images/photo.png" class="post_comment_image" alt="">
+                                <img src="../images/photo.png" class="common_button_image_style" alt="">
                             </div>
 
                             <span class="post_comment_image_text">
@@ -262,9 +178,11 @@
                             </span>
                         </button>
 
-                        <button type="button" class="post_comment_image_button post_comment_lock_button" id="post_comment_lock_button">
+                        <button type="button" class="post_comment_image_button post_comment_lock_button"
+                                id="post_comment_lock_button">
                             <div class="post_image_container clear_fix">
-                                <img src="../images/unlock.png" class="post_comment_image" alt="">
+                                <img src="../images/unlock.png" class="common_button_image_style"
+                                     id="post_comment_secret_image" alt="">
                             </div>
 
                             <span class="post_comment_image_text">
@@ -279,6 +197,9 @@
                         </button>
                     </div>
                 </div>
+
+                <input type="hidden" id="post_comment_thumbnail_image_value_input" name="commentThumbnailImage"/>
+                <input type="hidden" id="post_comment_is_secret_input" name="secretComment"/>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             </form>
 

@@ -22,7 +22,7 @@ class BlogBodyController extends UtilController {
             let status = event.target.status;
             const responseValue = JSON.parse(event.target.responseText);
 
-            if (status >= 400 && status <= 500) {
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(JSON.stringify(responseValue));
             } else {
                 if (responseValue["paginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {

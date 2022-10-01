@@ -39,7 +39,7 @@ class SignUpController extends UtilController {
                 let status = event.target.status;
                 const responseValue = event.target.responseText;
 
-                if (status >= 400 && status <= 500) {
+                if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.showToastMessage(`${responseValue}`, false, 5000, () => {
                         this.idCheckButton.disabled = false;
                     });
@@ -81,7 +81,7 @@ class SignUpController extends UtilController {
                 let status = event.target.status;
                 const responseValue = event.target.responseText;
 
-                if (status >= 400 && status <= 500) {
+                if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.showToastMessage(`${responseValue}`, false, 5000, () => {
                         this.emailCheckButton.disabled = false;
                     });

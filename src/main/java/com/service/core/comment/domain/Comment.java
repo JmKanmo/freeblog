@@ -29,6 +29,8 @@ public class Comment extends BaseTimeEntity {
 
     private int passwordHash;
 
+    private boolean secret;
+
     @Embedded
     private CommentUser commentUser;
 

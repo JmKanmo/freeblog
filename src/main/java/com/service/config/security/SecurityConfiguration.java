@@ -71,6 +71,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/category/post/**", "/category/all/{blogId}",
                         // post
                         "/post/all/{blogId}", "/post/{postId}",
+                        // comment
+                        "/comment/upload/comment-thumbnail-image", "/comment/register",
                         // error
                         "/error/**",
                         // email

@@ -40,7 +40,7 @@ class PostWriteController extends UtilController {
             let status = event.target.status;
             const responseValue = JSON.parse(event.target.responseText);
 
-            if (status >= 400 && status <= 500) {
+            if ((status >= 400 && status <= 500) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 const categorySelectorOptionTemplate = document.getElementById("category-selector-option-template").innerHTML;
@@ -189,7 +189,7 @@ class PostWriteController extends UtilController {
                         let status = event.target.status;
                         const responseValue = event.target.responseText;
 
-                        if (status >= 400 && status <= 500) {
+                        if ((status >= 400 && status <= 500) || (status > 500)) {
                             this.showToastMessage(responseValue);
                         } else {
                             this.showToastMessage('게시글 썸네일 이미지가 지정되었습니다.');

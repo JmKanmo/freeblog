@@ -41,7 +41,7 @@ class FindInfoController extends UtilController {
                     let status = event.target.status;
                     const responseValue = event.target.responseText;
 
-                    if (status >= 400 && status <= 500) {
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.showToastMessage(responseValue);
                     } else {
                         this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
@@ -82,7 +82,7 @@ class FindInfoController extends UtilController {
                     let status = event.target.status;
                     const responseValue = event.target.responseText;
 
-                    if (status >= 400 && status <= 500) {
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.showToastMessage(responseValue);
                     } else {
                         this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
