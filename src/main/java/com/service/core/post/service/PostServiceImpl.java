@@ -5,7 +5,6 @@ import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
-import com.service.core.post.dto.PostSearchDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.repository.PostRepository;
@@ -13,9 +12,9 @@ import com.service.core.post.repository.mapper.PostMapper;
 import com.service.core.tag.service.TagService;
 import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
-import com.service.util.paging.Pagination;
-import com.service.util.paging.PaginationResponse;
-import com.service.util.paging.SearchDto;
+import com.service.core.post.paging.PostPagination;
+import com.service.core.post.paging.PostPaginationResponse;
+import com.service.core.post.paging.PostSearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,11 +38,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, SearchDto searchDto, String type) {
+    public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchDto postSearchDto, String type) {
         int postCount = postMapper.findPostCount(blogId);
-        Pagination pagination = new Pagination(postCount, searchDto);
-        searchDto.setPagination(pagination);
-        return new PaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findPostDtoListByPaging(PostSearchDto.from(blogId, searchDto)), postCount, type), pagination);
+        PostPagination postPagination = new PostPagination(postCount, postSearchDto);
+        postSearchDto.setPostPagination(postPagination);
+        return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findPostDtoListByPaging(com.service.core.post.dto.PostSearchDto.from(blogId, postSearchDto)), postCount, type), postPagination);
     }
 
     @Override

@@ -4,7 +4,7 @@ class BlogBodyController extends UtilController {
         this.blogId = document.getElementById("blog_info_id").value;
         this.blogPostCategoryTextBox = document.getElementById("blog_post_category_text_box");
         this.blogPostList = document.getElementById("blog_post_list");
-        this.pagination = document.getElementById("pagination");
+        this.pagination = document.getElementById("postPagination");
     }
 
     initBlogBodyController() {
@@ -14,7 +14,7 @@ class BlogBodyController extends UtilController {
 
     requestAllBlogPost(url, page) {
         const xhr = new XMLHttpRequest();
-        const queryParam = this.getQueryParam(page);
+        const queryParam = this.getQueryParam(page, 7, 7);
 
         xhr.open("GET", url + '?' + queryParam.toString());
 
@@ -25,7 +25,7 @@ class BlogBodyController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(JSON.stringify(responseValue));
             } else {
-                if (responseValue["paginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
                     this.#handleTemplateList(responseValue, true);
                     this.#clearPagination();
                     return;
@@ -33,7 +33,7 @@ class BlogBodyController extends UtilController {
 
                 this.#handleTemplateList(responseValue);
                 this.#clearPagination();
-                this.#handlePagination(responseValue["paginationResponse"]["pagination"], queryParam, url);
+                this.#handlePagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
             }
         });
 
@@ -46,7 +46,7 @@ class BlogBodyController extends UtilController {
     #handleTemplateList(responseValue, empty = false) {
         const blogPostCategoryTemplate = document.getElementById("blog-post-category-template").innerHTML;
         const blogPostCategoryTemplateObject = Handlebars.compile(blogPostCategoryTemplate);
-        const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["paginationResponse"]["postTotalDto"]["postSummaryDto"]);
+        const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]);
         this.blogPostCategoryTextBox.innerHTML = blogPostCategoryTemplateHTML;
 
         if (empty) {
@@ -54,7 +54,7 @@ class BlogBodyController extends UtilController {
         } else {
             const blogPostListTemplate = document.getElementById("blog-post-image-template").innerHTML;
             const blogPostListTemplateObject = Handlebars.compile(blogPostListTemplate);
-            const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["paginationResponse"]["postTotalDto"]);
+            const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]);
             this.blogPostList.innerHTML = blogPostListTemplateHTML;
         }
     }

@@ -1,9 +1,9 @@
-package com.service.util.paging;
+package com.service.core.post.paging;
 
 import lombok.Data;
 
 @Data
-public class SearchDto {
+public class PostSearchDto {
     private int page;                 // 현재 페이지 번호
     private int recordSize;           // 페이지당 출력할 데이터 개수
     private int pageSize;             // 화면 하단에 출력할 페이지 사이즈
@@ -12,9 +12,9 @@ public class SearchDto {
 //    private int searchIndex;          // 검색 인덱스
 //    private String searchType;        // 검색 유형
 
-    private Pagination pagination;    // 페이지네이션 정보
+    private PostPagination postPagination;    // 페이지네이션 정보
 
-    public SearchDto() {
+    public PostSearchDto() {
         this.page = 1;
         this.recordSize = 10;
         this.pageSize = 10;

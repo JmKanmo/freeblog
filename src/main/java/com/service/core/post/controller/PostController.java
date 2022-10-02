@@ -8,13 +8,12 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostPagingResponseDto;
-import com.service.core.post.dto.PostResponseDto;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.paging.PostSearchDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
 import com.service.util.ConstUtil;
-import com.service.util.paging.SearchDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -117,9 +116,9 @@ public class PostController {
     })
     @ResponseBody
     @GetMapping("/all/{blogId}")
-    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute SearchDto searchDto) {
+    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchDto postSearchDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogId, searchDto, ConstUtil.TOTAL_POST)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogId, postSearchDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
             log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));

@@ -314,11 +314,11 @@ class UtilController {
         return true;
     }
 
-    getQueryParam(page) {
+    getQueryParam(page, recordSize, pageSize) {
         return new URLSearchParams({
             page: (page) ? page : 1,
-            recordSize: 7,
-            pageSize: 7
+            recordSize: recordSize,
+            pageSize: pageSize
             // TODO 필요에 따라 keyword, searchType 등등 추가로 정의
         });
     }

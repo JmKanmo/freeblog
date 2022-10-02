@@ -1,6 +1,6 @@
 package com.service.core.post.dto;
 
-import com.service.util.paging.PaginationResponse;
+import com.service.core.post.paging.PostPaginationResponse;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -10,12 +10,12 @@ import org.springframework.http.HttpStatus;
 public class PostPagingResponseDto {
     private final String message;
     private final int responseCode;
-    private final PaginationResponse<PostTotalDto> paginationResponse;
+    private final PostPaginationResponse<PostTotalDto> postPaginationResponse;
 
-    public static PostPagingResponseDto success(PaginationResponse<PostTotalDto> paginationResponse) {
+    public static PostPagingResponseDto success(PostPaginationResponse<PostTotalDto> postPaginationResponse) {
         return PostPagingResponseDto.builder()
                 .responseCode(HttpStatus.OK.value())
-                .paginationResponse(paginationResponse)
+                .postPaginationResponse(postPaginationResponse)
                 .message("success")
                 .build();
     }
@@ -23,7 +23,7 @@ public class PostPagingResponseDto {
     public static PostPagingResponseDto fail(Exception exception) {
         return PostPagingResponseDto.builder()
                 .responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .paginationResponse(null)
+                .postPaginationResponse(null)
                 .message(String.format("fail: %s", exception.getMessage()))
                 .build();
     }

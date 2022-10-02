@@ -1,6 +1,5 @@
 package com.service.core.post.dto;
 
-import com.service.util.paging.SearchDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,9 +7,9 @@ import lombok.Data;
 @Builder
 public class PostSearchDto {
     private final Long blogId;
-    private final SearchDto searchDto;
+    private final com.service.core.post.paging.PostSearchDto postSearchDto;
 
-    public static PostSearchDto from(Long blogId, SearchDto searchDto) {
-        return PostSearchDto.builder().blogId(blogId).searchDto(searchDto).build();
+    public static PostSearchDto from(Long blogId, com.service.core.post.paging.PostSearchDto postSearchDto) {
+        return com.service.core.post.dto.PostSearchDto.builder().blogId(blogId).postSearchDto(postSearchDto).build();
     }
 }
