@@ -34,8 +34,12 @@ public enum ServiceExceptionMessage {
     // 포스트 처리 관련 에러 메시지
     POST_NOT_FOUND("포스트 정보가 존재하지 않습니다."),
 
+    // 댓글 처리 관련 에러 메시지
+    NOT_LOGIN_ANONYMOUS_COMMENT("비로그인 상태에서는 익명 댓글만 허용 됩니다."),
+
     // 기타 처리 관련 에러 메시지
-    NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다.");
+    NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),
+    NOT_VALID_FORM_INPUT("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
     private final String message;
 
     ServiceExceptionMessage(String message) {

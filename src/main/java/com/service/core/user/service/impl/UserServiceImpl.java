@@ -9,10 +9,7 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.SocialAddress;
 import com.service.core.user.domain.UserDomain;
-import com.service.core.user.dto.UserHeaderDto;
-import com.service.core.user.dto.UserEmailFindDto;
-import com.service.core.user.dto.UserProfileDto;
-import com.service.core.user.dto.UserSettingDto;
+import com.service.core.user.dto.*;
 import com.service.core.user.model.*;
 import com.service.core.user.service.UserAuthService;
 import com.service.core.user.service.UserInfoService;
@@ -225,6 +222,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserHeaderDto findUserHeaderDtoByEmail(String email) {
         return UserHeaderDto.fromEntity(userInfoService.findUserDomainByEmailOrThrow(email));
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserCommentDto findUserCommentDtoByEmail(String email) {
+        return UserCommentDto.from(userInfoService.findUserDomainByEmailOrThrow(email));
     }
 
     @Override

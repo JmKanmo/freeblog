@@ -22,7 +22,7 @@ public class PostDetailDto {
     private final String currentUrl;
     private final List<String> tags;
 
-    // TODO 좋아요, 조회수, 댓글 추가
+    // TODO 좋아요, 조회수, etc 추가
 
     public static PostDetailDto from(Post post) {
         return PostDetailDto.builder()

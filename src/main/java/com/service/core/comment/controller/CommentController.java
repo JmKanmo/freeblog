@@ -3,6 +3,7 @@ package com.service.core.comment.controller;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.service.CommentService;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.CommentManageException;
 import com.service.core.error.model.UserManageException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,10 +33,13 @@ public class CommentController {
     })
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<String> registerComment(@Valid CommentInput commentInput, Principal principal) {
+    public ResponseEntity<String> registerComment(@Valid CommentInput commentInput, BindingResult bindingResult, Principal principal) {
         try {
-            // TODO
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 작성에 실패하였습니다. %s", "fdsf"));
+            if (bindingResult.hasErrors()) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
+            commentService.registerComment(commentInput, principal);
+            return ResponseEntity.status(HttpStatus.OK).body(String.format("댓글 작성에 성공하였습니다."));
         } catch (Exception exception) {
             log.error("[freeblog-registerComment] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 작성에 실패하였습니다. %s", exception.getMessage()));

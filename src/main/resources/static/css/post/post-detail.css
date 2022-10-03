@@ -339,7 +339,22 @@
 }
 
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_text_area_block {
-    padding: 16px;
+    padding: 25px;
+    position: relative;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_text_area_block .post_comment_count_block {
+    position: absolute;
+    top: 4px;
+    right: 25px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_text_area_block .post_comment_count_block .textarea_text_count {
+    font-size: 12px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_text_area_block .post_comment_count_block .textarea_count_blank {
+    font-size: 13px;
 }
 
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_text_area {
@@ -374,7 +389,7 @@
 }
 
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container {
-    padding: 0px 16px 12px 16px;
+    padding: 0px 25px 17px 25px;
 }
 
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container {
@@ -386,7 +401,11 @@
     align-items: center;
 }
 
-.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container .user_comment_anonymous_input_box .user_comment_anonymous_input_text {
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container .user_comment_anonymous_input_box .user_comment_anonymous_input_label {
+    cursor: pointer;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .user_input_form_container .user_comment_anonymous_input_box .user_comment_anonymous_input_label .user_comment_anonymous_input_text {
     margin-left: 5px;
     font-size: 13px;
 }
@@ -420,6 +439,10 @@
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button .post_image_container {
     float: left;
     width: 19px;
+}
+
+.post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_is_secret_input_style {
+    visibility: hidden;
 }
 
 .post_detail_container .post_comment_container .post_comment_form_container .post_comment_form .post_comment_form_info_container .util_input_form_container .post_comment_image_button .post_comment_image_text {

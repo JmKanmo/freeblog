@@ -2,10 +2,7 @@ package com.service.core.user.service;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.user.domain.UserDomain;
-import com.service.core.user.dto.UserHeaderDto;
-import com.service.core.user.dto.UserEmailFindDto;
-import com.service.core.user.dto.UserProfileDto;
-import com.service.core.user.dto.UserSettingDto;
+import com.service.core.user.dto.*;
 import com.service.core.user.model.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,9 +46,12 @@ public interface UserService extends UserDetailsService {
 
     UserHeaderDto findUserHeaderDtoByEmail(String email);
 
+    UserCommentDto findUserCommentDtoByEmail(String email);
+
     UserProfileDto findUserProfileDtoById(String id);
 
     UserProfileDto findUserProfileDtoByBlogId(Long blogId);
+
     String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 
     String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception;

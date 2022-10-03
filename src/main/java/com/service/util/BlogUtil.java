@@ -6,6 +6,7 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -159,5 +160,21 @@ public class BlogUtil {
         } else {
             return requestURL.append('?').append(queryString).toString();
         }
+    }
+
+    public static boolean checkFieldValidation(String field, int len) {
+        if (field == null || field.isEmpty() || field.isBlank() || StringUtils.containsWhitespace(field) || field.length() > len) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean parseAndGetCheckBox(String checked) {
+        if (checked == null) {
+            return false;
+        } else if (checked.equals("on")) {
+            return true;
+        }
+        return false;
     }
 }

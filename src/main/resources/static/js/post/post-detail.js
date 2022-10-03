@@ -1,6 +1,7 @@
 class PostDetailController extends UtilController {
     constructor() {
         super();
+        this.postCommentForm = document.getElementById("post_comment_form");
         this.postTitle = document.getElementById("blog_post_title");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
         this.postLikeButton = document.getElementById("post_like_button");
@@ -20,6 +21,12 @@ class PostDetailController extends UtilController {
 
         this.postCommentThumbnailImageValueInput = document.getElementById("post_comment_thumbnail_image_value_input");
         this.postCommentIsSecretInput = document.getElementById("post_comment_is_secret_input");
+        this.commentIsAnonymous = document.getElementById("commentIsAnonymous");
+        this.postCommentTextInput = document.getElementById("post_comment_text_input");
+        this.commentUserNickname = document.getElementById("commentUserNickname");
+        this.commentUserPassword = document.getElementById("commentUserPassword");
+
+        this.currentTextCount = document.getElementById("current_text_count");
     }
 
     initPostDetailController() {
@@ -57,19 +64,43 @@ class PostDetailController extends UtilController {
         });
 
         this.postCommentLockButton.addEventListener("click", evt => {
-            const isCommentLock = this.postCommentIsSecretInput.value;
+            const isCommentLock = this.postCommentIsSecretInput.checked;
 
-            if (isCommentLock === "true") {
+            if (isCommentLock === true) {
                 this.postCommentSecretImage.src = "../images/unlock.png";
-                this.postCommentIsSecretInput.value = false;
+                this.postCommentIsSecretInput.checked = false;
             } else {
                 this.postCommentSecretImage.src = "../images/lock.png";
-                this.postCommentIsSecretInput.value = true;
+                this.postCommentIsSecretInput.checked = true;
             }
         });
 
         this.postCommentSubmitButton.addEventListener("click", evt => {
-            this.showToastMessage("postCommentSubmitButton clicked");
+            const xhr = new XMLHttpRequest();
+
+            if (this.checkCommentForm() === false) {
+                this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
+                return;
+            }
+
+            xhr.open("POST", `/comment/register`);
+
+            xhr.addEventListener("loadend", evt => {
+                let status = evt.target.status;
+                const responseValue = evt.target.responseText;
+
+                if ((status >= 400 && status <= 500) || (status > 500)) {
+                    this.showToastMessage(responseValue);
+                } else {
+                    this.resetCommentForm();
+                    // TODO 댓글 불러오기 api 호출 및 댓글 목록 업데이트
+                }
+            });
+
+            xhr.addEventListener("error", event => {
+                this.showToastMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
+            });
+            xhr.send(new FormData(this.postCommentForm));
         });
 
         this.postCommentImageFileInput.addEventListener("change", evt => {
@@ -114,6 +145,15 @@ class PostDetailController extends UtilController {
                 this.removeCommentImage();
             }
         });
+
+        this.postCommentTextInput.addEventListener("input", evt => {
+            this.setTextCount(evt.target);
+        });
+    }
+
+    setTextCount(commentTextArea) {
+        const textLength = commentTextArea.value.length;
+        this.currentTextCount.textContent = textLength;
     }
 
     removeCommentImage() {
@@ -122,6 +162,27 @@ class PostDetailController extends UtilController {
         this.postCommentThumbnailImage.src = "";
         this.postCommentThumbnailImageBox.style.display = "none";
         this.postCommentThumbnailImageValueInput.value = null;
+    }
+
+    resetCommentForm() {
+        this.removeCommentImage();
+        this.postCommentTextInput.value = "";
+        this.currentTextCount.textContent = this.postCommentTextInput.value.length;
+        this.commentUserNickname.value = "";
+        this.commentUserPassword.value = "";
+        this.postCommentIsSecretInput.checked = false;
+        this.postCommentSecretImage.src = "../images/unlock.png";
+        this.commentIsAnonymous.checked = false;
+    }
+
+    checkCommentForm() {
+        if (this.commentIsAnonymous.checked === true) {
+            if ((!this.commentUserNickname.value || this.commentUserNickname.value.match(/\s/g))
+                || (!this.commentUserPassword || this.commentUserPassword.value.match(/\s/g))) {
+                return false;
+            }
+            return true;
+        }
     }
 }
 
