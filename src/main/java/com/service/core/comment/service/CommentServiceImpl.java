@@ -36,15 +36,13 @@ public class CommentServiceImpl implements CommentService {
     private final CommentInfoService commentInfoService;
     private final UserService userService;
 
-    private final CommentMapper commentMapper;
-
     @Override
     public String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
         return awsS3Service.uploadImageFile(multipartFile);
     }
 
     @Override
-    public void registerComment(CommentInput commentInput, Principal principal) {
+    public long registerComment(CommentInput commentInput, Principal principal) {
         if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
             if (!BlogUtil.checkFieldValidation(commentInput.getCommentUserNickname(), 255) || !BlogUtil.checkFieldValidation(commentInput.getCommentUserPassword(), 255)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
@@ -63,6 +61,7 @@ public class CommentServiceImpl implements CommentService {
         if (!BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && principal != null) {
             UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
             CommentUser commentUser = comment.getCommentUser();
+            commentUser.setUserProfileImage(userCommentDto.getUserProfileImage());
             commentUser.setUserNickname(userCommentDto.getUserNickname());
             commentUser.setUserId(userCommentDto.getUserId());
             commentUser.setUserPassword(BCrypt.hashpw(userCommentDto.getUserPassword(), BCrypt.gensalt()));
@@ -70,14 +69,26 @@ public class CommentServiceImpl implements CommentService {
             comment.setCommentUser(commentUser);
         }
         commentInfoService.saveComment(comment);
+        return commentInfoService.findCommentCount(commentInput.getCommentPostId());
     }
 
     @Override
-    public CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, CommentSearchPagingDto commentSearchPagingDto) {
-        int commentCount = commentMapper.findCommentCount(postId);
+    public CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal) {
+        int commentCount = commentInfoService.findCommentCount(postId);
         CommentPagination commentPagination = new CommentPagination(commentCount, commentSearchPagingDto);
         commentSearchPagingDto.setCommentPagination(commentPagination);
-        List<CommentDto> commentDtoList = commentMapper.findCommentDtoListByPaging(CommentSearchDto.from(postId, commentSearchPagingDto));
-        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, commentCount), commentPagination);
+        String loginUserEmail = principal == null ? null : principal.getName();
+        boolean isBlogOwner = false;
+
+        if (loginUserEmail != null) {
+            UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(loginUserEmail);
+            Long loginUserBlogId = userCommentDto.getBlogId();
+
+            if (loginUserBlogId == ownerBlogId) {
+                isBlogOwner = true;
+            }
+        }
+        List<CommentDto> commentDtoList = commentInfoService.findCommentDtoListByPaging(postId, commentSearchPagingDto);
+        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, commentCount, isBlogOwner), commentPagination);
     }
 }

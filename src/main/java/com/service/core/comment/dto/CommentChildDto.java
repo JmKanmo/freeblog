@@ -16,7 +16,8 @@ public class CommentChildDto {
     private final String targetUserId;
     private final String targetUserNickname;
     private final boolean isOwner;
-    private final boolean secret;
+    private boolean secret;
+    private final boolean anonymous;
     private final String registerTime;
 
     public static CommentChildDto from(CommentDto commentDto) {
@@ -32,6 +33,7 @@ public class CommentChildDto {
                 .targetUserNickname(commentDto.getTargetUserNickname())
                 .isOwner(commentDto.isOwner())
                 .secret(commentDto.isSecret())
+                .anonymous(commentDto.isAnonymous())
                 .registerTime(commentDto.getRegisterTime())
                 .build();
     }

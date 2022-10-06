@@ -12,10 +12,10 @@ public class CommentSummaryDto {
 
     private final List<CommentTotalDto> commentTotalDtoList;
 
-    public static CommentSummaryDto from(List<CommentDto> commentDtoList, int count) {
+    public static CommentSummaryDto from(List<CommentDto> commentDtoList, int count, boolean isBlogOwner) {
         return CommentSummaryDto.builder()
                 .totalCount(count)
-                .commentTotalDtoList(CommentTotalDto.from(commentDtoList))
+                .commentTotalDtoList(CommentTotalDto.from(commentDtoList, isBlogOwner))
                 .build();
     }
 }

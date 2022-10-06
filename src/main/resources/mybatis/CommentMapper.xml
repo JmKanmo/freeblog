@@ -9,7 +9,7 @@
                comment,
                comment_image,
                parent_id,
-               date_format(register_time, '%y.%m.%d %H:%i:%s') as register_time,
+               date_format(register_time, '%y.%m.%d %H:%i') as register_time,
                user_id,
                user_profile_image,
                user_nickname,

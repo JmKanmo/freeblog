@@ -205,5 +205,137 @@
         {{/each}}
         {{/each}}
     </script>
+
+
+    <!-- 댓글 템플릿 -->
+    <script id="post-comment-template" type="text/x-handlebars-template">
+        <div class="post_comment_count_text_block">
+            <span class="post_comment_count_text">댓글</span>
+            <span class="post_comment_count">{{totalCount}}</span>
+            <span class="post_comment_count_text">개</span>
+        </div>
+
+        {{#each commentTotalDtoList}}
+        <li class="post_comment_block">
+            <div class="post_comment_header clear_fix">
+                <div class="comment_user_profile_image_block">
+                    <img class="common_button_image_style" src={{{getCommentUserProfileImage
+                         commentParentDto.userProfileImage}}} alt="">
+                </div>
+
+                <div class="comment_user_profile_block">
+                    <div class="comment_user_profile_name_block clear_fix">
+                        {{#if commentParentDto.anonymous}}
+                        <p class="comment_user_profile_name_link">{{commentParentDto.userNickname}}</p>
+                        {{else}}
+                        <a class="comment_user_profile_name_link" href="/blog/{{commentParentDto.userId}}">{{commentParentDto.userNickname}}</a>
+                        {{/if}}
+
+                        {{#if commentParentDto.isOwner}}
+                        <span class="user_profile_owner_badge"><span
+                                class="user_profile_owner_text">블로그 주인</span></span>
+                        {{/if}}
+                    </div>
+
+                    <p class="post_comment_date_text">
+                        {{commentParentDto.registerTime}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="post_comment_body">
+                <div class="post_comment_text_block">
+                        <span class="post_comment_text">
+                            {{#if commentParentDto.secret}}
+                                비밀글 입니다.
+                            {{else}}
+                                {{commentParentDto.comment}}
+                            {{/if}}
+                        </span>
+                </div>
+
+                <div class="post_comment_util_block clear_fix">
+                    <div class="post_comment_update_delete_block clear_fix">
+                        <button class="post_comment_util_button common_button_text">
+                            <span class="post_comment_util_button_text">수정</span>
+                        </button>
+
+                        <span class="post_comment_util_button_text">|</span>
+
+                        <button class="post_comment_util_button common_button_text">
+                            <span class="post_comment_util_button_text">삭제</span>
+                        </button>
+                    </div>
+
+                    <button class="post_comment_util_button post_comment_reply_button common_button_text">
+                        <span class="post_comment_util_button_text">답글 쓰기</span>
+                    </button>
+                </div>
+            </div>
+
+            <ul class="sub_post_comment_list_block">
+                {{#each commentChildDtoList}}
+                <li class="sub_post_list">
+                    <div class="post_comment_header clear_fix">
+                        <div class="comment_user_profile_image_block">
+                            <img class="common_button_image_style" src={{{getCommentUserProfileImage userProfileImage}}}
+                                 alt="">
+                        </div>
+
+                        <div class="comment_user_profile_block">
+                            <div class="comment_user_profile_name_block clear_fix">
+                                {{#if anonymous}}
+                                <p class="comment_user_profile_name_link">{{userNickname}}</p>
+                                {{else}}
+                                <a class="comment_user_profile_name_link" href="/blog/{{userId}}">{{userNickname}}</a>
+                                {{/if}}
+
+                                {{#if isOwner}}
+                                <span class="user_profile_owner_badge"><span
+                                        class="user_profile_owner_text">블로그 주인</span></span>
+                                {{/if}}
+                            </div>
+
+                            <p class="post_comment_date_text">
+                                {{registerTime}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="post_comment_body">
+                        <div class="post_comment_text_block">
+                        <span class="post_comment_text">
+                            {{#if secret}}
+                                {{comment}}
+                            {{else}}
+                                비밀글 입니다.
+                            {{/if}}
+                        </span>
+                        </div>
+
+                        <div class="post_comment_util_block clear_fix">
+                            <div class="post_comment_update_delete_block clear_fix">
+                                <button class="post_comment_util_button common_button_text">
+                                    <span class="post_comment_util_button_text">수정</span>
+                                </button>
+
+                                <span class="post_comment_util_button_text">|</span>
+
+                                <button class="post_comment_util_button common_button_text">
+                                    <span class="post_comment_util_button_text">삭제</span>
+                                </button>
+                            </div>
+
+                            <button class="post_comment_util_button post_comment_reply_button common_button_text">
+                                <span class="post_comment_util_button_text">답글 쓰기</span>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </li>
+        {{/each}}
+    </script>
 </th:block>
 </html>

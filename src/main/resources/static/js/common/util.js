@@ -17,6 +17,14 @@ class UtilController {
         Handlebars.registerHelper('getInnerText', tag => {
             return tag.replace(/(<([^>]+)>)/ig, "");
         });
+
+        Handlebars.registerHelper('getCommentUserProfileImage', image => {
+            if (image === '<<<undefined>>>') {
+                return '../images/comment_default_user_pic.png';
+            } else {
+                return image;
+            }
+        });
     }
 
     /**

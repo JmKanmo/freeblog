@@ -15,14 +15,18 @@ public class CommentTotalDto {
     private CommentParentDto commentParentDto;
     private List<CommentChildDto> commentChildDtoList;
 
-    public static List<CommentTotalDto> from(List<CommentDto> commentDtoList) {
+    public static List<CommentTotalDto> from(List<CommentDto> commentDtoList, boolean isBlogOwner) {
         List<CommentTotalDto> commentTotalDtoList = new ArrayList<>();
         Map<Long, Integer> map = new HashMap<>();
 
         for (CommentDto commentDto : commentDtoList) {
             if (commentDto.getParentId() == 0) {
                 CommentTotalDto commentTotalDto = new CommentTotalDto();
-                commentTotalDto.setCommentParentDto(CommentParentDto.from(commentDto));
+                CommentParentDto commentParentDto = CommentParentDto.from(commentDto);
+                if (commentParentDto.isSecret() && isBlogOwner) {
+                    commentParentDto.setSecret(false);
+                }
+                commentTotalDto.setCommentParentDto(commentParentDto);
                 commentTotalDto.setCommentChildDtoList(new ArrayList<>());
                 commentTotalDtoList.add(commentTotalDto);
                 map.put(commentDto.getCommentId(), commentTotalDtoList.size() - 1);
@@ -30,7 +34,11 @@ public class CommentTotalDto {
                 Long parentId = commentDto.getParentId();
                 int idx = map.get(parentId);
                 List<CommentChildDto> commentChildDtoListRef = commentTotalDtoList.get(idx).getCommentChildDtoList();
-                commentChildDtoListRef.add(CommentChildDto.from(commentDto));
+                CommentChildDto commentChildDto = CommentChildDto.from(commentDto);
+                if (commentChildDto.isSecret() && isBlogOwner) {
+                    commentChildDto.setSecret(false);
+                }
+                commentChildDtoListRef.add(commentChildDto);
             }
         }
         return commentTotalDtoList;

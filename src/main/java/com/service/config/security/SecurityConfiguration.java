@@ -63,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // user
                         "/user/intro", "/user/login",
                         "/user/signup", "/user/signup-complete",
-                        "/user/find-info", "/user/find-email",
+                        "/user/find-info", "/user/find-email", "/user/update/password",
                         "/user/check-id", "/user/check-email", "/user/email-auth",
                         // blog
                         "/blog/{id}",
@@ -72,7 +72,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // post
                         "/post/all/{blogId}", "/post/{postId}",
                         // comment
-                        "/comment/upload/comment-thumbnail-image", "/comment/register",
+                        "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}",
                         // error
                         "/error/**",
                         // email

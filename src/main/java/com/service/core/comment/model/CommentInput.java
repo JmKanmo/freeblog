@@ -13,9 +13,6 @@ public class CommentInput {
     @Size(max = 255, message = "댓글 이미지는 최대 255글자 까지 작성 가능합니다.")
     private final String commentThumbnailImage;
 
-    @Size(max = 255, message = "사용자 이미지는 최대 255글자 까지 작성 가능합니다.")
-    private final String userProfileImage;
-
     private final Long parentCommentId;
 
     private final String secretComment;

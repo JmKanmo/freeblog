@@ -184,6 +184,7 @@ class PostWriteController extends UtilController {
                     const xhr = new XMLHttpRequest();
 
                     xhr.open("POST", `/post/upload/post-thumbnail-image`);
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
                         let status = event.target.status;

@@ -1,6 +1,7 @@
 package com.service.core.comment.controller;
 
 import com.service.core.comment.dto.CommentPagingResponseDto;
+import com.service.core.comment.dto.CommentRegisterDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.comment.service.CommentService;
@@ -32,32 +33,32 @@ public class CommentController {
             @ApiResponse(responseCode = "200", description = "특정 포스트 댓글 반환 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 특정 포스트 댓글 반환 실패")
     })
-    public ResponseEntity<CommentPagingResponseDto> findTotalCommentsByPostId(@PathVariable Long postId, @ModelAttribute CommentSearchPagingDto commentSearchPagingDto) {
+    @GetMapping("/{postId}/{blogId}")
+    public ResponseEntity<CommentPagingResponseDto> findTotalCommentsByPostId(@PathVariable Long postId, @PathVariable Long blogId, @ModelAttribute CommentSearchPagingDto commentSearchPagingDto, Principal principal) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(CommentPagingResponseDto.success(commentService.findTotalPaginationComment(postId, commentSearchPagingDto)));
+            return ResponseEntity.status(HttpStatus.OK).body(CommentPagingResponseDto.success(commentService.findTotalPaginationComment(postId, blogId, commentSearchPagingDto, principal)));
         } catch (Exception exception) {
             log.error("[freeblog-findTotalCommentsByPostId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentPagingResponseDto.fail(exception));
         }
     }
 
-    @Operation(summary = "댓글 썸네일 이미지 업로드", description = "댓글 썸네일 이미지 업로드 수행 메서드")
+    @Operation(summary = "댓글 업로드", description = "댓글 업로드 수행 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "댓글 썸네일 이미지 업로드 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
+            @ApiResponse(responseCode = "200", description = "댓글 업로드 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 업로드 실패")
     })
     @ResponseBody
     @PostMapping("/register")
-    public ResponseEntity<String> registerComment(@Valid CommentInput commentInput, BindingResult bindingResult, Principal principal) {
+    public ResponseEntity<CommentRegisterDto> registerComment(@Valid CommentInput commentInput, BindingResult bindingResult, Principal principal) {
         try {
             if (bindingResult.hasErrors()) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
-            commentService.registerComment(commentInput, principal);
-            return ResponseEntity.status(HttpStatus.OK).body(String.format("댓글 작성에 성공하였습니다."));
+            return ResponseEntity.status(HttpStatus.OK).body(CommentRegisterDto.success(commentService.registerComment(commentInput, principal), "댓글 작성에 성공하였습니다."));
         } catch (Exception exception) {
             log.error("[freeblog-registerComment] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 작성에 실패하였습니다. %s", exception.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentRegisterDto.fail(exception));
         }
     }
 
@@ -72,7 +73,7 @@ public class CommentController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(commentService.uploadAwsSCommentThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
+            log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
         }
     }

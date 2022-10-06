@@ -11,7 +11,7 @@ import java.security.Principal;
 public interface CommentService {
     String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
 
-    void registerComment(CommentInput commentInput, Principal principal);
+    long registerComment(CommentInput commentInput, Principal principal);
 
-    CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, CommentSearchPagingDto commentSearchPagingDto);
+    CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal);
 }

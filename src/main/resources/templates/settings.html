@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <title>설정 페이지</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
     <link th:href="@{/css/settings.css}" type="text/css" rel="stylesheet">
@@ -77,19 +79,19 @@
                 <span class="blind">편집하기</span>
             </button>
 
-            <input type="hidden" id="user_basic_info_id" th:value="${user_setting.id}">
-            <input type="hidden" id="user_basic_info_email" th:value="${user_setting.email}">
-            <input type="hidden" id="user_basic_info_blog_name" th:value="${user_setting.blogName}">
-            <input type="hidden" id="user_basic_info_nickname" th:value="${user_setting.nickname}">
-            <input type="hidden" id="user_basic_info_greetings" th:value="${user_setting.greetings}">
-            <input type="hidden" id="user_info_intro"
+            <input type="hidden" id="user_basic_info_id" readonly th:value="${user_setting.id}">
+            <input type="hidden" id="user_basic_info_email" readonly th:value="${user_setting.email}">
+            <input type="hidden" id="user_basic_info_blog_name" readonly th:value="${user_setting.blogName}">
+            <input type="hidden" id="user_basic_info_nickname" readonly th:value="${user_setting.nickname}">
+            <input type="hidden" id="user_basic_info_greetings" readonly th:value="${user_setting.greetings}">
+            <input type="hidden" id="user_info_intro" readonly
                    th:value="${#strings.isEmpty(user_setting.intro) or #strings.equals(user_setting.intro,'<<<undefined>>>') ? '<p><br></p>' : user_setting.intro}">
-            <input type="hidden" id="user_email_auth_time" th:value="${user_setting.emailAuthTime}">
+            <input type="hidden" id="user_email_auth_time" readonly th:value="${user_setting.emailAuthTime}">
 
-            <input type="hidden" id="user_social_address" th:value="${user_setting.socialAddress.address}">
-            <input type="hidden" id="user_github_address" th:value="${user_setting.socialAddress.github}">
-            <input type="hidden" id="user_twitter_address" th:value="${user_setting.socialAddress.twitter}">
-            <input type="hidden" id="user_instagram_address" th:value="${user_setting.socialAddress.instagram}">
+            <input type="hidden" id="user_social_address" readonly th:value="${user_setting.socialAddress.address}">
+            <input type="hidden" id="user_github_address" readonly th:value="${user_setting.socialAddress.github}">
+            <input type="hidden" id="user_twitter_address" readonly th:value="${user_setting.socialAddress.twitter}">
+            <input type="hidden" id="user_instagram_address" readonly th:value="${user_setting.socialAddress.instagram}">
         </div>
 
         <div class="user_official_info_container">

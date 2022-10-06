@@ -16,6 +16,7 @@ public class UserCommentDto {
     private String userPassword;
     private String userNickname;
     private Long blogId;
+    private String userProfileImage;
 
     public static UserCommentDto from(UserDomain userDomain) {
         if (userDomain == null) {
@@ -24,12 +25,14 @@ public class UserCommentDto {
                     .userPassword(ConstUtil.UNDEFINED)
                     .userNickname(ConstUtil.UNDEFINED)
                     .blogId(Long.MAX_VALUE)
+                    .userProfileImage(ConstUtil.UNDEFINED)
                     .build();
         } else {
             return UserCommentDto.builder()
                     .userId(userDomain.getUserId())
                     .userPassword(userDomain.getPassword())
                     .userNickname(userDomain.getNickname())
+                    .userProfileImage(userDomain.getProfileImage())
                     .blogId(userDomain.getBlog().getId())
                     .build();
         }

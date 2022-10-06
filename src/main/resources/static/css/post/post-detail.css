@@ -469,3 +469,8 @@
     visibility: hidden;
 }
 
+/* 서브 댓글 스타일 */
+.post_detail_container .post_comment_container .post_comment_list .post_comment_block .sub_post_comment_list_block .sub_post_list {
+    margin-left: 25px;
+    margin-top: 25px;
+}

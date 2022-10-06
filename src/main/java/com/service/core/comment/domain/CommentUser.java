@@ -28,12 +28,11 @@ public class CommentUser {
 
     public static CommentUser from(CommentInput commentInput) {
         return CommentUser.builder()
-                .userProfileImage(BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) ? ConstUtil.UNDEFINED
-                        : commentInput.getUserProfileImage() == null || commentInput.getUserProfileImage().isEmpty() ? ConstUtil.UNDEFINED : commentInput.getUserProfileImage())
+                .userProfileImage(ConstUtil.UNDEFINED)
                 .targetUserId(commentInput.getTargetUserId() == null ? ConstUtil.UNDEFINED : commentInput.getTargetUserId())
                 .targetUserNickname(commentInput.getTargetUserNickname() == null ? ConstUtil.UNDEFINED : commentInput.getTargetUserNickname())
                 .isOwner(false)
-                .userId(commentInput.getCommentUserId() == null ? ConstUtil.UNDEFINED: commentInput.getCommentUserId())
+                .userId(commentInput.getCommentUserId() == null ? ConstUtil.UNDEFINED : commentInput.getCommentUserId())
                 .userPassword(BCrypt.hashpw(commentInput.getCommentUserPassword(), BCrypt.gensalt()))
                 .userNickname(commentInput.getCommentUserNickname() == null ? ConstUtil.UNDEFINED : commentInput.getCommentUserNickname())
                 .build();

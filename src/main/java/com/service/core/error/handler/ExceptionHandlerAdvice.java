@@ -1,10 +1,14 @@
 package com.service.core.error.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +23,12 @@ public class ExceptionHandlerAdvice {
         model.addAttribute("error", (msg == null) ? exception.toString() : msg);
         log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception.toString());
         return "error/error-page";
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseBody
+    public ResponseEntity<String> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", exception.getMessage()));
     }
 
     @ExceptionHandler(value = Exception.class)

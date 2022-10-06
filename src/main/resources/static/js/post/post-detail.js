@@ -19,6 +19,8 @@ class PostDetailController extends UtilController {
         this.postCommentThumbnailImageDeleteButton = document.getElementById("post_comment_thumbnail_image_delete_button");
         this.postCommentSecretImage = document.getElementById("post_comment_secret_image");
 
+        this.postCommentBlogId = document.getElementById("post_comment_blogId");
+        this.postCommentPostId = document.getElementById("post_comment_postId");
         this.postCommentThumbnailImageValueInput = document.getElementById("post_comment_thumbnail_image_value_input");
         this.postCommentIsSecretInput = document.getElementById("post_comment_is_secret_input");
         this.commentIsAnonymous = document.getElementById("commentIsAnonymous");
@@ -27,10 +29,17 @@ class PostDetailController extends UtilController {
         this.commentUserPassword = document.getElementById("commentUserPassword");
 
         this.currentTextCount = document.getElementById("current_text_count");
+
+        this.postCommentList = document.getElementById("post_comment_list");
+        this.commentPagination = document.getElementById("commentPagination");
+
+        this.commentRecordSize = 50;
+        this.commentPageSize = 10;
     }
 
     initPostDetailController() {
         this.initPostTitle();
+        this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`);
         this.initEventController();
     }
 
@@ -84,16 +93,18 @@ class PostDetailController extends UtilController {
             }
 
             xhr.open("POST", `/comment/register`);
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
             xhr.addEventListener("loadend", evt => {
                 let status = evt.target.status;
-                const responseValue = evt.target.responseText;
+                const responseValue = JSON.parse(evt.target.responseText);
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(responseValue);
+                    this.showToastMessage(responseValue["message"]);
                 } else {
                     this.resetCommentForm();
-                    // TODO 댓글 불러오기 api 호출 및 댓글 목록 업데이트
+                    const commentCount = responseValue["commentCount"];
+                    this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`, Math.ceil((commentCount / this.commentRecordSize)));
                 }
             });
 
@@ -113,6 +124,7 @@ class PostDetailController extends UtilController {
                     const xhr = new XMLHttpRequest();
 
                     xhr.open("POST", `/comment/upload/comment-thumbnail-image`);
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
                         let status = event.target.status;
@@ -149,6 +161,19 @@ class PostDetailController extends UtilController {
         this.postCommentTextInput.addEventListener("input", evt => {
             this.setTextCount(evt.target);
         });
+
+        this.commentPagination.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+
+            if (button && !button.closest("li").classList.contains("active")) {
+                const url = button.getAttribute("url");
+                const page = button.getAttribute("page");
+
+                if (url && page) {
+                    this.#requestComment(url, page);
+                }
+            }
+        });
     }
 
     setTextCount(commentTextArea) {
@@ -183,6 +208,52 @@ class PostDetailController extends UtilController {
             }
             return true;
         }
+    }
+
+    #requestComment(url, page) {
+        const xhr = new XMLHttpRequest();
+        const queryParam = this.getQueryParam(page, this.commentRecordSize, this.commentPageSize);
+
+        xhr.open("GET", url + '?' + queryParam.toString());
+
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#handleTemplateList(responseValue);
+                this.#clearPagination();
+                this.#handlePagination(responseValue["commentPaginationResponse"]["commentPagination"], queryParam, url);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("댓글 정보를 불러오는데 실패하였습니다.");
+        });
+
+        xhr.send();
+    }
+
+    #handleTemplateList(responseValue) {
+        const postCommentTemplate = document.getElementById("post-comment-template").innerHTML;
+        const postCommentTemplateObject = Handlebars.compile(postCommentTemplate);
+        const postCommentTemplateHTML = postCommentTemplateObject(responseValue["commentPaginationResponse"]["commentSummaryDto"]);
+        this.postCommentList.innerHTML = postCommentTemplateHTML;
+    }
+
+    #clearPagination() {
+        this.commentPagination.innerHTML = ``;
+    }
+
+    #handlePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.commentPagination.innerHTML = '';
+            return;
+        }
+        this.commentPagination.innerHTML = this.drawPagination(pagination, queryParam, url);
     }
 }
 

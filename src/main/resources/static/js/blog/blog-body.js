@@ -4,7 +4,10 @@ class BlogBodyController extends UtilController {
         this.blogId = document.getElementById("blog_info_id").value;
         this.blogPostCategoryTextBox = document.getElementById("blog_post_category_text_box");
         this.blogPostList = document.getElementById("blog_post_list");
-        this.pagination = document.getElementById("postPagination");
+        this.postPagination = document.getElementById("postPagination");
+
+        this.postRecordSize = 7;
+        this.postPageSize = 7;
     }
 
     initBlogBodyController() {
@@ -14,7 +17,7 @@ class BlogBodyController extends UtilController {
 
     requestAllBlogPost(url, page) {
         const xhr = new XMLHttpRequest();
-        const queryParam = this.getQueryParam(page, 7, 7);
+        const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
 
         xhr.open("GET", url + '?' + queryParam.toString());
 
@@ -23,7 +26,7 @@ class BlogBodyController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(JSON.stringify(responseValue));
+                this.showToastMessage(responseValue["message"]);
             } else {
                 if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
                     this.#handleTemplateList(responseValue, true);
@@ -61,14 +64,14 @@ class BlogBodyController extends UtilController {
 
     #handlePagination(pagination, queryParam, url) {
         if (!pagination || !queryParam) {
-            this.pagination.innerHTML = '';
+            this.postPagination.innerHTML = '';
             return;
         }
-        this.pagination.innerHTML = this.drawPagination(pagination, queryParam, url);
+        this.postPagination.innerHTML = this.drawPagination(pagination, queryParam, url);
     }
 
     #clearPagination() {
-        this.pagination.innerHTML = ``;
+        this.postPagination.innerHTML = ``;
     }
 
     initBlogBodyEventListener() {
@@ -87,7 +90,7 @@ class BlogBodyController extends UtilController {
             }
         });
 
-        this.pagination.addEventListener("click", evt => {
+        this.postPagination.addEventListener("click", evt => {
             const button = evt.target.closest("button");
 
             if (button && !button.closest("li").classList.contains("active")) {

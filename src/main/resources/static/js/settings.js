@@ -109,6 +109,7 @@ class SettingsController extends HeaderController {
                     const id = this.userId.value;
 
                     xhr.open("POST", `/user/upload/profile-image?id=${id}`);
+                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
                         let status = event.target.status;
@@ -204,6 +205,7 @@ class SettingsController extends HeaderController {
         const id = this.userId.value;
 
         xhr.open('POST', `/user/remove/profile-image?id=${id}`);
+        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
