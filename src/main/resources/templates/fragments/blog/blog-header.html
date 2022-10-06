@@ -37,7 +37,7 @@
         <div class="search_container">
             <form action="/" method="get" class="blog_view_search_form">
                 <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog"
-                       placeholder="검색어를 입력해주세요." required>
+                       placeholder="검색어를 입력해주세요." spellcheck="false" required>
                 <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색">
                     <img class="search_blog_button_img" src="../images/search.gif"/>
                 </button>
@@ -180,6 +180,6 @@
     <input type="hidden" id="user_info_intro"
            th:value="${#strings.isEmpty(blog_info.intro) or #strings.equals(blog_info.intro,'<<<undefined>>>') ? '<p><br></p>' : blog_info.intro}">
 
-    <input type="hidden" id="blog_info_id" th:value="${blog_info.id}">
+    <input type="hidden" id="blog_info_id" readonly th:value="${blog_info.id}">
 </header>
 </html>

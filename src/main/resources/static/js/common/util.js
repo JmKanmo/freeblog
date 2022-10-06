@@ -248,6 +248,13 @@ class UtilController {
                     theme: '달콤'
                 },
                 {
+                    name: '잠못드는밤 비는 내리고',
+                    artist: 'IU',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%95%84%EC%9D%B4%EC%9C%A0+-+%EC%9E%A0+%EB%AA%BB+%EB%93%9C%EB%8A%94+%EB%B0%A4+%EB%B9%84%EB%8A%94+%EB%82%B4%EB%A6%AC%EA%B3%A0.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%95%84%EC%9D%B4%EC%9C%A0%EA%B0%95%EC%95%84%EC%A7%80.jpg',
+                    theme: 'R&B'
+                },
+                {
                     name: '불가살 - 하루',
                     artist: '포맨',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/4MEN+(%ED%8F%AC%EB%A7%A8)+-+%ED%95%98%EB%A3%A8+(Bulgasal_+Immortal+Souls+%EB%B6%88%EA%B0%80%EC%82%B4+OST+Part+1).mp3',
@@ -259,7 +266,7 @@ class UtilController {
                     artist: '스트레이',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4++%EB%84%88+%EB%84%88.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4+%EB%84%88+%EB%84%88.jpg',
-                    theme: '불가살 테마'
+                    theme: '발라드 R&B'
                 }
                 ,
                 {
@@ -267,7 +274,7 @@ class UtilController {
                     artist: 'BTS',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/BTS_-_Dynamite.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/2022-08-23T09%3A02%3A46.012406500cfe847cc-b1cd-3a80-afd9-b2e5e6e183c0.png',
-                    theme: '불가살 테마'
+                    theme: '댄스, 빌보드'
                 }
             ]
         });

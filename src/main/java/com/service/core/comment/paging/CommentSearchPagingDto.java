@@ -1,9 +1,10 @@
-package com.service.core.post.paging;
+package com.service.core.comment.paging;
+
 
 import lombok.Data;
 
 @Data
-public class PostSearchDto {
+public class CommentSearchPagingDto {
     private int page;                 // 현재 페이지 번호
     private int recordSize;           // 페이지당 출력할 데이터 개수
     private int pageSize;             // 화면 하단에 출력할 페이지 사이즈
@@ -12,12 +13,11 @@ public class PostSearchDto {
 //    private int searchIndex;          // 검색 인덱스
 //    private String searchType;        // 검색 유형
 
-    private PostPagination postPagination;    // 페이지네이션 정보
+    private CommentPagination commentPagination;    // 페이지네이션 정보
 
-    public PostSearchDto() {
+    public CommentSearchPagingDto() {
         this.page = 1;
-        this.recordSize = 10;
-        this.pageSize = 10;
+        this.recordSize = 20;
+        this.pageSize = 20;
     }
 }
-

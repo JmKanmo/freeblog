@@ -14,6 +14,7 @@ public class PostServiceTest {
     private PostService postService;
 
     @Test
+    @Disabled
     public void findTotalPostTest() {
         PostTotalDto postDtoList = postService.findTotalPost(1L, ConstUtil.TOTAL_POST);
         Assertions.assertNotNull(postDtoList);

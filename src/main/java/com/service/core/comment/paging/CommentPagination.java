@@ -12,14 +12,14 @@ public class CommentPagination {
     private boolean existPrevPage;  // 이전 페이지 존재 여부
     private boolean existNextPage;  // 다음 페이지 존재 여부
 
-    public CommentPagination(int totalRecordCount, CommentSearchDto params) {
+    public CommentPagination(int totalRecordCount, CommentSearchPagingDto params) {
         if (totalRecordCount > 0) {
             this.totalRecordCount = totalRecordCount;
             this.calculation(params);
         }
     }
 
-    private void calculation(CommentSearchDto params) {
+    private void calculation(CommentSearchPagingDto params) {
 
         // 전체 페이지 수 계산
         totalPageCount = ((totalRecordCount - 1) / params.getRecordSize()) + 1;

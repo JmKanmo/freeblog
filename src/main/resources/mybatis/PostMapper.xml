@@ -43,7 +43,7 @@
                  inner join category c on post.category_id = c.category_id
                  inner join blog b on b.blog_id = #{blogId}
         where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
-        order by register_time desc LIMIT #{postSearchDto.postPagination.limitStart}, #{postSearchDto.recordSize}
+        order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
     <select id="findPostCount" resultType="int">

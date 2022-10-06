@@ -15,4 +15,18 @@ public class CommentParentDto {
     private final boolean isOwner;
     private final boolean secret;
     private final String registerTime;
+
+    public static CommentParentDto from(CommentDto commentDto) {
+        return CommentParentDto.builder()
+                .id(commentDto.getCommentId())
+                .comment(commentDto.getComment())
+                .commentImage(commentDto.getCommentImage())
+                .userId(commentDto.getUserId())
+                .userNickname(commentDto.getUserNickname())
+                .userProfileImage(commentDto.getUserProfileImage())
+                .isOwner(commentDto.isOwner())
+                .secret(commentDto.isSecret())
+                .registerTime(commentDto.getRegisterTime())
+                .build();
+    }
 }

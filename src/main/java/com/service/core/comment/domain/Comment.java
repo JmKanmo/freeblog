@@ -3,6 +3,7 @@ package com.service.core.comment.domain;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.post.domain.Post;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,9 +43,9 @@ public class Comment extends BaseTimeEntity {
 
     public static Comment from(CommentInput commentInput, Post post) {
         return Comment.builder()
-                .parentId(commentInput.getParentCommentId())
+                .parentId(commentInput.getParentCommentId() == null ? 0 : commentInput.getParentCommentId())
                 .comment(commentInput.getComment())
-                .commentImage(commentInput.getCommentThumbnailImage())
+                .commentImage(commentInput.getCommentThumbnailImage() == null || commentInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentInput.getCommentThumbnailImage())
                 .secret(BlogUtil.parseAndGetCheckBox(commentInput.getSecretComment()))
                 .anonymous(BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()))
                 .commentUser(CommentUser.from(commentInput))

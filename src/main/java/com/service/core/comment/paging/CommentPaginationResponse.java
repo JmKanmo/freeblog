@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class CommentPaginationResponse<T> {
-    private T commentTotalDto;
+    private T commentSummaryDto;
     private CommentPagination commentPagination;
 
-    public CommentPaginationResponse(T commentTotalDto, CommentPagination commentPagination) {
-        this.commentTotalDto = commentTotalDto;
+    public CommentPaginationResponse(T commentSummaryDto, CommentPagination commentPagination) {
+        this.commentSummaryDto = commentSummaryDto;
         this.commentPagination = commentPagination;
     }
 }

@@ -9,7 +9,7 @@ import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.model.BlogPostInput;
-import com.service.core.post.paging.PostSearchDto;
+import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
@@ -116,9 +116,9 @@ public class PostController {
     })
     @ResponseBody
     @GetMapping("/all/{blogId}")
-    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchDto postSearchDto) {
+    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogId, postSearchDto, ConstUtil.TOTAL_POST)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogId, postSearchPagingDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
             log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));

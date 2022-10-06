@@ -2,8 +2,14 @@ package com.service.core.comment.service;
 
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.domain.CommentUser;
+import com.service.core.comment.dto.CommentDto;
+import com.service.core.comment.dto.CommentSearchDto;
+import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
-import com.service.core.comment.repository.CommentRepository;
+import com.service.core.comment.paging.CommentPagination;
+import com.service.core.comment.paging.CommentPaginationResponse;
+import com.service.core.comment.paging.CommentSearchPagingDto;
+import com.service.core.comment.repository.mapper.CommentMapper;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.CommentManageException;
 import com.service.core.post.domain.Post;
@@ -19,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +33,16 @@ import java.security.Principal;
 public class CommentServiceImpl implements CommentService {
     private final AwsS3Service awsS3Service;
     private final PostService postService;
-    private final CommentRepository commentRepository;
+    private final CommentInfoService commentInfoService;
     private final UserService userService;
+
+    private final CommentMapper commentMapper;
 
     @Override
     public String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
         return awsS3Service.uploadImageFile(multipartFile);
     }
 
-    @Transactional
     @Override
     public void registerComment(CommentInput commentInput, Principal principal) {
         if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
@@ -61,6 +69,15 @@ public class CommentServiceImpl implements CommentService {
             commentUser.setOwner(post.getBlog().getId() == userCommentDto.getBlogId() ? true : false);
             comment.setCommentUser(commentUser);
         }
-        commentRepository.save(comment);
+        commentInfoService.saveComment(comment);
+    }
+
+    @Override
+    public CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, CommentSearchPagingDto commentSearchPagingDto) {
+        int commentCount = commentMapper.findCommentCount(postId);
+        CommentPagination commentPagination = new CommentPagination(commentCount, commentSearchPagingDto);
+        commentSearchPagingDto.setCommentPagination(commentPagination);
+        List<CommentDto> commentDtoList = commentMapper.findCommentDtoListByPaging(CommentSearchDto.from(postId, commentSearchPagingDto));
+        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, commentCount), commentPagination);
     }
 }

@@ -5,6 +5,7 @@ import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
+import com.service.core.post.dto.PostSearchDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.repository.PostRepository;
@@ -14,7 +15,7 @@ import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
-import com.service.core.post.paging.PostSearchDto;
+import com.service.core.post.paging.PostSearchPagingDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,11 +39,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchDto postSearchDto, String type) {
+    public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
         int postCount = postMapper.findPostCount(blogId);
-        PostPagination postPagination = new PostPagination(postCount, postSearchDto);
-        postSearchDto.setPostPagination(postPagination);
-        return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findPostDtoListByPaging(com.service.core.post.dto.PostSearchDto.from(blogId, postSearchDto)), postCount, type), postPagination);
+        PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+        postSearchPagingDto.setPostPagination(postPagination);
+        return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
     }
 
     @Override

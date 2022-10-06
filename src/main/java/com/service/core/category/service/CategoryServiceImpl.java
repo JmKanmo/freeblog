@@ -12,7 +12,7 @@ import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPagination;
-import com.service.core.post.paging.PostSearchDto;
+import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -60,26 +60,26 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchDto postSearchDto) {
+    public PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         if (categoryOptional.isEmpty()) {
             int postCount = 0;
-            PostPagination postPagination = new PostPagination(postCount, postSearchDto);
-            postSearchDto.setPostPagination(postPagination);
+            PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+            postSearchPagingDto.setPostPagination(postPagination);
             return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(Collections.emptyList(), ConstUtil.NOT_EXIST_CATEGORY), postPagination);
         } else {
             Category category = categoryOptional.get();
             List<Post> postList = category.getPostList();
             int postCount = postList.size();
-            PostPagination postPagination = new PostPagination(postCount, postSearchDto);
-            postSearchDto.setPostPagination(postPagination);
+            PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+            postSearchPagingDto.setPostPagination(postPagination);
 
             return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(
                     BlogUtil.getSlice(
                                     category.getPostList().stream().sorted(Comparator.comparing(Post::getRegisterTime).reversed()),
-                                    postSearchDto.getPostPagination().getLimitStart(),
-                                    postSearchDto.getRecordSize())
+                                    postSearchPagingDto.getPostPagination().getLimitStart(),
+                                    postSearchPagingDto.getRecordSize())
                             .map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category)), postPagination);
         }
     }
@@ -90,8 +90,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchDto postSearchDto) {
-        return postService.findTotalPaginationPost(blogId, postSearchDto, ConstUtil.TOTAL_CATEGORY);
+    public PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchPagingDto postSearchPagingDto) {
+        return postService.findTotalPaginationPost(blogId, postSearchPagingDto, ConstUtil.TOTAL_CATEGORY);
     }
 
     @Override

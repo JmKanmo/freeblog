@@ -12,14 +12,14 @@ public class PostPagination {
     private boolean existPrevPage;  // 이전 페이지 존재 여부
     private boolean existNextPage;  // 다음 페이지 존재 여부
 
-    public PostPagination(int totalRecordCount, PostSearchDto params) {
+    public PostPagination(int totalRecordCount, PostSearchPagingDto params) {
         if (totalRecordCount > 0) {
             this.totalRecordCount = totalRecordCount;
             this.calculation(params);
         }
     }
 
-    private void calculation(PostSearchDto params) {
+    private void calculation(PostSearchPagingDto params) {
 
         // 전체 페이지 수 계산
         totalPageCount = ((totalRecordCount - 1) / params.getRecordSize()) + 1;

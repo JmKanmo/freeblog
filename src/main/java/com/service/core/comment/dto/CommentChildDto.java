@@ -18,4 +18,21 @@ public class CommentChildDto {
     private final boolean isOwner;
     private final boolean secret;
     private final String registerTime;
+
+    public static CommentChildDto from(CommentDto commentDto) {
+        return CommentChildDto.builder()
+                .id(commentDto.getCommentId())
+                .parentId(commentDto.getParentId())
+                .comment(commentDto.getComment())
+                .commentImage(commentDto.getCommentImage())
+                .userId(commentDto.getUserId())
+                .userProfileImage(commentDto.getUserProfileImage())
+                .userNickname(commentDto.getUserNickname())
+                .targetUserId(commentDto.getTargetUserId())
+                .targetUserNickname(commentDto.getTargetUserNickname())
+                .isOwner(commentDto.isOwner())
+                .secret(commentDto.isSecret())
+                .registerTime(commentDto.getRegisterTime())
+                .build();
+    }
 }

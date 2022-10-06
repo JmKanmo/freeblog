@@ -5,7 +5,7 @@ import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPaginationResponse;
-import com.service.core.post.paging.PostSearchDto;
+import com.service.core.post.paging.PostSearchPagingDto;
 
 public interface CategoryService {
     CategoryDto findCategoryDtoByUserId(String userId);
@@ -14,11 +14,11 @@ public interface CategoryService {
 
     PostTotalDto findPostByCategoryId(Long categoryId);
 
-    PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchDto postSearchDto);
+    PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto);
 
     PostTotalDto findPostByBlogId(Long blogId);
 
-    PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchDto postSearchDto);
+    PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchPagingDto postSearchPagingDto);
 
     String findCategoryName(Category category);
 
