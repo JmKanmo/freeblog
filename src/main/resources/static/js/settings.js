@@ -54,7 +54,7 @@ class SettingsController extends HeaderController {
         });
 
         this.userBasicInfoEditButton.addEventListener("click", evt => {
-            this.openPopUp(600, 700, '/user/update/basic-info', 'popup');
+            this.openPopUp(988, 750, '/user/update/basic-info', 'popup');
         });
 
         if (this.emailAuthButton) {
@@ -155,7 +155,7 @@ class SettingsController extends HeaderController {
         });
 
         this.userSocialInfoEditButton.addEventListener("click", evt => {
-            this.openPopUp(550, 550, '/user/update/social-address', 'popup');
+            this.openPopUp(1080, 500, '/user/update/social-address', 'popup');
         });
 
         this.passwordChangeButton.addEventListener("click", evt => {

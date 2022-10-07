@@ -9,9 +9,10 @@
 }
 
 .find_email_container {
-    padding: 20px;
-    display: inline-block;
+    padding-top: 20px;
     text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .find_email_container .empty_email_text {

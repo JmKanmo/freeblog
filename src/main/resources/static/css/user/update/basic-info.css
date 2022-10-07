@@ -10,7 +10,8 @@
 .basic_info_edit_container {
     padding: 10px 0px 0px 15px;
     position: relative;
-    width: 500px;
+    max-width: 550px;
+    margin: 0 auto;
 }
 
 .form_title {

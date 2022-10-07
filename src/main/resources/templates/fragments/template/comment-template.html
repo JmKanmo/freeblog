@@ -16,6 +16,7 @@
 
         {{#each commentTotalDtoList}}
         <li class="post_comment_block">
+            {{#unless (nullCheck commentParentDto)}}
             <div class="post_comment_header clear_fix">
                 <div class="comment_user_profile_image_block">
                     <img class="common_button_image_style" src={{{getCommentUserProfileImage
@@ -82,6 +83,7 @@
                 </div>
                 {{/unless}}
             </div>
+            {{/unless}}
 
             <!-- 답글 목록 리스트 -->
             <ul class="sub_post_comment_list_block">

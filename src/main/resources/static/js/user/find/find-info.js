@@ -21,7 +21,7 @@ class FindInfoController extends UtilController {
                 return;
             }
 
-            this.openPopUp(500, 500, `find-email?nickname=${nickname}`, 'popup');
+            this.openPopUp(1080, 500, `find-email?nickname=${nickname}`, 'popup');
         });
 
         // password find button event listener
