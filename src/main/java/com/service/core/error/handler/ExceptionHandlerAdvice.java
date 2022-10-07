@@ -1,5 +1,6 @@
 package com.service.core.error.handler;
 
+import com.service.core.error.dto.ExceptionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,11 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
-    public ResponseEntity<String> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", exception.getMessage()));
+    public ResponseEntity<ExceptionDto> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ExceptionDto.builder().statusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
+                        .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", exception.getMessage()))
+                        .build());
     }
 
     @ExceptionHandler(value = Exception.class)

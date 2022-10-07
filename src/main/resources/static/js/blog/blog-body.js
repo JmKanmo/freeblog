@@ -6,8 +6,8 @@ class BlogBodyController extends UtilController {
         this.blogPostList = document.getElementById("blog_post_list");
         this.postPagination = document.getElementById("postPagination");
 
-        this.postRecordSize = 7;
-        this.postPageSize = 7;
+        this.postRecordSize = 10;
+        this.postPageSize = 10;
     }
 
     initBlogBodyController() {

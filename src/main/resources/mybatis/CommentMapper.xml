@@ -11,6 +11,7 @@
                parent_id,
                date_format(register_time, '%y.%m.%d %H:%i') as register_time,
                user_id,
+               user_password,
                user_profile_image,
                user_nickname,
                target_user_id,

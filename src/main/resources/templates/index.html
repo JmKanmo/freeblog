@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>freeblog</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-    <th:block th:replace="/fragments/template :: template"></th:block>
+    <th:block th:replace="/fragments/template/post-template :: post-template"></th:block>
     <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
@@ -22,7 +22,8 @@
             <option value="oldest">오래된 순</option>
         </select>
 
-        <select class="blog_view_select_text blog_view_select blog_view_select_sort_term" id="blog_view_select_sort_term" name="blogSelect">
+        <select class="blog_view_select_text blog_view_select blog_view_select_sort_term"
+                id="blog_view_select_sort_term" name="blogSelect">
             <option value="today">오늘</option>
             <option value="week">이번 주</option>
             <option value="month">이번 달</option>

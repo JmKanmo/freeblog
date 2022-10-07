@@ -47,12 +47,20 @@ public class CommentServiceImpl implements CommentService {
             if (!BlogUtil.checkFieldValidation(commentInput.getCommentUserNickname(), 255) || !BlogUtil.checkFieldValidation(commentInput.getCommentUserPassword(), 255)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
-        } else if (commentInput.getParentCommentId() != null) {
+        }
+
+        if (commentInput.getParentCommentId() != null) {
             if (!BlogUtil.checkFieldValidation(commentInput.getTargetUserId(), 255) || !BlogUtil.checkFieldValidation(commentInput.getTargetUserNickname(), 255)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
-        } else if (principal == null && !BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
+        }
+
+        if (principal == null && !BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
             throw new CommentManageException(ServiceExceptionMessage.NOT_LOGIN_ANONYMOUS_COMMENT);
+        }
+
+        if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && BlogUtil.parseAndGetCheckBox(commentInput.getSecretComment())) {
+            throw new CommentManageException(ServiceExceptionMessage.NOT_SECRET_WHEN_ANONYMOUS);
         }
 
         Post post = postService.findPostById(commentInput.getCommentPostId());
@@ -79,9 +87,10 @@ public class CommentServiceImpl implements CommentService {
         commentSearchPagingDto.setCommentPagination(commentPagination);
         String loginUserEmail = principal == null ? null : principal.getName();
         boolean isBlogOwner = false;
+        UserCommentDto userCommentDto = null;
 
         if (loginUserEmail != null) {
-            UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(loginUserEmail);
+            userCommentDto = userService.findUserCommentDtoByEmail(loginUserEmail);
             Long loginUserBlogId = userCommentDto.getBlogId();
 
             if (loginUserBlogId == ownerBlogId) {
@@ -89,6 +98,6 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         List<CommentDto> commentDtoList = commentInfoService.findCommentDtoListByPaging(postId, commentSearchPagingDto);
-        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, commentCount, isBlogOwner), commentPagination);
+        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, userCommentDto, commentCount, isBlogOwner), commentPagination);
     }
 }

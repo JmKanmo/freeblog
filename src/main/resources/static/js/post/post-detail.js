@@ -33,7 +33,7 @@ class PostDetailController extends UtilController {
         this.postCommentList = document.getElementById("post_comment_list");
         this.commentPagination = document.getElementById("commentPagination");
 
-        this.commentRecordSize = 50;
+        this.commentRecordSize = 20;
         this.commentPageSize = 10;
     }
 

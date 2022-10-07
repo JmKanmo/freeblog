@@ -1,5 +1,6 @@
 package com.service.core.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.service.core.user.domain.UserDomain;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -17,6 +18,7 @@ import java.util.Random;
 public class UserProfileDto {
     private String id;
     private String nickname;
+    @JsonIgnore
     private int emailHash;
     private String greetings;
     private String profileImages;

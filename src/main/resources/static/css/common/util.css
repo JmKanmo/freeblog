@@ -58,6 +58,14 @@ a {
     display: inherit;
 }
 
+.common_cursor_pointer {
+    cursor: pointer;
+}
+
+.common_display_hidden {
+    display: none;
+}
+
 /* outline 테두리 속성 수정 */
 input:focus {
     outline: 2px solid #d50000;

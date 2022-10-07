@@ -1,5 +1,6 @@
 package com.service.core.comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +12,8 @@ public class CommentChildDto {
     private final String comment;
     private final String commentImage;
     private final String userId;
+    @JsonIgnore
+    private final String userPassword;
     private final String userProfileImage;
     private final String userNickname;
     private final String targetUserId;
@@ -27,6 +30,7 @@ public class CommentChildDto {
                 .comment(commentDto.getComment())
                 .commentImage(commentDto.getCommentImage())
                 .userId(commentDto.getUserId())
+                .userPassword(commentDto.getUserPassword())
                 .userProfileImage(commentDto.getUserProfileImage())
                 .userNickname(commentDto.getUserNickname())
                 .targetUserId(commentDto.getTargetUserId())

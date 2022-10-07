@@ -1,5 +1,6 @@
 package com.service.core.comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +11,8 @@ public class CommentParentDto {
     private final String comment;
     private final String commentImage;
     private final String userId;
+    @JsonIgnore
+    private final String userPassword;
     private final String userNickname;
     private final String userProfileImage;
     private final boolean isOwner;
@@ -23,6 +26,7 @@ public class CommentParentDto {
                 .comment(commentDto.getComment())
                 .commentImage(commentDto.getCommentImage())
                 .userId(commentDto.getUserId())
+                .userPassword(commentDto.getUserPassword())
                 .userNickname(commentDto.getUserNickname())
                 .userProfileImage(commentDto.getUserProfileImage())
                 .isOwner(commentDto.isOwner())

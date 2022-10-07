@@ -18,6 +18,6 @@ public class CommentSearchPagingDto {
     public CommentSearchPagingDto() {
         this.page = 1;
         this.recordSize = 20;
-        this.pageSize = 20;
+        this.pageSize = 10;
     }
 }

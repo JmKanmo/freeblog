@@ -12,6 +12,7 @@ public class CommentDto {
     private final Long parentId;
     private final String registerTime;
     private final String userId;
+    private final String userPassword;
     private final String userProfileImage;
     private final String userNickname;
     private final String targetUserId;

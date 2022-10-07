@@ -36,6 +36,7 @@ public enum ServiceExceptionMessage {
 
     // 댓글 처리 관련 에러 메시지
     NOT_LOGIN_ANONYMOUS_COMMENT("비로그인 상태에서는 익명 댓글만 허용 됩니다."),
+    NOT_SECRET_WHEN_ANONYMOUS("익명 상태에서는 비밀글 작성이 불가능 합니다."),
 
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),

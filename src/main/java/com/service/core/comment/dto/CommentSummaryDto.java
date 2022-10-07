@@ -1,5 +1,6 @@
 package com.service.core.comment.dto;
 
+import com.service.core.user.dto.UserCommentDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,10 +13,10 @@ public class CommentSummaryDto {
 
     private final List<CommentTotalDto> commentTotalDtoList;
 
-    public static CommentSummaryDto from(List<CommentDto> commentDtoList, int count, boolean isBlogOwner) {
+    public static CommentSummaryDto from(List<CommentDto> commentDtoList, UserCommentDto userCommentDto, int count, boolean isBlogOwner) {
         return CommentSummaryDto.builder()
                 .totalCount(count)
-                .commentTotalDtoList(CommentTotalDto.from(commentDtoList, isBlogOwner))
+                .commentTotalDtoList(CommentTotalDto.from(commentDtoList, userCommentDto, isBlogOwner))
                 .build();
     }
 }
