@@ -8,7 +8,9 @@
     <th:block th:replace="/fragments/config :: config"></th:block>
     <th:block th:replace="/fragments/template/comment-template :: comment-template"></th:block>
     <link th:href="@{/css/post/post-detail.css}" type="text/css" rel="stylesheet">
+    <link th:href="@{/css/comment/post-comment.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/post/post-detail.js}"></script>
+    <script type="text/javascript" th:src="@{/js/comment/post-comment.js}"></script>
 </head>
 <body>
 <div th:replace="/fragments/header::header"></div>
@@ -82,113 +84,8 @@
         </div>
     </div>
 
-    <!-- 댓글 -->
-    <div class="post_comment_container">
-        <ul class="post_comment_list" id="post_comment_list">
-            <!-- 게시글 댓글 템플릿 -->
-        </ul>
-
-        <div class="post_comment_page_container">
-            <nav class="common-pagination-justify-content-center" aria-label="Page navigation">
-                <ul class="pagination" id="commentPagination">
-                    <!-- 페이지 템플릿 -->
-                </ul>
-            </nav>
-        </div>
-
-        <div class="post_comment_form_container">
-            <form method="post" action="/comment/register" class="post_comment_form" id="post_comment_form"
-                  name="post_comment_form">
-                <div class="post_comment_text_area_block">
-                    <textarea class="post_comment_text_area" id="post_comment_text_input" spellcheck="false"
-                              name="comment" maxlength="2000"
-                              placeholder="여러분의 소중한 댓글을 입력해주세요 :)"></textarea>
-
-                    <div class="post_comment_thumbnail_image_box" id="post_comment_thumbnail_image_box">
-                        <img class="common_button_image_style" id="post_comment_thumbnail_image" src="" alt="">
-
-                        <button type="button" class="post_comment_thumbnail_image_delete_button"
-                                id="post_comment_thumbnail_image_delete_button">
-                            <img class="common_button_image_style" src="../images/close.png" alt="">
-                            <span class="blind">커멘트 썸네일 이미지 삭제</span>
-                        </button>
-                    </div>
-
-                    <div class="post_comment_count_block">
-                        <span class="textarea_text_count common_gray_text" id="current_text_count">0</span>
-                        <span class="common_plain_text textarea_count_blank">/</span>
-                        <span class="common_gray_text textarea_text_count">2000</span>
-                    </div>
-                </div>
-
-                <div class="post_comment_form_info_container clear_fix">
-                    <div class="user_input_form_container clear_fix">
-                        <input type="text" class="post_comment_input_style"
-                               id="commentUserNickname" name="commentUserNickname" placeholder="닉네임" spellcheck="false"
-                               maxlength="255">
-
-                        <input type="password" class="post_comment_input_style"
-                               id="commentUserPassword" name="commentUserPassword" placeholder="비밀번호" spellcheck="false"
-                               maxlength="255">
-
-                        <div class="post_comment_input_style user_comment_anonymous_input_box">
-                            <input type="checkbox" id="commentIsAnonymous" name="commentIsAnonymous">
-
-                            <label class="user_comment_anonymous_input_label" for="commentIsAnonymous">
-                                <span class="common_gray_text user_comment_anonymous_input_text">익명</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="util_input_form_container clear_fix">
-                        <button type="button" class="post_comment_image_button" id="post_comment_image_button">
-                            <div class="post_image_container clear_fix">
-                                <img src="../images/photo.png" class="common_button_image_style" alt="">
-                            </div>
-
-                            <span class="post_comment_image_text">
-                                사진
-                            </span>
-                        </button>
-
-                        <button type="button" class="post_comment_image_button post_comment_lock_button"
-                                id="post_comment_lock_button">
-                            <div class="post_image_container clear_fix">
-                                <img src="../images/unlock.png" class="common_button_image_style"
-                                     id="post_comment_secret_image" alt="">
-                            </div>
-
-                            <span class="post_comment_image_text">
-                                비밀글
-                            </span>
-
-                            <input type="checkbox" class="post_comment_is_secret_input_style"
-                                   id="post_comment_is_secret_input" name="secretComment"/>
-                        </button>
-
-                        <button type="button" class="post_comment_submit_button" id="post_comment_submit_button">
-                            <span class="post_comment_submit_button_text">
-                                등록
-                            </span>
-                        </button>
-                    </div>
-                </div>
-
-                <input type="hidden" id="post_comment_blogId" readonly name="commentBlogId"
-                       th:value="${postDetail.blogId}"/>
-                <input type="hidden" id="post_comment_postId" readonly name="commentPostId"
-                       th:value="${postDetail.id}"/>
-                <input type="hidden" id="post_comment_thumbnail_image_value_input" name="commentThumbnailImage"/>
-            </form>
-
-            <form method="post" class="post_comment_image_form" id="post_comment_image_form"
-                  name="post_comment_image_form">
-                <input type="file" id="post_comment_image_file_input" name="post_comment_image_file_input"
-                       class="post_comment_image_file_input"
-                       accept="image/jpeg, image/jpg, image/png, image/gif, image/GIF">
-            </form>
-        </div>
-    </div>
+    <!-- 게시글 댓글 컨테이너-->
+    <div th:replace="/fragments/comment/post-comment-container::post-comment-container"></div>
 
     <!-- 카테고리 관련글 목록 추가 -->
 </div>

@@ -1,5 +1,7 @@
 package com.service.core.comment.dto;
 
+import com.service.core.comment.domain.Comment;
+import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,4 +22,23 @@ public class CommentDto {
     private final boolean isOwner;
     private final boolean secret;
     private final boolean anonymous;
+
+    public static CommentDto from(Comment comment) {
+        return CommentDto.builder()
+                .commentId(comment.getId())
+                .comment(comment.getComment())
+                .commentImage(comment.getCommentImage())
+                .parentId(comment.getParentId())
+                .registerTime(BlogUtil.formatLocalDateTimeToStr(comment.getRegisterTime(), "yyyy.MM.dd HH:mm"))
+                .userId(comment.getCommentUser().getUserId())
+                .userPassword(comment.getCommentUser().getUserPassword())
+                .userProfileImage(comment.getCommentUser().getUserProfileImage())
+                .userNickname(comment.getCommentUser().getUserNickname())
+                .targetUserId(comment.getCommentUser().getTargetUserId())
+                .targetUserNickname(comment.getCommentUser().getTargetUserNickname())
+                .isOwner(comment.getCommentUser().isOwner())
+                .secret(comment.isSecret())
+                .anonymous(comment.isAnonymous())
+                .build();
+    }
 }

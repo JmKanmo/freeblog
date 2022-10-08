@@ -1,0 +1,16 @@
+.post_comment_update_container {
+    padding: 20px;
+    text-align: center;
+    max-width: 988px;
+    margin: 0 auto;
+}
+
+.post_comment_update_container .post_comment_update_text {
+    font-size: 20px;
+    padding-bottom: 20px;
+    color: #666;
+}
+
+.post_comment_update_container .post-update-comment-style {
+    border: none;
+}

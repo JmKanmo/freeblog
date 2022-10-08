@@ -134,6 +134,11 @@ public class BlogUtil {
         return localDateTime != null ? localDateTime.format(formatter) : "";
     }
 
+    public static String formatLocalDateTimeToStr(LocalDateTime localDateTime, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return localDateTime != null ? localDateTime.format(formatter) : "";
+    }
+
     public static <T> List<T> convertArrayToList(T[] array) {
         List<T> list = new ArrayList<>();
         for (T item : array) {

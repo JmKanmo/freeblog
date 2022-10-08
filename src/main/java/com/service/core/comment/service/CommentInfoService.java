@@ -12,4 +12,6 @@ public interface CommentInfoService {
     int findCommentCount(Long postId);
 
     List<CommentDto> findCommentDtoListByPaging(Long postId, CommentSearchPagingDto commentSearchPagingDto);
+
+    Comment findCommentById(Long commentId);
 }

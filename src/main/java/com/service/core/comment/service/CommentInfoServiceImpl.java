@@ -6,6 +6,8 @@ import com.service.core.comment.dto.CommentSearchDto;
 import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.comment.repository.CommentRepository;
 import com.service.core.comment.repository.mapper.CommentMapper;
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.CommentManageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +35,10 @@ public class CommentInfoServiceImpl implements CommentInfoService {
     @Override
     public List<CommentDto> findCommentDtoListByPaging(Long postId, CommentSearchPagingDto commentSearchPagingDto) {
         return commentMapper.findCommentDtoListByPaging(CommentSearchDto.from(postId, commentSearchPagingDto));
+    }
+
+    @Override
+    public Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new CommentManageException(ServiceExceptionMessage.COMMENT_NOT_FOUND));
     }
 }

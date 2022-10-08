@@ -100,4 +100,9 @@ public class CommentServiceImpl implements CommentService {
         List<CommentDto> commentDtoList = commentInfoService.findCommentDtoListByPaging(postId, commentSearchPagingDto);
         return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, userCommentDto, commentCount, isBlogOwner), commentPagination);
     }
+
+    @Override
+    public CommentDto findCommentDtoById(Long commentId) {
+        return CommentDto.from(commentInfoService.findCommentById(commentId));
+    }
 }

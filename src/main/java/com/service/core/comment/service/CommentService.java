@@ -1,5 +1,6 @@
 package com.service.core.comment.service;
 
+import com.service.core.comment.dto.CommentDto;
 import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.paging.CommentPaginationResponse;
@@ -14,4 +15,6 @@ public interface CommentService {
     long registerComment(CommentInput commentInput, Principal principal);
 
     CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal);
+
+    CommentDto findCommentDtoById(Long commentId);
 }

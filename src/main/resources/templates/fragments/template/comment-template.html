@@ -64,20 +64,20 @@
                 </div>
 
                 {{#unless commentParentDto.secret}}
-                <div class="post_comment_util_block clear_fix">
+                <div class="post_comment_util_block clear_fix" commentId="{{commentParentDto.id}}">
                     <div class="post_comment_update_delete_block clear_fix">
-                        <button class="post_comment_util_button common_button_text">
+                        <button class="post_comment_util_button common_button_text post_comment_update_button">
                             <span class="post_comment_util_button_text">수정</span>
                         </button>
 
                         <span class="post_comment_util_button_text">|</span>
 
-                        <button class="post_comment_util_button common_button_text">
+                        <button class="post_comment_util_button common_button_text post_comment_delete_button">
                             <span class="post_comment_util_button_text">삭제</span>
                         </button>
                     </div>
 
-                    <button class="post_comment_util_button post_comment_reply_button common_button_text">
+                    <button class="post_comment_util_button post_comment_reply_button common_button_text post_comment_reply_button">
                         <span class="post_comment_util_button_text">답글 쓰기</span>
                     </button>
                 </div>
