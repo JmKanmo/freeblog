@@ -57,6 +57,9 @@ class PostCommentUpdateController extends PostCommentCommonController {
                 } else {
                     this.resetCommentUpdateForm();
                     this.showToastMessage(responseValue);
+                    opener.parent.location.reload();
+                    this.sleep(1000);
+                    window.close();
                 }
             });
 

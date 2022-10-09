@@ -73,6 +73,10 @@ class UtilController {
         $('#mask, #loadingImg').empty();
     }
 
+    sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+    }
+
     showToastMessage(message) {
         Toastify({
             text: message,

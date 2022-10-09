@@ -66,7 +66,7 @@ public class PostController {
     })
     @GetMapping("/write/{userId}")
     public String postWritePage(@PathVariable String userId, Model model, Principal principal) {
-        if (principal == null) {
+        if ((principal == null || principal.getName() == null)) {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
 
@@ -90,7 +90,7 @@ public class PostController {
     })
     @PostMapping("/write/{userId}")
     public String postWrite(@Valid BlogPostInput blogPostInput, BindingResult bindingResult, Model model, Principal principal) {
-        if (principal == null) {
+        if ((principal == null || principal.getName() == null)) {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
 
@@ -134,7 +134,7 @@ public class PostController {
     @PostMapping("/upload/post-thumbnail-image")
     public ResponseEntity<String> uploadPostThumbnailImage(@RequestParam("post_thumbnail_image_input") MultipartFile multipartFile, Principal principal) {
         try {
-            if (principal == null) {
+            if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));

@@ -56,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        if (principal == null && !BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
+        if ((principal == null || principal.getName() == null) && !BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
             throw new CommentManageException(ServiceExceptionMessage.NOT_LOGIN_ANONYMOUS_COMMENT);
         }
 
@@ -86,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
         int commentCount = commentInfoService.findCommentCount(postId);
         CommentPagination commentPagination = new CommentPagination(commentCount, commentSearchPagingDto);
         commentSearchPagingDto.setCommentPagination(commentPagination);
-        String loginUserEmail = principal == null ? null : principal.getName();
+        String loginUserEmail = (principal == null || principal.getName() == null) ? null : principal.getName();
         boolean isBlogOwner = false;
         UserCommentDto userCommentDto = null;
 
@@ -123,7 +123,7 @@ public class CommentServiceImpl implements CommentService {
             commentUser.setUserNickname(commentUpdateInput.getCommentUserNickname());
             commentUser.setUserPassword(BCrypt.hashpw(commentUpdateInput.getCommentUserPassword(), BCrypt.gensalt()));
         } else {
-            if (principal == null) {
+            if ((principal == null || principal.getName() == null)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
             }
             UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
@@ -135,5 +135,19 @@ public class CommentServiceImpl implements CommentService {
             comment.setSecret(BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment()));
             comment.setComment(commentUpdateInput.getComment());
         }
+    }
+
+    @Override
+    public boolean checkAuthority(Long commentId, Principal principal) {
+        CommentDto commentDto = findCommentDtoById(commentId);
+
+        if (commentDto.isAnonymous()) {
+            return true;
+        } else {
+            if ((principal == null || principal.getName() == null)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

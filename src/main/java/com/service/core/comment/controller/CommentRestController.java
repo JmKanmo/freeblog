@@ -1,5 +1,6 @@
 package com.service.core.comment.controller;
 
+import com.service.core.comment.dto.CommentDelAuthDto;
 import com.service.core.comment.dto.CommentPagingResponseDto;
 import com.service.core.comment.dto.CommentRegisterDto;
 import com.service.core.comment.model.CommentInput;
@@ -54,11 +55,11 @@ public class CommentRestController {
         try {
             if (bindingResult.hasErrors()) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
-            } else if (!commentUpdateInput.getIsAnonymous() && principal == null) {
+            } else if (!commentUpdateInput.getIsAnonymous() && (principal == null || principal.getName() == null)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
             }
             commentService.updateComment(commentUpdateInput, principal);
-            return ResponseEntity.status(HttpStatus.OK).body("댓글이 정상적으로 수정되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 정상적으로 수정되었습니다. 페이지를 새로고침 후 확인해주세요.");
         } catch (Exception exception) {
             log.error("[freeblog-updateComment] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 수정 작업에 실패하였습니다. %s", exception.getMessage()));
@@ -95,6 +96,34 @@ public class CommentRestController {
         } catch (Exception exception) {
             log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
+        }
+    }
+
+    @Operation(summary = "댓글 삭제 권한 확인", description = "댓글 삭제 권한 확인 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 삭제 권한 확인 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 삭제 권한 확인 실패")
+    })
+    @GetMapping("/authority/{commentId}")
+    public ResponseEntity<CommentDelAuthDto> checkAuthority(@PathVariable Long commentId, Principal principal) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(CommentDelAuthDto.success(commentService.checkAuthority(commentId, principal), principal));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.OK).body(CommentDelAuthDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "댓글 삭제 권한 확인", description = "댓글 삭제 권한 확인 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 삭제 권한 확인 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 삭제 권한 확인 실패")
+    })
+    @DeleteMapping("/delete/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, Principal principal, @RequestParam("post_comment_image_file_input") String authPassword) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body("hello");
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.OK).body(String.format("댓글 삭제에 실패하였습니다. %s", exception.getMessage()));
         }
     }
 }

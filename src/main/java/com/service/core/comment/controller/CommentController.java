@@ -36,7 +36,7 @@ public class CommentController {
         CommentDto commentDto = commentService.findCommentDtoById(commentId);
 
         if (!commentDto.isAnonymous()) {
-            if (principal == null) {
+            if ((principal == null || principal.getName() == null)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
             }
 

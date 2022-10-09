@@ -9,6 +9,9 @@ class PostCommentController extends PostCommentCommonController {
 
         this.commentRecordSize = 20;
         this.commentPageSize = 10;
+
+        this.lastClickedPage = null;
+        this.lastClickedUrl = null;
     }
 
     initEventListener() {
@@ -53,6 +56,8 @@ class PostCommentController extends PostCommentCommonController {
 
                 if (url && page) {
                     this.#requestComment(url, page);
+                    this.lastClickedUrl = url;
+                    this.lastClickedPage = page;
                 }
             }
         });
@@ -68,6 +73,9 @@ class PostCommentController extends PostCommentCommonController {
                 this.openPopUp(1070, 360, `/comment/update/${commentId}`, 'popup')
             } else if (commentDeleteButton != null) {
                 const commentId = commentDeleteButton.closest(".post_comment_util_block").getAttribute("commentId");
+                if (confirm('댓글을 삭제하시겠습니까?')) {
+                    this.#deleteComment(commentId);
+                }
             } else if (commentReplyButton != null) {
                 const commentId = commentReplyButton.closest(".post_comment_util_block").getAttribute("commentId");
             }
@@ -88,8 +96,57 @@ class PostCommentController extends PostCommentCommonController {
         }
     }
 
+    #deleteComment(commentId) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `/comment/authority/${commentId}`);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                if (responseValue["auth"] === false) {
+                    this.showToastMessage("댓글을 삭제할 권한이 없습니다. 로그인 후 시도해 주세요.");
+                    return;
+                }
+
+                if (responseValue["login"] === false) {
+                    const authPw = prompt("댓글 작성시 입력한 비밀번호를 입력하세요.");
+
+                    if (authPw == null) {
+                        return;
+                    }
+                }
+                
+                xhr.open("DELETE", `/comment/delete/${commentId}?authPw=${authPw}`);
+
+                xhr.addEventListener("loadend", evt => {
+                    this.showToastMessage(responseValue);
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+                });
+
+                xhr.send();
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+        });
+
+        xhr.send();
+    }
+
     requestComment() {
-        this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`);
+        if (!this.lastClickedUrl && !this.lastClickedPage) {
+            this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`);
+        } else {
+            this.#requestComment(this.lastClickedUrl, this.lastClickedPage);
+        }
     }
 
     checkCommentForm() {

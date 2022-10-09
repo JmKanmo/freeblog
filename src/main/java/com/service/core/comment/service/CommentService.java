@@ -20,4 +20,6 @@ public interface CommentService {
     CommentDto findCommentDtoById(Long commentId);
 
     void updateComment(CommentUpdateInput commentUpdateInput, Principal principal);
+
+    boolean checkAuthority(Long commentId, Principal principal);
 }

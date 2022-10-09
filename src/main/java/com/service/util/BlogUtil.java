@@ -7,16 +7,19 @@ import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class BlogUtil {
     }
 
     public static boolean checkBlogOwner(Principal principal, int emailHash) {
-        if (principal == null || Objects.hashCode(principal.getName()) != emailHash) {
+        if ((principal == null || principal.getName() == null) || Objects.hashCode(principal.getName()) != emailHash) {
             return false;
         }
         return true;
@@ -181,5 +184,22 @@ public class BlogUtil {
             return true;
         }
         return false;
+    }
+
+    public static String getErrorMessage(Exception exception) {
+        if (exception instanceof SQLException) {
+            return "SQL 수행 중 문제 발생";
+        } else if (exception instanceof DataAccessException) {
+            return "데이터베이스에서 데이터 접근 실패";
+        } else if (exception instanceof TemplateEngineException) {
+            return "템플릿 반환 중 문제 발생";
+        }
+        String msg = exception.getMessage();
+
+        if (msg == null) {
+            return "알 수 없음";
+        } else {
+            return msg;
+        }
     }
 }

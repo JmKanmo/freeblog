@@ -1,6 +1,7 @@
 package com.service.core.error.handler;
 
 import com.service.core.error.dto.ExceptionDto;
+import com.service.util.BlogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,9 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ExceptionHandlerAdvice {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String fileSizeLimitExceededHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
-        String msg = exception.getMessage();
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        model.addAttribute("error", (msg == null) ? exception.toString() : msg);
+        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
         log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception.getMessage());
         return "error/error-page";
     }
@@ -35,11 +36,18 @@ public class ExceptionHandlerAdvice {
                         .build());
     }
 
+    @ExceptionHandler(TemplateEngineException.class)
+    public String templateEngineExceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
+        httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
+        log.error("[freeblog-fileSizeLimitExceededHandler] TemplateEngineException occurred ", exception.getMessage());
+        return "error/error-page";
+    }
+
     @ExceptionHandler(value = Exception.class)
     public String exceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
-        String msg = exception.getMessage();
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        model.addAttribute("error", (msg == null) ? exception.toString() : msg);
+        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
         log.error("[freeblog-exceptionHandler] exception occurred ", exception.getMessage());
         return "error/error-page";
     }
