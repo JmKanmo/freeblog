@@ -6,7 +6,7 @@
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <title>게시글 작성</title>
     <th:block th:replace="/fragments/config :: config"></th:block>
-    <th:block th:replace="/fragments/template :: template"></th:block>
+    <th:block th:replace="/fragments/template/post-template :: post-template"></th:block>
     <link th:href="@{/css/post/post-write.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/post/post-write.js}"></script>
 </head>

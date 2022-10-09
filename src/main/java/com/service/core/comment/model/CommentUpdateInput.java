@@ -9,11 +9,9 @@ import javax.validation.constraints.Size;
 
 @Data
 @Builder
-public class CommentInput {
+public class CommentUpdateInput {
     @Size(max = 255, message = "댓글 이미지는 최대 255글자 까지 작성 가능합니다.")
     private final String commentThumbnailImage;
-
-    private final Long parentCommentId;
 
     private final String secretComment;
 
@@ -21,13 +19,11 @@ public class CommentInput {
 
     private final String commentUserPassword;
 
-    private final String targetUserId;
+    private final String authCheckPassword;
 
-    private final String targetUserNickname;
+    private final Long commentId;
 
-    private final String commentIsAnonymous;
-
-    private final Long commentPostId;
+    private final Boolean isAnonymous;
 
     @NotEmpty(message = "댓글 내용이 비어있습니다.")
     @NotBlank(message = "댓글 내용은 공백만 올 수 없습니다.")

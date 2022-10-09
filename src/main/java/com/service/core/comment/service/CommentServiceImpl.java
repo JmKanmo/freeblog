@@ -3,13 +3,12 @@ package com.service.core.comment.service;
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.domain.CommentUser;
 import com.service.core.comment.dto.CommentDto;
-import com.service.core.comment.dto.CommentSearchDto;
 import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
+import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentPagination;
 import com.service.core.comment.paging.CommentPaginationResponse;
 import com.service.core.comment.paging.CommentSearchPagingDto;
-import com.service.core.comment.repository.mapper.CommentMapper;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.CommentManageException;
 import com.service.core.post.domain.Post;
@@ -17,6 +16,7 @@ import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserCommentDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -28,8 +28,8 @@ import java.security.Principal;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final AwsS3Service awsS3Service;
     private final PostService postService;
@@ -41,6 +41,7 @@ public class CommentServiceImpl implements CommentService {
         return awsS3Service.uploadImageFile(multipartFile);
     }
 
+    @Transactional
     @Override
     public long registerComment(CommentInput commentInput, Principal principal) {
         if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
@@ -104,5 +105,35 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto findCommentDtoById(Long commentId) {
         return CommentDto.from(commentInfoService.findCommentById(commentId));
+    }
+
+    @Transactional
+    @Override
+    public void updateComment(CommentUpdateInput commentUpdateInput, Principal principal) {
+        Comment comment = commentInfoService.findCommentById(commentUpdateInput.getCommentId());
+
+        if (comment.isAnonymous()) {
+            if (!BCrypt.checkpw(commentUpdateInput.getAuthCheckPassword(), comment.getCommentUser().getUserPassword())) {
+                throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
+            }
+            comment.setCommentImage(commentUpdateInput.getCommentThumbnailImage() == null || commentUpdateInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentUpdateInput.getCommentThumbnailImage());
+            comment.setSecret(BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment()));
+            comment.setComment(commentUpdateInput.getComment());
+            CommentUser commentUser = comment.getCommentUser();
+            commentUser.setUserNickname(commentUpdateInput.getCommentUserNickname());
+            commentUser.setUserPassword(BCrypt.hashpw(commentUpdateInput.getCommentUserPassword(), BCrypt.gensalt()));
+        } else {
+            if (principal == null) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
+            }
+            UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
+
+            if (!BCrypt.checkpw(userCommentDto.getUserPassword(), comment.getCommentUser().getUserPassword())) {
+                throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
+            }
+            comment.setCommentImage(commentUpdateInput.getCommentThumbnailImage() == null || commentUpdateInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentUpdateInput.getCommentThumbnailImage());
+            comment.setSecret(BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment()));
+            comment.setComment(commentUpdateInput.getComment());
+        }
     }
 }

@@ -39,6 +39,7 @@ public enum ServiceExceptionMessage {
     NOT_SECRET_WHEN_ANONYMOUS("익명 상태에서는 비밀글 작성이 불가능 합니다."),
     COMMENT_NOT_FOUND("댓글 정보가 존재하지 않습니다."),
     NOT_AUTHORITY_COMMENT("댓글 수정 권한이 없습니다."),
+    MISMATCH_COMMENT_PASSWORD("작성 된 댓글 비밀번호와 일치하지 않습니다."),
 
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),

@@ -22,7 +22,7 @@ public class ExceptionHandlerAdvice {
         String msg = exception.getMessage();
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         model.addAttribute("error", (msg == null) ? exception.toString() : msg);
-        log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception.toString());
+        log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception.getMessage());
         return "error/error-page";
     }
 
@@ -40,7 +40,7 @@ public class ExceptionHandlerAdvice {
         String msg = exception.getMessage();
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         model.addAttribute("error", (msg == null) ? exception.toString() : msg);
-        log.error("[freeblog-exceptionHandler] exception occurred ", exception.toString());
+        log.error("[freeblog-exceptionHandler] exception occurred ", exception.getMessage());
         return "error/error-page";
     }
 }

@@ -38,7 +38,13 @@
 </head>
 <body>
 <div class="fail_board">
-    <div th:replace="/fragments/common.html :: logo_layout"></div>
+    <div class="logo_box">
+        <a href="/" title="freeblog" class="logo_link clear_fix">
+            <img class="logo_img" src="/images/logo.png">
+            <span class="logo_name">freeblog</span>
+            <span class="blind">로고(프리로그)</span>
+        </a>
+    </div>
     <p class="fail_message" th:if="${error == null} or ${#strings.isEmpty(error)} eq true">알수없음</p>
     <p class="fail_message" th:if="${#strings.isEmpty(error)} eq false" th:text="${error}">오류메시지</p>
     <a class="back_link" href="javascript:history.back();">이전페이지로 돌아가기</a>

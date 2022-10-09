@@ -33,8 +33,6 @@ public class CommentController {
     })
     @GetMapping("/update/{commentId}")
     public String commentUpdatePage(@PathVariable Long commentId, Model model, Principal principal) {
-        // TODO commentId를 토대로 anonymous 조사 및 principal을 통핸 로그인 여부 확인
-        // 정보가 맞지 않을 경우, 예외 반환.
         CommentDto commentDto = commentService.findCommentDtoById(commentId);
 
         if (!commentDto.isAnonymous()) {
@@ -48,7 +46,8 @@ public class CommentController {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
             }
         }
-        model.addAttribute("password_auth", commentDto.isAnonymous());
+        model.addAttribute("is_anonymous", commentDto.isAnonymous());
+        model.addAttribute("comment_id", commentDto.getCommentId());
         return "comment/post-comment-update";
     }
 }

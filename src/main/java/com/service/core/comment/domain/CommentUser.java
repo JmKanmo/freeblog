@@ -32,7 +32,7 @@ public class CommentUser {
                 .targetUserId(commentInput.getTargetUserId() == null ? ConstUtil.UNDEFINED : commentInput.getTargetUserId())
                 .targetUserNickname(commentInput.getTargetUserNickname() == null ? ConstUtil.UNDEFINED : commentInput.getTargetUserNickname())
                 .isOwner(false)
-                .userId(commentInput.getCommentUserId() == null ? ConstUtil.UNDEFINED : commentInput.getCommentUserId())
+                .userId(ConstUtil.UNDEFINED)
                 .userPassword(BCrypt.hashpw(commentInput.getCommentUserPassword(), BCrypt.gensalt()))
                 .userNickname(commentInput.getCommentUserNickname() == null ? ConstUtil.UNDEFINED : commentInput.getCommentUserNickname())
                 .build();

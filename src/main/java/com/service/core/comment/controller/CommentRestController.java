@@ -3,6 +3,7 @@ package com.service.core.comment.controller;
 import com.service.core.comment.dto.CommentPagingResponseDto;
 import com.service.core.comment.dto.CommentRegisterDto;
 import com.service.core.comment.model.CommentInput;
+import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.comment.service.CommentService;
 import com.service.core.error.constants.ServiceExceptionMessage;
@@ -43,12 +44,32 @@ public class CommentRestController {
         }
     }
 
+    @Operation(summary = "댓글 수정", description = "댓글 수정 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 수정 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 수정 실패")
+    })
+    @PostMapping("/update")
+    public ResponseEntity<String> updateComment(@Valid CommentUpdateInput commentUpdateInput, BindingResult bindingResult, Principal principal) {
+        try {
+            if (bindingResult.hasErrors()) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            } else if (!commentUpdateInput.getIsAnonymous() && principal == null) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
+            }
+            commentService.updateComment(commentUpdateInput, principal);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 정상적으로 수정되었습니다.");
+        } catch (Exception exception) {
+            log.error("[freeblog-updateComment] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 수정 작업에 실패하였습니다. %s", exception.getMessage()));
+        }
+    }
+
     @Operation(summary = "댓글 업로드", description = "댓글 업로드 수행 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "댓글 업로드 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 업로드 실패")
     })
-    @ResponseBody
     @PostMapping("/register")
     public ResponseEntity<CommentRegisterDto> registerComment(@Valid CommentInput commentInput, BindingResult bindingResult, Principal principal) {
         try {
@@ -67,7 +88,6 @@ public class CommentRestController {
             @ApiResponse(responseCode = "200", description = "댓글 썸네일 이미지 업로드 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
     })
-    @ResponseBody
     @PostMapping("/upload/comment-thumbnail-image")
     public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("post_comment_image_file_input") MultipartFile multipartFile) {
         try {

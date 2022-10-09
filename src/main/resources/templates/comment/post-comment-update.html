@@ -8,6 +8,7 @@
     <th:block th:replace="/fragments/config :: config"></th:block>
     <link th:href="@{/css/comment/post-comment-update.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/comment/post-comment.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/comment/post-comment-common.js}"></script>
     <script type="text/javascript" th:src="@{/js/comment/post-comment-update.js}"></script>
 </head>
 
@@ -21,7 +22,5 @@
         <div th:replace="/fragments/comment/post-comment-update-form-container::post-comment-update-form-container"></div>
     </div>
 </div>
-
-<input type="hidden" id="password-auth-input" readonly th:value="${password_auth}">
 </body>
 </html>

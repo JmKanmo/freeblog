@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="post-comment-update-form-container" class="post_comment_form_container">
-    <form method="post" action="/comment/update" class="post_comment_form" id="post_comment_form"
+    <form method="post" action="/comment/update" class="post_comment_form" id="post_comment_update_form"
           name="post_comment_form">
         <div class="post_comment_text_area_block">
                     <textarea class="post_comment_text_area" id="post_comment_text_input" spellcheck="false"
@@ -28,13 +28,13 @@
 
         <div class="post_comment_form_info_container clear_fix">
             <div class="user_input_form_container clear_fix">
-                <th:block th:if="${#bools.isTrue(password_auth)}">
+                <th:block th:if="${#bools.isTrue(is_anonymous)}">
                     <input type="text" class="post_comment_input_style"
-                           id="commentUserNickname" name="commentUserNickname" placeholder="닉네임" spellcheck="false"
+                           id="commentUserNickname" name="commentUserNickname" placeholder="변경 닉네임" spellcheck="false"
                            maxlength="255">
 
                     <input type="password" class="post_comment_input_style"
-                           id="commentUserPassword" name="commentUserPassword" placeholder="비밀번호" spellcheck="false"
+                           id="commentUserPassword" name="commentUserPassword" placeholder="변경 비밀번호" spellcheck="false"
                            maxlength="255">
                 </th:block>
             </div>
@@ -57,15 +57,13 @@
                              id="post_comment_secret_image" alt="">
                     </div>
 
-                    <span class="post_comment_image_text">
-                                비밀글
-                            </span>
+                    <span class="post_comment_image_text">비밀글</span>
 
                     <input type="checkbox" class="post_comment_is_secret_input_style"
                            id="post_comment_is_secret_input" name="secretComment"/>
                 </button>
 
-                <button type="button" class="post_comment_submit_button" id="post_comment_submit_button">
+                <button type="button" class="post_comment_submit_button" id="post_comment_update_button">
                             <span class="post_comment_submit_button_text">
                                 수정
                             </span>
@@ -73,6 +71,9 @@
             </div>
         </div>
         <input type="hidden" id="post_comment_thumbnail_image_value_input" name="commentThumbnailImage"/>
+        <input type="hidden" id="auth_check_password_input" name="authCheckPassword">
+        <input type="hidden" id="is_anonymous" readonly th:value="${is_anonymous}" name="isAnonymous">
+        <input type="hidden" id="comment_id_input" readonly th:value="${comment_id}" name="commentId">
     </form>
 
     <form method="post" class="post_comment_image_form" id="post_comment_image_form"

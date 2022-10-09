@@ -6,6 +6,15 @@
     border: 1px solid #eeeeee;
 }
 
+.complete_container .signup_complete_notice_text {
+    color: #333
+}
+
+.complete_container .signup_complete_notice_text {
+    font-weight: bold;
+    color: darkgreen;
+}
+
 .complete_container .menu_container {
     width: 200px;
     margin: 0 auto;

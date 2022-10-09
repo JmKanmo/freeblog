@@ -29,8 +29,8 @@
 .blog_header_container .blog_header_profile_container .default_user_profile_image {
     cursor: pointer;
     object-fit: cover;
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
 }
 
