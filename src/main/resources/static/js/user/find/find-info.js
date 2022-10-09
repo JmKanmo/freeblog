@@ -35,7 +35,7 @@ class FindInfoController extends UtilController {
                     return;
                 }
 
-                xhr.open("GET", `/email/send/find-password?email=${email}`);
+                xhr.open("GET", `/email/send/find-password?email=${email}`,true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
@@ -76,7 +76,7 @@ class FindInfoController extends UtilController {
                     return;
                 }
 
-                xhr.open("GET", `/email/send/auth?email=${email}`);
+                xhr.open("GET", `/email/send/auth?email=${email}`,true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;

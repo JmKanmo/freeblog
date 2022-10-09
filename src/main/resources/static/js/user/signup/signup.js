@@ -33,7 +33,7 @@ class SignUpController extends UtilController {
             this.idCheckButton.disabled = true;
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/user/check-id?id=${id}`);
+            xhr.open("GET", `/user/check-id?id=${id}`,true);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;
@@ -75,7 +75,7 @@ class SignUpController extends UtilController {
             this.emailCheckButton.disabled = true;
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/user/check-email?email=${email}`);
+            xhr.open("GET", `/user/check-email?email=${email}`,true);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;

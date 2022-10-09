@@ -45,7 +45,7 @@ class PostCommentUpdateController extends PostCommentCommonController {
                 this.authCheckPasswordInput.value = authPassword;
             }
 
-            xhr.open("POST", `/comment/update`);
+            xhr.open("POST", `/comment/update`,true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
             xhr.addEventListener("loadend", evt => {

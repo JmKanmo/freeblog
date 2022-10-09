@@ -25,7 +25,7 @@ class PostCommentController extends PostCommentCommonController {
                 return;
             }
 
-            xhr.open("POST", `/comment/register`);
+            xhr.open("POST", `/comment/register`,true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
             xhr.addEventListener("loadend", evt => {
@@ -98,7 +98,7 @@ class PostCommentController extends PostCommentCommonController {
 
     #deleteComment(commentId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/comment/authority/${commentId}`);
+        xhr.open("GET", `/comment/authority/${commentId}`,true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -118,19 +118,30 @@ class PostCommentController extends PostCommentCommonController {
                     if (authPw == null) {
                         return;
                     }
+                    xhr.open("DELETE", `/comment/delete/${commentId}?authPw=${authPw}`,true);
+
+                    xhr.addEventListener("loadend", evt => {
+                        this.showToastMessage(responseValue);
+                    });
+
+                    xhr.addEventListener("error", event => {
+                        this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+                    });
+
+                    xhr.send(null);
+                } else {
+                    xhr.open("DELETE", `/comment/delete/${commentId}?authPw`,true);
+
+                    xhr.addEventListener("loadend", evt => {
+                        this.showToastMessage(responseValue);
+                    });
+
+                    xhr.addEventListener("error", event => {
+                        this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+                    });
+
+                    xhr.send();
                 }
-                
-                xhr.open("DELETE", `/comment/delete/${commentId}?authPw=${authPw}`);
-
-                xhr.addEventListener("loadend", evt => {
-                    this.showToastMessage(responseValue);
-                });
-
-                xhr.addEventListener("error", event => {
-                    this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
-                });
-
-                xhr.send();
             }
         });
 
@@ -182,7 +193,7 @@ class PostCommentController extends PostCommentCommonController {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.commentRecordSize, this.commentPageSize);
 
-        xhr.open("GET", url + '?' + queryParam.toString());
+        xhr.open("GET", url + '?' + queryParam.toString(),true);
 
 
         xhr.addEventListener("loadend", event => {

@@ -34,7 +34,7 @@ class PostWriteController extends UtilController {
         const xhr = new XMLHttpRequest();
         const blogId = document.getElementById("hidden_blog_id").value;
 
-        xhr.open("GET", `/category/all/${blogId}`);
+        xhr.open("GET", `/category/all/${blogId}`,true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -183,7 +183,7 @@ class PostWriteController extends UtilController {
                 fileReader.onload = (event) => {
                     const xhr = new XMLHttpRequest();
 
-                    xhr.open("POST", `/post/upload/post-thumbnail-image`);
+                    xhr.open("POST", `/post/upload/post-thumbnail-image`,true);
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {

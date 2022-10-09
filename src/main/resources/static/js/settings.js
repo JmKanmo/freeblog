@@ -76,7 +76,7 @@ class SettingsController extends HeaderController {
                         return;
                     }
 
-                    xhr.open("GET", `/email/send/auth?email=${email}`);
+                    xhr.open("GET", `/email/send/auth?email=${email}`,true);
 
                     xhr.addEventListener("loadend", event => {
                         let status = event.target.status;
@@ -108,7 +108,7 @@ class SettingsController extends HeaderController {
                     const xhr = new XMLHttpRequest();
                     const id = this.userId.value;
 
-                    xhr.open("POST", `/user/upload/profile-image?id=${id}`);
+                    xhr.open("POST", `/user/upload/profile-image?id=${id}`,true);
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
@@ -168,7 +168,7 @@ class SettingsController extends HeaderController {
                     return;
                 }
 
-                xhr.open("GET", `/email/send/find-password?email=${email}`);
+                xhr.open("GET", `/email/send/find-password?email=${email}`,true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
@@ -204,7 +204,7 @@ class SettingsController extends HeaderController {
         const xhr = new XMLHttpRequest();
         const id = this.userId.value;
 
-        xhr.open('POST', `/user/remove/profile-image?id=${id}`);
+        xhr.open('POST', `/user/remove/profile-image?id=${id}`,true);
         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
         xhr.addEventListener("loadend", event => {

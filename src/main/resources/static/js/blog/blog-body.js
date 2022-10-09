@@ -19,7 +19,7 @@ class BlogBodyController extends UtilController {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
 
-        xhr.open("GET", url + '?' + queryParam.toString());
+        xhr.open("GET", url + '?' + queryParam.toString(),true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;

@@ -40,7 +40,7 @@ class PostCommentCommonController extends UtilController {
                     fileReader.onload = (event) => {
                         const xhr = new XMLHttpRequest();
 
-                        xhr.open("POST", `/comment/upload/comment-thumbnail-image`);
+                        xhr.open("POST", `/comment/upload/comment-thumbnail-image`,true);
                         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                         xhr.addEventListener("loadend", event => {
