@@ -23,6 +23,8 @@ public class Comment extends BaseTimeEntity {
 
     private Long parentId;
 
+    private boolean isDelete;
+
     @Column(length = 2000)
     private String comment;
 

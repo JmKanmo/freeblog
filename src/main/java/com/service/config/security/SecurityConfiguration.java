@@ -73,7 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/post/all/{blogId}", "/post/{postId}",
                         // comment
                         "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}",
-                        "/comment/update/{commentId}", "/comment/authority/${commentId}", "/comment/delete/${commentId}",
+                        "/comment/update/{commentId}", "/comment/authority/{commentId}", "/comment/delete/{commentId}",
                         // error
                         "/error/**",
                         // email
@@ -82,6 +82,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
+        // DELETE, PUT, etc csrf 비활성화 (Request NOT Supported 이슈 방지)
+        http.csrf().ignoringAntMatchers("/comment/delete/{commentId}");
         super.configure(http);
     }
 

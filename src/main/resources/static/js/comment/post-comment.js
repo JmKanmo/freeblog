@@ -25,7 +25,7 @@ class PostCommentController extends PostCommentCommonController {
                 return;
             }
 
-            xhr.open("POST", `/comment/register`,true);
+            xhr.open("POST", `/comment/register`, true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
             xhr.addEventListener("loadend", evt => {
@@ -98,7 +98,7 @@ class PostCommentController extends PostCommentCommonController {
 
     #deleteComment(commentId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/comment/authority/${commentId}`,true);
+        xhr.open("GET", `/comment/authority/${commentId}`);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -113,34 +113,53 @@ class PostCommentController extends PostCommentCommonController {
                 }
 
                 if (responseValue["login"] === false) {
-                    const authPw = prompt("댓글 작성시 입력한 비밀번호를 입력하세요.");
+                    const password = prompt("댓글 작성시 입력한 비밀번호를 입력하세요.");
 
-                    if (authPw == null) {
+                    if (password == null) {
                         return;
                     }
-                    xhr.open("DELETE", `/comment/delete/${commentId}?authPw=${authPw}`,true);
+                    const subXhr = new XMLHttpRequest();
 
-                    xhr.addEventListener("loadend", evt => {
+                    subXhr.open("DELETE", `/comment/delete/${commentId}?password=${password}`);
+
+                    subXhr.addEventListener("loadend", evt => {
+                        let status = evt.target.status;
+                        const responseValue = evt.target.responseText;
+
                         this.showToastMessage(responseValue);
+
+                        if (status >= 400 && status <= 500) {
+                            return;
+                        }
+                        this.requestComment();
                     });
 
-                    xhr.addEventListener("error", event => {
-                        this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+                    subXhr.addEventListener("error", event => {
+                        this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
                     });
 
-                    xhr.send(null);
+                    subXhr.send();
                 } else {
-                    xhr.open("DELETE", `/comment/delete/${commentId}?authPw`,true);
+                    const subXhr = new XMLHttpRequest();
+                    subXhr.open("DELETE", `/comment/delete/${commentId}`, true);
 
-                    xhr.addEventListener("loadend", evt => {
+                    subXhr.addEventListener("loadend", event => {
+                        let status = event.target.status;
+                        const responseValue = event.target.responseText;
+
                         this.showToastMessage(responseValue);
+
+                        if (status >= 400 && status <= 500) {
+                            return;
+                        }
+                        this.requestComment();
                     });
 
-                    xhr.addEventListener("error", event => {
-                        this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+                    subXhr.addEventListener("error", event => {
+                        this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
                     });
 
-                    xhr.send();
+                    subXhr.send();
                 }
             }
         });
@@ -193,7 +212,7 @@ class PostCommentController extends PostCommentCommonController {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.commentRecordSize, this.commentPageSize);
 
-        xhr.open("GET", url + '?' + queryParam.toString(),true);
+        xhr.open("GET", url + '?' + queryParam.toString(), true);
 
 
         xhr.addEventListener("loadend", event => {

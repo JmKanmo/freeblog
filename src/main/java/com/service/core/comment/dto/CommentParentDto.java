@@ -16,6 +16,7 @@ public class CommentParentDto {
     private final String userNickname;
     private final String userProfileImage;
     private final boolean isOwner;
+    private final boolean isDelete;
     private boolean secret;
     private final boolean anonymous;
     private final String registerTime;
@@ -30,6 +31,7 @@ public class CommentParentDto {
                 .userNickname(commentDto.getUserNickname())
                 .userProfileImage(commentDto.getUserProfileImage())
                 .isOwner(commentDto.isOwner())
+                .isDelete(commentDto.isDelete())
                 .secret(commentDto.isSecret())
                 .anonymous(commentDto.isAnonymous())
                 .registerTime(commentDto.getRegisterTime())

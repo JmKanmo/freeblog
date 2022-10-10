@@ -84,6 +84,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal) {
         int commentCount = commentInfoService.findCommentCount(postId);
+        int commentExistCount = commentInfoService.findCommentCountExist(postId);
+
         CommentPagination commentPagination = new CommentPagination(commentCount, commentSearchPagingDto);
         commentSearchPagingDto.setCommentPagination(commentPagination);
         String loginUserEmail = (principal == null || principal.getName() == null) ? null : principal.getName();
@@ -99,7 +101,7 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         List<CommentDto> commentDtoList = commentInfoService.findCommentDtoListByPaging(postId, commentSearchPagingDto);
-        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, userCommentDto, commentCount, isBlogOwner), commentPagination);
+        return new CommentPaginationResponse<>(CommentSummaryDto.from(commentDtoList, userCommentDto, commentExistCount, isBlogOwner), commentPagination);
     }
 
     @Override
@@ -149,5 +151,40 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         return true;
+    }
+
+    @Transactional
+    @Override
+    public void deleteComment(Long commentId, String password, Principal principal) {
+        Comment comment = commentInfoService.findCommentById(commentId);
+
+        if (comment.isAnonymous()) {
+            if (!BCrypt.checkpw(password, comment.getCommentUser().getUserPassword())) {
+                throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
+            }
+        } else {
+            if (principal == null || principal.getName() == null) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_AUTHORITY_COMMENT);
+            }
+            UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
+
+            if (!BCrypt.checkpw(userCommentDto.getUserPassword(), comment.getCommentUser().getUserPassword())) {
+                throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
+            }
+        }
+
+        int childCommentCount = commentInfoService.findChildCommentCount(commentId);
+
+        if (childCommentCount <= 0) {
+            if (comment.getParentId() > 0) {
+                Comment parentComment = commentInfoService.findCommentById(comment.getParentId());
+                if (parentComment.isDelete()) {
+                    commentInfoService.deleteCommentById(parentComment.getId());
+                }
+            }
+            commentInfoService.deleteCommentById(commentId);
+        } else {
+            comment.setDelete(true);
+        }
     }
 }

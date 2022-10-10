@@ -109,7 +109,7 @@ public class CommentRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(CommentDelAuthDto.success(commentService.checkAuthority(commentId, principal), principal));
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.OK).body(CommentDelAuthDto.fail(exception));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentDelAuthDto.fail(exception));
         }
     }
 
@@ -119,11 +119,12 @@ public class CommentRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 삭제 권한 확인 실패")
     })
     @DeleteMapping("/delete/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, Principal principal, @RequestParam(value = "authPw", required = false) String authPassword) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, Principal principal, @RequestParam(value = "password", required = false, defaultValue = "") String password) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body("hello");
+            commentService.deleteComment(commentId, password, principal);
+            return ResponseEntity.status(HttpStatus.OK).body("댓글이 삭제되었습니다.");
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.OK).body(String.format("댓글 삭제에 실패하였습니다. %s", exception.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 삭제에 실패하였습니다. %s", exception.getMessage()));
         }
     }
 }

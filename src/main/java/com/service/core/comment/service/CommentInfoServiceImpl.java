@@ -33,12 +33,34 @@ public class CommentInfoServiceImpl implements CommentInfoService {
     }
 
     @Override
+    public int findCommentCountExist(Long postId) {
+        return commentMapper.findCommentCountExist(postId);
+    }
+
+    @Override
+    public int findChildCommentCount(Long commentId) {
+        return commentMapper.findChildCommentCount(commentId);
+    }
+
+    @Override
     public List<CommentDto> findCommentDtoListByPaging(Long postId, CommentSearchPagingDto commentSearchPagingDto) {
         return commentMapper.findCommentDtoListByPaging(CommentSearchDto.from(postId, commentSearchPagingDto));
     }
 
     @Override
     public Comment findCommentById(Long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(() -> new CommentManageException(ServiceExceptionMessage.COMMENT_NOT_FOUND));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentManageException(ServiceExceptionMessage.COMMENT_NOT_FOUND));
+
+        if (comment.isDelete()) {
+            throw new CommentManageException(ServiceExceptionMessage.ALREADY_DELETE_COMMENT);
+        }
+        return comment;
+    }
+
+    @Transactional
+    @Override
+    public Long deleteCommentById(Long commentId) {
+        commentRepository.deleteById(commentId);
+        return commentId;
     }
 }

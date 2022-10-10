@@ -22,4 +22,6 @@ public interface CommentService {
     void updateComment(CommentUpdateInput commentUpdateInput, Principal principal);
 
     boolean checkAuthority(Long commentId, Principal principal);
+
+    void deleteComment(Long commentId, String password, Principal principal);
 }

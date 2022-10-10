@@ -19,9 +19,13 @@ server:
       min-spare: 30
     max-connections: 10000
     accept-count: 200
-    max-http-form-post-size: 20MB
+    max-http-form-post-size: 100MB
 
 spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   profiles:
     include: env
 
@@ -38,8 +42,8 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
+      max-file-size: 80MB
+      max-request-size: 80MB
 
   datasource:
     master:
@@ -104,7 +108,7 @@ spring:
     timeout: 1500
 
     session:
-      timeout: 600  # 10분
+      timeout: 3600  # 1시간
       store-type: redis
       redis:
         flush-mode: on_save

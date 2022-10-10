@@ -17,6 +17,7 @@
                target_user_id,
                target_user_nickname,
                is_owner,
+               is_delete,
                secret,
                anonymous
         from comment
@@ -28,5 +29,18 @@
         SELECT count(*)
         from comment
         where post_id = #{postId}
+    </select>
+
+    <select id="findCommentCountExist" resultType="int">
+        SELECT count(*)
+        from comment
+        where post_id = #{postId}
+          and is_delete = false;
+    </select>
+
+    <select id="findChildCommentCount" resultType="int">
+        SELECT count(*)
+        from comment
+        where parent_id = #{commentId};
     </select>
 </mapper>

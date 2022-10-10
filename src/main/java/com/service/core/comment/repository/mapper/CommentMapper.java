@@ -10,5 +10,9 @@ import java.util.List;
 public interface CommentMapper {
     List<CommentDto> findCommentDtoListByPaging(CommentSearchDto commentSearchDto);
 
+    int findCommentCountExist(Long postId);
+
     int findCommentCount(Long postId);
+
+    int findChildCommentCount(Long commentId);
 }
