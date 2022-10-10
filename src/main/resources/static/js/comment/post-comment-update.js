@@ -45,7 +45,7 @@ class PostCommentUpdateController extends PostCommentCommonController {
                 this.authCheckPasswordInput.value = authPassword;
             }
 
-            xhr.open("POST", `/comment/update`,true);
+            xhr.open("POST", `/comment/update`, true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
             xhr.addEventListener("loadend", evt => {
@@ -81,8 +81,10 @@ class PostCommentUpdateController extends PostCommentCommonController {
         this.removeCommentImage();
         this.postCommentTextInput.value = "";
         this.currentTextCount.textContent = this.postCommentTextInput.value.length;
-        this.commentUserNickname.value = "";
-        this.commentUserPassword.value = "";
+        if (this.isAnonymous === "true") {
+            this.commentUserNickname.value = "";
+            this.commentUserPassword.value = "";
+        }
         this.postCommentIsSecretInput.checked = false;
         this.postCommentSecretImage.src = "/images/unlock.png";
     }

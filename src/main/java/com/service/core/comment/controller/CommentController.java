@@ -26,10 +26,25 @@ public class CommentController {
     private final CommentService commentService;
     private final UserService userService;
 
-    @Operation(summary = "특정 포스트 댓글 반환", description = "특정 포스트 댓글 반환 수행 메서드")
+    @Operation(summary = "답글 작성 페이지 반환", description = "답글 작성 페이지 반환 수행 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "특정 포스트 댓글 반환 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 특정 포스트 댓글 반환 실패")
+            @ApiResponse(responseCode = "200", description = "답글 작성 페이지 반환 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 답글 작성 페이지 반환 실패")
+    })
+    @GetMapping("/reply/{commentId}")
+    public String commentReplyPage(@PathVariable Long commentId, Model model) {
+        CommentDto commentDto = commentService.findCommentDtoById(commentId);
+        model.addAttribute("parent_comment_id", commentDto.getCommentId());
+        model.addAttribute("target_user_id", commentDto.getUserId());
+        model.addAttribute("comment_post_id", commentDto.getPostId());
+        model.addAttribute("target_user_nickname", commentDto.getUserNickname());
+        return "comment/post-comment-reply";
+    }
+
+    @Operation(summary = "댓글 수정 페이지 반환", description = "댓글 수정 페이지 반환 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "댓글 수정 페이지 반환 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 수정 페이지 반환 실패")
     })
     @GetMapping("/update/{commentId}")
     public String commentUpdatePage(@PathVariable Long commentId, Model model, Principal principal) {

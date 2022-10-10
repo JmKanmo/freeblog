@@ -5,23 +5,26 @@
 <mapper namespace="com.service.core.comment.repository.mapper.CommentMapper">
     <select id="findCommentDtoListByPaging" parameterType="com.service.core.comment.dto.CommentSearchDto"
             resultType="com.service.core.comment.dto.CommentDto">
-        select comment_id,
-               comment,
-               comment_image,
-               parent_id,
-               date_format(register_time, '%y.%m.%d %H:%i') as register_time,
-               user_id,
-               user_password,
-               user_profile_image,
-               user_nickname,
-               target_user_id,
-               target_user_nickname,
-               is_owner,
-               is_delete,
-               secret,
-               anonymous
-        from comment
-        where post_id = #{postId} LIMIT #{commentSearchPagingDto.commentPagination.limitStart}
+        select c.comment_id,
+               p.post_id,
+               c.comment,
+               c.comment_image,
+               c.parent_id,
+               date_format(c.register_time, '%y.%m.%d %H:%i') as register_time,
+               c.user_id,
+               c.user_password,
+               c.user_profile_image,
+               c.user_nickname,
+               c.target_user_id,
+               c.target_user_nickname,
+               c.is_owner,
+               c.is_delete,
+               c.secret,
+               c.anonymous
+        from comment c,
+             post p
+        where c.post_id = #{postId}
+          and c.post_id = p.post_id LIMIT #{commentSearchPagingDto.commentPagination.limitStart}
             , #{commentSearchPagingDto.recordSize}
     </select>
 

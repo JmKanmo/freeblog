@@ -9,6 +9,7 @@ import lombok.Data;
 @Builder
 public class CommentDto {
     private final Long commentId;
+    private final Long postId;
     private final String comment;
     private final String commentImage;
     private final Long parentId;
@@ -27,6 +28,7 @@ public class CommentDto {
     public static CommentDto from(Comment comment) {
         return CommentDto.builder()
                 .commentId(comment.getId())
+                .postId(comment.getPost().getId())
                 .comment(comment.getComment())
                 .commentImage(comment.getCommentImage())
                 .parentId(comment.getParentId())

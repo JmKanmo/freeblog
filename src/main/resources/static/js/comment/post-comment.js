@@ -70,7 +70,7 @@ class PostCommentController extends PostCommentCommonController {
 
             if (commentUpdateButton != null) {
                 const commentId = commentUpdateButton.closest(".post_comment_util_block").getAttribute("commentId");
-                this.openPopUp(1070, 360, `/comment/update/${commentId}`, 'popup')
+                this.openPopUp(1070, 360, `/comment/update/${commentId}`, 'popup');
             } else if (commentDeleteButton != null) {
                 const commentId = commentDeleteButton.closest(".post_comment_util_block").getAttribute("commentId");
                 if (confirm('댓글을 삭제하시겠습니까?')) {
@@ -78,6 +78,7 @@ class PostCommentController extends PostCommentCommonController {
                 }
             } else if (commentReplyButton != null) {
                 const commentId = commentReplyButton.closest(".post_comment_util_block").getAttribute("commentId");
+                this.openPopUp(1070, 360, `/comment/reply/${commentId}`, 'popup');
             }
         });
 
@@ -98,7 +99,7 @@ class PostCommentController extends PostCommentCommonController {
 
     #deleteComment(commentId) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/comment/authority/${commentId}`);
+        xhr.open("GET", `/comment/authority/${commentId}`, true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -120,7 +121,7 @@ class PostCommentController extends PostCommentCommonController {
                     }
                     const subXhr = new XMLHttpRequest();
 
-                    subXhr.open("DELETE", `/comment/delete/${commentId}?password=${password}`);
+                    subXhr.open("DELETE", `/comment/delete/${commentId}?password=${password}`, true);
 
                     subXhr.addEventListener("loadend", evt => {
                         let status = evt.target.status;

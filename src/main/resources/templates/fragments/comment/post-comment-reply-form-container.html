@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="post-comment-update-form-container" class="post_comment_form_container">
-    <form method="post" action="/comment/update" class="post_comment_form" id="post_comment_update_form"
+<div th:fragment="post-comment-reply-form-container" class="post_comment_form_container">
+    <form method="post" action="/comment/reply" class="post_comment_form" id="post_comment_reply_form"
           name="post_comment_form">
         <div class="post_comment_text_area_block">
                     <textarea class="post_comment_text_area" id="post_comment_text_input" spellcheck="false"
                               name="comment" maxlength="2000"
-                              placeholder="여러분의 소중한 댓글을 입력해주세요 :)"></textarea>
+                              th:placeholder="${target_user_nickname} + '님에게 답글을 입력해주세요 :)'"></textarea>
 
             <div class="post_comment_thumbnail_image_box" id="post_comment_thumbnail_image_box">
                 <img class="common_button_image_style" id="post_comment_thumbnail_image" src="" alt="">
@@ -28,15 +28,21 @@
 
         <div class="post_comment_form_info_container clear_fix">
             <div class="user_input_form_container clear_fix">
-                <th:block th:if="${#bools.isTrue(is_anonymous)}">
-                    <input type="text" class="post_comment_input_style"
-                           id="commentUserNickname" name="commentUserNickname" placeholder="변경 닉네임" spellcheck="false"
-                           maxlength="255">
+                <input type="text" class="post_comment_input_style"
+                       id="commentUserNickname" name="commentUserNickname" placeholder="닉네임" spellcheck="false"
+                       maxlength="255">
 
-                    <input type="password" class="post_comment_input_style"
-                           id="commentUserPassword" name="commentUserPassword" placeholder="변경 비밀번호" spellcheck="false"
-                           maxlength="255">
-                </th:block>
+                <input type="password" class="post_comment_input_style"
+                       id="commentUserPassword" name="commentUserPassword" placeholder="비밀번호" spellcheck="false"
+                       maxlength="255">
+
+                <div class="post_comment_input_style user_comment_anonymous_input_box">
+                    <input type="checkbox" id="commentIsAnonymous" name="commentIsAnonymous">
+
+                    <label class="user_comment_anonymous_input_label" for="commentIsAnonymous">
+                        <span class="common_gray_text user_comment_anonymous_input_text">익명</span>
+                    </label>
+                </div>
             </div>
 
             <div class="util_input_form_container clear_fix">
@@ -63,18 +69,27 @@
                            id="post_comment_is_secret_input" name="secretComment"/>
                 </button>
 
-                <button type="button" class="post_comment_submit_button" id="post_comment_update_button">
+                <button type="button" class="post_comment_submit_button" id="post_reply_comment_button">
                             <span class="post_comment_submit_button_text">
                                 수정
                             </span>
                 </button>
             </div>
         </div>
+
         <input type="hidden" id="post_comment_thumbnail_image_value_input" name="commentThumbnailImage"/>
-        <input type="hidden" id="auth_check_password_input" name="authCheckPassword">
-        <input type="hidden" id="is_anonymous" readonly th:value="${is_anonymous}" name="isAnonymous">
-        <input type="hidden" id="comment_id_input" readonly th:value="${comment_id}" name="commentId">
-        <input type="hidden" id="is_same_user_info" name="sameUserInfo"/>
+
+        <input type="hidden" id="comment_post_id_input" readonly th:value="${comment_post_id}"
+               name="commentPostId">
+
+        <input type="hidden" id="parent_comment_id_input" readonly th:value="${parent_comment_id}"
+               name="parentCommentId">
+
+        <input type="hidden" id="target_user_id_input" readonly th:value="${target_user_id}"
+               name="targetUserId">
+
+        <input type="hidden" id="target_user_name_input" readonly th:value="${target_user_nickname}"
+               name="targetUserNickname">
     </form>
 
     <form method="post" class="post_comment_image_form" id="post_comment_image_form"

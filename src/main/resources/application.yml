@@ -51,7 +51,7 @@ spring:
         username: ${DB_MASTER_USERNAME}
         password: ${DB_MASTER_PASSWORD}
         driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}
+        jdbc-url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
         pool-name: ${DB_MASTER_POOL}
 
     slave:
@@ -59,7 +59,7 @@ spring:
         username: ${DB_SLAVE_USERNAME}
         password: ${DB_SLAVE_PASSWORD}
         driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_SLAVE_IP}:${DB_SLAVE_PORT}/${DB_SLAVE_SCHEMA}
+        jdbc-url: jdbc:mariadb://${DB_SLAVE_IP}:${DB_SLAVE_PORT}/${DB_SLAVE_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
         pool-name: ${DB_SLAVE_POOL}
 
   jpa:

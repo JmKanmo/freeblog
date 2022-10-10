@@ -84,6 +84,25 @@ public class CommentRestController {
         }
     }
 
+    @Operation(summary = "답글 업로드", description = "답글 업로드 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "답글 업로드 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 답글 업로드 실패")
+    })
+    @PostMapping("/reply")
+    public ResponseEntity<String> replyComment(@Valid CommentInput commentInput, BindingResult bindingResult, Principal principal) {
+        try {
+            if (bindingResult.hasErrors()) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
+            commentService.registerReplyComment(commentInput, principal);
+            return ResponseEntity.status(HttpStatus.OK).body("답글이 작성되었습니다. 페이지를 새로고침 해주세요.");
+        } catch (Exception exception) {
+            log.error("[freeblog-replyComment] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("답글 작성에 실패하였습니다. %s", exception.getMessage()));
+        }
+    }
+
     @Operation(summary = "댓글 썸네일 이미지 업로드", description = "댓글 썸네일 이미지 업로드 수행 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "댓글 썸네일 이미지 업로드 완료"),

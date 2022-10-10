@@ -81,6 +81,45 @@ public class CommentServiceImpl implements CommentService {
         return commentInfoService.findCommentCount(commentInput.getCommentPostId());
     }
 
+    @Transactional
+    @Override
+    public void registerReplyComment(CommentInput commentInput, Principal principal) {
+        if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
+            if (!BlogUtil.checkFieldValidation(commentInput.getCommentUserNickname(), 255) || !BlogUtil.checkFieldValidation(commentInput.getCommentUserPassword(), 255)) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
+        }
+
+        if (commentInput.getParentCommentId() != null) {
+            if (!BlogUtil.checkFieldValidation(commentInput.getTargetUserId(), 255) || !BlogUtil.checkFieldValidation(commentInput.getTargetUserNickname(), 255)) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
+        }
+
+        if ((principal == null || principal.getName() == null) && !BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
+            throw new CommentManageException(ServiceExceptionMessage.NOT_LOGIN_ANONYMOUS_COMMENT);
+        }
+
+        if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && BlogUtil.parseAndGetCheckBox(commentInput.getSecretComment())) {
+            throw new CommentManageException(ServiceExceptionMessage.NOT_SECRET_WHEN_ANONYMOUS);
+        }
+
+        Post post = postService.findPostById(commentInput.getCommentPostId());
+        Comment comment = Comment.from(commentInput, post);
+
+        if (!BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && principal != null) {
+            UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
+            CommentUser commentUser = comment.getCommentUser();
+            commentUser.setUserProfileImage(userCommentDto.getUserProfileImage());
+            commentUser.setUserNickname(userCommentDto.getUserNickname());
+            commentUser.setUserId(userCommentDto.getUserId());
+            commentUser.setUserPassword(BCrypt.hashpw(userCommentDto.getUserPassword(), BCrypt.gensalt()));
+            commentUser.setOwner(post.getBlog().getId() == userCommentDto.getBlogId() ? true : false);
+            comment.setCommentUser(commentUser);
+        }
+        commentInfoService.saveComment(comment);
+    }
+
     @Override
     public CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal) {
         int commentCount = commentInfoService.findCommentCount(postId);

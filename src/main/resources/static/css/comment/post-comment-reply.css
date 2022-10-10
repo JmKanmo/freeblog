@@ -1,0 +1,16 @@
+.post_comment_reply_container {
+    padding: 20px;
+    text-align: center;
+    max-width: 988px;
+    margin: 0 auto;
+}
+
+.post_comment_reply_container .post_comment_reply_text {
+    font-size: 20px;
+    padding-bottom: 20px;
+    color: #666;
+}
+
+.post_comment_reply_container .post-reply-comment-style {
+    border: none;
+}

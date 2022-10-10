@@ -15,6 +15,8 @@ public interface CommentService {
 
     long registerComment(CommentInput commentInput, Principal principal);
 
+    void registerReplyComment(CommentInput commentInput, Principal principal);
+
     CommentPaginationResponse<CommentSummaryDto> findTotalPaginationComment(Long postId, Long ownerBlogId, CommentSearchPagingDto commentSearchPagingDto, Principal principal);
 
     CommentDto findCommentDtoById(Long commentId);
