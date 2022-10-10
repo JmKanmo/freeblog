@@ -216,7 +216,7 @@ public class CommentServiceImpl implements CommentService {
 
         if (childCommentCount <= 0) {
             if (comment.getParentId() > 0) {
-                Comment parentComment = commentInfoService.findCommentById(comment.getParentId());
+                Comment parentComment = commentInfoService.findCommentUnlessDeleteById(comment.getParentId());
                 if (parentComment.isDelete()) {
                     commentInfoService.deleteCommentById(parentComment.getId());
                 }

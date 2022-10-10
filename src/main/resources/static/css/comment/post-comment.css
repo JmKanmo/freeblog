@@ -89,9 +89,23 @@
     padding: 11px 3px 0px 3px;
 }
 
+.post_comment_container .post_comment_list .post_comment_block .post_comment_block_delete_text {
+    line-height: 22px;
+    word-break: break-word;
+    font-size: 13px;
+    color: rgb(102, 102, 102) !important;
+}
+
 .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block {
     line-height: 22px;
     word-break: break-word;
+}
+
+.post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block .post_target_user_link {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 650;
+    text-decoration: none;
 }
 
 .post_comment_container .post_comment_list .post_comment_block .post_comment_body .post_comment_text_block .post_comment_text {

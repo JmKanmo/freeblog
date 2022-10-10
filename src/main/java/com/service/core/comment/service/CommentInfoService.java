@@ -19,5 +19,7 @@ public interface CommentInfoService {
 
     Comment findCommentById(Long commentId);
 
+    Comment findCommentUnlessDeleteById(Long commentId);
+
     Long deleteCommentById(Long commentId);
 }

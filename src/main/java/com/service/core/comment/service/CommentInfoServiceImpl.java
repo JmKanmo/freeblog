@@ -57,6 +57,12 @@ public class CommentInfoServiceImpl implements CommentInfoService {
         return comment;
     }
 
+    @Override
+    public Comment findCommentUnlessDeleteById(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentManageException(ServiceExceptionMessage.COMMENT_NOT_FOUND));
+        return comment;
+    }
+
     @Transactional
     @Override
     public Long deleteCommentById(Long commentId) {

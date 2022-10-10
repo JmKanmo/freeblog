@@ -11,7 +11,7 @@ class UtilController {
 
     initHandlerbars() {
         Handlebars.registerHelper('nullCheck', param => {
-            return param == null;
+            return param == null || param == '<<<undefined>>>';
         });
 
         Handlebars.registerHelper('existImage', image => {
