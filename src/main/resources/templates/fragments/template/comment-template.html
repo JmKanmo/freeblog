@@ -22,8 +22,12 @@
             {{else}}
             <div class="post_comment_header clear_fix">
                 <div class="comment_user_profile_image_block">
+                    {{#if (existImage commentParentDto.userProfileImage)}}
                     <img class="common_button_image_style" src={{{getCommentUserProfileImage
                          commentParentDto.userProfileImage}}} alt="">
+                    {{else}}
+                    <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">
+                    {{/if}}
                 </div>
 
                 <div class="comment_user_profile_block">
@@ -95,8 +99,12 @@
                 <li class="sub_post_list">
                     <div class="post_comment_header clear_fix">
                         <div class="comment_user_profile_image_block">
+                            {{#if (existImage userProfileImage)}}
                             <img class="common_button_image_style" src={{{getCommentUserProfileImage userProfileImage}}}
                                  alt="">
+                            {{else}}
+                            <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">
+                            {{/if}}
                         </div>
 
                         <div class="comment_user_profile_block">

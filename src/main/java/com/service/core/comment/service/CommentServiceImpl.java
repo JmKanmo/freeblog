@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
         if (!BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && principal != null) {
             UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
             CommentUser commentUser = comment.getCommentUser();
-            commentUser.setUserProfileImage(userCommentDto.getUserProfileImage());
+            commentUser.setUserProfileImage(userCommentDto.getUserProfileImage() == null || userCommentDto.getUserProfileImage().isEmpty() ? ConstUtil.UNDEFINED : userCommentDto.getUserProfileImage());
             commentUser.setUserNickname(userCommentDto.getUserNickname());
             commentUser.setUserId(userCommentDto.getUserId());
             commentUser.setUserPassword(BCrypt.hashpw(userCommentDto.getUserPassword(), BCrypt.gensalt()));

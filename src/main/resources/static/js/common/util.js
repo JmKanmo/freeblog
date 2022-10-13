@@ -215,6 +215,34 @@ class UtilController {
                     theme: '알앤비'
                 },
                 {
+                    name: '꼭돌아오리',
+                    artist: '임선희',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%BC%AD+%EB%8F%8C%EC%95%84%EC%98%A4%EB%A6%AC.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%8B%AC%EC%9D%98%EC%97%B0%EC%9D%B8.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '가을밤 떠난 너',
+                    artist: '케이시',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%B7%B8%EB%95%8C%EA%B0%80+%EC%A2%8B%EC%95%98%EC%96%B4.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%BC%80%EC%9D%B4%EC%8B%9C%EC%82%AC%EC%A7%84.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '언제나 사랑해',
+                    artist: '케이시',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%96%B8%EC%A0%9C%EB%82%98+%EC%82%AC%EB%9E%91%ED%95%B4.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%BC%80%EC%9D%B4%EC%8B%9C%EC%82%AC%EC%A7%84.jpg',
+                    theme: '알앤비'
+                },
+                {
+                    name: '사랑과 우정 사이',
+                    artist: 'SG워너비',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/SG%EC%9B%8C%EB%84%88%EB%B9%84+-+%EC%82%AC%EB%9E%91%EA%B3%BC+%EC%9A%B0%EC%A0%95%EC%82%AC%EC%9D%B4.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EC%98%88%EC%81%9C%ED%95%98%EB%8A%98.jpg',
+                    theme: '알앤비'
+                },
+                {
                     name: '가을 안부',
                     artist: '먼데이키즈',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%B0%80%EC%9D%84+%EC%95%88%EB%B6%80.mp3',
@@ -261,6 +289,13 @@ class UtilController {
                     artist: 'IU',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EC%95%84%EC%9D%B4%EC%9C%A0+-+strawberry+moon.mp3',
                     cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/iu_strawberrymoon.jpg',
+                    theme: '달콤'
+                },
+                {
+                    name: 'celebrity',
+                    artist: 'IU',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/Celebrity+-+%EC%95%84%EC%9D%B4%EC%9C%A0.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/iu_celebrity.jpg',
                     theme: '달콤'
                 },
                 {

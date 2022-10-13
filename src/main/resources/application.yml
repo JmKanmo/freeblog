@@ -145,7 +145,7 @@ mybatis:
   mapper-locations: mybatis/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 scheduler:
   find-user-info: "* * 0 * * *"

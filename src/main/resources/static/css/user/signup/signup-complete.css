@@ -13,6 +13,7 @@
 .complete_container .signup_complete_notice_text {
     font-weight: bold;
     color: darkgreen;
+    padding-bottom: 10px;
 }
 
 .complete_container .menu_container {
@@ -53,6 +54,7 @@
 .complete_container .email_div {
     color: #333;
     font-size: 14px;
+    padding-bottom: 10px;
 }
 
 .complete_container .email_div .email {
@@ -60,9 +62,19 @@
     font-weight: bold;
 }
 
+.complete_container .auth_login_text {
+    padding-top: 13px;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+
 .complete_container .auth_alarm_text {
     color: mediumpurple;
     text-decoration: underline;
+}
+
+.email_not_sent_div {
+    padding-top: 10px;
 }
 
 .email_not_sent_text {

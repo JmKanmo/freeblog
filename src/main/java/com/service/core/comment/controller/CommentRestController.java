@@ -132,10 +132,10 @@ public class CommentRestController {
         }
     }
 
-    @Operation(summary = "댓글 삭제 권한 확인", description = "댓글 삭제 권한 확인 수행 메서드")
+    @Operation(summary = "댓글 삭제", description = "댓글 삭제 수행 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "댓글 삭제 권한 확인 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 삭제 권한 확인 실패")
+            @ApiResponse(responseCode = "200", description = "댓글 삭제 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 삭제 실패")
     })
     @DeleteMapping("/delete/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long commentId, Principal principal, @RequestParam(value = "password", required = false, defaultValue = "") String password) {

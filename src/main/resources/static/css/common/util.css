@@ -567,3 +567,10 @@ input:focus {
     display: flex;
     justify-content: center;
 }
+
+/* A-player style */
+.aplayer.aplayer-withlist .aplayer-list {
+    display: block;
+    height: 360px;
+    overflow-y: scroll;
+}
