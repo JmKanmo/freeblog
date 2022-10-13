@@ -23,4 +23,4 @@
 
 <br>
 
-#### 자세한 설명은 [freeblog document](https://blush-wolfsbane-982.notion.site/d9a513698d4c4edd94eed372dd983b25) 를 참고 해주세요.
+#### 자세한 설명은 [freeblog document](https://boiling-glasses-dec.notion.site/abfefa6fdd5b49e0818f0929b7d893ed) 를 참고 해주세요.
