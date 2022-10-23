@@ -111,9 +111,6 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
-scheduler:
-  find-user-info: "* * 0 * * *"
-
 util-config:
   aws_ec2_sftp:
     ip: 192.584.34.343

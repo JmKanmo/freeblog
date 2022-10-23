@@ -204,7 +204,7 @@ class SettingsController extends HeaderController {
         const xhr = new XMLHttpRequest();
         const id = this.userId.value;
 
-        xhr.open('POST', `/user/remove/profile-image?id=${id}`,true);
+        xhr.open('DELETE', `/user/remove/profile-image?id=${id}`,true);
         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
         xhr.addEventListener("loadend", event => {

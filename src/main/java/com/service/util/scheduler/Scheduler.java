@@ -14,16 +14,6 @@ import org.springframework.stereotype.Component;
 public class Scheduler {
     private final RedisTemplateService redisTemplateService;
 
-    @CacheEvict(value = CacheKey.FIND_USER_LIST_DTO, allEntries = true)
-    @Scheduled(cron = "${scheduler.find-user-info}")
-    public void deleteFindUserList() {
-        try {
-            // TODO
-        } catch (Exception exception) {
-            log.error("[freeblog-deleteFindUserList] exception occurred! ", exception);
-        }
-    }
-
     @Scheduled(cron = "${scheduler.blog-day-views}")
     public void initBlogDayViews() {
         try {

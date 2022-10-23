@@ -111,8 +111,9 @@
         <p class="spel_condition_tag small_text_font">최소 8자 ~ 최대 20자로 작성</p>
     </div>
 
-    <button type="submit" class="withdraw_edit_button">수정하기</button>
+    <button type="submit" class="withdraw_edit_button">탈퇴하기</button>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" name="_method" value="DELETE"/>
 </form>
 </body>
 </html>

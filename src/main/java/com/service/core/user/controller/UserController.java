@@ -128,15 +128,15 @@ public class UserController {
         return "user/update/social-address";
     }
 
-    @Operation(summary = "소셜 계정 업데이트 페이지", description = "소셜계정 업데이트 페이지 반환 메서드")
+    @Operation(summary = "소셜 계정 업데이트", description = "소셜계정 업데이트 수행 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
     })
-    @PostMapping("/update/social-address")
+    @PatchMapping("/update/social-address")
     public String updateSocialAddress(@Valid UserSocialAddressInput userSocialAddressInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
-                return "user/update/password";
+                return "user/update/social-address";
             }
             userService.updateUserSocialAddress(userSocialAddressInput);
             model.addAttribute("result", "소셜 정보 변경 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
@@ -215,7 +215,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "기본 정보 수정 작업 성공 페이지"),
             @ApiResponse(responseCode = "500", description = "기본 정보 수정 실패 페이지")
     })
-    @PostMapping("/update/basic-info")
+    @PatchMapping("/update/basic-info")
     public String basicInfoUpdate(@Valid UserBasicInfoInput userBasicInfoInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
@@ -285,7 +285,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "회원 탈퇴 완료"),
             @ApiResponse(responseCode = "500", description = "데이터베이스 작업 실패 등의 오류로 회원 탈퇴 실패")
     })
-    @PostMapping("/withdraw")
+    @DeleteMapping("/withdraw")
     public String withdraw(@Valid UserWithdrawInput userWithdrawInput, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest, Authentication authentication) {
         try {
             if (bindingResult.hasErrors()) {
@@ -327,7 +327,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "비밀번호 변경 완료"),
             @ApiResponse(responseCode = "500", description = "이메일 or 인증키 or 비밀번호 인증 오류로 비밀번호 변경 실패")
     })
-    @PostMapping("/update/password")
+    @PatchMapping("/update/password")
     public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model) {
         try {
             if (bindingResult.hasErrors()) {
@@ -364,7 +364,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "프로필 이미지 삭제 완료"),
             @ApiResponse(responseCode = "500", description = "데이터베이스 조회,삭제 작업 실패 등의 이유로 사용자 프로필 이미지 삭제 실패")
     })
-    @PostMapping("/remove/profile-image")
+    @DeleteMapping("/remove/profile-image")
     public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
             userService.removeProfileImageById(id, principal);

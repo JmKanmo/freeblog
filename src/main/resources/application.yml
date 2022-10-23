@@ -148,5 +148,4 @@ mybatis:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
 
 scheduler:
-  find-user-info: "* * 0 * * *"
   blog-day-views: "* * 0 * * *"

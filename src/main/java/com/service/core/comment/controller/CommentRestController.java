@@ -50,7 +50,7 @@ public class CommentRestController {
             @ApiResponse(responseCode = "200", description = "댓글 수정 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 수정 실패")
     })
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<String> updateComment(@Valid CommentUpdateInput commentUpdateInput, BindingResult bindingResult, Principal principal) {
         try {
             if (bindingResult.hasErrors()) {

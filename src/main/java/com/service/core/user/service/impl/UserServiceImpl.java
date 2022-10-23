@@ -203,7 +203,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable(value = CacheKey.FIND_USER_LIST_DTO, key = "#nickname")
     public List<UserEmailFindDto> findUserEmailFindDtoListByNickname(String nickname) {
         List<UserEmailFindDto> userEmailFindDtoList = userInfoService.findUsersByNickName(nickname);
         userEmailFindDtoList.forEach(userEmailFindDto -> {
