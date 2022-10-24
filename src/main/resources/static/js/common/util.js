@@ -440,6 +440,15 @@ class UtilController {
         document.body.removeChild(textarea);
         alert("URL이 복사되었습니다.")
     }
+
+    invokeAutoSaveInterval(func, contents, time) {
+        return setInterval(func, time);
+    }
+
+    clearInterval(interval, intervalKey) {
+        clearInterval(interval);
+        localStorage.removeItem(intervalKey);
+    }
 }
 
 /**

@@ -30,6 +30,7 @@ public enum ServiceExceptionMessage {
 
     // 블로그 처리 관련 에러 메시지
     BLOG_NOT_FOUND("블로그 정보가 존재하지 않습니다."),
+    ALREADY_DELETE_BLOG("삭제 된 블로그입니다."),
 
     // 포스트 처리 관련 에러 메시지
     POST_NOT_FOUND("포스트 정보가 존재하지 않습니다."),

@@ -23,10 +23,14 @@ public class Category extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
+
     private Long parentId;
+
     private String name;
 
     private Long seq;
+
+    private boolean isDelete;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id")
     private Blog blog;

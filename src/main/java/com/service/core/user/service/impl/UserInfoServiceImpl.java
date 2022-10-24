@@ -51,7 +51,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserDomain findUserDomainByEmailOrElse(String email, UserDomain defaultValue) {
-        return userRepository.findByEmail(email).orElse(defaultValue);
+        UserDomain userDomain = userRepository.findByEmail(email).orElse(defaultValue);
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain;
     }
 
     @Override
@@ -63,7 +65,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserDomain findUserDomainByIdOrElse(String id, UserDomain defaultValue) {
-        return userRepository.findById(id).orElse(defaultValue);
+        UserDomain userDomain = userRepository.findById(id).orElse(defaultValue);
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain;
     }
 
     @Override
@@ -78,11 +82,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public Blog findBlogByIdOrThrow(String id) {
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())).getBlog();
+        UserDomain userDomain = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain.getBlog();
     }
 
     @Override
     public Blog findBlogByEmailOrThrow(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())).getBlog();
+        UserDomain userDomain = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+        return userDomain.getBlog();
     }
 }

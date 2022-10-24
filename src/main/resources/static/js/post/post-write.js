@@ -28,13 +28,14 @@ class PostWriteController extends UtilController {
     initPostWriteController() {
         this.#initTemplate();
         this.initEventListener();
+        this.#initIntervalAndAutoSave();
     }
 
     #initTemplate() {
         const xhr = new XMLHttpRequest();
         const blogId = document.getElementById("hidden_blog_id").value;
 
-        xhr.open("GET", `/category/all/${blogId}`,true);
+        xhr.open("GET", `/category/all/${blogId}`, true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -131,7 +132,7 @@ class PostWriteController extends UtilController {
             if (tagText.length <= 0 || /\s/g.test(tagText)) {
                 this.showToastMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
                 return;
-            } else if (this.tagSet.has(tagText)) {
+            } else if (this.tagSet.has(`#${tagText}`)) {
                 this.showToastMessage("이미 등록한 태그는 등록할 수 없습니다.");
                 return;
             }
@@ -183,7 +184,7 @@ class PostWriteController extends UtilController {
                 fileReader.onload = (event) => {
                     const xhr = new XMLHttpRequest();
 
-                    xhr.open("POST", `/post/upload/post-thumbnail-image`,true);
+                    xhr.open("POST", `/post/upload/post-thumbnail-image`, true);
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
@@ -230,10 +231,50 @@ class PostWriteController extends UtilController {
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();
                     this.postWriteForm.submit();
+                    this.clearInterval(this.postInterval, "postSaveInfo");
                     return true;
                 }
             }
         });
+    }
+
+    #initIntervalAndAutoSave() {
+        // localStorage 정보 반환 및 복구
+        this.setAutoSaveWriteInfo(JSON.parse(localStorage.getItem("postSaveInfo")));
+        // interval 실행
+        this.postInterval = this.invokeAutoSaveInterval(() => {
+            const jsonObj = {
+                title: this.postTitle.value == null ? "" : this.postTitle.value,
+                category: this.postCategory.value == null ? "" : this.postCategory.value,
+                tagInput: this.postTagInput.value == null ? "" : this.postTagInput.value,
+                tagSet: this.tagSet.size > 0 ? JSON.stringify(this.tagSet, (_key, value) => (value instanceof Set ? [...value] : value)) : this.tagSet,
+                contents: this.postWriterEditor.root.innerHTML == null ? "" : this.postWriterEditor.root.innerHTML,
+                thumbnailImage: this.postThumbnailImageURL
+            };
+            localStorage.setItem("postSaveInfo", JSON.stringify(jsonObj));
+        }, null, 1000 * 10);
+    }
+
+    setAutoSaveWriteInfo(autoSaveWriteInfo) {
+        if (autoSaveWriteInfo != null) {
+            this.postTitle.value = autoSaveWriteInfo["title"];
+            this.postCategory.value = autoSaveWriteInfo["category"];
+            this.postTagInput.value = autoSaveWriteInfo["tagInput"];
+            this.tagSet = (typeof autoSaveWriteInfo["tagSet"]) === "object" ? this.tagSet : new Set(JSON.parse(autoSaveWriteInfo["tagSet"]));
+            for (const tagSpan of this.tagSet) {
+                this.createdTagBox.style.display = 'block';
+                const spanTagText = document.createElement('span');
+                spanTagText.className = 'created_tag_text';
+                spanTagText.innerText = tagSpan;
+                this.createdTagBox.appendChild(spanTagText);
+            }
+            this.postWriterEditor.root.innerHTML = autoSaveWriteInfo["contents"];
+            if (autoSaveWriteInfo["thumbnailImage"] != null) {
+                this.postThumbnailImageBox.style.display = 'block';
+                this.postThumbnailImage.src = autoSaveWriteInfo["thumbnailImage"];
+                this.postThumbnailImageURL = this.postThumbnailImage.src;
+            }
+        }
     }
 
     setTagText() {

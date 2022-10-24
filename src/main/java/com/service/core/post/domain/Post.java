@@ -36,6 +36,8 @@ public class Post extends BaseTimeEntity {
 
     private String thumbnailImage;
 
+    private boolean isDelete;
+
     @Lob
     private String contents;
 

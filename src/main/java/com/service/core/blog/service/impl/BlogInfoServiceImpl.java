@@ -23,6 +23,11 @@ public class BlogInfoServiceImpl implements BlogInfoService {
 
     @Override
     public Blog findBlogByIdOrThrow(Long blogId) {
-        return blogRepository.findById(blogId).orElseThrow(() -> new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND));
+        Blog blog = blogRepository.findById(blogId).orElseThrow(() -> new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND));
+
+        if (blog.isDelete()) {
+            throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
+        }
+        return blog;
     }
 }
