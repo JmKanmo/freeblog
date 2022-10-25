@@ -8,8 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
-    List<PostDto> findPostDtoList(Long blogId);
-
     List<PostDto> findTotalPostDtoListByPaging(PostSearchDto postSearchDto);
 
     List<PostDto> findCategoryPostDtoListByPaging(PostSearchDto postSearchDto);

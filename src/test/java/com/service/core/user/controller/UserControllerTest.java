@@ -111,7 +111,7 @@ public class UserControllerTest {
         UserBasicInfoInput userBasicInfoInput = UserBasicInfoInput.builder().id("nebi25")
                 .greetings("hello").nickname("nebi25")
                 .blogName("nebiros blog").build();
-        doNothing().when(userService).updateUserBasicInfo(any());
+        doNothing().when(userService).updateUserBasicInfo(any(), null);
         mockMvc.perform(get("/user/update/basic-info").content(objectMapper.writeValueAsString(userBasicInfoInput)))
                 .andExpect(status().isOk());
     }

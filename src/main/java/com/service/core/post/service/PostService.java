@@ -14,8 +14,6 @@ import java.util.List;
 
 
 public interface PostService {
-    PostTotalDto findTotalPost(Long blogId, String type);
-
     PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type);
 
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;

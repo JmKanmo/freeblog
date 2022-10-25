@@ -16,8 +16,6 @@ public interface CategoryService {
 
     PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto);
 
-    PostTotalDto findPostByBlogId(Long blogId);
-
     PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchPagingDto postSearchPagingDto);
 
     String findCategoryName(Category category);

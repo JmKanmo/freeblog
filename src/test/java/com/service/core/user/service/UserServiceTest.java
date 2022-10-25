@@ -25,10 +25,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -328,7 +330,7 @@ class UserServiceTest {
         when(userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId())).thenReturn(userDomain);
         when(blogService.register(blog)).thenReturn(blog);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.updateUserBasicInfo(userBasicInfoInput));
+        assertDoesNotThrow(() -> userService.updateUserBasicInfo(userBasicInfoInput, null));
 
         assertTrue(blog.getName().equals(userBasicInfoInput.getBlogName()));
         assertTrue(blog.getIntro().equals(userBasicInfoInput.getIntro()));

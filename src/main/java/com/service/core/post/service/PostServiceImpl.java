@@ -34,12 +34,6 @@ public class PostServiceImpl implements PostService {
     private final TagService tagService;
 
     @Override
-    public PostTotalDto findTotalPost(Long blogId, String type) {
-        List<PostDto> postDtoList = postMapper.findPostDtoList(blogId);
-        return PostTotalDto.fromPostDtoList(postDtoList, type);
-    }
-
-    @Override
     public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
         int postCount = postMapper.findPostCount(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);

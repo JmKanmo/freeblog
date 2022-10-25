@@ -5,6 +5,7 @@ import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.email.service.EmailService;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.SocialAddress;
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(key = "#authentication.getName()", value = CacheKey.USER_HEADER_DTO)
     public void withdraw(UserWithdrawInput userWithdrawInput, Authentication authentication) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(userWithdrawInput.getId());
 
@@ -77,8 +79,19 @@ public class UserServiceImpl implements UserService {
             throw new UserAuthException(ServiceExceptionMessage.MISMATCH_PASSWORD);
         }
 
+        BlogUtil.checkUserStatus(userDomain.getStatus());
+
+        Blog blog = userDomain.getBlog();
+
+        if (blog == null) {
+            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
+        } else if (blog.isDelete()) {
+            throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
+        }
+
         userDomain.setStatus(UserStatus.WITHDRAW);
         userDomain.setWithdrawTime(LocalDateTime.now());
+        blog.setDelete(true);
         userInfoService.saveUserDomain(userDomain);
     }
 
@@ -165,7 +178,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput) {
+    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
+    public void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal) {
         UserDomain user = userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId());
         Blog blog = user.getBlog();
         blog.setName(userBasicInfoInput.getBlogName());

@@ -36,16 +36,4 @@ public class CategoryServiceTest {
             Assertions.fail();
         }
     }
-
-    @Test
-    @Disabled
-    void findTotalPostByBlogId() {
-        try{
-            PostTotalDto postTotalDto = categoryService.findPostByBlogId(1L);
-            Assertions.assertNotNull(postTotalDto);
-        }catch (Exception e) {
-            e.printStackTrace();
-            Assertions.fail();
-        }
-    }
 }

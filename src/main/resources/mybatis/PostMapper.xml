@@ -3,29 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.post.repository.mapper.PostMapper">
-    <select id="findPostDtoList" resultType="com.service.core.post.dto.PostDto">
-        select post.post_id,
-               post.title,
-               post.thumbnail_image,
-               post.contents,
-               post.writer,
-               date_format(post.register_time, '%y.%m.%d %H:%i:%s') as register_time,
-               CASE
-                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
-                       THEN c.name
-                   ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
-                   END                                              as category,
-               c.category_id,
-               b.blog_id
-        from post
-                 inner join category c on post.category_id = c.category_id and c.is_delete != true
-                 inner join blog b
-        on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
-          and post.is_delete != true
-        order by register_time desc
-    </select>
-
     <select id="findTotalPostDtoListByPaging" parameterType="com.service.core.post.dto.PostSearchDto"
             resultType="com.service.core.post.dto.PostDto">
         select post.post_id,

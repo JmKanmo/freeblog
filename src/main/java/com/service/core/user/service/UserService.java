@@ -36,7 +36,7 @@ public interface UserService extends UserDetailsService {
 
     void updatePassword(UserPasswordInput userPasswordInput);
 
-    void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput);
+    void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal);
 
     void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput);
 

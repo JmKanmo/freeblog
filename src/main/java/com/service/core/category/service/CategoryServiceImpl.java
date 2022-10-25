@@ -91,11 +91,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PostTotalDto findPostByBlogId(Long blogId) {
-        return postService.findTotalPost(blogId, ConstUtil.TOTAL_CATEGORY);
-    }
-
-    @Override
     public PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchPagingDto postSearchPagingDto) {
         return postService.findTotalPaginationPost(blogId, postSearchPagingDto, ConstUtil.TOTAL_CATEGORY);
     }

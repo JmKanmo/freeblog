@@ -216,13 +216,15 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "기본 정보 수정 실패 페이지")
     })
     @PatchMapping("/update/basic-info")
-    public String basicInfoUpdate(@Valid UserBasicInfoInput userBasicInfoInput, BindingResult bindingResult, Model model) {
+    public String basicInfoUpdate(@Valid UserBasicInfoInput userBasicInfoInput, BindingResult bindingResult, Principal principal, Model model) {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/update/basic-info";
+            } else if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
 
-            userService.updateUserBasicInfo(userBasicInfoInput);
+            userService.updateUserBasicInfo(userBasicInfoInput, principal);
             model.addAttribute("result", "기본 정보 수정 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
         } catch (UsernameNotFoundException exception) {
             model.addAttribute("result", "기본 정보 수정 작업 실패");
@@ -351,6 +353,9 @@ public class UserController {
     public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
                                                      @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
+            if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+            }
             String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
@@ -367,6 +372,9 @@ public class UserController {
     @DeleteMapping("/remove/profile-image")
     public ResponseEntity<String> removeProfileImage(@RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
+            if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+            }
             userService.removeProfileImageById(id, principal);
             return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
         } catch (Exception exception) {
