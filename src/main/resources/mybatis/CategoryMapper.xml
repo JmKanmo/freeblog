@@ -10,7 +10,7 @@
                category.seq,
                count(p.post_id) as postCount
         from category
-                 left join post p on category.category_id = p.category_id
+                 left join post p on category.category_id = p.category_id and category.is_delete != true
         where category.category_id in (select sorted_category.category_id
                                        from (select * from category order by blog_id) sorted_category
                                        where sorted_category.blog_id = (select user.blog_id
@@ -28,7 +28,7 @@
                category.seq,
                count(p.post_id) as postCount
         from category
-                 left join post p on category.category_id = p.category_id
+                 left join post p on category.category_id = p.category_id and category.is_delete != true
         where category.category_id in (select sorted_category.category_id
                                        from (select * from category order by blog_id) sorted_category
                                        where sorted_category.blog_id = #{blogId})

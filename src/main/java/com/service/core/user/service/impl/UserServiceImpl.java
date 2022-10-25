@@ -236,7 +236,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileDto findUserProfileDtoByBlogId(Long blogId) {
-        Blog blog = blogService.findBlogById(blogId);
+        Blog blog = blogService.findBlogByIdOrThrow(blogId);
         return UserProfileDto.fromEntity(blog.getUser());
     }
 

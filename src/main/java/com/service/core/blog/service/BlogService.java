@@ -10,5 +10,5 @@ public interface BlogService {
 
     Blog findBlogByEmail(String email);
 
-    Blog findBlogById(Long blogId);
+    Blog findBlogByIdOrThrow(Long blogId);
 }

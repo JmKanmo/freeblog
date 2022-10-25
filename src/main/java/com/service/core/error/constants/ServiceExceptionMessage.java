@@ -34,6 +34,7 @@ public enum ServiceExceptionMessage {
 
     // 포스트 처리 관련 에러 메시지
     POST_NOT_FOUND("포스트 정보가 존재하지 않습니다."),
+    ALREADY_DELETE_POST("삭제 된 포스트입니다."),
 
     // 댓글 처리 관련 에러 메시지
     NOT_LOGIN_ANONYMOUS_COMMENT("비로그인 상태에서는 익명 댓글만 허용 됩니다."),

@@ -113,7 +113,9 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = blogService.findBlogByEmail(email).getCategoryList();
 
         for (Category category : categoryList) {
-            if (category.getId() == categoryId) {
+            if (category.isDelete()) {
+                continue;
+            } else if (category.getId() == categoryId) {
                 return category;
             }
         }

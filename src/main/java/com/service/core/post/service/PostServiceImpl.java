@@ -1,5 +1,6 @@
 package com.service.core.post.service;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
@@ -71,11 +72,17 @@ public class PostServiceImpl implements PostService {
         if (!postRepository.existsById(postId)) {
             throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
         }
-        return postRepository.findById(postId).get();
+        Post post = postRepository.findById(postId).get();
+
+        if (post.isDelete()) {
+            throw new PostManageException(ServiceExceptionMessage.ALREADY_DELETE_POST);
+        }
+        return post;
     }
 
     private boolean checkPostId(Long blogId, Long postId) {
         Post post = findPostById(postId);
-        return post.getBlog().getId() == blogId;
+        Blog blog = post.getBlog();
+        return !blog.isDelete() && blog.getId() == blogId;
     }
 }

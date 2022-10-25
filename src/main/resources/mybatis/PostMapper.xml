@@ -18,9 +18,9 @@
                c.category_id,
                b.blog_id
         from post
-                 inner join category c on post.category_id = c.category_id
-                 inner join blog b on b.blog_id = #{blogId}
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
+                 inner join category c on post.category_id = c.category_id and c.is_delete != true
+                 inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id) and post.is_delete != true
         order by register_time desc
     </select>
 
@@ -40,9 +40,9 @@
                c.category_id,
                b.blog_id
         from post
-                 inner join category c on post.category_id = c.category_id
-                 inner join blog b on b.blog_id = #{blogId}
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
+                 inner join category c on post.category_id = c.category_id and c.is_delete != true
+                 inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id) and post.is_delete != true
         order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 

@@ -28,7 +28,9 @@ public class BlogServiceImpl implements BlogService {
     public BlogInfoDto findBlogInfoDtoById(String id) {
         Blog blog = userInfoService.findBlogByIdOrThrow(id);
 
-        if (blog.isDelete()) {
+        if (blog == null) {
+            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
+        } else if (blog.isDelete()) {
             throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
         }
         return BlogInfoDto.fromEntity(blog);
@@ -38,14 +40,16 @@ public class BlogServiceImpl implements BlogService {
     public Blog findBlogByEmail(String email) {
         Blog blog = userInfoService.findBlogByEmailOrThrow(email);
 
-        if (blog.isDelete()) {
+        if (blog == null) {
+            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
+        } else if (blog.isDelete()) {
             throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
         }
         return blog;
     }
 
     @Override
-    public Blog findBlogById(Long blogId) {
+    public Blog findBlogByIdOrThrow(Long blogId) {
         return blogInfoService.findBlogByIdOrThrow(blogId);
     }
 }

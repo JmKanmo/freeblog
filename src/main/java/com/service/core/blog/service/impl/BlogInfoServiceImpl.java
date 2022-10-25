@@ -25,7 +25,9 @@ public class BlogInfoServiceImpl implements BlogInfoService {
     public Blog findBlogByIdOrThrow(Long blogId) {
         Blog blog = blogRepository.findById(blogId).orElseThrow(() -> new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND));
 
-        if (blog.isDelete()) {
+        if (blog == null) {
+            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
+        } else if (blog.isDelete()) {
             throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
         }
         return blog;
