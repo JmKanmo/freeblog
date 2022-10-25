@@ -403,6 +403,9 @@ class UtilController {
 
         // 페이지 번호
         for (let i = pagination["startPage"]; i <= pagination["endPage"]; i++) {
+            if (i <= 0)
+                continue;
+
             const active = (i === parseInt(queryParam.get("page"))) ? 'active' : '';
             html += `
              <li class="page-item ${active}">

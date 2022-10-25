@@ -63,6 +63,10 @@ public class CommentController {
         }
         model.addAttribute("is_anonymous", commentDto.isAnonymous());
         model.addAttribute("comment_id", commentDto.getCommentId());
+        model.addAttribute("comment_text", commentDto.getComment());
+        model.addAttribute("comment_image", commentDto.getCommentImage());
+        model.addAttribute("comment_nickname", commentDto.getUserNickname());
+        model.addAttribute("comment_secret", commentDto.isSecret());
         return "comment/post-comment-update";
     }
 }

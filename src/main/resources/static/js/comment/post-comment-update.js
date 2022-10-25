@@ -61,7 +61,7 @@ class PostCommentUpdateController extends PostCommentCommonController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
+                this.showToastMessage('오류가 발생하여 댓글 수정에 실패하였습니다.');
             });
             xhr.send(new FormData(this.postCommentUpdateForm));
         });

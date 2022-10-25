@@ -74,7 +74,6 @@
         <input type="hidden" id="auth_check_password_input" name="authCheckPassword">
         <input type="hidden" id="is_anonymous" readonly th:value="${is_anonymous}" name="isAnonymous">
         <input type="hidden" id="comment_id_input" readonly th:value="${comment_id}" name="commentId">
-        <input type="hidden" id="is_same_user_info" name="sameUserInfo"/>
     </form>
 
     <form method="post" class="post_comment_image_form" id="post_comment_image_form"
@@ -83,5 +82,28 @@
                class="post_comment_image_file_input"
                accept="image/jpeg, image/jpg, image/png, image/gif, image/GIF">
     </form>
+
+    <script th:inline="javascript">
+        const commentText = [[${comment_text}]];
+        const commentImage = [[${comment_image}]];
+        const commentNickname = [[${comment_nickname}]];
+        const commentSecret = [[${comment_secret}]];
+
+        document.getElementById("post_comment_text_input").value = commentText;
+        document.getElementById("commentUserNickname").value = commentNickname;
+
+        if (commentSecret === true) {
+            document.getElementById("post_comment_is_secret_input").checked = true;
+            document.getElementById("post_comment_secret_image").src = "/images/lock.png";
+        }
+
+        console.log(commentImage);
+
+        if (commentImage !== '<<<undefined>>>') {
+            document.getElementById("post_comment_thumbnail_image_box").style.display = 'block';
+            document.getElementById("post_comment_thumbnail_image_value_input").value = commentImage;
+            document.getElementById("post_comment_thumbnail_image").src = commentImage;
+        }
+    </script>
 </div>
 </html>
