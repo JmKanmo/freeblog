@@ -10,7 +10,11 @@ import java.util.List;
 public interface PostMapper {
     List<PostDto> findPostDtoList(Long blogId);
 
-    List<PostDto> findPostDtoListByPaging(PostSearchDto postSearchDto);
+    List<PostDto> findTotalPostDtoListByPaging(PostSearchDto postSearchDto);
+
+    List<PostDto> findCategoryPostDtoListByPaging(PostSearchDto postSearchDto);
 
     int findPostCount(Long blogId);
+
+    int findPostCountByBlogCategory(Long blogId, Long categoryId);
 }

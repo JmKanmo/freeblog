@@ -7,9 +7,11 @@ import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.repository.CategoryRepository;
 import com.service.core.category.repository.mapper.CategoryMapper;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.CategoryManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDto;
+import com.service.core.post.dto.PostSearchDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -70,17 +72,21 @@ public class CategoryServiceImpl implements CategoryService {
             return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(Collections.emptyList(), ConstUtil.NOT_EXIST_CATEGORY), postPagination);
         } else {
             Category category = categoryOptional.get();
-            List<Post> postList = category.getPostList();
-            int postCount = postList.size();
+            Blog blog = category.getBlog();
+
+            if (category.isDelete()) {
+                throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
+            } else if (blog == null || blog.isDelete()) {
+                throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
+            }
+
+            Long blogId = blog.getId();
+            int postCount = postService.findPostCountByBlogCategory(blogId, categoryId);
+
             PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
             postSearchPagingDto.setPostPagination(postPagination);
 
-            return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(
-                    BlogUtil.getSlice(
-                                    category.getPostList().stream().sorted(Comparator.comparing(Post::getRegisterTime).reversed()),
-                                    postSearchPagingDto.getPostPagination().getLimitStart(),
-                                    postSearchPagingDto.getRecordSize())
-                            .map(PostDto::fromEntity).collect(Collectors.toList()), findCategoryName(category)), postPagination);
+            return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postService.findPostPaginationById(PostSearchDto.from(blogId, categoryId, postSearchPagingDto)), findCategoryName(category)), postPagination);
         }
     }
 

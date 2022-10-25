@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
         int postCount = postMapper.findPostCount(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
         postSearchPagingDto.setPostPagination(postPagination);
-        return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
+        return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findTotalPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
     }
 
     @Override
@@ -65,6 +65,16 @@ public class PostServiceImpl implements PostService {
             throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
         }
         return PostDetailDto.from(findPostById(postId));
+    }
+
+    @Override
+    public List<PostDto> findPostPaginationById(PostSearchDto postSearchDto) {
+        return postMapper.findCategoryPostDtoListByPaging(postSearchDto);
+    }
+
+    @Override
+    public int findPostCountByBlogCategory(Long blogId, Long categoryId) {
+        return postMapper.findPostCountByBlogCategory(blogId, categoryId);
     }
 
     @Override

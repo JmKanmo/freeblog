@@ -138,7 +138,7 @@ logging:
     com.service: INFO
 
     org.hibernate:
-#      SQL: debug
+      SQL: debug
 #      type.descriptor.sql: trace
 
 mybatis:
