@@ -76,7 +76,7 @@ class SettingsController extends HeaderController {
                         return;
                     }
 
-                    xhr.open("GET", `/email/send/auth?email=${email}`,true);
+                    xhr.open("GET", `/email/send/auth?email=${email}`, true);
 
                     xhr.addEventListener("loadend", event => {
                         let status = event.target.status;
@@ -108,7 +108,7 @@ class SettingsController extends HeaderController {
                     const xhr = new XMLHttpRequest();
                     const id = this.userId.value;
 
-                    xhr.open("POST", `/user/upload/profile-image?id=${id}`,true);
+                    xhr.open("POST", `/user/upload/profile-image?id=${id}`, true);
                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                     xhr.addEventListener("loadend", event => {
@@ -168,7 +168,7 @@ class SettingsController extends HeaderController {
                     return;
                 }
 
-                xhr.open("GET", `/email/send/find-password?email=${email}`,true);
+                xhr.open("GET", `/email/send/find-password?email=${email}`, true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
@@ -190,7 +190,7 @@ class SettingsController extends HeaderController {
         });
 
         this.withDrawButton.addEventListener("click", evt => {
-            this.openPopUp(550, 500, '/user/withdraw', 'popup');
+            this.openPopUp(1080, 500, '/user/withdraw', 'popup');
         });
     }
 
@@ -204,7 +204,7 @@ class SettingsController extends HeaderController {
         const xhr = new XMLHttpRequest();
         const id = this.userId.value;
 
-        xhr.open('DELETE', `/user/remove/profile-image?id=${id}`,true);
+        xhr.open('DELETE', `/user/remove/profile-image?id=${id}`, true);
         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
         xhr.addEventListener("loadend", event => {

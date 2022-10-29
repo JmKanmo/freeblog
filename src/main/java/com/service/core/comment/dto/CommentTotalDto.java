@@ -3,6 +3,7 @@ package com.service.core.comment.dto;
 import com.service.core.user.dto.UserCommentDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ public class CommentTotalDto {
             if (commentDto.getParentId() == 0) {
                 CommentTotalDto commentTotalDto = new CommentTotalDto();
                 CommentParentDto commentParentDto = CommentParentDto.from(commentDto);
+
                 if (commentParentDto.isSecret()) {
-                    if (isBlogOwner || (userCommentDto != null && userCommentDto.getUserId().equals(commentParentDto.getUserId())
-                            && BCrypt.checkpw(userCommentDto.getUserPassword(), commentParentDto.getUserPassword()))) {
+                    if (isBlogOwner || (userCommentDto != null
+                            && StringUtils.equals(userCommentDto.getUserId(), commentParentDto.getUserId()))) {
                         commentParentDto.setSecret(false);
                     }
                 }
@@ -39,8 +41,8 @@ public class CommentTotalDto {
                 CommentChildDto commentChildDto = CommentChildDto.from(commentDto);
 
                 if (commentChildDto.isSecret()) {
-                    if (isBlogOwner || (userCommentDto != null && userCommentDto.getUserId().equals(commentChildDto.getUserId())
-                            && BCrypt.checkpw(userCommentDto.getUserPassword(), commentChildDto.getUserPassword()))) {
+                    if (isBlogOwner || (userCommentDto != null
+                            && StringUtils.equals(userCommentDto.getUserId(), commentChildDto.getUserId()))) {
                         commentChildDto.setSecret(false);
                     }
                 }
@@ -62,8 +64,8 @@ public class CommentTotalDto {
                     List<CommentChildDto> commentChildDtoListRef = commentTotalDtoList.get(idx).getCommentChildDtoList();
 
                     if (commentChildDto.isSecret()) {
-                        if (isBlogOwner || (userCommentDto != null && userCommentDto.getUserId().equals(commentChildDto.getUserId())
-                                && BCrypt.checkpw(userCommentDto.getUserPassword(), commentChildDto.getUserPassword()))) {
+                        if (isBlogOwner || (userCommentDto != null
+                                && StringUtils.equals(userCommentDto.getUserId(), commentChildDto.getUserId()))) {
                             commentChildDto.setSecret(false);
                         }
                     }

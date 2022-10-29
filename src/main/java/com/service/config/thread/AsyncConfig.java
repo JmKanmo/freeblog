@@ -13,9 +13,8 @@ public class AsyncConfig extends AsyncConfigurerSupport {
     @Override
     public Executor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPoolExecutor = new ThreadPoolTaskExecutor();
-        threadPoolExecutor.setCorePoolSize(10);
-        threadPoolExecutor.setCorePoolSize(20);
-        threadPoolExecutor.setQueueCapacity(500);
+        int n = Runtime.getRuntime().availableProcessors();
+        threadPoolExecutor.setCorePoolSize(n);
         threadPoolExecutor.setThreadNamePrefix("freeblog-async-");
         threadPoolExecutor.initialize();
         return threadPoolExecutor;

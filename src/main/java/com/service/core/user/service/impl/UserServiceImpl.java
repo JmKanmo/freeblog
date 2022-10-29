@@ -107,6 +107,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkIsAuthenticated(String email) {
+        UserDomain user = userInfoService.findUserDomainByEmailOrThrow(email);
+
+        if (user.getStatus() == UserStatus.ACTIVE) {
+            throw new UserAuthException(ServiceExceptionMessage.ALREADY_AUTHENTICATED_ACCOUNT);
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean checkSameUser(UserDomain user) {
         if (userInfoService.checkUserDomainByEmail(user.getEmail())) {
             throw new UserManageException(ServiceExceptionMessage.ALREADY_SAME_EMAIL);

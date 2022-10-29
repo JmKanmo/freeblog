@@ -7,7 +7,8 @@
 
     <style>
         .withdraw_complete_container {
-            width: 500px;
+            max-width: 500px;
+            margin: 0 auto;
             text-align: center;
         }
 
@@ -21,6 +22,12 @@
             color: darkgreen;
             text-decoration: underline;
             padding: 12px 0 12px 0;
+        }
+
+        .error_text {
+            font-weight: bold;
+            color: darkgreen;
+            padding: 12px 0px 12px 0;
         }
     </style>
 </head>
@@ -36,7 +43,7 @@
     </th:block>
 
     <th:block th:if="${error != null} and ${#strings.isEmpty(error)} eq false">
-        <p style="font-weight: bold; color: darkgreen" th:text="${error}"></p>
+        <p class="error_text" th:text="${error}"></p>
     </th:block>
 
     <a class="common_dark_cyan_text" href="/">홈으로 가기 </a>

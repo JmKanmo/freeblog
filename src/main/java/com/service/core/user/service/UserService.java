@@ -20,6 +20,8 @@ public interface UserService extends UserDetailsService {
 
     boolean checkIsActive(String email);
 
+    boolean checkIsAuthenticated(String email);
+
     boolean checkSameUser(UserDomain user);
 
     boolean checkSameId(String id);

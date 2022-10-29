@@ -15,7 +15,7 @@ class SignUpCompleteController extends UtilController {
             const xhr = new XMLHttpRequest();
             const email = this.resendButton.value;
 
-            xhr.open("GET", `/email/send/signup?email=${email}`,true);
+            xhr.open("GET", `/email/send/signup?email=${email}`, true);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;
@@ -25,6 +25,7 @@ class SignUpCompleteController extends UtilController {
                     this.showToastMessage(responseValue);
                 } else {
                     this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
+                    this.resendButton.disabled = true;
                 }
             });
 

@@ -35,8 +35,10 @@ public class EmailController {
     @GetMapping(path = "/send/signup")
     public ResponseEntity<String> sendSignUpEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
-            String key = userService.updateEmailAuthCondition(email);
-            emailService.sendSignUpMail(email, key);
+            if (userService.checkIsAuthenticated(email)) {
+                String key = userService.updateEmailAuthCondition(email);
+                emailService.sendSignUpMail(email, key);
+            }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
             log.error("[freeblog-sendSignUpEmail] exception occurred ", exception);
@@ -53,8 +55,10 @@ public class EmailController {
     @GetMapping(path = "/send/auth")
     public ResponseEntity<String> sendAuthEmail(@RequestParam(value = "email", required = false, defaultValue = "") String email) {
         try {
-            String key = userService.updateEmailAuthCondition(email);
-            emailService.sendAuthMail(email, key);
+            if (userService.checkIsAuthenticated(email)) {
+                String key = userService.updateEmailAuthCondition(email);
+                emailService.sendAuthMail(email, key);
+            }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
             log.error("[freeblog-sendAuthEmail] exception occurred ", exception);
