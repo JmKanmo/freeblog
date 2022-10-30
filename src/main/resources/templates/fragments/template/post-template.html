@@ -205,5 +205,14 @@
         {{/each}}
         {{/each}}
     </script>
+
+    <!-- 카테고리 포스트 템플릿 -->
+    <script id="category-post-template" type="text/x-handlebars-template">
+        {{#each postDtoList}}
+        <li class="category_post">
+            <a class="category_post_link" href="/post/{{id}}?blogId={{blogId}}">{{title}}</a>
+        </li>
+        {{/each}}
+    </script>
 </th:block>
 </html>

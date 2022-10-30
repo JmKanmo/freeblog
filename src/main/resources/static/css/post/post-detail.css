@@ -17,6 +17,10 @@
     border-bottom-color: #d9d9d9;
 }
 
+.post_detail_container .post_title_container .post_title_block {
+    position: relative;
+}
+
 .post_detail_container .post_title_container .post_title_text {
     font-size: 20px;
     display: inline;
@@ -56,6 +60,50 @@
 .post_detail_container .post_title_container .post_title_category_block .post_title_category_text {
     font-size: 13px;
     color: #555;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block {
+    position: absolute;
+    width: 200px;
+    border: 1px solid #ced4da;
+    z-index: 5;
+    background-color: #ffffff;
+    padding: 25px 15px 0px 15px;
+    display: none;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_page_container {
+    padding-top: 20px;
+    padding-bottom: 7px;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_list {
+    padding-bottom: 18px;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_list .category_post:nth-child(n+2) {
+    margin-top: 10px;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_list .category_post_link {
+    color: #6c757d;
+    font-size: 13px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_block_close_button {
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    cursor: pointer;
 }
 
 /* post writer container 스타일 */

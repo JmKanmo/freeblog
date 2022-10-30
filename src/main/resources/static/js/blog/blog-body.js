@@ -67,7 +67,7 @@ class BlogBodyController extends UtilController {
             this.postPagination.innerHTML = '';
             return;
         }
-        this.postPagination.innerHTML = this.drawPagination(pagination, queryParam, url);
+        this.postPagination.innerHTML = this.drawBasicPagination(pagination, queryParam, url);
     }
 
     #clearPagination() {

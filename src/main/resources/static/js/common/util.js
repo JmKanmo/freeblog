@@ -215,6 +215,13 @@ class UtilController {
                     theme: '알앤비'
                 },
                 {
+                    name: 'Monologue',
+                    artist: '테이',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%ED%85%8C%EC%9D%B4+-+Monologue.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%ED%85%8C%EC%9D%B4_%EB%AA%A8%EB%85%B8%EB%A1%9C%EA%B7%B8.jpg',
+                    theme: '발라드'
+                },
+                {
                     name: '꼭돌아오리',
                     artist: '임선희',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%EA%BC%AD+%EB%8F%8C%EC%95%84%EC%98%A4%EB%A6%AC.mp3',
@@ -381,7 +388,7 @@ class UtilController {
         });
     }
 
-    drawPagination(pagination, queryParam, url) {
+    drawBasicPagination(pagination, queryParam, url) {
         let html = '';
 
         // 첫 페이지, 이전 페이지
@@ -425,6 +432,58 @@ class UtilController {
                 
                 <li class="page-item">
                     <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["totalPageCount"]}">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    </button>
+                </li>
+            `;
+        }
+        return html;
+    }
+
+    drawSimplePagination(pagination, queryParam, url) {
+        let html = '';
+
+        // 첫 페이지, 이전 페이지
+        if (pagination["existPrevPage"]) {
+            html += `
+               <li class="page-item">
+                    <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="1">
+                    <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                
+                <li class="page-item">
+                    <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["startPage"] - 1}">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    </button>
+                </li>
+            `;
+        }
+
+        // 페이지 번호
+        for (let i = pagination["startPage"]; i <= pagination["endPage"]; i++) {
+            if (i <= 0)
+                continue;
+
+            const active = (i === parseInt(queryParam.get("page"))) ? 'active' : '';
+            html += `
+             <li class="page-item ${active}">
+                    <button class="page-link simple_page_button_style" url="${url}" page="${i}">${i}</button>
+                </li>
+            `;
+        }
+
+        // 다음 페이지, 마지막 페이지
+        if (pagination["existNextPage"]) {
+            html += `
+             <li class="page-item">
+                    <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["endPage"] + 1}">
+                    <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+                
+                <li class="page-item">
+                    <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["totalPageCount"]}">
                     <span aria-hidden="true">&lsaquo;</span>
                     </button>
                 </li>

@@ -206,7 +206,7 @@ class PostCommentController extends PostCommentCommonController {
             this.commentPagination.innerHTML = '';
             return;
         }
-        this.commentPagination.innerHTML = this.drawPagination(pagination, queryParam, url);
+        this.commentPagination.innerHTML = this.drawBasicPagination(pagination, queryParam, url);
     }
 
     #requestComment(url, page) {

@@ -9,6 +9,13 @@ class PostDetailController extends UtilController {
         this.postUrlButton = document.getElementById("post_url_button");
         this.postContents = this.getReadOnlyQuillEditor('post_contents');
         this.postCommentController = new PostCommentController();
+        this.categoryPostBlock = document.getElementById("category_post_block");
+        this.categoryPostBlockCloseButton = document.getElementById("category_post_block_close_button");
+        this.categoryPostList = document.getElementById("category_post_list");
+        this.categoryPostPagination = document.getElementById("categoryPostPagination");
+        this.postRecordSize = 5;
+        this.postPageSize = 5;
+        this.prevCategoryPostBlock = false;
     }
 
     initPostDetailController() {
@@ -24,7 +31,21 @@ class PostDetailController extends UtilController {
 
     initEventController() {
         this.postTitleCategoryButton.addEventListener("click", evt => {
-            this.showToastMessage("post title category button clicked");
+            if (this.categoryPostBlock.style.display === 'none' || this.categoryPostBlock.style.display === '') {
+                this.categoryPostBlock.style.display = 'block';
+                if (this.prevCategoryPostBlock === false) {
+                    this.#requestCategoryPost(this.postTitleCategoryButton.value);
+                    this.prevCategoryPostBlock = true;
+                }
+            } else {
+                this.categoryPostBlock.style.display = 'none';
+            }
+        });
+
+        this.categoryPostBlockCloseButton.addEventListener("click", evt => {
+            if (this.categoryPostBlock.style.display === 'block') {
+                this.categoryPostBlock.style.display = 'none';
+            }
         });
 
         this.postLikeButton.addEventListener("click", evt => {
@@ -42,6 +63,68 @@ class PostDetailController extends UtilController {
         this.postUrlButton.addEventListener("click", evt => {
             this.copyUrl();
         });
+
+        this.categoryPostPagination.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+
+            if (button && !button.closest("li").classList.contains("active")) {
+                const url = button.getAttribute("url");
+                const page = button.getAttribute("page");
+
+                if (url && page) {
+                    this.#requestCategoryPost(url, page);
+                }
+            }
+        });
+    }
+
+    #requestCategoryPost(url, page) {
+        const xhr = new XMLHttpRequest();
+        const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
+
+        xhr.open("GET", url + '?' + queryParam.toString(), true);
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                    this.showToastMessage("게시글 정보가 존재하지 않습니다.");
+                    return;
+                }
+                this.#handleTemplateList(responseValue);
+                this.#clearPagination();
+                this.#handlePagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 게시글 정보를 불러오지 못했습니다.');
+        });
+
+        xhr.send();
+    }
+
+    #handleTemplateList(responseValue) {
+        const categoryPostTemplate = document.getElementById("category-post-template").innerHTML;
+        const categoryPostTemplateObject = Handlebars.compile(categoryPostTemplate);
+        const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]);
+        this.categoryPostList.innerHTML = categoryPostTemplateHTML;
+    }
+
+    #clearPagination() {
+        this.categoryPostPagination.innerHTML = ``;
+    }
+
+    #handlePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.categoryPostPagination.innerHTML = '';
+            return;
+        }
+        this.categoryPostPagination.innerHTML = this.drawSimplePagination(pagination, queryParam, url);
     }
 }
 

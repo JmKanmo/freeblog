@@ -568,6 +568,17 @@ input:focus {
     justify-content: center;
 }
 
+.simple_page_button_style {
+    font-size: 12px;
+    padding: 4px 6px 4px 6px;
+}
+
+.simple_page_button_style:focus {
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
 /* A-player style */
 .aplayer.aplayer-withlist .aplayer-list {
     display: block;
