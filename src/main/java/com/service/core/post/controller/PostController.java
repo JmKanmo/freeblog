@@ -108,39 +108,4 @@ public class PostController {
 
         return String.format("redirect:/blog/%s", userHeaderDto.getId());
     }
-
-    @Operation(summary = "해당 블로그의 전체 포스트 반환", description = "해당 블로그의 전체 포스트 데이터 반환 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "블로그 전체 포스트 반환 성공"),
-            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
-    })
-    @ResponseBody
-    @GetMapping("/all/{blogId}")
-    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogService.findBlogByIdOrThrow(blogId).getId(), postSearchPagingDto, ConstUtil.TOTAL_POST)));
-        } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
-        }
-    }
-
-    @Operation(summary = "포스트 썸네일 이미지 업로드", description = "포스트 썸네일 이미지 업로드 수행 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "프로필 이미지 업로드 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 포스트 썸네일 이미지 업로드 실패")
-    })
-    @ResponseBody
-    @PostMapping("/upload/post-thumbnail-image")
-    public ResponseEntity<String> uploadPostThumbnailImage(@RequestParam("post_thumbnail_image_input") MultipartFile multipartFile, Principal principal) {
-        try {
-            if ((principal == null || principal.getName() == null)) {
-                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
-        } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
-        }
-    }
 }
