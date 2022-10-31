@@ -50,6 +50,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="post_detail_update_container clear_fix" sec:authorize="isAuthenticated()">
+                <button class="common_button_text post_detail_update_button">
+                    수정
+                </button>
+
+                <button class="common_button_text post_detail_delete_button">
+                    삭제
+                </button>
+            </div>
         </div>
 
         <div class="post_writer_profile_container">
@@ -105,10 +115,32 @@
         </div>
     </div>
 
+    <input type="hidden" id="blog_post_category_id" readonly th:value="${postDetail.categoryId}">
+
     <!-- 게시글 댓글 컨테이너-->
     <div th:replace="/fragments/comment/post-comment-container::post-comment-container"></div>
 
-    <!-- 카테고리 관련글 목록 추가 -->
+    <div class="prev_next_category_post_container clear_fix">
+        <div class="prev_category_post_container clear_fix">
+            <div class="prev_next_category_image_container">
+                <img class="common_button_image_style" src="../images/left_arrow.png" alt="left_arrow">
+            </div>
+
+            <a href="/" class="prev_category_post_link" th:title="${postDetail.title}">
+                <span class="prev_next_category_post_text">이전 글</span>
+            </a>
+        </div>
+
+        <div class="next_category_post_container clear_fix">
+            <div class="prev_next_category_image_container">
+                <img class="common_button_image_style" src="../images/right_arrow.png" alt="left_arrow">
+            </div>
+
+            <a href="/" class="next_category_post_link" th:title="${postDetail.title}">
+                <span class="prev_next_category_post_text">다음 글</span>
+            </a>
+        </div>
+    </div>
 </div>
 </div>
 

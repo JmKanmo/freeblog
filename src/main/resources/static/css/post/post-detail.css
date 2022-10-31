@@ -57,6 +57,26 @@
     text-decoration: underline;
 }
 
+.post_detail_container .post_title_container .post_detail_update_container {
+    float: right;
+    line-height: 20px;
+}
+
+.post_detail_container .post_title_container .post_detail_update_container .post_detail_update_button {
+    float: left;
+    font-size: 12px;
+    margin-right: 7px;
+    cursor: pointer;
+    color: #607d8b;
+}
+
+.post_detail_container .post_title_container .post_detail_update_container .post_detail_delete_button {
+    float: right;
+    font-size: 12px;
+    cursor: pointer;
+    color: #607d8b;
+}
+
 .post_detail_container .post_title_container .post_title_category_block .post_title_category_text {
     font-size: 13px;
     color: #555;
@@ -93,6 +113,10 @@
     text-overflow: ellipsis;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+}
+
+.post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_list .category_post_link:hover {
+    font-weight: bold;
 }
 
 .post_detail_container .post_title_container .post_title_category_block .category_post_block .category_post_list .category_post_date {
@@ -252,4 +276,43 @@
     width: 23px;
     padding: 0;
     cursor: pointer;
+}
+
+/* 이전/다음글 스타일 */
+.post_detail_container .prev_next_category_post_container {
+    padding-top: 35px;
+    width: 250px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+}
+
+.post_detail_container .prev_next_category_post_container .prev_category_post_container {
+    float: left;
+}
+
+.post_detail_container .prev_next_category_post_container .next_category_post_container {
+    float: right;
+}
+
+.post_detail_container .prev_next_category_post_container .prev_next_category_image_container {
+    float: left;
+    width: 20px;
+    height: 20px;
+}
+
+.post_detail_container .prev_next_category_post_container .prev_category_post_link {
+    float: right;
+    text-decoration-color: #666;
+    line-height: 20px;
+}
+
+.post_detail_container .prev_next_category_post_container .next_category_post_link {
+    float: right;
+    text-decoration-color: #666;
+    line-height: 20px;
+}
+
+.post_detail_container .prev_next_category_post_container .prev_next_category_post_text {
+    font-size: 14px;
+    color: #666;
 }
