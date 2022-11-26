@@ -24,11 +24,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"category", "blog"})
+@Table(name = "post", indexes = {
+        @Index(name = "post_idx_seq", columnList = "seq")
+})
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
+
+    private Integer seq;
 
     private String title;
 

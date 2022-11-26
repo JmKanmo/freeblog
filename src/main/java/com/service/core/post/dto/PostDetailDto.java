@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Builder
 public class PostDetailDto {
     private final Long id;
+    private final Integer seq;
     private final String title;
     private final String contents;
     private final String categoryName;
@@ -27,6 +28,7 @@ public class PostDetailDto {
     public static PostDetailDto from(Post post) {
         return PostDetailDto.builder()
                 .id(post.getId())
+                .seq(post.getSeq())
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .categoryName(post.getCategory().getName())

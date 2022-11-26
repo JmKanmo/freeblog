@@ -302,7 +302,7 @@
 
 .post_detail_container .prev_next_category_post_container .prev_category_post_link {
     float: right;
-    text-decoration-color: #666;
+    text-decoration-color: #333;
     line-height: 20px;
 }
 
@@ -313,6 +313,6 @@
 }
 
 .post_detail_container .prev_next_category_post_container .prev_next_category_post_text {
-    font-size: 14px;
+    font-size: 15px;
     color: #666;
 }

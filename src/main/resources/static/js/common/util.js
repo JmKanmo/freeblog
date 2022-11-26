@@ -285,6 +285,20 @@ class UtilController {
                     theme: '힙합'
                 },
                 {
+                    name: 'hype-boy',
+                    artist: '뉴진스',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/hype-boy.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/%EB%89%B4%EC%A7%84%EC%8A%A4.jpg',
+                    theme: 'rnb'
+                },
+                {
+                    name: 'its you',
+                    artist: '샘킴',
+                    url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/it\'s-you.mp3',
+                    cover: 'https://freelog-s3-bucket.s3.amazonaws.com/image/2022-10-31T02%3A55%3A39.7135106008c2b18d0-13c0-37fe-b303-1c23f116e4b9.png',
+                    theme: 'rnb'
+                },
+                {
                     name: '솜사탕',
                     artist: '풍댕이',
                     url: 'https://freelog-s3-bucket.s3.amazonaws.com/audio/%ED%92%8D%EB%8C%95%EC%9D%B4+-+cotton+candy.mp3',

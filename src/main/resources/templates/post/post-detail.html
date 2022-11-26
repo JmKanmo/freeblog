@@ -121,25 +121,55 @@
     <div th:replace="/fragments/comment/post-comment-container::post-comment-container"></div>
 
     <div class="prev_next_category_post_container clear_fix">
-        <div class="prev_category_post_container clear_fix">
-            <div class="prev_next_category_image_container">
-                <img class="common_button_image_style" src="../images/left_arrow.png" alt="left_arrow">
+        <th:block th:if="${post_almost.prevPostLinkDto != null}">
+            <div class="prev_category_post_container clear_fix">
+                <div class="prev_next_category_image_container">
+                    <img class="common_button_image_style" src="../images/left_arrow.png" alt="left_arrow">
+                </div>
+
+                <a th:href="${post_almost.prevPostLinkDto.link}" class="prev_category_post_link"
+                   th:title="${post_almost.prevPostLinkDto.title}">
+                    <span class="common_plain_text">이전 글</span>
+                </a>
             </div>
+        </th:block>
 
-            <a href="/" class="prev_category_post_link" th:title="${postDetail.title}">
-                <span class="prev_next_category_post_text">이전 글</span>
-            </a>
-        </div>
+        <th:block th:if="${post_almost.prevPostLinkDto == null}">
+            <div class="prev_category_post_container clear_fix">
+                <div class="prev_next_category_image_container common_opacity_gray">
+                    <img class="common_button_image_style" src="../images/left_arrow.png" alt="left_arrow">
+                </div>
 
-        <div class="next_category_post_container clear_fix">
-            <div class="prev_next_category_image_container">
-                <img class="common_button_image_style" src="../images/right_arrow.png" alt="left_arrow">
+                <p class="prev_category_post_link">
+                    <span class="common_cloudy_text">이전 글</span>
+                </p>
             </div>
+        </th:block>
 
-            <a href="/" class="next_category_post_link" th:title="${postDetail.title}">
-                <span class="prev_next_category_post_text">다음 글</span>
-            </a>
-        </div>
+        <th:block th:if="${post_almost.nextPostLinkDto != null}">
+            <div class="next_category_post_container clear_fix">
+                <div class="prev_next_category_image_container">
+                    <img class="common_button_image_style" src="../images/right_arrow.png" alt="left_arrow">
+                </div>
+
+                <a th:href="${post_almost.nextPostLinkDto.link}" class="next_category_post_link"
+                   th:title="${post_almost.nextPostLinkDto.title}">
+                    <span class="prev_next_category_post_text">다음 글</span>
+                </a>
+            </div>
+        </th:block>
+
+        <th:block th:if="${post_almost.nextPostLinkDto == null}">
+            <div class="next_category_post_container clear_fix">
+                <div class="prev_next_category_image_container common_opacity_gray">
+                    <img class="common_button_image_style" src="../images/right_arrow.png" alt="left_arrow">
+                </div>
+
+                <p class="next_category_post_link">
+                    <span class="common_cloudy_text">다음 글</span>
+                </p>
+            </div>
+        </th:block>
     </div>
 </div>
 </div>

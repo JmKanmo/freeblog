@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
             PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
             postSearchPagingDto.setPostPagination(postPagination);
 
-            return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postService.findPostPaginationById(PostSearchDto.from(blogId, categoryId, postSearchPagingDto)), findCategoryName(category)), postPagination);
+            return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postService.findPostPaginationById(PostSearchDto.from(blogId, categoryId, postSearchPagingDto)), postCount, findCategoryName(category)), postPagination);
         }
     }
 

@@ -4,10 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
-import com.service.core.post.dto.PostDetailDto;
-import com.service.core.post.dto.PostDto;
-import com.service.core.post.dto.PostSearchDto;
-import com.service.core.post.dto.PostTotalDto;
+import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
@@ -35,7 +32,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
-        int postCount = postMapper.findPostCount(blogId);
+        int postCount = findPostCountByBlogId(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
         postSearchPagingDto.setPostPagination(postPagination);
         return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findTotalPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
@@ -62,6 +59,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq) {
+        return PostAlmostDto.from(seq, postMapper.findPostLinkDtoList(blogId, seq));
+    }
+
+    @Override
     public List<PostDto> findPostPaginationById(PostSearchDto postSearchDto) {
         return postMapper.findCategoryPostDtoListByPaging(postSearchDto);
     }
@@ -82,6 +84,11 @@ public class PostServiceImpl implements PostService {
             throw new PostManageException(ServiceExceptionMessage.ALREADY_DELETE_POST);
         }
         return post;
+    }
+
+    @Override
+    public int findPostCountByBlogId(Long blogId) {
+        return postMapper.findPostCount(blogId);
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

@@ -7,26 +7,21 @@ import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
-import com.service.core.post.dto.PostPagingResponseDto;
+import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.model.BlogPostInput;
-import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
-import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -55,7 +50,9 @@ public class PostController {
         }
 
         model.addAttribute("user_profile", userService.findUserProfileDtoByBlogId(blogId));
-        model.addAttribute("postDetail", postService.findPostDetailInfo(blogId, postId));
+        PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, postId);
+        model.addAttribute("postDetail", postDetailDto);
+        model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
         return "post/post-detail";
     }
 
@@ -103,6 +100,7 @@ public class PostController {
         post.setWriter(userHeaderDto.getNickname());
         post.setBlog(blogService.findBlogByEmail(principal.getName()));
         post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
+        post.setSeq(postService.findPostCountByBlogId(post.getBlog().getId()) + 1);
         postService.register(post, blogPostInput);
         model.addAttribute("result", "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
 

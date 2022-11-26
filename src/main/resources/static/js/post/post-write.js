@@ -252,7 +252,7 @@ class PostWriteController extends UtilController {
                 thumbnailImage: this.postThumbnailImageURL
             };
             localStorage.setItem("postSaveInfo", JSON.stringify(jsonObj));
-        }, null, 1000 * 10);
+        }, null, 1000 * 5);
     }
 
     setAutoSaveWriteInfo(autoSaveWriteInfo) {

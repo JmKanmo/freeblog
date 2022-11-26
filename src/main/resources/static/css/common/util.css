@@ -58,6 +58,10 @@ a {
     display: inherit;
 }
 
+.common_opacity_gray {
+    opacity: 30%;
+}
+
 .common_cursor_pointer {
     cursor: pointer;
 }
@@ -350,6 +354,11 @@ input:focus {
 .common_plain_text {
     color: #333;
     font-size: 15px;
+}
+
+.common_cloudy_text {
+    font-size: 15px;
+    color: #ccc;
 }
 
 .common_home_link {

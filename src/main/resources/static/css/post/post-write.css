@@ -116,14 +116,14 @@ body {
 }
 
 .post_write_container .post_write_form .post_write_block .editor-board .post_write_editor {
-    padding-right: 15px;
     padding-top: 15px;
-    min-height: 150px;
+    padding-bottom: 15px;
+    height: 375px;
 }
 
 .post_write_container .post_write_form .post_write_block .view_editor_source_button {
     position: absolute;
-    right: 5px;
+    right: 20px;
     bottom: 5px;
     border: 0;
     background-color: #ffffff;

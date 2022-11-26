@@ -71,8 +71,8 @@
 }
 
 .signup_form .editor-board .user_intro_editor {
-    min-height: 150px;
-    padding-bottom: 10px;
+    height: 375px;
+    padding-bottom: 30px;
 }
 
 .signup_form .user_intro_button {
@@ -94,7 +94,7 @@
 
 .signup_form .intro_block .view_editor_source_button {
     position: absolute;
-    right: 5px;
+    right: 20px;
     bottom: 5px;
     border: 0;
     background-color: #ffffff;
