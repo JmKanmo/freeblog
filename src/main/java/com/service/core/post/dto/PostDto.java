@@ -32,7 +32,7 @@ public class PostDto {
                     .writer(ConstUtil.UNDEFINED)
                     .category(ConstUtil.UNDEFINED)
                     .categoryId(Long.MAX_VALUE)
-                    .registerTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
+                    .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy.MM.dd HH:mm"))
                     .build();
         } else {
             return PostDto.builder()
@@ -44,7 +44,7 @@ public class PostDto {
                     .writer(BlogUtil.ofNull(post.getWriter()))
                     .category(BlogUtil.ofNull(post.getCategory().getName()))
                     .categoryId(post.getCategory().getId())
-                    .registerTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()))
+                    .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(post.getRegisterTime(), "yyyy.MM.dd HH:mm"))
                     .build();
         }
     }

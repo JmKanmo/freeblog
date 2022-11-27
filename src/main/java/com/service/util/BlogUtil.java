@@ -2,6 +2,7 @@ package com.service.util;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogServiceException;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserStatus;
@@ -137,6 +138,11 @@ public class BlogUtil {
         return localDateTime != null ? localDateTime.format(formatter) : "";
     }
 
+    public static String formatLocalDateTimeToStrByPattern(LocalDateTime localDateTime, String pattern) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return localDateTime != null ? localDateTime.format(formatter) : "";
+    }
+
     public static String formatLocalDateTimeToStr(LocalDateTime localDateTime, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime != null ? localDateTime.format(formatter) : "";
@@ -187,19 +193,9 @@ public class BlogUtil {
     }
 
     public static String getErrorMessage(Exception exception) {
-        if (exception instanceof SQLException) {
-            return "SQL 수행 중 문제 발생";
-        } else if (exception instanceof DataAccessException) {
-            return "데이터베이스에서 데이터 접근 실패";
-        } else if (exception instanceof TemplateEngineException) {
-            return "템플릿 반환 중 문제 발생";
+        if (exception instanceof BlogServiceException) {
+            return exception.getMessage();
         }
-        String msg = exception.getMessage();
-
-        if (msg == null) {
-            return "알 수 없음";
-        } else {
-            return msg;
-        }
+        return "UNDEFINED-ERROR";
     }
 }

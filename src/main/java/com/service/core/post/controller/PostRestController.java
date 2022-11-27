@@ -8,6 +8,7 @@ import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -61,8 +62,8 @@ public class PostRestController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 }

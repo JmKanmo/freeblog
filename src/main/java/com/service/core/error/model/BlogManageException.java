@@ -2,7 +2,7 @@ package com.service.core.error.model;
 
 import com.service.core.error.constants.ServiceExceptionMessage;
 
-public class BlogManageException extends RuntimeException {
+public class BlogManageException extends BlogServiceException{
     public BlogManageException(String error) {
         super(error);
     }

@@ -1,6 +1,7 @@
 package com.service.core.comment.dto;
 
 import com.service.core.comment.paging.CommentPaginationResponse;
+import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class CommentPagingResponseDto {
         return CommentPagingResponseDto.builder()
                 .responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .commentPaginationResponse(null)
-                .message(String.format("fail: %s", exception.getMessage()))
+                .message(String.format("fail: %s", BlogUtil.getErrorMessage(exception)))
                 .build();
     }
 }

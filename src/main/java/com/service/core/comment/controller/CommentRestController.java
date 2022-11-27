@@ -9,6 +9,7 @@ import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.comment.service.CommentService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.CommentManageException;
+import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -61,8 +62,8 @@ public class CommentRestController {
             commentService.updateComment(commentUpdateInput, principal);
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 정상적으로 수정되었습니다. 페이지를 새로고침 후 확인해주세요.");
         } catch (Exception exception) {
-            log.error("[freeblog-updateComment] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 수정 작업에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-updateComment] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 수정 작업에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 
@@ -79,7 +80,7 @@ public class CommentRestController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(CommentRegisterDto.success(commentService.registerComment(commentInput, principal), "댓글 작성에 성공하였습니다."));
         } catch (Exception exception) {
-            log.error("[freeblog-registerComment] exception occurred ", exception);
+            log.error("[freeblog-registerComment] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentRegisterDto.fail(exception));
         }
     }
@@ -98,8 +99,8 @@ public class CommentRestController {
             commentService.registerReplyComment(commentInput, principal);
             return ResponseEntity.status(HttpStatus.OK).body("답글이 작성되었습니다. 페이지를 새로고침 해주세요.");
         } catch (Exception exception) {
-            log.error("[freeblog-replyComment] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("답글 작성에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-replyComment] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("답글 작성에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 
@@ -113,8 +114,8 @@ public class CommentRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(commentService.uploadAwsSCommentThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 
@@ -128,6 +129,7 @@ public class CommentRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(CommentDelAuthDto.success(commentService.checkAuthority(commentId, principal), principal));
         } catch (Exception exception) {
+            log.error("[freeblog-checkAuthority] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentDelAuthDto.fail(exception));
         }
     }
@@ -143,7 +145,8 @@ public class CommentRestController {
             commentService.deleteComment(commentId, password, principal);
             return ResponseEntity.status(HttpStatus.OK).body("댓글이 삭제되었습니다.");
         } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 삭제에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-deleteComment] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 }

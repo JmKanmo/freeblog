@@ -10,7 +10,7 @@
                post.thumbnail_image,
                post.contents,
                post.writer,
-               date_format(post.register_time, '%y.%m.%d %H:%i:%s') as register_time,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
                        THEN c.name
@@ -35,7 +35,7 @@
                post.thumbnail_image,
                post.contents,
                post.writer,
-               date_format(post.register_time, '%y.%m.%d %H:%i:%s') as register_time,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
                        THEN c.name

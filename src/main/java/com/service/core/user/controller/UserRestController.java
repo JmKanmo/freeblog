@@ -3,6 +3,7 @@ package com.service.core.user.controller;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,7 +39,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 이메일 입니다.");
         } catch (Exception exception) {
             log.error("[freeblog-checkEmail] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BlogUtil.getErrorMessage(exception));
         }
     }
 
@@ -55,7 +56,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 id 입니다.");
         } catch (Exception exception) {
             log.error("[freeblog-checkId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BlogUtil.getErrorMessage(exception));
         }
     }
 
@@ -74,8 +75,8 @@ public class UserRestController {
             String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
-            log.error("[freeblog-uploadProfileImage] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-uploadProfileImage] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 
@@ -93,8 +94,8 @@ public class UserRestController {
             userService.removeProfileImageById(id, principal);
             return ResponseEntity.status(HttpStatus.OK).body("사용자 프로필 이미지가 삭제되었습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-removeProfileImage] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", exception.getMessage()));
+            log.error("[freeblog-removeProfileImage] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 }

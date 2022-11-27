@@ -1,6 +1,7 @@
 package com.service.core.post.dto;
 
 import com.service.core.post.paging.PostPaginationResponse;
+import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PostPagingResponseDto {
         return PostPagingResponseDto.builder()
                 .responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .postPaginationResponse(null)
-                .message(String.format("fail: %s", exception.getMessage()))
+                .message(String.format("fail: %s", BlogUtil.getErrorMessage(exception)))
                 .build();
     }
 }
