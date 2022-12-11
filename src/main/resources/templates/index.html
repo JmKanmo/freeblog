@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>freeblog</title>
-    <th:block th:replace="/fragments/config :: config"></th:block>
-    <th:block th:replace="/fragments/template/post-template :: post-template"></th:block>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/template/post-template :: post-template"></th:block>
     <link th:href="@{/css/index.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/index.js}"></script>
 </head>
 <body>
-<div th:replace="/fragments/header::header"></div>
+<div th:replace="fragments/header::header"></div>
 
 <!-- login popup -->
-<!--<div th:replace="/fragments/common.html :: login_popup"></div>-->
+<!--<div th:replace="fragments/common.html :: login_popup"></div>-->
 
 <div class="blog_view_container footer_bottom_padding">
     <div class="blog_view_div clear_fix">
@@ -59,6 +59,6 @@
     </div>
 </div>
 
-<div th:replace="/fragments/footer::footer"></div>
+<div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

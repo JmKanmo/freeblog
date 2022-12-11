@@ -5,9 +5,9 @@
     <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <title>게시글 상세 페이지</title>
-    <th:block th:replace="/fragments/config :: config"></th:block>
-    <th:block th:replace="/fragments/template/post-template :: post-template"></th:block>
-    <th:block th:replace="/fragments/template/comment-template :: comment-template"></th:block>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/template/post-template :: post-template"></th:block>
+    <th:block th:replace="fragments/template/comment-template :: comment-template"></th:block>
     <link th:href="@{/css/post/post-detail.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/comment/post-comment.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/post/post-detail.js}"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" th:src="@{/js/comment/post-comment.js}"></script>
 </head>
 <body>
-<div th:replace="/fragments/header::header"></div>
+<div th:replace="fragments/header::header"></div>
 <input type="hidden" id="blog_post_title" readonly th:value="${postDetail.title}">
 
 <div class="post_detail_container">
@@ -118,7 +118,7 @@
     <input type="hidden" id="blog_post_category_id" readonly th:value="${postDetail.categoryId}">
 
     <!-- 게시글 댓글 컨테이너-->
-    <div th:replace="/fragments/comment/post-comment-container::post-comment-container"></div>
+    <div th:replace="fragments/comment/post-comment-container::post-comment-container"></div>
 
     <div class="prev_next_category_post_container clear_fix">
         <th:block th:if="${post_almost.prevPostLinkDto != null}">
@@ -174,6 +174,6 @@
 </div>
 </div>
 
-<div th:replace="/fragments/footer::footer"></div>
+<div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

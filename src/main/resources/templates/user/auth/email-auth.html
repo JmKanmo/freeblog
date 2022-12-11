@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>이메일 인증</title>
-    <th:block th:replace="/fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/config :: config"></th:block>
     <link th:href="@{/css/user/auth/email-auth.css}" type="text/css" rel="stylesheet">
 </head>
 
@@ -60,6 +60,6 @@
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 </div>
-<div th:replace="/fragments/footer::footer"></div>
+<div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

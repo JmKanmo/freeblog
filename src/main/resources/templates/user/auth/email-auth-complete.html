@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>이메일 인증완료</title>
-    <th:block th:replace="/fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/config :: config"></th:block>
 
     <style>
         .auth_board {
@@ -73,7 +73,7 @@
 </head>
 <body>
 <div class="auth_board">
-    <div th:replace="/fragments/common.html :: logo_layout"></div>
+    <div th:replace="fragments/common.html :: logo_layout"></div>
     <p class="fail_message" th:if="${error == null} or ${#strings.isEmpty(error)} eq true">이메일 인증이 완료되었습니다.</p>
     <p class="fail_message" th:if="${#strings.isEmpty(error)} eq false" th:text="${error}">오류메시지</p>
 
