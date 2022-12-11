@@ -30,9 +30,10 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public ResponseEntity<ExceptionDto> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
+        log.error("[freeblog-httpRequestMethodNotSupportedHandler] HttpRequestMethodNotSupportedException occurred ", exception.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder().statusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                        .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", exception.getMessage()))
+                        .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", BlogUtil.getErrorMessage(exception)))
                         .build());
     }
 

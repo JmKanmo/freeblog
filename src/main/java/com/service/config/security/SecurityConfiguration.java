@@ -82,8 +82,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .httpBasic().authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint());
-        // DELETE, PUT, etc csrf 비활성화 (Request NOT Supported 이슈 방지)
-        http.csrf().ignoringAntMatchers("/comment/delete/{commentId}");
+        /**
+         * DELETE, PUT, POST, PATCH csrf 비활성화 (세션 종료에 따른 토큰만료 Request NOT Supported 이슈 방지)
+         **/
+        http.csrf().ignoringAntMatchers(
+                "/user/login", "/user/signup", "/user/update/password", "/user/email-auth",
+                "/comment/**");
         super.configure(http);
     }
 

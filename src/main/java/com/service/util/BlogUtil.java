@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -195,6 +196,8 @@ public class BlogUtil {
     public static String getErrorMessage(Exception exception) {
         if (exception instanceof BlogServiceException) {
             return exception.getMessage();
+        } else if (exception instanceof HttpRequestMethodNotSupportedException) {
+            return "세션이 만료되어 작업에 실패하였습니다.";
         }
         return "UNDEFINED-ERROR";
     }
