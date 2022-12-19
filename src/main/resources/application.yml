@@ -4,15 +4,6 @@ server:
       timeout: 60m
   port: 8400
 
-  ssl:
-    enabled: true
-    key-alias: freelog-keystore
-    key-store: freelog-keystore.pkcs12
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-password: ${KEY_PASSWORD}
-    trust-store: freelog-trust.pkcs12
-    trust-store-password: ${TRUST_STORE_PASSWORD}
-
   tomcat:
     threads:
       max: 500
@@ -46,21 +37,25 @@ spring:
       max-request-size: 80MB
 
   datasource:
-    master:
-      hikari:
-        username: ${DB_MASTER_USERNAME}
-        password: ${DB_MASTER_PASSWORD}
-        driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
-        pool-name: ${DB_MASTER_POOL}
+    url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      username: ${DB_MASTER_USERNAME}
+      password: ${DB_MASTER_PASSWORD}
+#    hikari:
+#      username: ${DB_MASTER_USERNAME}
+#      password: ${DB_MASTER_PASSWORD}
+#      driver-class-name: org.mariadb.jdbc.Driver
+#      jdbc-url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
+#      pool-name: ${DB_MASTER_POOL}
 
-    slave:
-      hikari:
-        username: ${DB_SLAVE_USERNAME}
-        password: ${DB_SLAVE_PASSWORD}
-        driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_SLAVE_IP}:${DB_SLAVE_PORT}/${DB_SLAVE_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
-        pool-name: ${DB_SLAVE_POOL}
+#    slave:
+#      hikari:
+#        username: ${DB_SLAVE_USERNAME}
+#        password: ${DB_SLAVE_PASSWORD}
+#        driver-class-name: org.mariadb.jdbc.Driver
+#        jdbc-url: jdbc:mariadb://${DB_SLAVE_IP}:${DB_SLAVE_PORT}/${DB_SLAVE_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
+#        pool-name: ${DB_SLAVE_POOL}
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
@@ -68,7 +63,7 @@ spring:
       format_sql: true
       show_sql: true
       use_sql_comments: true
-      ddl-auto: update
+      ddl-auto: validate
       use-new-id-generator-mappings: true
     open-in-view: false
     properties:
@@ -121,6 +116,7 @@ springdoc:
     path: swagger-ui-custom.html
   api-docs:
     path: /api-docs
+    enabled: off
   packages-to-scan: com.service.core
 
 

@@ -16,41 +16,41 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.HashMap;
 
-@Configuration
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"com.service"})
-public class DataSourceConfig {
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.master.hikari")
-    public DataSource masterDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.slave.hikari")
-    public DataSource slaveDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-    }
-
-    @Bean
-    public DataSource routingDataSource(@Qualifier("masterDataSource") DataSource masterDataSource,
-                                        @Qualifier("slaveDataSource") DataSource slaveDataSource) {
-        var routingDataSource = new RoutingDataSource();
-
-        var dataSourceMap = new HashMap<>();
-        dataSourceMap.put("master", masterDataSource);
-        dataSourceMap.put("slave", slaveDataSource);
-        routingDataSource.setTargetDataSources(dataSourceMap);
-        routingDataSource.setDefaultTargetDataSource(masterDataSource);
-
-        return routingDataSource;
-    }
-
-    @Primary
-    @Bean
-    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
-        return new LazyConnectionDataSourceProxy(routingDataSource);
-    }
-}
+//@Configuration
+//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+//@EnableTransactionManagement
+//@EnableJpaRepositories(basePackages = {"com.service"})
+//public class DataSourceConfig {
+//
+//    @Bean
+//    @ConfigurationProperties(prefix = "spring.datasource.master.hikari")
+//    public DataSource masterDataSource() {
+//        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+//    }
+//
+//    @Bean
+//    @ConfigurationProperties(prefix = "spring.datasource.slave.hikari")
+//    public DataSource slaveDataSource() {
+//        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+//    }
+//
+//    @Bean
+//    public DataSource routingDataSource(@Qualifier("masterDataSource") DataSource masterDataSource,
+//                                        @Qualifier("slaveDataSource") DataSource slaveDataSource) {
+//        var routingDataSource = new RoutingDataSource();
+//
+//        var dataSourceMap = new HashMap<>();
+//        dataSourceMap.put("master", masterDataSource);
+//        dataSourceMap.put("slave", slaveDataSource);
+//        routingDataSource.setTargetDataSources(dataSourceMap);
+//        routingDataSource.setDefaultTargetDataSource(masterDataSource);
+//
+//        return routingDataSource;
+//    }
+//
+//    @Primary
+//    @Bean
+//    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
+//        return new LazyConnectionDataSourceProxy(routingDataSource);
+//    }
+//}
