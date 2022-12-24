@@ -66,7 +66,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 사용자 프로필 이미지 업로드 실패")
     })
     @PostMapping("/upload/profile-image")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam("profile_image_file_input") MultipartFile multipartFile,
+    public ResponseEntity<String> uploadProfileImage(@RequestParam("compressed_user_profile_image") MultipartFile multipartFile,
                                                      @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
             if (principal == null || principal.getName() == null) {

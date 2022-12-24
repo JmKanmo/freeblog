@@ -156,7 +156,7 @@ class UtilController {
                 },
                 syntax: true,
                 imageCompressor: {
-                    quality: 0.9,
+                    quality: 1,
                     maxWidth: 1000, // default
                     maxHeight: 1000, // default
                     imageType: 'image/png, image/gif, image/jpeg, image/jpg, image/GIF'
@@ -374,19 +374,51 @@ class UtilController {
         return this.defaultUserProfileThumbnail;
     }
 
-    checkProfileThumbnailFile(input) {
-        let imgFile = input.files;
+    async compressImageFiles(imgFile) {
+        return await imageCompression(
+            imgFile,
+            // you should provide one of maxSizeMB, maxWidthOrHeight in the options
+            {
+                maxSizeMB: 5 * 1024 * 1024,          // 5MB
+                onProgress: Function,       // optional, a function takes one progress argument (percentage from 0 to 100)
+                useWebWorker: true,      // optional, use multi-thread web worker, fallback to run in main-thread (default: true)
+            });
+    }
 
-        if (imgFile && imgFile[0]) {
-            let fileForms = ['jpg', 'jpeg', 'png', 'gif', 'GIF'];
-            let fileSize = 20 * 1024 * 1024; // 20MB
-            let fileExtension = input.value.slice(input.value.lastIndexOf(".") + 1)
+    async getCompressedImageFile(imgFile) {
+        return await this.compressImageFiles(imgFile).then(compressedImgFile => {
+            return compressedImgFile;
+        });
+    }
+
+    checkImageFile(imgFile) {
+        if (imgFile) {
+            if (!this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                return false;
+            } else if (!this.checkImageFileBySize(imgFile, 5 * 1024 * 1024)) {
+                this.showToastMessage('최대 업로드 파일 크기는 5MB 입니다.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkImageFileExtension(imgFile, fileForms) {
+        if (imgFile) {
+            const fileExtension = imgFile.name.slice(imgFile.name.lastIndexOf(".") + 1);
 
             if (!fileForms.includes(fileExtension)) {
-                this.showToastMessage("지정 된 이미지 파일만 업로드 가능합니다.");
                 return false;
-            } else if (imgFile[0].size >= fileSize) {
-                this.showToastMessage('최대 파일 사이즈는 20MB 입니다.');
+            } else {
+                return true;
+            }
+        }
+    }
+
+    checkImageFileBySize(imgFile, fileSize) {
+        if (imgFile) {
+            if (imgFile.size >= fileSize) {
                 return false;
             }
         }

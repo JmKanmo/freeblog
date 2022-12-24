@@ -99,41 +99,18 @@ class SettingsController extends HeaderController {
         }
 
         this.userProfileImageInput.addEventListener("change", evt => {
-            const imgFile = evt.target.files;
-
-            if (this.checkProfileThumbnailFile(imgFile)) {
-                const fileReader = new FileReader();
-
-                fileReader.onload = (event) => {
-                    const xhr = new XMLHttpRequest();
-                    const id = this.userId.value;
-
-                    xhr.open("POST", `/user/upload/profile-image?id=${id}`, true);
-                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-
-                    xhr.addEventListener("loadend", event => {
-                        let status = event.target.status;
-                        const responseValue = event.target.responseText;
-
-                        if ((status >= 400 && status <= 500) || (status > 500)) {
-                            this.showToastMessage(responseValue);
-                            this.removeUserProfileImage();
-                        } else {
-                            this.showToastMessage('프로필 썸네일 이미지 저장에 성공하였습니다.');
-                            this.defaultUserProfileImage.src = responseValue;
-                            this.setHeaderUserProfileImage(responseValue);
-                        }
+            const imgFile = evt.target.files[0];
+            if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
+                    // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
+                    this.#uploadImage(imgFile);
+                } else {
+                    this.getCompressedImageFile(imgFile).then(compressedImgFile => {
+                        this.#uploadImage(compressedImgFile);
                     });
-
-                    xhr.addEventListener("error", event => {
-                        this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
-                        this.removeUserProfileImage();
-                    });
-                    xhr.send(new FormData(this.profileImageForm));
                 }
-                fileReader.readAsDataURL(imgFile[0]);
             } else {
-                this.removeUserProfileImage();
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
             }
         });
 
@@ -192,6 +169,45 @@ class SettingsController extends HeaderController {
         this.withDrawButton.addEventListener("click", evt => {
             this.openPopUp(1080, 500, '/user/withdraw', 'popup');
         });
+    }
+
+    #uploadImage(imgFile) {
+        if (this.checkImageFile(imgFile)) {
+            const fileReader = new FileReader();
+
+            fileReader.onload = (event) => {
+                const xhr = new XMLHttpRequest();
+                const id = this.userId.value;
+                const formData = new FormData(this.profileImageForm);
+
+                xhr.open("POST", `/user/upload/profile-image?id=${id}`, true);
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = event.target.responseText;
+
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
+                        this.showToastMessage(responseValue);
+                        this.removeUserProfileImage();
+                    } else {
+                        this.showToastMessage('프로필 썸네일 이미지 저장에 성공하였습니다.');
+                        this.defaultUserProfileImage.src = responseValue;
+                        this.setHeaderUserProfileImage(responseValue);
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                    this.removeUserProfileImage();
+                });
+                formData.set("compressed_user_profile_image", imgFile);
+                xhr.send(formData);
+            }
+            fileReader.readAsDataURL(imgFile);
+        } else {
+            this.removeUserProfileImage();
+        }
     }
 
     removeUserProfileImage() {
