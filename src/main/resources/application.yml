@@ -19,7 +19,7 @@ server:
       min-spare: 30
     max-connections: 10000
     accept-count: 200
-    max-http-form-post-size: 100MB
+    max-http-form-post-size: 50MB
 
 spring:
   mvc:
@@ -42,8 +42,8 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 80MB
-      max-request-size: 80MB
+      max-file-size: 50MB
+      max-request-size: 50MB
 
   datasource:
     master:

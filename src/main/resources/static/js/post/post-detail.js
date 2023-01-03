@@ -16,6 +16,7 @@ class PostDetailController extends UtilController {
         this.postRecordSize = 5;
         this.postPageSize = 5;
         this.prevCategoryPostBlock = false;
+        this.postDetailDeleteButton = document.getElementById("post_detail_delete_button");
     }
 
     initPostDetailController() {
@@ -76,6 +77,12 @@ class PostDetailController extends UtilController {
                 }
             }
         });
+
+        if (this.postDetailDeleteButton != null) {
+            this.postDetailDeleteButton.addEventListener("click", evt => {
+                this.showToastMessage("게시글 삭제 버튼 클릭");
+            });
+        }
     }
 
     #requestCategoryPost(url, page) {

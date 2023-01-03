@@ -17,5 +17,7 @@ public interface PostMapper {
 
     int findPostCountByBlogCategory(Long blogId, Long categoryId);
 
+    int findEqualPostCount(Long blogId, Long postId);
+
     List<PostLinkDto> findPostLinkDtoList(Long blogId, Integer seq);
 }

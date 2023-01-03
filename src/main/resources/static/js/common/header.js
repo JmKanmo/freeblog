@@ -14,9 +14,9 @@ class HeaderController extends UtilController {
             this.dayNightSkinButton.addEventListener("click", evt => {
                 const img = evt.target.closest("img");
                 if (img.src.includes('sun')) {
-                    img.src = '../images/night.png'
+                    img.src = '/images/night.png'
                 } else if (img.src.includes('night')) {
-                    img.src = '../images/sun.gif';
+                    img.src = '/images/sun.gif';
                 }
             });
         }

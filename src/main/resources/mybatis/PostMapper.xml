@@ -15,7 +15,7 @@
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
                        THEN c.name
                    ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
-                   END                                              as category,
+                   END                                           as category,
                c.category_id,
                b.blog_id
         from post
@@ -40,7 +40,7 @@
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
                        THEN c.name
                    ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
-                   END                                              as category,
+                   END                                           as category,
                c.category_id,
                b.blog_id
         from post
@@ -74,5 +74,15 @@
         from post p
         where p.blog_id = #{blogId}
           and p.post_id in (select post_id from post sq where sq.seq in (#{seq} - 1, #{seq} + 1))
+    </select>
+
+    <select id="findEqualPostCount" resultType="int">
+        select count(*)
+        from post p
+                 inner join blog b
+                            on b.blog_id = #{blogId} and b.is_delete != true
+        where p.blog_id = b.blog_id
+          and p.post_id = #{postId}
+          and p.is_delete != true
     </select>
 </mapper>

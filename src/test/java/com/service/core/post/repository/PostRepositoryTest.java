@@ -19,4 +19,10 @@ public class PostRepositoryTest {
         List<PostLinkDto> postLinkDtoList = postMapper.findPostLinkDtoList(3L, 0);
         Assertions.assertNotNull(postLinkDtoList);
     }
+
+    @Test
+    public void findEqualPostCountTest() {
+        int result = postMapper.findEqualPostCount(4L, 37L);
+        System.out.println(result);
+    }
 }

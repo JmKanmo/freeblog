@@ -19,6 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.exceptions.TemplateEngineException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.sql.SQLException;
@@ -37,6 +40,18 @@ public class BlogUtil {
             return "/";
         }
         return redirectUrl;
+    }
+
+    public static boolean checkEmptyOrUndefinedStr(String str) {
+        return str == null || str.isEmpty() || str.equals("") ? true : false;
+    }
+
+    public static String getCurrentIp() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (IOException ioException) {
+            return ConstUtil.UNDEFINED;
+        }
     }
 
     public static boolean checkBlogOwner(Principal principal, int emailHash) {

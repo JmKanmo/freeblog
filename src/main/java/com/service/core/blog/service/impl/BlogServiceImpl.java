@@ -37,6 +37,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public BlogInfoDto findBlogInfoDtoByEmail(String email) {
+        Blog blog = findBlogByEmail(email);
+        return BlogInfoDto.fromEntity(blog);
+    }
+
+    @Override
     public Blog findBlogByEmail(String email) {
         Blog blog = userInfoService.findBlogByEmailOrThrow(email);
 

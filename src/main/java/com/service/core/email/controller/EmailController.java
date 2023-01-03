@@ -38,7 +38,7 @@ public class EmailController {
         try {
             if (userService.checkIsAuthenticated(email)) {
                 String key = userService.updateEmailAuthCondition(email);
-                emailService.sendSignUpMail(email, key);
+                emailService.sendSignUpMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
@@ -58,7 +58,7 @@ public class EmailController {
         try {
             if (userService.checkIsAuthenticated(email)) {
                 String key = userService.updateEmailAuthCondition(email);
-                emailService.sendAuthMail(email, key);
+                emailService.sendAuthMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
@@ -78,7 +78,7 @@ public class EmailController {
         try {
             if (userService.checkIsActive(email)) {
                 String key = userService.updatePasswordAuthCondition(email);
-                emailService.sendFindPasswordMail(email, key);
+                emailService.sendFindPasswordMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {

@@ -22,5 +22,7 @@ public interface CategoryService {
 
     Category findCategoryById(String email, Long categoryId);
 
+    Category findCategoryById(Long categoryId);
+
     Category registerBasicCategory(Blog blog);
 }

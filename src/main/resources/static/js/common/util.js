@@ -155,12 +155,12 @@ class UtilController {
                     modules: ['Resize', 'DisplaySize', 'Toolbar']
                 },
                 syntax: true,
-                imageCompressor: {
-                    quality: 1,
-                    maxWidth: 1000, // default
-                    maxHeight: 1000, // default
-                    imageType: 'image/png, image/gif, image/jpeg, image/jpg, image/GIF'
-                },
+                // imageCompressor: {
+                //     quality: 1,
+                //     maxWidth: 1000, // default
+                //     maxHeight: 1000, // default
+                //     ignoreImageTypes: ['image/gif']
+                // },
                 toolbar: [
                     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
                     ['blockquote', 'code-block'],
@@ -440,15 +440,17 @@ class UtilController {
         // 첫 페이지, 이전 페이지
         if (pagination["existPrevPage"]) {
             html += `
+              <!--
                <li class="page-item">
                     <button class="page-link" aria-label="Previous" url="${url}" page="1">
                     <span aria-hidden="true">&laquo;</span>
                     </button>
                 </li>
+              -->
                 
                 <li class="page-item">
                     <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["startPage"] - 1}">
-                    <span aria-hidden="true">&lsaquo;</span>
+                    <span aria-hidden="true">&laquo;</span>
                     </button>
                 </li>
             `;
@@ -472,15 +474,17 @@ class UtilController {
             html += `
              <li class="page-item">
                     <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["endPage"] + 1}">
-                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true">&raquo;</span>
                     </button>
                 </li>
                 
+                <!--
                 <li class="page-item">
                     <button class="page-link" aria-label="Previous" url="${url}" page="${pagination["totalPageCount"]}">
                     <span aria-hidden="true">&lsaquo;</span>
                     </button>
                 </li>
+                -->
             `;
         }
         return html;
@@ -492,15 +496,17 @@ class UtilController {
         // 첫 페이지, 이전 페이지
         if (pagination["existPrevPage"]) {
             html += `
+               <!--
                <li class="page-item">
                     <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="1">
                     <span aria-hidden="true">&laquo;</span>
                     </button>
                 </li>
+                -->
                 
                 <li class="page-item">
                     <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["startPage"] - 1}">
-                    <span aria-hidden="true">&lsaquo;</span>
+                    <span aria-hidden="true">&laquo;</span>
                     </button>
                 </li>
             `;
@@ -524,15 +530,17 @@ class UtilController {
             html += `
              <li class="page-item">
                     <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["endPage"] + 1}">
-                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true">&raquo;</span>
                     </button>
                 </li>
                 
+                <!--
                 <li class="page-item">
                     <button class="page-link simple_page_button_style" aria-label="Previous" url="${url}" page="${pagination["totalPageCount"]}">
                     <span aria-hidden="true">&lsaquo;</span>
                     </button>
                 </li>
+                -->
             `;
         }
         return html;

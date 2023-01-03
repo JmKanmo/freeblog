@@ -1,15 +1,19 @@
 package com.service.core.post.service;
 
 import com.service.core.blog.domain.Blog;
+import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
+import com.service.core.tag.domain.Tag;
 import com.service.core.tag.service.TagService;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
@@ -50,12 +54,31 @@ public class PostServiceImpl implements PostService {
         tagService.register(BlogUtil.convertArrayToList(blogPostInput.getTag().split(",")), post);
     }
 
+    @Transactional
+    @Override
+    public void update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
+        Post post = findPostById(blogPostUpdateInput.getPostId());
+        post.setTitle(blogPostUpdateInput.getTitle());
+        post.setContents(blogPostUpdateInput.getContents());
+        post.setCategory(categoryService.findCategoryById(blogPostUpdateInput.getCategory()));
+        post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
+        tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
+    }
+
     @Override
     public PostDetailDto findPostDetailInfo(Long blogId, Long postId) {
         if (!checkPostId(blogId, postId)) {
             throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
         }
         return PostDetailDto.from(findPostById(postId));
+    }
+
+    @Override
+    public PostUpdateDto findPostUpdateInfo(Long blogId, Long postId) {
+        if (!checkPostId(blogId, postId)) {
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
+        }
+        return PostUpdateDto.from(findPostById(postId));
     }
 
     @Override
@@ -89,6 +112,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public int findPostCountByBlogId(Long blogId) {
         return postMapper.findPostCount(blogId);
+    }
+
+    @Override
+    public boolean checkEqualPostByLogin(Long blogId, Long postId) {
+        return postMapper.findEqualPostCount(blogId, postId) <= 0 ? false : true;
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

@@ -27,4 +27,49 @@ public class TagServiceImpl implements TagService {
 
         tagRepository.saveAll(tagList);
     }
+
+    @Transactional
+    @Override
+    public void update(Post post, List<Tag> tagList, List<String> inputTagList) {
+        List<Tag> delTagList = new ArrayList<>();
+        List<Tag> newTagList = new ArrayList<>();
+
+        for (Tag tag : tagList) {
+            boolean isEqual = false;
+            String deleteTag = null;
+
+            for (String inputTag : inputTagList) {
+                if (tag.getName().equals(inputTag)) {
+                    isEqual = true;
+                    deleteTag = inputTag;
+                    break;
+                }
+            }
+
+            if (isEqual == false) {
+                delTagList.add(tag);
+            } else {
+                inputTagList.remove(deleteTag);
+            }
+        }
+
+        for (String tagName : inputTagList) {
+            newTagList.add(Tag.from(post, tagName));
+        }
+
+        delete(delTagList);
+        save(newTagList);
+    }
+
+    @Transactional
+    @Override
+    public void save(List<Tag> tagList) {
+        tagRepository.saveAll(tagList);
+    }
+
+    @Transactional
+    @Override
+    public void delete(List<Tag> tagList) {
+        tagRepository.deleteAll(tagList);
+    }
 }
