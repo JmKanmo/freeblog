@@ -13,7 +13,7 @@
                 <!-- 추후에 dark/light 모드 기능 구현 후, 활성화 예정
                 <li class="user_util_item center_fix">
                     <button type="button" class="day_night_skin_button" id="day_night_skin_button" title="모드 변경">
-                        <img src="../images/sun.gif"/>
+                        <img src="/images/sun.gif"/>
                         <span class="blind">모드 변경</span>
                     </button>
                 </li>
@@ -21,14 +21,14 @@
 
                 <li class="user_util_item center_fix">
                     <button type="button" title="좋아요누른 글" class="header_util_button" id="like_post_button">
-                        <img src="../images/like_posts.png"/>
+                        <img src="/images/like_posts.png"/>
                         <span class="blind">좋아요누른 글</span>
                     </button>
                 </li>
 
                 <li class="user_util_item center_fix">
                     <button type="button" title="공지알림" class="header_util_button" id="notice_button">
-                        <img src="../images/notice_bell.png"/>
+                        <img src="/images/notice_bell.png"/>
                         <span class="blind">공지 알림</span>
                     </button>
                 </li>
@@ -41,7 +41,7 @@
                     <button type="button" sec:authorize="isAuthenticated()" class="user_profile_button"
                             id="user_profile_button">
                         <img id="header_profile_image" class="header_profile_image" th:src="${#strings.isEmpty(user_header.profileImages) or #strings.equals(user_header.profileImages,'<<<undefined>>>')
-                        ? '../images/user_default_thumbnail.png' : user_header.profileImages}"/>
+                        ? '/images/user_default_thumbnail.png' : user_header.profileImages}"/>
                         <span class="blind">프로필</span>
                     </button>
                 </li>

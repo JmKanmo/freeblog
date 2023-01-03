@@ -32,40 +32,18 @@ class PostCommentCommonController extends UtilController {
 
         if (this.postCommentImageFileInput != null) {
             this.postCommentImageFileInput.addEventListener("change", evt => {
-                const imgFile = evt.target.files;
-
-                if (this.checkProfileThumbnailFile(imgFile)) {
-                    const fileReader = new FileReader();
-
-                    fileReader.onload = (event) => {
-                        const xhr = new XMLHttpRequest();
-
-                        xhr.open("POST", `/comment/upload/comment-thumbnail-image`,true);
-                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-
-                        xhr.addEventListener("loadend", event => {
-                            let status = event.target.status;
-                            const responseValue = event.target.responseText;
-
-                            if ((status >= 400 && status <= 500) || (status > 500)) {
-                                this.showToastMessage(responseValue);
-                                this.removeCommentImage();
-                            } else {
-                                this.postCommentThumbnailImageBox.style.display = "block";
-                                this.postCommentThumbnailImage.src = responseValue;
-                                this.postCommentThumbnailImageValueInput.value = responseValue;
-                            }
+                const imgFile = evt.target.files[0];
+                if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                    if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
+                        // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
+                        this.#uploadImage(imgFile);
+                    } else {
+                        this.getCompressedImageFile(imgFile).then(compressedImgFile => {
+                            this.#uploadImage(compressedImgFile);
                         });
-
-                        xhr.addEventListener("error", event => {
-                            this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
-                            this.removeCommentImage();
-                        });
-                        xhr.send(new FormData(this.postCommentImageForm));
                     }
-                    fileReader.readAsDataURL(imgFile[0]);
                 } else {
-                    this.removeCommentImage();
+                    this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
                 }
             });
         }
@@ -82,6 +60,44 @@ class PostCommentCommonController extends UtilController {
             this.postCommentTextInput.addEventListener("input", evt => {
                 this.setTextCount(evt.target);
             });
+        }
+    }
+
+    #uploadImage(imgFile) {
+        if (this.checkImageFile(imgFile)) {
+            const fileReader = new FileReader();
+
+            fileReader.onload = (event) => {
+                const xhr = new XMLHttpRequest();
+                const formData = new FormData(this.postCommentImageForm);
+
+                xhr.open("POST", `/comment/upload/comment-thumbnail-image`, true);
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = event.target.responseText;
+
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
+                        this.showToastMessage(responseValue);
+                        this.removeCommentImage();
+                    } else {
+                        this.postCommentThumbnailImageBox.style.display = "block";
+                        this.postCommentThumbnailImage.src = responseValue;
+                        this.postCommentThumbnailImageValueInput.value = responseValue;
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
+                    this.removeCommentImage();
+                });
+                formData.set("compressed_post_comment_image", imgFile);
+                xhr.send(formData);
+            }
+            fileReader.readAsDataURL(imgFile);
+        } else {
+            this.removeCommentImage();
         }
     }
 

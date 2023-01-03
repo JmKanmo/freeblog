@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         if (checkSameUser(userDomain)) {
             register(signupForm, userDomain);
             userAuthService.saveUserEmailAuth(BlogUtil.createUserAuthId(userDomain));
-            emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)));
+            emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)), "https", BlogUtil.getCurrentIp(), 8400);
         }
     }
 

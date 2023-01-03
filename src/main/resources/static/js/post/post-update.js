@@ -1,37 +1,51 @@
-class PostWriteController extends UtilController {
+class PostUpdateController extends UtilController {
     constructor() {
         super();
-        this.postWriteForm = document.getElementById("post_write_form");
+        this.postUpdateForm = document.getElementById("post_update_form");
         this.postTitle = document.getElementById("post_title");
         this.postWriterEditor = this.getQuillEditor('post_write_editor');
         this.viewSourceBtn = document.getElementById("view-editor-source");
+        this.postCategory = document.getElementById("post_category");
         this.postTagInput = document.getElementById("post_tag_input");
         this.createdTagBox = document.getElementById("created_tag_box");
+        this.tagRegisterButton = document.getElementById("tag_register_button");
         this.postThumbnailInputButton = document.getElementById("post_thumbnail_input_button");
         this.postThumbnailImageInput = document.getElementById("post_thumbnail_image_input");
         this.postThumbnailImage = document.getElementById("post_thumbnail_image");
         this.postThumbnailImageURL = null;
-        this.tagRegisterButton = document.getElementById("tag_register_button");
         this.postThumbnailImageForm = document.getElementById("post_thumbnail_image_form");
         this.postThumbnailImageBox = document.getElementById("post_thumbnail_image_box");
         this.postThumbnailImageDeleteButton = document.getElementById("post_thumbnail_image_delete_button");
-        this.postCategory = document.getElementById("post_category");
 
         this.hiddenBlogPostThumbnailImage = document.getElementById("hidden_blog_post_thumbnail_image");
         this.hiddenTagTextList = document.getElementById("hidden_tag_text_list");
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
-
+        this.hiddenBlogPostTitle = document.getElementById("hidden_blog_post_title");
         this.tagSet = new Set();
     }
 
-    initPostWriteController() {
-        this.#initTemplate();
+    initPostUpdateController() {
+        this.initElement();
         this.initEventListener();
-        this.#initIntervalAndAutoSave();
     }
 
-    #initTemplate() {
+    initElement() {
+        // init tag set
+        for (let i = 0; i < this.createdTagBox.children.length; i++) {
+            this.tagSet.add(this.createdTagBox.children[i].innerText);
+        }
+
+        // init category template
+        this.#initCategoryTemplate();
+
+        // post thumbnail image
+        if (this.postThumbnailImageBox.style.display !== 'none' && this.postThumbnailImageBox.style.display !== "") {
+            this.postThumbnailImageURL = this.postThumbnailImage.src;
+        }
+    }
+
+    #initCategoryTemplate() {
         const xhr = new XMLHttpRequest();
         const blogId = document.getElementById("hidden_blog_id").value;
 
@@ -100,31 +114,6 @@ class PostWriteController extends UtilController {
                     </body>
                 </html>`);
         });
-
-        // 스페이스바 태그 등록 (당장 필요가 없으니 주석 처리)
-        // this.postTagInput.addEventListener("keydown", evt => {
-        //     if (evt.keyCode == 32) {
-        //         const tagText = evt.target.value;
-        //
-        //         if (tagText.length <= 0 || /\s/g.test(tagText)) {
-        //             this.showToastMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
-        //             return;
-        //         }
-        //
-        //         if (this.checkSpecialCharacter(tagText)) {
-        //             this.showToastMessage("특수문자는 태그로 등록할 수 없습니다.");
-        //         } else {
-        //             if (this.createdTagBox.children.length == 0) {
-        //                 this.createdTagBox.style.display = 'block';
-        //             }
-        //             const spanTagText = document.createElement('span');
-        //             spanTagText.className = 'created_tag_text';
-        //             spanTagText.innerText = `#${tagText}`;
-        //             this.createdTagBox.appendChild(spanTagText);
-        //             evt.target.value = "";
-        //         }
-        //     }
-        // });
 
         this.tagRegisterButton.addEventListener("click", evt => {
             const tagText = this.postTagInput.value;
@@ -197,24 +186,37 @@ class PostWriteController extends UtilController {
             }
         });
 
-        this.postWriteForm.addEventListener("submit", evt => {
+        this.postUpdateForm.addEventListener("submit", evt => {
             evt.preventDefault();
 
             if (confirm('게시글을 발행하겟습니까?')) {
-                if (this.checkPostSubmitInfo()) {
+                if (this.checkPostUpdateInfo()) {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
                     return false;
                 } else {
                     this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
+                    this.hiddenBlogPostTitle.value = this.postTitle.value;
                     this.setTagText();
-                    this.postWriteForm.submit();
-                    this.clearInterval(this.postInterval, "postSaveInfo");
+                    this.postUpdateForm.submit();
                     return true;
                 }
             }
         });
+    }
+
+    setTagText() {
+        let tagList = '';
+
+        for (let i = 0; i < this.createdTagBox.children.length; i++) {
+            tagList += this.createdTagBox.children[i].innerText;
+
+            if (i < this.createdTagBox.children.length - 1) {
+                tagList += ',';
+            }
+        }
+        this.hiddenTagTextList.value = tagList;
     }
 
     #uploadImage(imgFile) {
@@ -254,58 +256,6 @@ class PostWriteController extends UtilController {
         }
     }
 
-    #initIntervalAndAutoSave() {
-        // localStorage 정보 반환 및 복구
-        this.setAutoSaveWriteInfo(JSON.parse(localStorage.getItem("postSaveInfo")));
-        // interval 실행
-        this.postInterval = this.invokeAutoSaveInterval(() => {
-            const jsonObj = {
-                title: this.postTitle.value == null ? "" : this.postTitle.value,
-                category: this.postCategory.value == null ? "" : this.postCategory.value,
-                tagInput: this.postTagInput.value == null ? "" : this.postTagInput.value,
-                tagSet: this.tagSet.size > 0 ? JSON.stringify(this.tagSet, (_key, value) => (value instanceof Set ? [...value] : value)) : this.tagSet,
-                contents: this.postWriterEditor.root.innerHTML == null ? "" : this.postWriterEditor.root.innerHTML,
-                thumbnailImage: this.postThumbnailImageURL
-            };
-            localStorage.setItem("postSaveInfo", JSON.stringify(jsonObj));
-        }, null, 1000 * 5);
-    }
-
-    setAutoSaveWriteInfo(autoSaveWriteInfo) {
-        if (autoSaveWriteInfo != null) {
-            this.postTitle.value = autoSaveWriteInfo["title"];
-            this.postCategory.value = autoSaveWriteInfo["category"];
-            this.postTagInput.value = autoSaveWriteInfo["tagInput"];
-            this.tagSet = (typeof autoSaveWriteInfo["tagSet"]) === "object" ? this.tagSet : new Set(JSON.parse(autoSaveWriteInfo["tagSet"]));
-            for (const tagSpan of this.tagSet) {
-                this.createdTagBox.style.display = 'block';
-                const spanTagText = document.createElement('span');
-                spanTagText.className = 'created_tag_text';
-                spanTagText.innerText = tagSpan;
-                this.createdTagBox.appendChild(spanTagText);
-            }
-            this.postWriterEditor.root.innerHTML = autoSaveWriteInfo["contents"];
-            if (autoSaveWriteInfo["thumbnailImage"] != null) {
-                this.postThumbnailImageBox.style.display = 'block';
-                this.postThumbnailImage.src = autoSaveWriteInfo["thumbnailImage"];
-                this.postThumbnailImageURL = this.postThumbnailImage.src;
-            }
-        }
-    }
-
-    setTagText() {
-        let tagList = '';
-
-        for (let i = 0; i < this.createdTagBox.children.length; i++) {
-            tagList += this.createdTagBox.children[i].innerText;
-
-            if (i < this.createdTagBox.children.length - 1) {
-                tagList += ',';
-            }
-        }
-        this.hiddenTagTextList.value = tagList;
-    }
-
     removePostThumbnailImage() {
         let fileBuffer = new DataTransfer();
         this.postThumbnailImage.src = "";
@@ -314,7 +264,7 @@ class PostWriteController extends UtilController {
         this.postThumbnailImageInput.files = fileBuffer.files; // <-- according to your file input reference
     }
 
-    checkPostSubmitInfo() {
+    checkPostUpdateInfo() {
         if (!this.postTitle.value || !this.postCategory.value ||
             (this.postWriterEditor.root.innerText === '\n' ||
                 this.postWriterEditor.root.innerText.replace(/ /g, "") === '\n') ||
@@ -328,6 +278,6 @@ class PostWriteController extends UtilController {
 
 // Execute all functions
 document.addEventListener("DOMContentLoaded", () => {
-    const postWriteController = new PostWriteController();
-    postWriteController.initPostWriteController();
+    const postUpdateController = new PostUpdateController();
+    postUpdateController.initPostUpdateController();
 });

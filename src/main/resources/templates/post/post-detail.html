@@ -52,13 +52,16 @@
             </div>
 
             <div class="post_detail_update_container clear_fix" sec:authorize="isAuthenticated()">
-                <button class="common_button_text post_detail_update_button">
-                    수정
-                </button>
+                <th:block th:if="${#bools.isTrue(isEqualPostByLogin)}">
+                    <a th:href="'/post/update/' + ${postDetail.id} + '?blogId=' + ${postDetail.blogId}"
+                       class="common_button_text post_detail_update_button" id="post_detail_update_button">
+                        수정
+                    </a>
 
-                <button class="common_button_text post_detail_delete_button">
-                    삭제
-                </button>
+                    <button class="common_button_text post_detail_delete_button" id="post_detail_delete_button">
+                        삭제
+                    </button>
+                </th:block>
             </div>
         </div>
 

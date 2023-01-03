@@ -123,6 +123,16 @@ public class CategoryServiceImpl implements CategoryService {
         throw new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND);
     }
 
+    @Override
+    public Category findCategoryById(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND));
+
+        if (category.isDelete()) {
+            throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
+        }
+        return category;
+    }
+
     @Transactional
     @Override
     public Category registerBasicCategory(Blog blog) {

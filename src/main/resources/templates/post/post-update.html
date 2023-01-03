@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <title>게시글 수정</title>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/template/post-template :: post-template"></th:block>
+    <link th:href="@{/css/post/post-update.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/post/post-update.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header::header"></div>
+<div class="post_update_container">
+    <form method="post" action="/post/update" class="post_update_form" id="post_update_form"
+          enctype="multipart/form-data"
+          name="post_update_form"
+          th:object="${blogPostUpdateInput}">
+
+        <div class="post_update_button_block clear_fix">
+            <button type="submit" class="post_update_button">
+                수정
+            </button>
+        </div>
+
+        <div class="common_input_div input_block clear_fix">
+            <label for="post_title" class="common_input_label common_blog_name_label" title="블로그명">
+                <span class="blind">블로그이름</span>
+            </label>
+            <input type="text" id="post_title" name="postTitle" class="post_title_input" th:value="${postUpdate.title}"
+                   maxlength="128" required>
+        </div>
+
+        <div class="basic_info_spel_div">
+                    <span id="user_post_name_validation_error" th:if="${#fields.hasErrors('title')}"
+                          th:errors="*{title}"
+                          class="validation_error"></span>
+        </div>
+
+        <div class="category_input_block">
+            <label for="post_category" class="common_input_label common_category_label" title="카테고리">
+                <span class="blind">카테고리</span>
+            </label>
+
+            <select class="common_select_form post_select_form" id="post_category" name="category">
+                <!-- 카테고리 셀렉터 옵션 템플릿 -->
+            </select>
+        </div>
+
+        <div class="common_input_div post_tag_block clear_fix">
+            <label for="post_tag_input" class="common_input_label common_tag_label" title="태그">
+                <span class="blind">테그</span>
+            </label>
+
+            <div class="tag_input_box">
+                <div class="tag_input_block clear_fix">
+                    <input type="text" id="post_tag_input" class="tag_name_input" maxlength="100"
+                           placeholder="#태그 입력 (최대 30개)">
+                    <button type="button" class="common_orange_button tag_register_button" id="tag_register_button">등록
+                    </button>
+                </div>
+
+                <div class="created_tag_box" id="created_tag_box">
+                    <!-- created tag text template -->
+                </div>
+            </div>
+        </div>
+
+        <div class="post_write_block">
+            <div class="editor-board">
+                <!-- Contents Here -->
+                <div id="post_write_editor" class="post_write_editor" th:utext="${postUpdate.contents}">
+                    <!-- Contents Here -->
+                </div>
+                <button id="view-editor-source" type="button"
+                        class="common_source_view_label view_editor_source_button" title="텍스트 코드 보기"></button>
+            </div>
+        </div>
+
+        <div class="basic_info_spel_div">
+                    <span th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}"
+                          id="post_write_validation_error"
+                          class="post_write_validation_err validation_error"></span>
+        </div>
+
+        <input type="hidden" id="hidden_blog_id" name="blogId" readonly th:value="${blogPostUpdateInput.blogId}"
+               th:field="*{blogId}">
+        <input type="hidden" id="hidden_post_id" name="postId" readonly th:value="${blogPostUpdateInput.postId}"
+               th:field="*{postId}">
+        <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">
+        <input type="hidden" id="hidden_blog_post_thumbnail_image" name="postThumbnailImage"
+               th:field="*{postThumbnailImage}">
+        <input type="hidden" id="hidden_blog_post_category" name="category" th:field="*{category}">
+        <input type="hidden" id="hidden_blog_post_contents" name="contents" th:field="*{contents}">
+        <input type="hidden" id="hidden_blog_post_title" name="title" th:field="*{title}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+
+    <form action="/post/upload/post-thumbnail-image" method="post" enctype="multipart/form-data"
+          id="post_thumbnail_image_form"
+          name="post_thumbnail_image_form" class="common_input_div post_thumbnail_image_form clear_fix">
+        <div class="common_input_label common_post_thumbnail_label"
+             title="포스트 썸네일 이미지">
+            <span class="blind">포스트 썸네일 이미지</span>
+        </div>
+
+        <button type="button" class="common_button_text post_thumbnail_input_button" id="post_thumbnail_input_button">
+            썸네일 이미지 지정
+        </button>
+
+        <input type="file" id="post_thumbnail_image_input" name="post_thumbnail_image_input"
+               class="post_thumbnail_image_input" accept="image/jpeg, image/jpg, image/png, image/gif, image/GIF">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+
+    <div class="post_thumbnail_image_box" id="post_thumbnail_image_box">
+        <img class="post_thumbnail_image" id="post_thumbnail_image" src="" alt="게시글 썸네일 이미지">
+        <button class="post_thumbnail_image_delete_button common_close_label" id="post_thumbnail_image_delete_button">
+            <span class="blind">이미지 삭제</span>
+        </button>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const postUpdate = [[${postUpdate}]];
+    const tags = postUpdate['tags'];
+    const postThumbnailImage = postUpdate['thumbnailImage'];
+
+    // tags
+    if (tags.length > 0) {
+        const createdTagBox = document.getElementById("created_tag_box");
+        createdTagBox.style.display = 'block';
+
+        for (const idx in tags) {
+            const spanTagText = document.createElement('span');
+            spanTagText.className = 'created_tag_text';
+            spanTagText.innerText = tags[idx];
+            createdTagBox.appendChild(spanTagText);
+        }
+    }
+
+    // post thumbnail image
+    if (postThumbnailImage !== null && postThumbnailImage !== '<<<undefined>>>') {
+        document.getElementById("post_thumbnail_image_box").style.display = 'block';
+        document.getElementById("post_thumbnail_image").src = postThumbnailImage;
+    }
+</script>
+
+<div th:replace="fragments/footer::footer"></div>
+</body>
+</html>

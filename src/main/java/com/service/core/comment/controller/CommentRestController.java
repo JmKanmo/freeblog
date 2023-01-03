@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -110,7 +111,7 @@ public class CommentRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
     })
     @PostMapping("/upload/comment-thumbnail-image")
-    public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("post_comment_image_file_input") MultipartFile multipartFile) {
+    public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("compressed_post_comment_image") MultipartFile multipartFile) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(commentService.uploadAwsSCommentThumbnailImage(multipartFile));
         } catch (Exception exception) {

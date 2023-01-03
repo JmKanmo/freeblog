@@ -8,7 +8,9 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
+import com.service.core.post.dto.PostUpdateDto;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
@@ -45,10 +47,15 @@ public class PostController {
     @GetMapping("/{postId}")
     public String postDetailPage(@PathVariable Long postId, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
                                  Model model, Principal principal) {
+        boolean isEqualPostByLogin = false;
+
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            isEqualPostByLogin = postService.checkEqualPostByLogin(blogInfoDto.getId(), postId);
         }
 
+        model.addAttribute("isEqualPostByLogin", isEqualPostByLogin);
         model.addAttribute("user_profile", userService.findUserProfileDtoByBlogId(blogId));
         PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, postId);
         model.addAttribute("postDetail", postDetailDto);
@@ -80,6 +87,28 @@ public class PostController {
         return "post/post-write";
     }
 
+    @Operation(summary = "블로그 포스트 수정 페이지 반환", description = "블로그 포스트 수정 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "블로그 포스트 수정 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "블로그 포스트 수정 페이지 반환 실패")
+    })
+    @GetMapping("/update/{postId}")
+    public String postUpdatePage(@PathVariable Long postId, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
+                                 Model model, Principal principal) {
+        if ((principal == null || principal.getName() == null)) {
+            throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+        }
+
+        UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(userHeaderDto.getId());
+        PostUpdateDto postUpdateDto = postService.findPostUpdateInfo(blogId, postId);
+
+        model.addAttribute("user_header", userHeaderDto);
+        model.addAttribute("blogPostUpdateInput", BlogPostUpdateInput.builder().blogId(blogInfoDto.getId()).postId(postUpdateDto.getId()).build());
+        model.addAttribute("postUpdate", postUpdateDto);
+        return "post/post-update";
+    }
+
     @Operation(summary = "블로그 포스트 작성 작업", description = "블로그 포스트 작성 페이지 작업 진행")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "블로그 포스트 작성 작업 성공"),
@@ -105,5 +134,24 @@ public class PostController {
         model.addAttribute("result", "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
 
         return String.format("redirect:/blog/%s", userHeaderDto.getId());
+    }
+
+    @Operation(summary = "블로그 포스트 수정 작업", description = "블로그 포스트 수정 작업 진행")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "블로그 포스트 수정 작업 성공"),
+            @ApiResponse(responseCode = "500", description = "DB 연결 오류, SQL 쿼리 수행 실패 등의 이유로 블로그 포스트 수정 작업 실패")
+    })
+    @PostMapping("/update")
+    public String postUpdate(@Valid BlogPostUpdateInput blogPostUpdateInput, BindingResult bindingResult, Model model, Principal principal) {
+        if ((principal == null || principal.getName() == null)) {
+            throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "post/post-update";
+        }
+
+        postService.update(blogPostUpdateInput, categoryService);
+        return String.format("redirect:/post/%d?blogId=%d", blogPostUpdateInput.getPostId(), blogPostUpdateInput.getBlogId());
     }
 }

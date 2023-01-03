@@ -55,7 +55,7 @@ public class PostRestController {
     })
     @ResponseBody
     @PostMapping("/upload/post-thumbnail-image")
-    public ResponseEntity<String> uploadPostThumbnailImage(@RequestParam("post_thumbnail_image_input") MultipartFile multipartFile, Principal principal) {
+    public ResponseEntity<String> uploadPostThumbnailImage(@RequestParam("compressed_post_image") MultipartFile multipartFile, Principal principal) {
         try {
             if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);

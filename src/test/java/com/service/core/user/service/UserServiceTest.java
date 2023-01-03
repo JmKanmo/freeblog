@@ -66,12 +66,12 @@ class UserServiceTest {
         doNothing().when(userInfoService).saveUserDomain(any());
         when(userAuthService.saveUserEmailAuth(anyInt())).thenReturn("");
         when(userAuthService.findUserEmailAuthKey(anyInt())).thenReturn("");
-        when(emailService.sendSignUpMail(anyString(), anyString())).thenReturn(0L);
+        when(emailService.sendSignUpMail(anyString(), anyString(), "https", BlogUtil.getCurrentIp(), 8400)).thenReturn(0L);
 
         assertDoesNotThrow(() -> userService.processSignUp(UserSignUpInput.builder().email("nebi25@naver.com").id("nebi25").build(), UserDomain.builder().email("nebi25@naver.com").userId("nebi25").build()));
         verify(userAuthService, times(1)).saveUserEmailAuth(anyInt());
         verify(userAuthService, times(1)).findUserEmailAuthKey(anyInt());
-        verify(emailService, times(1)).sendSignUpMail(anyString(), anyString());
+        verify(emailService, times(1)).sendSignUpMail(anyString(), anyString(), "https", BlogUtil.getCurrentIp(), 8400);
     }
 
     @Test
@@ -82,7 +82,7 @@ class UserServiceTest {
         assertThrowsExactly(UserManageException.class, () -> userService.processSignUp(UserSignUpInput.builder().email("nebi25@naver.com").id("nebi25").build(), UserDomain.builder().email("nebi25@naver.com").userId("nebi25").build()));
         verify(userAuthService, times(0)).saveUserEmailAuth(anyInt());
         verify(userAuthService, times(0)).findUserEmailAuthKey(anyInt());
-        verify(emailService, times(0)).sendSignUpMail(anyString(), anyString());
+        verify(emailService, times(0)).sendSignUpMail(anyString(), anyString(), "https", BlogUtil.getCurrentIp(), 8400);
     }
 
     @ParameterizedTest

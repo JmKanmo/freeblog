@@ -27,4 +27,11 @@ public class Tag extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public static Tag from(Post post, String tagName) {
+        return Tag.builder()
+                .name(tagName)
+                .post(post)
+                .build();
+    }
 }

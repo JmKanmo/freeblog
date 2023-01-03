@@ -1,28 +1,19 @@
-body {
-    background-color: #f7f7f7;
-    padding: 20px;
-}
-
-/* post_write container 정의 */
-.post_write_container {
+/* post update container 스타일 */
+.post_update_container {
     margin: 0 auto;
     width: 988px;
-    padding: 20px 20px 30px 20px;
-    background-color: #ffffff;
-    border: 1px solid #e9e9e9;
+    padding-bottom: 140px;
+    padding-top: 20px;
 }
 
-.post_write_container .post_write_top_container {
-    padding-bottom: 25px
+/* 포스트 버튼 정의 */
+.post_update_container .post_update_button_block {
+    padding-bottom: 15px;
 }
 
-.post_write_container .post_write_form .input_block {
-    padding-bottom: 45px;
-}
-
-.post_write_container .post_write_register_button {
+.post_update_container .post_update_button_block .post_update_button {
     float: right;
-    width: 90px;
+    width: 80px;
     height: 40px;
     border: 1px solid #6194ac;
     background-color: #6194ac;
@@ -32,39 +23,65 @@ body {
     border-radius: 5px;
 }
 
-.post_write_container .post_write_form {
-    padding: 20px 30px 20px 30px;
-}
-
-.post_write_container .post_write_form .post_name_input {
-    border: 0;
-    border-bottom: 1px solid #9e9e9e;
-    width: 390px;
-    padding-bottom: 5px;
-    font-size: 14px;
+/* 포스트 제목 정의 */
+.post_update_container .post_title_input {
+    border: 1px solid #c3c3c3;
+    padding: 5px;
     margin-left: 10px;
+    width: 100%;
 }
 
 /* 포스트 카테고리 정의 */
-.post_write_container .post_write_form .category_input_block {
-    padding-bottom: 40px;
+.post_update_container .category_input_block {
+    padding-top: 25px;
 }
 
-.post_write_container .post_write_form .category_input_block .post_select_form {
+.post_update_container .post_update_form .category_input_block .post_select_form {
     margin-left: 10px;
+}
+
+/* 포스트 editor 폼 정의 */
+.post_update_container .post_update_form .post_write_block {
+    padding-top: 20px;
+}
+
+.post_update_container .post_update_form .post_write_block .editor-board {
+    position: relative;
+}
+
+.post_update_container .post_update_form .post_write_block .editor-board .post_write_editor {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: 600px;
+}
+
+.post_update_container .post_update_form .post_write_block .view_editor_source_button {
+    position: absolute;
+    right: 20px;
+    bottom: 5px;
+    border: 0;
+    background-color: #ffffff;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 3;
+    cursor: pointer;
 }
 
 /* 포스트 태그 정의 */
-.post_write_container .post_write_form .post_tag_block {
-    padding-bottom: 35px;
+.post_update_container .post_update_form .post_tag_block {
+    padding-bottom: 15px;
+    padding-top: 25px;
     align-items: flex-start;
+    width: 100%;
 }
 
-.post_write_container .post_write_form .post_tag_block .tag_input_box {
+.post_update_container .post_update_form .post_tag_block .tag_input_box {
     margin-left: 10px;
 }
 
-.post_write_container .post_write_form .post_tag_block .tag_input_box .tag_name_input {
+.post_update_container .post_update_form .post_tag_block .tag_input_box .tag_name_input {
     width: 150px;
     border: 0;
     border-bottom: 1px solid #9e9e9e;
@@ -72,11 +89,11 @@ body {
     font-size: 14px;
 }
 
-.post_write_container .post_write_form .post_tag_block .tag_input_box .tag_input_block .tag_register_button {
+.post_update_container .post_update_form .post_tag_block .tag_input_box .tag_input_block .tag_register_button {
     margin-left: 5px;
 }
 
-.post_write_container .post_write_form .post_tag_block .tag_input_box .created_tag_box {
+.post_update_container .post_update_form .post_tag_block .tag_input_box .created_tag_box {
     display: none;
     margin-top: 15px;
     padding: 0px 10px 10px 10px;
@@ -94,7 +111,7 @@ body {
     width: 390px;
 }
 
-.post_write_container .post_write_form .post_tag_block .tag_input_box .created_tag_box .created_tag_text {
+.post_update_container .post_update_form .post_tag_block .tag_input_box .created_tag_box .created_tag_text {
     font-size: 13px;
     color: #607d8b;
     background-color: #eee;
@@ -110,34 +127,9 @@ body {
     cursor: pointer;
 }
 
-/* 포스트 editor 폼 정의 */
-.post_write_container .post_write_form .post_write_block .editor-board {
-    position: relative;
-}
-
-.post_write_container .post_write_form .post_write_block .editor-board .post_write_editor {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    height: 600px;
-}
-
-.post_write_container .post_write_form .post_write_block .view_editor_source_button {
-    position: absolute;
-    right: 20px;
-    bottom: 5px;
-    border: 0;
-    background-color: #ffffff;
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 3;
-    cursor: pointer;
-}
-
-/* 포스트 썸네일 이미지 폼 정의 */
+/* 썸네일 이미지 폼 정의 */
 .post_thumbnail_image_form {
-    padding: 10px 30px 0px 30px;
+    padding-top: 20px;
 }
 
 .post_thumbnail_image_form .post_thumbnail_input_button {
