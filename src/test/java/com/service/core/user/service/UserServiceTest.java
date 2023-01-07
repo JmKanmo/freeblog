@@ -112,7 +112,7 @@ class UserServiceTest {
 
         // 미등록 회원의 경우
         when(userInfoService.findUserDomainByEmailOrThrow(email)).
-                thenThrow(new UsernameNotFoundException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message()));
+                thenThrow(new UserAuthException((ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())));
         assertEquals(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message(), assertThrows(UsernameNotFoundException.class, () -> userService.checkIsActive(email)).getMessage());
     }
 

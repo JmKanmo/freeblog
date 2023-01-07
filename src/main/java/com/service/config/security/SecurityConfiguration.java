@@ -70,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // category
                         "/category/post/**", "/category/all/{blogId}",
                         // post
-                        "/post/all/{blogId}", "/post/{postId}",
+                        "/post/all/{blogId}", "/post/{postId}", "/post/search-keyword",
                         // comment
                         "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}",
                         "/comment/update/**", "/comment/authority/{commentId}", "/comment/delete/{commentId}", "/comment/reply/**",

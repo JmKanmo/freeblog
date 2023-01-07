@@ -98,7 +98,7 @@ class PostDetailController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
-                if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                if (responseValue["postPaginationResponse"]["postDto"]["postSummaryDto"]["count"] <= 0) {
                     this.showToastMessage("게시글 정보가 존재하지 않습니다.");
                     return;
                 }
@@ -118,7 +118,7 @@ class PostDetailController extends UtilController {
     #handleTemplateList(responseValue) {
         const categoryPostTemplate = document.getElementById("category-post-template").innerHTML;
         const categoryPostTemplateObject = Handlebars.compile(categoryPostTemplate);
-        const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]);
+        const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postDto"]);
         this.categoryPostList.innerHTML = categoryPostTemplateHTML;
     }
 

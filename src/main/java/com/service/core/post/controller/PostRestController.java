@@ -5,6 +5,7 @@ import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.dto.PostPagingResponseDto;
+import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.service.UserService;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Tag(name = "포스트", description = "포스트 관련 API")
@@ -31,6 +33,22 @@ import java.security.Principal;
 public class PostRestController {
     private final PostService postService;
     private final BlogService blogService;
+
+    @Operation(summary = "키워드 검색 결과 포스트 반환", description = "검색 키워드에 해당하는 포스트 데이터 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "포스트 데이터 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 포스트 데이터 반환 실패")
+    })
+    @ResponseBody
+    @GetMapping("/search-keyword")
+    public ResponseEntity<PostPagingResponseDto> searchPostByKeyword(@Valid BlogPostSearchInput blogPostSearchInput, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(blogPostSearchInput, postSearchPagingDto)));
+        } catch (Exception exception) {
+            log.error("[freeblog-searchPostByKeyword] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
+        }
+    }
 
     @Operation(summary = "해당 블로그의 전체 포스트 반환", description = "해당 블로그의 전체 포스트 데이터 반환 메서드")
     @ApiResponses(value = {

@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class PostPagingResponseDto {
+public class PostPagingResponseDto<T> {
     private final String message;
     private final int responseCode;
-    private final PostPaginationResponse<PostTotalDto> postPaginationResponse;
+    private final T postPaginationResponse;
 
-    public static PostPagingResponseDto success(PostPaginationResponse<PostTotalDto> postPaginationResponse) {
+    public static <T> PostPagingResponseDto success(T postPaginationResponse) {
         return PostPagingResponseDto.builder()
                 .responseCode(HttpStatus.OK.value())
                 .postPaginationResponse(postPaginationResponse)

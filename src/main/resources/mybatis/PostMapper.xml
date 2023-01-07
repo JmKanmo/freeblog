@@ -85,4 +85,55 @@
           and p.post_id = #{postId}
           and p.is_delete != true
     </select>
+
+    <select id="findPostDtoByKeyword" parameterType="com.service.core.post.dto.PostKeywordSearchDto"
+            resultType="com.service.core.post.dto.PostDto">
+        select post.post_id,
+        post.title,
+        post.thumbnail_image,
+        post.contents,
+        post.writer,
+        date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+        CASE
+        WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
+        THEN c.name
+        ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
+        END as category,
+        c.category_id,
+        b.blog_id
+        from post
+        inner join category c on post.category_id = c.category_id and c.is_delete != true
+        inner join blog b
+        on b.blog_id = #{postKeywordSearchDto.blogId} and b.is_delete != true
+        where post_id in
+        (select post_id from post where blog_id = #{postKeywordSearchDto.blogId}
+        and
+        (<include refid="textSearchQuery"/>)
+        order by blog_id)
+        and post.is_delete != true
+        order by register_time desc
+        LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart},
+        #{postKeywordSearchDto.postSearchPagingDto.recordSize}
+    </select>
+
+    <select id="findPostDtoCountByKeyword" resultType="int">
+        SELECT count(*)
+        FROM post p
+        WHERE p.blog_id = #{blogId}
+        and (<include refid="textSearchQuery"/>)
+    </select>
+
+    <sql id="textSearchQuery">
+        <choose>
+            <when test="postKeywordSearchDto.searchType eq 'LIKE'">
+                contents like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                or title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+            </when>
+
+            <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
+                MATCH(contents) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE) or
+                MATCH(title) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE)
+            </when>
+        </choose>
+    </sql>
 </mapper>

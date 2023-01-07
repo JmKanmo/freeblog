@@ -4,6 +4,7 @@ import com.service.core.category.service.CategoryService;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -13,6 +14,8 @@ import java.util.List;
 
 
 public interface PostService {
+    PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);
+
     PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type);
 
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;

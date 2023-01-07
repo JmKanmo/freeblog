@@ -28,7 +28,7 @@ class BlogBodyController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
-                if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                if (responseValue["postPaginationResponse"]["postDto"]["postSummaryDto"]["count"] <= 0) {
                     this.#handleTemplateList(responseValue, true);
                     this.#clearPagination();
                     return;
@@ -49,7 +49,7 @@ class BlogBodyController extends UtilController {
     #handleTemplateList(responseValue, empty = false) {
         const blogPostCategoryTemplate = document.getElementById("blog-post-category-template").innerHTML;
         const blogPostCategoryTemplateObject = Handlebars.compile(blogPostCategoryTemplate);
-        const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]);
+        const blogPostCategoryTemplateHTML = blogPostCategoryTemplateObject(responseValue["postPaginationResponse"]["postDto"]["postSummaryDto"]);
         this.blogPostCategoryTextBox.innerHTML = blogPostCategoryTemplateHTML;
 
         if (empty) {
@@ -57,7 +57,7 @@ class BlogBodyController extends UtilController {
         } else {
             const blogPostListTemplate = document.getElementById("blog-post-image-template").innerHTML;
             const blogPostListTemplateObject = Handlebars.compile(blogPostListTemplate);
-            const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]);
+            const blogPostListTemplateHTML = blogPostListTemplateObject(responseValue["postPaginationResponse"]["postDto"]);
             this.blogPostList.innerHTML = blogPostListTemplateHTML;
         }
     }

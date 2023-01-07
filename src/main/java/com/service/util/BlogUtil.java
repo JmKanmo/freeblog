@@ -216,4 +216,12 @@ public class BlogUtil {
         }
         return "UNDEFINED-ERROR";
     }
+
+    public static String createKeywordByText(String text) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String parse : text.split(" ")) {
+            stringBuilder.append(parse + "* ");
+        }
+        return stringBuilder.toString();
+    }
 }

@@ -23,4 +23,10 @@ class BlogUtilTest {
         String result = BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy.MM.dd HH:mm");
         System.out.println(result);
     }
+
+    @Test
+    public void createKeywordByTest() {
+        String keyword = BlogUtil.createKeywordByText("hello world");
+        System.out.println(keyword);
+    }
 }
