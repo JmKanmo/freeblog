@@ -87,7 +87,7 @@
     </select>
 
     <select id="findPostDtoByKeyword" parameterType="com.service.core.post.dto.PostKeywordSearchDto"
-            resultType="com.service.core.post.dto.PostDto">
+            resultType="com.service.core.post.dto.PostSearchMapperDto">
         select post.post_id,
         post.title,
         post.thumbnail_image,

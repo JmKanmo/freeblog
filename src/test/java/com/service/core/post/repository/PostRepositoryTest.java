@@ -1,8 +1,8 @@
 package com.service.core.post.repository;
 
-import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostKeywordSearchDto;
 import com.service.core.post.dto.PostLinkDto;
+import com.service.core.post.dto.PostSearchMapperDto;
 import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -42,7 +42,7 @@ public class PostRepositoryTest {
                 postSearchPagingDto,
                 "LIKE"
         );
-        List<PostDto> postDtoList = postMapper.findPostDtoByKeyword(postKeywordSearchDto);
+        List<PostSearchMapperDto> postDtoList = postMapper.findPostDtoByKeyword(postKeywordSearchDto);
         Assertions.assertNotNull(postDtoList);
     }
 
@@ -53,7 +53,7 @@ public class PostRepositoryTest {
                 null,
                 "LIKE"
         );
-        int postCount = postMapper.findPostDtoCountByKeyword(postKeywordSearchDto,5L);
+        int postCount = postMapper.findPostDtoCountByKeyword(postKeywordSearchDto, 5L);
         System.out.println(postCount);
     }
 }

@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 @Builder
 public class PostKeywordDto {
-    private final List<PostDto> postDtoList;
+    private final List<PostSearchMapperDto> postDtoList;
 
-    public static PostKeywordDto from(List<PostDto> postDtoList) {
+    public static PostKeywordDto from(List<PostSearchMapperDto> postDtoList) {
         return PostKeywordDto.builder().postDtoList(postDtoList).build();
     }
 }
