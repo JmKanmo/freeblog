@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <title>게시글 검색 페이지</title>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/template/post-template :: post-template"></th:block>
+    <link th:href="@{/css/post/post-search.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/post/post-search.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header::header"></div>
+<div class="post_search_container">
+    <h3 class="post_search_title">
+        <span th:text="'&quot;' + ${keyword} + '&quot;'"></span>
+        <span>검색 결과: <span style="color: #333" id="post_search_count">0</span></span>
+    </h3>
+
+    <div class="post_search_block">
+        <div class="blog_post_board">
+            <ul class="blog_list clear_fix" id="blog_post_list">
+                <!-- blog post template -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="post_search_page_container">
+        <nav class="common-pagination-justify-content-center" aria-label="Page navigation">
+            <ul class="pagination" id="PostSearchPagination">
+                <!-- 페이지 템플릿 -->
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+<input type="hidden" id="blogIdInput" readonly th:value="${blogId}">
+<input type="hidden" id="keywordInput" readonly th:value="${keyword}">
+<div th:replace="fragments/footer::footer"></div>
+</html>

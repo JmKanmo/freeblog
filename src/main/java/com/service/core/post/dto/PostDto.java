@@ -20,6 +20,7 @@ public class PostDto {
     private final String category;
     private final Long categoryId;
     private final Long blogId;
+    private final Long commentCount;
 
     public static PostDto fromEntity(Post post) {
         if (post == null) {

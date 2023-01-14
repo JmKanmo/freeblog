@@ -100,7 +100,8 @@
         ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
         END as category,
         c.category_id,
-        b.blog_id
+        b.blog_id,
+        (select count(*) from comment where comment.post_id = post.post_id) as commentCount
         from post
         inner join category c on post.category_id = c.category_id and c.is_delete != true
         inner join blog b

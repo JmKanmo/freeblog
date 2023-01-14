@@ -109,6 +109,23 @@ public class PostController {
         return "post/post-update";
     }
 
+    @Operation(summary = "키워드 기반 포스트 검색 페이지 반환", description = "키워드 기반 포스트 검색 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "키워드 기반 포스트 검색 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "키워드 기반 포스트 검색 페이지 반환 실패")
+    })
+    @GetMapping("/search")
+    public String postSearchPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
+                                 @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, Model model, Principal principal) {
+        if(principal != null && principal.getName() != null) {
+            UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+            model.addAttribute("user_header", userHeaderDto);
+        }
+        model.addAttribute("blogId", blogId);
+        model.addAttribute("keyword", keyword);
+        return "post/post-search";
+    }
+
     @Operation(summary = "블로그 포스트 작성 작업", description = "블로그 포스트 작성 페이지 작업 진행")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "블로그 포스트 작성 작업 성공"),

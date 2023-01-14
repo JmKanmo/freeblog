@@ -20,10 +20,11 @@
 
 <div class="post_detail_container">
     <div class="search_container">
-        <form action="/" method="get" class="blog_view_search_form">
-            <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog"
+        <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
+            <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${postDetail.blogId}">
+            <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                    placeholder="검색어를 입력해주세요." spellcheck="false" required>
-            <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색">
+            <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
                 <img class="search_blog_button_img" src="../images/search.gif"/>
             </button>
             <span class="blind">게시글 검색</span>

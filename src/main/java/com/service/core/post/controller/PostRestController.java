@@ -40,10 +40,12 @@ public class PostRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 포스트 데이터 반환 실패")
     })
     @ResponseBody
-    @GetMapping("/search-keyword")
-    public ResponseEntity<PostPagingResponseDto> searchPostByKeyword(@Valid BlogPostSearchInput blogPostSearchInput, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
+    @GetMapping("/search-rest")
+    public ResponseEntity<PostPagingResponseDto> searchPostByKeyword(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
+                                                                     @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                                                     @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(blogPostSearchInput, postSearchPagingDto)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(BlogPostSearchInput.from(blogId, keyword), postSearchPagingDto)));
         } catch (Exception exception) {
             log.error("[freeblog-searchPostByKeyword] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
