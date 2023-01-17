@@ -10,6 +10,9 @@ class BlogHeaderController extends BlogBodyController {
 
         this.blogHeaderCategoryList = document.getElementById("blog_header_category_list");
         this.clickedCategoryButton = null;
+        this.postSearchButton = document.getElementById("postSearchButton");
+        this.postSearchForm = document.getElementById("postSearchForm");
+        this.categorySettingButton = document.getElementById("category_setting_button");
     }
 
     initBlogHeaderController() {
@@ -65,6 +68,16 @@ class BlogHeaderController extends BlogBodyController {
                 this.clickedCategoryButton = clickedCategoryButton;
             }
         });
+
+        this.postSearchButton.addEventListener("click", evt => {
+            this.postSearchForm.submit();
+        });
+
+        if (this.categorySettingButton != null) {
+            this.categorySettingButton.addEventListener("click", evt => {
+                this.showToastMessage("category setting button clicked");
+            })
+        }
     }
 }
 

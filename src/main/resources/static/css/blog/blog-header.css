@@ -98,8 +98,18 @@
 }
 
 .blog_header_category_container .blog_header_category_list {
+    position: relative;
     padding: 16px 0px 16px 13px;
     border-bottom: 1px solid #eeeeee;
+}
+
+.blog_header_category_container .blog_header_category_list .category_setting_button {
+    position: absolute;
+    width: 15px;
+    right: 5px;
+    height: 15px;
+    top: 5%;
+    cursor: pointer;
 }
 
 .blog_header_category_container .blog_header_category_list .total_category_search_title {

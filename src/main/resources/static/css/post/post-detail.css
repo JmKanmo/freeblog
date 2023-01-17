@@ -14,7 +14,7 @@
 .search_container {
     padding-top: 7px;
     position: absolute;
-    right: 15px;
+    right: 0;
     top: -5px;
 }
 
@@ -43,7 +43,7 @@
 
 /* post title container 스타일 */
 .post_detail_container .post_title_container {
-    padding: 30px 0px 13px 0;
+    padding: 35px 0px 13px 0;
     border-bottom-width: 0.3px;
     border-bottom-style: solid;
     border-bottom-color: #d9d9d9;

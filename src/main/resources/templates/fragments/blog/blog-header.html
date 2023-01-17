@@ -35,10 +35,11 @@
         </div>
 
         <div class="search_container">
-            <form action="/" method="get" class="blog_view_search_form">
-                <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog"
+            <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
+                <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${blog_info.id}">
+                <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                        placeholder="검색어를 입력해주세요." spellcheck="false" required>
-                <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색">
+                <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
                     <img class="search_blog_button_img" src="../images/search.gif"/>
                 </button>
                 <span class="blind">게시글 검색</span>
@@ -47,6 +48,11 @@
 
         <div class="blog_header_category_container">
             <ul class="blog_header_category_list" id="blog_header_category_list">
+                <button type="button" sec:authorize="isAuthenticated()" title="카테고리 수정"
+                        class="common_button_text category_setting_button" id="category_setting_button">
+                    <img class="common_button_image_style" src="../images/setting.png" alt="">
+                </button>
+
                 <li>
                     <button th:value="${category.totalCategoryDto.link}"
                             class="common_button_text total_category_search_title" id="total_category_search_title">
