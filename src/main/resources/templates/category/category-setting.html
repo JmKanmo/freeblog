@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>카테고리 관리 페이지</title>
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <title>카테고리 관리</title>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/category/category-setting.css}">
+    <script type="text/javascript" th:src="@{/js/category/category-setting.js}"></script>
 </head>
-<body>지
 
+<body>
+<div class="container">
+    <div class="category_setting_container">
+        <h1 class="settings_title">카테고리 관리</h1>
+
+        <div class="category_container">
+            <div class="blog_header_category_container">
+                <ul class="blog_header_category_list" id="blog_header_category_list">
+                    <li>
+                        <button th:value="${category.totalCategoryDto.link}"
+                                class="common_button_text total_category_search_title" id="total_category_search_title">
+                            전체 카테고리
+                            <span class="category_count_text"
+                                  th:text="'(' + ${category.totalCategoryDto.totalCount} + ')'">전체개수</span>
+                        </button>
+                    </li>
+
+                    <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
+                        <li class="blog_header_category_elem">
+                            <button th:value="${subCategoryDtoList.parentCategoryDto.link}"
+                                    class="common_button_text blog_header_category_title"
+                                    th:text="${subCategoryDtoList.parentCategoryDto.name}">
+                                카테고리명
+                            </button>
+                            <span class="category_count_text"
+                                  th:text="'(' + ${subCategoryDtoList.parentCategoryDto.postCount} + ')'">(0)</span>
+
+                            <ul class="blog_header_sub_category_list">
+                                <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
+                                    <li class="blog_header_sub_category_elem">
+                                        <button th:value="${childCategoryDtoList.link}"
+                                                class="common_button_text blog_header_sub_category_title"
+                                                th:text="${'- ' + childCategoryDtoList.name}"> 카테고리명
+                                        </button>
+                                        <span class="sub_category_count_text"
+                                              th:text="'(' + ${childCategoryDtoList.postCount} + ')'">(25)</span>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

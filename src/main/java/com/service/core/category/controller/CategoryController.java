@@ -1,7 +1,10 @@
 package com.service.core.category.controller;
 
+import com.service.core.blog.dto.BlogInfoDto;
+import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
@@ -24,8 +27,9 @@ import java.security.Principal;
 @RequestMapping("/category")
 @Slf4j
 public class CategoryController {
-    private final UserService userService;
     private final CategoryService categoryService;
+
+    private final BlogService blogService;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "카테고리 설정 페이지 반환 성공"),
@@ -37,8 +41,12 @@ public class CategoryController {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
 
-        UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
-        model.addAttribute("user_header", userHeaderDto);
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+
+        if (blogInfoDto.getId() != blogId) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
+        }
+
         model.addAttribute("category", categoryService.findCategoryDtoByBlogId(blogId));
         return "category/category-setting";
     }

@@ -1,0 +1,91 @@
+.container {
+    padding: 35px;
+}
+
+.category_setting_container {
+    max-width: 550px;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+.category_container {
+    border: 1px solid #c9c9c9;
+    padding: 20px;
+    white-space: pre-line;
+}
+
+.category_setting_container .settings_title {
+    font-size: 20px;
+    color: #607d8b;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+/* 카테고리 스타일 정의 */
+.category_count_text {
+    font-size: 11px;
+}
+
+.sub_category_count_text {
+    font-size: 10px;
+}
+
+.blog_header_category_container .blog_header_category_list {
+    position: relative;
+    padding: 16px 0px 16px 13px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.blog_header_category_container .blog_header_category_list .category_setting_button {
+    position: absolute;
+    width: 15px;
+    right: 5px;
+    height: 15px;
+    top: 5%;
+    cursor: pointer;
+}
+
+.blog_header_category_container .blog_header_category_list .total_category_search_title {
+    cursor: pointer;
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+}
+
+.blog_header_category_container .blog_header_category_list .total_category_search_title:hover {
+    font-weight: bold;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem {
+    margin-top: 17px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_category_title {
+    cursor: pointer;
+    font-size: 13px;
+    color: #0d0a0a;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_category_title:hover {
+    font-weight: bold;
+}
+
+/* 서브 카테고리 스타일 정의 */
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list {
+    margin-left: 10px;
+    margin-top: 4px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem:nth-child(n+2) {
+    margin-top: 5px;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem .blog_header_sub_category_title {
+    cursor: pointer;
+    font-size: 12px;
+    color: #818181;
+}
+
+.blog_header_category_container .blog_header_category_list .blog_header_category_elem .blog_header_sub_category_list .blog_header_sub_category_elem .blog_header_sub_category_title:hover {
+    font-weight: bold;
+}
