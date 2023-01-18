@@ -13,6 +13,7 @@ class BlogHeaderController extends BlogBodyController {
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchForm = document.getElementById("postSearchForm");
         this.categorySettingButton = document.getElementById("category_setting_button");
+        this.categorySettingForm = document.getElementById("categorySettingForm");
     }
 
     initBlogHeaderController() {
@@ -75,7 +76,7 @@ class BlogHeaderController extends BlogBodyController {
 
         if (this.categorySettingButton != null) {
             this.categorySettingButton.addEventListener("click", evt => {
-                this.showToastMessage("category setting button clicked");
+                this.categorySettingForm.submit();
             })
         }
     }
