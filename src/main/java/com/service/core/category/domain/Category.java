@@ -26,6 +26,7 @@ public class Category extends BaseTimeEntity {
 
     private Long parentId;
 
+    @Column(length = 25)
     private String name;
 
     private Long seq;
