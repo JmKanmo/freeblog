@@ -33,7 +33,7 @@
             <div class="blog_header_category_container">
                 <ul class="blog_header_category_list" id="blog_header_category_list">
                     <li class="blog_header_category_elem">
-                        <button th:value="${category.totalCategoryDto.link}"
+                        <button th:value="'totalCategory'"
                                 class="common_button_text total_category_search_title" id="total_category_search_title">
                             전체 카테고리
                             <span class="category_count_text"
@@ -43,7 +43,7 @@
 
                     <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
                         <li class="blog_header_category_elem">
-                            <button th:value="${subCategoryDtoList.parentCategoryDto.link}"
+                            <button th:value="'parentCategory:' + ${subCategoryDtoList.parentCategoryDto.id} + '&' + ${subCategoryDtoList.parentCategoryDto.parentId}"
                                     class="common_button_text blog_header_category_title"
                                     th:text="${subCategoryDtoList.parentCategoryDto.name}">
                                 카테고리명
@@ -54,7 +54,7 @@
                             <ul class="blog_header_sub_category_list">
                                 <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
                                     <li class="blog_header_sub_category_elem">
-                                        <button th:value="${childCategoryDtoList.link}"
+                                        <button th:value="'childCategory:' + ${childCategoryDtoList.id} + '&' + ${childCategoryDtoList.parentId}"
                                                 class="common_button_text blog_header_sub_category_title"
                                                 th:text="${'- ' + childCategoryDtoList.name}"> 카테고리명
                                         </button>
