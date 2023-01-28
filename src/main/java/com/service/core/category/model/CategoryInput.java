@@ -9,4 +9,5 @@ public class CategoryInput {
     private Long parentId;
     private String name;
     private Long seq;
+    private String type; // parent | child
 }

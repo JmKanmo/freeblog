@@ -44,12 +44,32 @@
     background-color: #f8786e;
 }
 
+.category_setting_button_container .category_update_button {
+    border: 1px solid #eeeeee;
+    position: relative;
+    float: right;
+    border: 1px solid #eeeeee;
+    background-color: #ffc107;
+    font-size: 11px;
+    margin-right: 10px;
+}
+
 .category_setting_button_container .category_delete_button {
     border: 1px solid #eeeeee;
     position: relative;
     float: right;
     border: 1px solid #eeeeee;
     background-color: #8bc34a;
+    font-size: 11px;
+    margin-right: 10px;
+}
+
+.category_setting_button_container .category_register_button {
+    border: 1px solid #eeeeee;
+    position: relative;
+    float: right;
+    border: 1px solid #eeeeee;
+    background-color: #3197da;
     font-size: 11px;
 }
 

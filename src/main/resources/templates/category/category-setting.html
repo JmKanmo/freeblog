@@ -17,15 +17,23 @@
 
         <div class="category_setting_button_container clear_fix">
             <button class="category_add_button common_check_button one_level_category" id="one_level_category_button">
-                1단 카테고리 추가
+                1차 카테고리 추가
             </button>
 
             <button class="category_add_button common_check_button two_level_category" id="two_level_category_button">
-                2단 카테고리 추가
+                2차 카테고리 추가
+            </button>
+
+            <button class="category_register_button common_check_button" id="register_category_button">
+                등록
             </button>
 
             <button class="category_delete_button common_check_button" id="delete_category_button">
                 삭제
+            </button>
+
+            <button class="category_update_button common_check_button" id="update_category_button">
+                수정
             </button>
         </div>
 
@@ -43,7 +51,7 @@
 
                     <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
                         <li class="blog_header_category_elem">
-                            <button th:value="'parentCategory:' + ${subCategoryDtoList.parentCategoryDto.id} + '&' + ${subCategoryDtoList.parentCategoryDto.parentId}"
+                            <button th:value="'parentCategory:' + ${subCategoryDtoList.parentCategoryDto.id} + '&' + ${subCategoryDtoList.parentCategoryDto.parentId} + '=' + ${subCategoryDtoList.parentCategoryDto.seq}"
                                     class="common_button_text blog_header_category_title"
                                     th:text="${subCategoryDtoList.parentCategoryDto.name}">
                                 카테고리명
@@ -70,5 +78,25 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="categoryId" value="0">
+<input type="hidden" id="categorySeq" value="0">
+
+<script th:inline="javascript">
+    const subCategoryDtoList = [[${category.subCategoryDtoList}]];
+    document.getElementById("categorySeq").value = subCategoryDtoList.length;
+
+    let maxCategoryId = 0;
+    for (const subCategoryIdx in subCategoryDtoList) {
+        const subCategoryDto = subCategoryDtoList[subCategoryIdx]['parentCategoryDto'];
+        const childCategoryList = subCategoryDto['childCategoryDtoList'];
+        maxCategoryId = Math.max(maxCategoryId, subCategoryDto['id']);
+
+        for (const idx in childCategoryList) {
+            const childCategory = childCategoryList[idx];
+            maxCategoryId = Math.max(maxCategoryId, childCategory['id']);
+        }
+    }
+    document.getElementById("categoryId").value = maxCategoryId;
+</script>
 </body>
 </html>
