@@ -45,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto findCategoryDtoByBlogId(Long blogId) {
-        return CategoryDto.fromEntity(categoryMapper.findCategoriesByBlogId(blogId));
+        return CategoryDto.fromEntity(!blogService.isDeleteOrNotFoundBlog(blogId) ? categoryMapper.findCategoriesByBlogId(blogId) : Collections.emptyList());
     }
 
     @Override

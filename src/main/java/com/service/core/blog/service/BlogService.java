@@ -13,4 +13,6 @@ public interface BlogService {
     Blog findBlogByEmail(String email);
 
     Blog findBlogByIdOrThrow(Long blogId);
+
+    boolean isDeleteOrNotFoundBlog(Long blogId);
 }

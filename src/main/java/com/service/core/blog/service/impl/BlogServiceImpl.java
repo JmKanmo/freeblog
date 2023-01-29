@@ -58,4 +58,13 @@ public class BlogServiceImpl implements BlogService {
     public Blog findBlogByIdOrThrow(Long blogId) {
         return blogInfoService.findBlogByIdOrThrow(blogId);
     }
+
+    @Override
+    public boolean isDeleteOrNotFoundBlog(Long blogId) {
+        try {
+            return findBlogByIdOrThrow(blogId).isDelete();
+        } catch (BlogManageException e) {
+            return true;
+        }
+    }
 }

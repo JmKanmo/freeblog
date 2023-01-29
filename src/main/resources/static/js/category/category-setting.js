@@ -90,17 +90,55 @@ class CategorySettingController extends UtilController {
 
             if (!categoryValues) {
                 return;
+            } else if (categoryValues === "totalCategory") {
+                this.showToastMessage('해당 카테고리는 삭제할 수 없습니다.');
+                return;
             }
 
-            // TODO
+            if (categoryValues[0] === "parentCategory") {
+                const childCategory = this.prevClickedButton.closest('li');
+                const childCategoryList = childCategory.getElementsByClassName('blog_header_sub_category_list')[0];
+                const childCategoryCount = childCategoryList.childElementCount;
+
+                if (childCategoryCount > 0) {
+                    if (confirm('하위 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
+                        const childCategories = childCategoryList.getElementsByTagName('li');
+
+                        for (let idx = 0; idx < childCategories.length; idx++) {
+                            childCategories[idx].remove();
+                        }
+                        childCategory.remove();
+                        this.prevClickedButton = null;
+                    }
+                } else {
+                    if (confirm('해당 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
+                        childCategory.remove();
+                        this.prevClickedButton = null;
+                    }
+                }
+            } else if (categoryValues[0] === "childCategory") {
+                if (confirm('해당 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
+                    const childCategory = this.prevClickedButton.closest('li');
+                    childCategory.remove();
+                    this.prevClickedButton = null;
+                }
+            }
         });
 
         this.registerCategoryButton.addEventListener("click", evt => {
-            this.showToastMessage('등록 버튼 클릭');
-            // TODO
+            const registeredCategory = this.getRegisteredCategoryList();
+            // TODO http 전송
         });
 
         this.updateCategoryButton.addEventListener("click", evt => {
+            if (!this.prevClickedButton) {
+                this.showToastMessage('대상 카테고리가 선택되지 않았습니다.');
+                return;
+            } else if (this.prevClickedButton.id === 'total_category_search_title') {
+                this.showToastMessage('해당 카테고리는 수정할 수 없습니다.');
+                return;
+            }
+
             const categoryName = prompt('', this.prevClickedButton.textContent);
 
             if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
@@ -109,6 +147,11 @@ class CategorySettingController extends UtilController {
             }
             this.prevClickedButton.textContent = categoryName;
         });
+    }
+
+    getRegisteredCategoryList() {
+        // TODO
+        return null;
     }
 
     getCategoryValues(category) {
@@ -161,13 +204,13 @@ class CategorySettingController extends UtilController {
 
                 const categoryCount = document.createElement('span');
                 categoryCount.className = 'category_count_text';
-                categoryCount.textContent = `(0)`;
+                categoryCount.textContent = ` (0)`;
 
                 const childCategoryList = document.createElement('ul');
                 childCategoryList.className = 'blog_header_sub_category_list';
 
-                categoryButton.appendChild(categoryCount);
                 oneLevelCategory.appendChild(categoryButton);
+                oneLevelCategory.appendChild(categoryCount);
                 oneLevelCategory.appendChild(childCategoryList);
                 this.categoryList.appendChild(oneLevelCategory);
                 break;
@@ -184,7 +227,7 @@ class CategorySettingController extends UtilController {
                 categoryButton.textContent = categoryInfo['name'];
                 const categoryCount = document.createElement('span');
                 categoryCount.className = 'sub_category_count_text';
-                categoryCount.textContent = `(0)`;
+                categoryCount.textContent = ` (0)`;
                 childCategory.appendChild(categoryButton);
                 childCategory.appendChild(categoryCount);
                 childCategoryList[0].appendChild(childCategory);
