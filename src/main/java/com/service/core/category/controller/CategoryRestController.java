@@ -3,6 +3,8 @@ package com.service.core.category.controller;
 import com.service.core.category.dto.CategoryResponseDto;
 import com.service.core.category.model.CategoryInput;
 import com.service.core.category.service.CategoryService;
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.CategoryManageException;
 import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.paging.PostSearchPagingDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "카테고리", description = "카테고리 관련 Rest API")
@@ -76,8 +80,11 @@ public class CategoryRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 카테고리 등록 실패")
     })
     @PostMapping("/register/{blogId}")
-    public ResponseEntity<CategoryResponseDto> registerCategory(@RequestBody List<CategoryInput> categoryInput, @PathVariable Long blogId) {
+    public ResponseEntity<CategoryResponseDto> registerCategory(@RequestBody @Valid List<CategoryInput> categoryInput, BindingResult bindingResult, @PathVariable Long blogId) {
         try {
+            if (bindingResult.hasErrors()) {
+                throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
             categoryService.registerCategory(blogId, categoryInput);
             return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(null));
         } catch (Exception exception) {

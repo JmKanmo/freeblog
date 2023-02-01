@@ -24,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -145,6 +142,46 @@ public class CategoryServiceImpl implements CategoryService {
     public void registerCategory(Long blogId, List<CategoryInput> categoryInputList) {
         Blog blog = blogService.findBlogByIdOrThrow(blogId);
         List<Category> categories = blog.getCategoryList();
-        // TODO 
+        List<Category> newCategories = new ArrayList<>();
+        List<Category> delCategories = new ArrayList<>();
+
+        for (Category category : categories) {
+            boolean contains = false;
+
+            for (CategoryInput categoryInput : categoryInputList) {
+                if (checkCategory(category, categoryInput)) {
+                    category.setName(categoryInput.getName());
+                    categoryInputList.remove(categoryInput);
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains) {
+                delCategories.add(category);
+            }
+        }
+
+        for (CategoryInput categoryInput : categoryInputList) {
+            newCategories.add(Category.from(categoryInput, blog));
+        }
+        categoryRepository.deleteAll(delCategories);
+        categoryRepository.saveAll(newCategories);
+    }
+
+    private boolean checkCategory(Category category, CategoryInput categoryInput) {
+        String categoryType = categoryInput.getType();
+
+        if (!categoryType.equals("childCategory") && !categoryType.equals("parentCategory")) {
+            throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+        }
+
+        if (category.getId() == categoryInput.getId() &&
+                category.getSeq() == categoryInput.getSeq()) {
+            boolean isChild = category.getParentId() == 0 ? false : true;
+            if (isChild && categoryInput.getType().equals("childCategory") || (!isChild && categoryInput.getType().equals("parentCategory"))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

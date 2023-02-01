@@ -48,4 +48,14 @@ public class Category extends BaseTimeEntity {
                 .blog(blog)
                 .build();
     }
+
+    public static Category from(CategoryInput categoryInput, Blog blog) {
+        return Category.builder()
+                .parentId(categoryInput.getType().equals("childCategory") ? 1L : 0L)
+                .name(categoryInput.getName())
+                .seq(categoryInput.getSeq())
+                .blog(blog)
+                .isDelete(false)
+                .build();
+    }
 }
