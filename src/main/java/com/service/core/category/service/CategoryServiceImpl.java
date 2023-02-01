@@ -4,6 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
+import com.service.core.category.model.CategoryInput;
 import com.service.core.category.repository.CategoryRepository;
 import com.service.core.category.repository.mapper.CategoryMapper;
 import com.service.core.error.constants.ServiceExceptionMessage;
@@ -137,5 +138,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category registerBasicCategory(Blog blog) {
         return categoryRepository.save(Category.from(blog));
+    }
+
+    @Transactional
+    @Override
+    public void registerCategory(Long blogId, List<CategoryInput> categoryInputList) {
+        Blog blog = blogService.findBlogByIdOrThrow(blogId);
+        List<Category> categories = blog.getCategoryList();
+        // TODO 
     }
 }

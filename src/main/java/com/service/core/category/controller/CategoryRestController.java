@@ -1,6 +1,7 @@
 package com.service.core.category.controller;
 
 import com.service.core.category.dto.CategoryResponseDto;
+import com.service.core.category.model.CategoryInput;
 import com.service.core.category.service.CategoryService;
 import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "카테고리", description = "카테고리 관련 Rest API")
 @RequiredArgsConstructor
@@ -64,6 +67,22 @@ public class CategoryRestController {
         } catch (Exception exception) {
             log.error("[freeblog-findTotalPostByCategoryId] exception occurred ", exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "카테고리 등록", description = "카테고리 등록 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "카테고리 등록 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 카테고리 등록 실패")
+    })
+    @PostMapping("/register/{blogId}")
+    public ResponseEntity<CategoryResponseDto> registerCategory(@RequestBody List<CategoryInput> categoryInput, @PathVariable Long blogId) {
+        try {
+            categoryService.registerCategory(blogId, categoryInput);
+            return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(null));
+        } catch (Exception exception) {
+            log.error("[freeblog-findTotalCategoryByBlogId] exception occurred ", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CategoryResponseDto.fail(exception));
         }
     }
 }

@@ -40,15 +40,6 @@ public class Category extends BaseTimeEntity {
     @OneToMany(mappedBy = "category")
     private List<Post> postList;
 
-    public static Category from(CategoryInput categoryInput, Blog blog) {
-        return Category.builder()
-                .parentId(categoryInput.getParentId())
-                .name(categoryInput.getName())
-                .seq(categoryInput.getSeq())
-                .blog(blog)
-                .build();
-    }
-
     public static Category from(Blog blog) {
         return Category.builder()
                 .parentId(0L)

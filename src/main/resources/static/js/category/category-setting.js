@@ -7,9 +7,11 @@ class CategorySettingController extends UtilController {
         this.deleteCategoryButton = document.getElementById("delete_category_button");
         this.categoryList = document.getElementById("blog_header_category_list");
         this.prevClickedButton = null;
+        this.categoryCountText = document.getElementById("category_count_text");
         this.registerCategoryButton = document.getElementById("register_category_button");
         this.categoryId = document.getElementById("categoryId").value;
         this.categorySeq = document.getElementById("categorySeq").value;
+        this.blogId = document.getElementById("blogIdInput").value;
     }
 
     initCategorySettingController() {
@@ -42,8 +44,7 @@ class CategorySettingController extends UtilController {
 
             const categoryName = prompt('', '');
 
-            if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
-                this.showToastMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
+            if (this.checkCategoryName(categoryName)) {
                 return;
             }
 
@@ -71,8 +72,7 @@ class CategorySettingController extends UtilController {
 
             const categoryName = prompt('', '');
 
-            if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
-                this.showToastMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
+            if (this.checkCategoryName(categoryName)) {
                 return;
             }
 
@@ -126,8 +126,32 @@ class CategorySettingController extends UtilController {
         });
 
         this.registerCategoryButton.addEventListener("click", evt => {
-            const registeredCategory = this.getRegisteredCategoryList();
-            // TODO http 전송
+            if (confirm("카테고리를 등록하겠습니까?")) {
+                const registeredCategory = this.getRegisteredCategoryList();
+                const xhr = new XMLHttpRequest();
+
+                xhr.open("POST", `/category/register/${this.blogId}`, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = JSON.parse(event.target.responseText);
+
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
+                        this.showToastMessage(responseValue["message"]);
+                    } else {
+                        this.showToastMessage("카테고리가 등록되었습니다. 페이지를 새로고침해주세요.");
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage("카테고리 정보를 등록하는데 실패하였습니다.");
+                });
+
+                xhr.send(
+                    JSON.stringify(registeredCategory)
+                );
+            }
         });
 
         this.updateCategoryButton.addEventListener("click", evt => {
@@ -141,8 +165,7 @@ class CategorySettingController extends UtilController {
 
             const categoryName = prompt('', this.prevClickedButton.textContent);
 
-            if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
-                this.showToastMessage("비어있거나 공백이 포함 된 문자로 변경할 수 없습니다.");
+            if (this.checkCategoryName(categoryName)) {
                 return;
             }
             this.prevClickedButton.textContent = categoryName;
@@ -150,28 +173,70 @@ class CategorySettingController extends UtilController {
     }
 
     getRegisteredCategoryList() {
-        // TODO
-        return null;
+        const registeredCategoryList = [];
+        const categories = this.categoryList.childNodes;
+
+        if (categories.length <= 1) {
+            this.showToastMessage('등록된 카테고리가 없습니다.');
+            return;
+        }
+
+        for (let i = 0; i < categories.length; i++) {
+            if (categories[i].nodeName !== "#text") {
+                const category = categories[i];
+                const categoryButton = category.getElementsByTagName('button')[0];
+                const categoryValue = categoryButton.value;
+
+                if (categoryValue !== 'totalCategory') {
+                    const categoryValues = this.getCategoryValues(categoryValue, true);
+                    registeredCategoryList.push({
+                        type: categoryValues[0],
+                        id: categoryValues[1],
+                        seq: categoryValues[3],
+                        name: categoryButton.innerText
+                    });
+                    if (category.getElementsByTagName('ul')[0].childNodes.length > 0) {
+                        const childCategories = category.getElementsByTagName('ul')[0].childNodes;
+
+                        for (let j = 0; j < childCategories.length; j++) {
+                            if (childCategories[j].nodeName !== "#text") {
+                                const childCategory = childCategories[j];
+                                const childCategoryButton = childCategory.getElementsByTagName('button')[0];
+                                const childCategoryValue = childCategoryButton.value;
+                                const childCategoryValues = this.getCategoryValues(childCategoryValue, true);
+                                registeredCategoryList.push({
+                                    type: childCategoryValues[0],
+                                    id: childCategoryValues[1],
+                                    seq: childCategoryValues[3],
+                                    name: childCategoryButton.innerText
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return registeredCategoryList;
     }
 
-    getCategoryValues(category) {
+    getCategoryValues(category, isJson) {
         if (!category) {
             this.showToastMessage('대상 카테고리가 선택되지 않았습니다.');
             return null;
         }
 
-        let categoryValue = category.value;
+        let categoryValue = !isJson ? category.value : category;
 
-        if (!categoryValue) {
+        if (!categoryValue && !isJson) {
             this.showToastMessage('대상 카테고리 유효성 검사에 실패하였습니다.');
             return null;
         }
 
-        if (category.value === 'totalCategory') {
+        if (categoryValue === 'totalCategory') {
             return categoryValue;
         }
 
-        categoryValue = category.value.split(":");
+        categoryValue = categoryValue.split(":");
 
         const categoryType = categoryValue[0];
         const categoryValues = [];
@@ -234,6 +299,17 @@ class CategorySettingController extends UtilController {
                 break;
             }
         }
+    }
+
+    checkCategoryName(categoryName) {
+        if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
+            this.showToastMessage("비어있거나 공백이 포함 된 문자로 변경할 수 없습니다.");
+            return true;
+        } else if (categoryName.length > 25) {
+            this.showToastMessage("카테고리명은 25 글자를 넘을 수 없습니다.");
+            return true;
+        }
+        return false;
     }
 }
 

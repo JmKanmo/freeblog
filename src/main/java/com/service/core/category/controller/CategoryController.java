@@ -47,6 +47,7 @@ public class CategoryController {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
+        model.addAttribute("blogId", blogId);
         model.addAttribute("category", categoryService.findCategoryDtoByBlogId(blogId));
         return "category/category-setting";
     }

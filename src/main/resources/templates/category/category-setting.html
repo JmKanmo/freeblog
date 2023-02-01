@@ -44,7 +44,7 @@
                         <button th:value="'totalCategory'"
                                 class="common_button_text total_category_search_title" id="total_category_search_title">
                             전체 카테고리
-                            <span class="category_count_text"
+                            <span class="category_count_text" id="category_count_text"
                                   th:text="'(' + ${category.totalCategoryDto.totalCount} + ')'">전체개수</span>
                         </button>
                     </li>
@@ -78,8 +78,9 @@
         </div>
     </div>
 </div>
-<input type="hidden" id="categoryId" value="0">
-<input type="hidden" id="categorySeq" value="0">
+<input type="hidden" readonly id="blogIdInput" , th:value="${blogId}">
+<input type="hidden" readonly id="categoryId" value="0">
+<input type="hidden" readonly id="categorySeq" value="0">
 
 <script th:inline="javascript">
     const subCategoryDtoList = [[${category.subCategoryDtoList}]];

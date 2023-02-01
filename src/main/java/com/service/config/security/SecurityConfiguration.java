@@ -87,6 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
          **/
         http.csrf().ignoringAntMatchers(
                 "/user/login", "/user/signup", "/user/update/password", "/user/email-auth",
+                "/category/register",
                 "/comment/**");
         super.configure(http);
     }
