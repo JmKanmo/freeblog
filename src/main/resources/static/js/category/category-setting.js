@@ -103,23 +103,24 @@ class CategorySettingController extends UtilController {
                 if (childCategoryCount > 0) {
                     if (confirm('하위 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
                         const childCategories = childCategoryList.getElementsByTagName('li');
+                        const loop = childCategories.length;
 
-                        for (let idx = 0; idx < childCategories.length; idx++) {
-                            childCategories[idx].remove();
+                        for (let idx = 0; idx < loop; idx++) {
+                            this.#updateCategoryCount(childCategories[0]);
                         }
-                        childCategory.remove();
+                        this.#updateCategoryCount(childCategory);
                         this.prevClickedButton = null;
                     }
                 } else {
                     if (confirm('해당 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
-                        childCategory.remove();
+                        this.#updateCategoryCount(childCategory);
                         this.prevClickedButton = null;
                     }
                 }
             } else if (categoryValues[0] === "childCategory") {
                 if (confirm('해당 카테고리 및 포함된 게시글을 모두 삭제하겠습니까?')) {
                     const childCategory = this.prevClickedButton.closest('li');
-                    childCategory.remove();
+                    this.#updateCategoryCount(childCategory);
                     this.prevClickedButton = null;
                 }
             }
@@ -312,6 +313,14 @@ class CategorySettingController extends UtilController {
             return true;
         }
         return false;
+    }
+
+    #updateCategoryCount(targetCategory) {
+        const targetCategoryCount = parseInt(targetCategory.innerText.split('(')[1].split(')')[0]);
+        const totalCategoryCount = parseInt(this.categoryCountText.innerText.split('(')[1].split(')')[0]);
+        const result = totalCategoryCount - targetCategoryCount;
+        this.categoryCountText.innerText = `(${result < 0 ? 0 : result})`;
+        targetCategory.remove();
     }
 }
 
