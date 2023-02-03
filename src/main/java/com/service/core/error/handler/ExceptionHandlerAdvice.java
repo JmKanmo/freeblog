@@ -23,14 +23,14 @@ public class ExceptionHandlerAdvice {
     public String fileSizeLimitExceededHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception.getMessage());
+        log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception);
         return "error/error-page";
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public ResponseEntity<ExceptionDto> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
-        log.error("[freeblog-httpRequestMethodNotSupportedHandler] HttpRequestMethodNotSupportedException occurred ", exception.getMessage());
+        log.error("[freeblog-httpRequestMethodNotSupportedHandler] HttpRequestMethodNotSupportedException occurred ", exception);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder().statusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
                         .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", BlogUtil.getErrorMessage(exception)))
@@ -41,7 +41,7 @@ public class ExceptionHandlerAdvice {
     public String templateEngineExceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-fileSizeLimitExceededHandler] TemplateEngineException occurred ", exception.getMessage());
+        log.error("[freeblog-fileSizeLimitExceededHandler] TemplateEngineException occurred ", exception);
         return "error/error-page";
     }
 
@@ -49,7 +49,7 @@ public class ExceptionHandlerAdvice {
     public String exceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-exceptionHandler] exception occurred ", exception.getMessage());
+        log.error("[freeblog-exceptionHandler] exception occurred ", exception);
         return "error/error-page";
     }
 }

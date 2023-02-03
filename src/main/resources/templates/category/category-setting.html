@@ -62,9 +62,9 @@
                             <ul class="blog_header_sub_category_list">
                                 <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
                                     <li class="blog_header_sub_category_elem">
-                                        <button th:value="'childCategory:' + ${childCategoryDtoList.id} + '&' + ${childCategoryDtoList.parentId}"
+                                        <button th:value="'childCategory:' + ${childCategoryDtoList.id} + '&' + ${childCategoryDtoList.parentId} + '=' + ${subCategoryDtoList.parentCategoryDto.seq}"
                                                 class="common_button_text blog_header_sub_category_title"
-                                                th:text="${'- ' + childCategoryDtoList.name}"> 카테고리명
+                                                th:text="${childCategoryDtoList.name}"> 카테고리명
                                         </button>
                                         <span class="sub_category_count_text"
                                               th:text="'(' + ${childCategoryDtoList.postCount} + ')'">(25)</span>

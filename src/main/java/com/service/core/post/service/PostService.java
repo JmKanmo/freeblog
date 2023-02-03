@@ -38,5 +38,7 @@ public interface PostService {
 
     int findPostCountByBlogId(Long blogId);
 
+    int findUndeletePostCountByBlogId(Long blogId);
+
     boolean checkEqualPostByLogin(Long blogId, Long postId);
 }

@@ -101,8 +101,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (parentCategoryId == 0 || !categoryRepository.existsById(parentCategoryId)) {
             return categoryName;
         } else {
-            Category parentCategory = categoryRepository.findById(parentCategoryId).get();
-            String parentCategoryName = parentCategory.getName();
+            String parentCategoryName = categoryRepository.findById(parentCategoryId).get().getName();
             return parentCategoryName + "/" + categoryName;
         }
     }
@@ -143,7 +142,8 @@ public class CategoryServiceImpl implements CategoryService {
         Blog blog = blogService.findBlogByIdOrThrow(blogId);
         List<Category> categories = blog.getCategoryList();
         List<Category> newCategories = new ArrayList<>();
-        List<Category> delCategories = new ArrayList<>();
+
+        checkCategoryInputRelation(categoryInputList);
 
         for (Category category : categories) {
             boolean contains = false;
@@ -156,15 +156,21 @@ public class CategoryServiceImpl implements CategoryService {
                     break;
                 }
             }
+
             if (!contains) {
-                delCategories.add(category);
+                category.setDelete(true);
+
+                for (Post post : category.getPostList()) {
+                    if (!post.isDelete()) {
+                        post.setDelete(true);
+                    }
+                }
             }
         }
 
         for (CategoryInput categoryInput : categoryInputList) {
             newCategories.add(Category.from(categoryInput, blog));
         }
-        categoryRepository.deleteAll(delCategories);
         categoryRepository.saveAll(newCategories);
     }
 
@@ -183,5 +189,21 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
         return false;
+    }
+
+    private void checkCategoryInputRelation(List<CategoryInput> categoryInputList) {
+        Map<Long, CategoryInput> categoryInputMap = new HashMap<>();
+
+        for (CategoryInput categoryInput : categoryInputList) {
+            String categoryType = categoryInput.getType();
+
+            if (categoryType.equals("parentCategory")) {
+                categoryInputMap.put(categoryInput.getId(), categoryInput);
+            } else if (categoryType.equals("childCategory")) {
+                if (!categoryInputMap.containsKey(categoryInput.getParentId())) {
+                    throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+                }
+            }
+        }
     }
 }

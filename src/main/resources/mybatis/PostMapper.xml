@@ -22,7 +22,7 @@
                  inner join category c on post.category_id = c.category_id and c.is_delete != true
                  inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
+        where post_id in (select post_id from post where blog_id = #{blogId} and is_delete = false order by blog_id)
           and post.is_delete != true
         order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
                                           #{postSearchPagingDto.recordSize}
@@ -44,14 +44,15 @@
                c.category_id,
                b.blog_id
         from post
-                 inner join category c on post.category_id = c.category_id and c.is_delete != true
+                 inner join category c on c.category_id = #{categoryId} and c.is_delete != true
          inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
-          and post_id in (select post_id from category where category_id = #{categoryId} order by c.category_id)
-          and post.is_delete != true
-        order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
-                                          #{postSearchPagingDto.recordSize}
+        where post_id in
+            (select post_id from post p where p.blog_id = #{blogId}
+          and p.category_id = #{categoryId}
+          and p.is_delete = false order by p.blog_id)
+        order by register_time desc
+            LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
     <select id="findPostCount" resultType="int">
@@ -60,11 +61,19 @@
         where blog_id = #{blogId}
     </select>
 
+    <select id="findUndeletePostCount" resultType="int">
+        SELECT count(*)
+        from post
+        where blog_id = #{blogId}
+          and is_delete = false
+    </select>
+
     <select id="findPostCountByBlogCategory" resultType="int">
         SELECT count(*)
         from post
         where blog_id = #{blogId}
           and category_id = #{categoryId}
+          and is_delete = false
     </select>
 
     <select id="findPostLinkDtoList" resultType="com.service.core.post.dto.PostLinkDto">
@@ -121,6 +130,7 @@
         SELECT count(*)
         FROM post p
         WHERE p.blog_id = #{blogId}
+        and p.is_delete != true
         and (<include refid="textSearchQuery"/>)
     </select>
 

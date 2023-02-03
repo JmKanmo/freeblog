@@ -47,7 +47,7 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(BlogPostSearchInput.from(blogId, keyword), postSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-searchPostByKeyword] exception occurred ", exception.getMessage());
+            log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -63,7 +63,7 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogService.findBlogByIdOrThrow(blogId).getId(), postSearchPagingDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
+            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -82,7 +82,7 @@ public class PostRestController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception.getMessage());
+            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }

@@ -13,6 +13,7 @@ import java.util.List;
 public class CategoryInput {
     private final Long id;
     private final Long seq;
+    private final Long parentId;
 
     @NotEmpty(message = "카테고리명이 비어있습니다.")
     @NotBlank(message = "카테고리명은 공백만 올 수 없습니다")

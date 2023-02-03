@@ -51,7 +51,7 @@ public class Category extends BaseTimeEntity {
 
     public static Category from(CategoryInput categoryInput, Blog blog) {
         return Category.builder()
-                .parentId(categoryInput.getType().equals("childCategory") ? 1L : 0L)
+                .parentId(categoryInput.getParentId())
                 .name(categoryInput.getName())
                 .seq(categoryInput.getSeq())
                 .blog(blog)

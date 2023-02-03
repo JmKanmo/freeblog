@@ -51,7 +51,7 @@ class CategorySettingController extends UtilController {
             this.#addCategory({
                 type: 'parentCategory',
                 id: ++this.categoryId,
-                parentId: categoryValues === 'totalCategory' ? 0 : categoryValues[2],
+                parentId: 0,
                 seq: ++this.categorySeq,
                 name: categoryName
             }, 'one-level');
@@ -192,6 +192,7 @@ class CategorySettingController extends UtilController {
                     registeredCategoryList.push({
                         type: categoryValues[0],
                         id: categoryValues[1],
+                        parentId: 0,
                         seq: categoryValues[3],
                         name: categoryButton.innerText
                     });
@@ -207,6 +208,7 @@ class CategorySettingController extends UtilController {
                                 registeredCategoryList.push({
                                     type: childCategoryValues[0],
                                     id: childCategoryValues[1],
+                                    parentId: categoryValues[1],
                                     seq: childCategoryValues[3],
                                     name: childCategoryButton.innerText
                                 });

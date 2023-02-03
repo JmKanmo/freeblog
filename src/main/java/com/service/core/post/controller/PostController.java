@@ -4,6 +4,7 @@ import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
@@ -101,6 +102,10 @@ public class PostController {
 
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
         BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(userHeaderDto.getId());
+
+        if (blogInfoDto.getId() != blogId) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
+        }
         PostUpdateDto postUpdateDto = postService.findPostUpdateInfo(blogId, postId);
 
         model.addAttribute("user_header", userHeaderDto);
@@ -117,7 +122,7 @@ public class PostController {
     @GetMapping("/search")
     public String postSearchPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
                                  @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, Model model, Principal principal) {
-        if(principal != null && principal.getName() != null) {
+        if (principal != null && principal.getName() != null) {
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
             model.addAttribute("user_header", userHeaderDto);
         }
@@ -143,6 +148,11 @@ public class PostController {
 
         Post post = Post.from(blogPostInput);
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+
+        if (blogInfoDto.getId() != blogPostInput.getId()) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
+        }
         post.setWriter(userHeaderDto.getNickname());
         post.setBlog(blogService.findBlogByEmail(principal.getName()));
         post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
@@ -166,6 +176,12 @@ public class PostController {
 
         if (bindingResult.hasErrors()) {
             return "post/post-update";
+        }
+
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+
+        if (blogInfoDto.getId() != blogPostUpdateInput.getBlogId()) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
         postService.update(blogPostUpdateInput, categoryService);

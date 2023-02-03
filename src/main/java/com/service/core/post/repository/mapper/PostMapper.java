@@ -14,6 +14,8 @@ public interface PostMapper {
 
     int findPostCount(Long blogId);
 
+    int findUndeletePostCount(Long blogId);
+
     int findPostCountByBlogCategory(Long blogId, Long categoryId);
 
     int findEqualPostCount(Long blogId, Long postId);

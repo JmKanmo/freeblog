@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
-        int postCount = findPostCountByBlogId(blogId);
+        int postCount = findUndeletePostCountByBlogId(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
         postSearchPagingDto.setPostPagination(postPagination);
         return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findTotalPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
@@ -131,6 +131,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public int findPostCountByBlogId(Long blogId) {
         return postMapper.findPostCount(blogId);
+    }
+
+    @Override
+    public int findUndeletePostCountByBlogId(Long blogId) {
+        return postMapper.findUndeletePostCount(blogId);
     }
 
     @Override
