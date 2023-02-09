@@ -93,6 +93,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostDto findPostDtoById(Long postId) {
+        return PostDto.fromEntity(findPostById(postId));
+    }
+
+    @Override
     public PostUpdateDto findPostUpdateInfo(Long blogId, Long postId) {
         if (!checkPostId(blogId, postId)) {
             throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
@@ -141,6 +146,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean checkEqualPostByLogin(Long blogId, Long postId) {
         return postMapper.findEqualPostCount(blogId, postId) <= 0 ? false : true;
+    }
+
+    @Transactional
+    @Override
+    public void deletePost(Long postId) {
+        Post post = findPostById(postId);
+        post.setDelete(true);
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

@@ -19,6 +19,7 @@ class PostDetailController extends UtilController {
         this.postDetailDeleteButton = document.getElementById("post_detail_delete_button");
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchForm = document.getElementById("postSearchForm");
+        this.postDeleteForm = document.getElementById("post_delete_form");
     }
 
     initPostDetailController() {
@@ -82,7 +83,9 @@ class PostDetailController extends UtilController {
 
         if (this.postDetailDeleteButton != null) {
             this.postDetailDeleteButton.addEventListener("click", evt => {
-                this.showToastMessage("게시글 삭제 버튼 클릭");
+                if (confirm("게시글을 삭제하겠습니까?")) {
+                    this.postDeleteForm.submit();
+                }
             });
         }
 

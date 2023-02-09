@@ -70,9 +70,14 @@
                         수정
                     </a>
 
-                    <button class="common_button_text post_detail_delete_button" id="post_detail_delete_button">
+                    <button type="button" class="common_button_text post_detail_delete_button"
+                            id="post_detail_delete_button">
                         삭제
                     </button>
+
+                    <form action="/post/delete" method="post" id="post_delete_form">
+                        <input type="hidden" id="postIdInput" readonly name="postId" th:value="${postDetail.id}">
+                    </form>
                 </th:block>
             </div>
         </div>

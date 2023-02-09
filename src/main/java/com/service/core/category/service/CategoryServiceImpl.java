@@ -3,6 +3,7 @@ package com.service.core.category.service;
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
+import com.service.core.category.domain.CategoryMapperDto;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.model.CategoryInput;
 import com.service.core.category.repository.CategoryRepository;
@@ -171,7 +172,29 @@ public class CategoryServiceImpl implements CategoryService {
         for (CategoryInput categoryInput : categoryInputList) {
             newCategories.add(Category.from(categoryInput, blog));
         }
-        categoryRepository.saveAll(newCategories);
+
+        List<Category> createdCategories = categoryRepository.saveAll(newCategories);
+
+        if (getCategoryTypeSet(createdCategories).size() >= 2) {
+            List<CategoryMapperDto> categoryDtoList = categoryMapper.findCategoriesByBlogId(blogId);
+
+            Map<Long, CategoryMapperDto> parentCategoryMap = new HashMap<>();
+
+            for (CategoryMapperDto categoryMapperDto : categoryDtoList) {
+                if (categoryMapperDto.getParentId() == 0) {
+                    parentCategoryMap.put(categoryMapperDto.getSeq(), categoryMapperDto);
+                }
+            }
+
+            for (Category category : createdCategories) {
+                if (category.getParentId() != 0) {
+                    if (parentCategoryMap.containsKey(category.getSeq())) {
+                        category.setParentId(parentCategoryMap.get(category.getSeq()).getCategoryId());
+                    }
+                }
+            }
+            categoryRepository.saveAll(createdCategories);
+        }
     }
 
     private boolean checkCategory(Category category, CategoryInput categoryInput) {
@@ -191,11 +214,22 @@ public class CategoryServiceImpl implements CategoryService {
         return false;
     }
 
+    private Set<String> getCategoryTypeSet(List<Category> categories) {
+        Set<String> set = new HashSet<>();
+
+        for (Category category : categories) {
+            set.add(category.getParentId() == 0 ? "parentCategory" : "childCategory");
+        }
+        return set;
+    }
+
     private void checkCategoryInputRelation(List<CategoryInput> categoryInputList) {
         Map<Long, CategoryInput> categoryInputMap = new HashMap<>();
+        Set<String> categoryTypeSet = new HashSet<>();
 
         for (CategoryInput categoryInput : categoryInputList) {
             String categoryType = categoryInput.getType();
+            categoryTypeSet.add(categoryType);
 
             if (categoryType.equals("parentCategory")) {
                 categoryInputMap.put(categoryInput.getId(), categoryInput);

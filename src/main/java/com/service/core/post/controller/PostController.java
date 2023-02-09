@@ -9,6 +9,7 @@ import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
+import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostUpdateDto;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.model.BlogPostUpdateInput;
@@ -186,5 +187,27 @@ public class PostController {
 
         postService.update(blogPostUpdateInput, categoryService);
         return String.format("redirect:/post/%d?blogId=%d", blogPostUpdateInput.getPostId(), blogPostUpdateInput.getBlogId());
+    }
+
+    @Operation(summary = "블로그 포스트 삭제 작업", description = "블로그 포스트 삭제 작업 진행")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "블로그 포스트 삭제 작업 성공"),
+            @ApiResponse(responseCode = "500", description = "DB 연결 오류, SQL 쿼리 수행 실패 등의 이유로 블로그 포스트 삭제 작업 실패")
+    })
+    @PostMapping("/delete")
+    public String postDelete(@RequestParam(value = "postId", required = false, defaultValue = "0") Long postId, Principal principal) {
+        if ((principal == null || principal.getName() == null)) {
+            throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+        }
+
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+        PostDto postDto = postService.findPostDtoById(postId);
+
+        if (blogInfoDto.getId() != postDto.getBlogId()) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
+        }
+
+        postService.deletePost(postId);
+        return String.format("redirect:/blog/%s", blogInfoDto.getName());
     }
 }

@@ -26,6 +26,8 @@ public interface PostService {
 
     PostDetailDto findPostDetailInfo(Long blogId, Long postId);
 
+    PostDto findPostDtoById(Long postId);
+
     PostUpdateDto findPostUpdateInfo(Long blogId, Long postId);
 
     PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq);
@@ -41,4 +43,6 @@ public interface PostService {
     int findUndeletePostCountByBlogId(Long blogId);
 
     boolean checkEqualPostByLogin(Long blogId, Long postId);
+
+    void deletePost(Long postId);
 }
