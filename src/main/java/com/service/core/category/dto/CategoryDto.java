@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Builder
 @Data
@@ -35,8 +32,9 @@ public class CategoryDto {
             }
         }
 
-        for (Long seq : subCategoryDtoMap.keySet()) {
-            SubCategoryDto subCategoryDto = subCategoryDtoMap.get(seq);
+        for(Iterator iterator = subCategoryDtoMap.entrySet().iterator(); iterator.hasNext();) {
+            Map.Entry<Long, SubCategoryDto> entry = (Map.Entry<Long, SubCategoryDto>) iterator.next();
+            SubCategoryDto subCategoryDto = entry.getValue();
             totalCategoryCount += subCategoryDto.getPostCount();
             subCategoryDtoList.add(subCategoryDto);
         }
