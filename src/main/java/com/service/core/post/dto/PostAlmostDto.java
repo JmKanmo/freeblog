@@ -11,7 +11,7 @@ public class PostAlmostDto {
     private PostLinkDto prevPostLinkDto;
     private PostLinkDto nextPostLinkDto;
 
-    public static PostAlmostDto from(Integer seq, List<PostLinkDto> postLinkDtoList) {
+    public static PostAlmostDto from(Long seq, List<PostLinkDto> postLinkDtoList) {
         PostAlmostDto postAlmostDto = PostAlmostDto.builder().build();
 
         for (PostLinkDto postLinkDto : postLinkDtoList) {

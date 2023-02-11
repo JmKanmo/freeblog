@@ -157,7 +157,7 @@ public class PostController {
         post.setWriter(userHeaderDto.getNickname());
         post.setBlog(blogService.findBlogByEmail(principal.getName()));
         post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
-        post.setSeq(postService.findPostCountByBlogId(post.getBlog().getId()) + 1);
+        post.setSeq((long) (postService.findPostCountByBlogId(post.getBlog().getId()) + 1));
         postService.register(post, blogPostInput);
         model.addAttribute("result", "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
 

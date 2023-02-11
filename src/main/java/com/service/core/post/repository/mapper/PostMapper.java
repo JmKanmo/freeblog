@@ -20,7 +20,7 @@ public interface PostMapper {
 
     int findEqualPostCount(Long blogId, Long postId);
 
-    List<PostLinkDto> findPostLinkDtoList(Long blogId, Integer seq);
+    List<PostLinkDto> findPostLinkDtoList(Long blogId, Long seq);
 
     List<PostSearchMapperDto> findPostDtoByKeyword(@Param("postKeywordSearchDto") PostKeywordSearchDto postKeywordSearchDto);
 

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Builder
 public class PostDetailDto {
     private final Long id;
-    private final Integer seq;
+    private final Long seq;
     private final String title;
     private final String contents;
     private final String categoryName;

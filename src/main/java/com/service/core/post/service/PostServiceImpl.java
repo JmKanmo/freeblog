@@ -106,7 +106,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq) {
+    public PostAlmostDto findPostAlmostInfo(Long blogId, Long seq) {
         return PostAlmostDto.from(seq, postMapper.findPostLinkDtoList(blogId, seq));
     }
 

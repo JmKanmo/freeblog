@@ -23,7 +23,7 @@ public class PostRepositoryTest {
 
     @Test
     public void postMapperTest() {
-        List<PostLinkDto> postLinkDtoList = postMapper.findPostLinkDtoList(3L, 0);
+        List<PostLinkDto> postLinkDtoList = postMapper.findPostLinkDtoList(3L, 0L);
         Assertions.assertNotNull(postLinkDtoList);
     }
 

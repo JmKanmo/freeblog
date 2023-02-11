@@ -30,7 +30,7 @@ public interface PostService {
 
     PostUpdateDto findPostUpdateInfo(Long blogId, Long postId);
 
-    PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq);
+    PostAlmostDto findPostAlmostInfo(Long blogId, Long seq);
 
     List<PostDto> findPostPaginationById(PostSearchDto postSearchDto);
 
