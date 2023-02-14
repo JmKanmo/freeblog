@@ -44,7 +44,7 @@ public class BlogController {
         model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("category", categoryService.findCategoryDtoByUserId(id));
         model.addAttribute("blog_info", blogService.findBlogInfoDtoById(id));
-        // TODO 최신글, 전체글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
+        // TODO 태그, 최신 댓글, 음악정보, 방문자 수 넘겨줄것
         return "blog/myblog";
     }
 }

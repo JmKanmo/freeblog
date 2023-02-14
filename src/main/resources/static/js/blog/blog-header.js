@@ -13,6 +13,9 @@ class BlogHeaderController extends BlogBodyController {
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchForm = document.getElementById("postSearchForm");
         this.categorySettingButton = document.getElementById("category_setting_button");
+
+        this.recentPostCardList = document.getElementById("recent_post_card_list");
+        this.polularPostCardList = document.getElementById("popular_post_card_list");
     }
 
     initBlogHeaderController() {
@@ -78,6 +81,35 @@ class BlogHeaderController extends BlogBodyController {
                 this.openPopUp(1080, 750, '/category/setting?blogId=' + document.getElementById("blog_info_id").value, 'popup');
             })
         }
+    }
+
+    #requestRecentPostCard() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `/post/recent/${document.getElementById("blog_info_id").value}`, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#handleTemplateList(responseValue["postPaginationResponse"]["postDto"]);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("게시글 정보를 불러오는데 실패하였습니다.");
+        });
+        xhr.send();
+    }
+
+    #requestPopularPostCard() {
+        this.showToastMessage("인기글 기능은 추후에 개발 될 예정입니다.");
+    }
+
+    #handleTemplateList(postDto) {
+
     }
 }
 

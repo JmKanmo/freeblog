@@ -11,6 +11,7 @@ public class CommentParentDto {
     private final String comment;
     private final String commentImage;
     private final String userId;
+    private final String href;
     @JsonIgnore
     private final String userPassword;
     private final String userNickname;
@@ -26,6 +27,7 @@ public class CommentParentDto {
                 .id(commentDto.getCommentId())
                 .comment(commentDto.getComment())
                 .commentImage(commentDto.getCommentImage())
+                .href(commentDto.getHref())
                 .userId(commentDto.getUserId())
                 .userPassword(commentDto.getUserPassword())
                 .userNickname(commentDto.getUserNickname())

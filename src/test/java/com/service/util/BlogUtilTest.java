@@ -40,4 +40,10 @@ class BlogUtilTest {
         String keyword = BlogUtil.createKeywordByText("hello world");
         System.out.println(keyword);
     }
+
+    @Test
+    public void randomTextTest() {
+        String keyword = BlogUtil.createRandomAlphaNumberString(20);
+        System.out.println(keyword);
+    }
 }

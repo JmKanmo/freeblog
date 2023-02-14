@@ -40,6 +40,11 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
+    public List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId) {
+        return postMapper.findRecentPostCardDto(blogId);
+    }
+
+    @Override
     public PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
         PostKeywordSearchDto postKeywordSearchDto = PostKeywordSearchDto.from(
                 blogPostSearchInput,

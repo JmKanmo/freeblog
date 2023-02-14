@@ -46,6 +46,10 @@ public class BlogUtil {
         return str == null || str.isEmpty() || str.equals("") ? true : false;
     }
 
+    public static String checkAndGetRepText(String text, String refText) {
+        return checkEmptyOrUndefinedStr(text) ? refText : text;
+    }
+
     public static String getCurrentIp() {
         try {
             return InetAddress.getLocalHost().getHostAddress();

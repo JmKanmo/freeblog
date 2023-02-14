@@ -15,7 +15,8 @@
         </div>
 
         {{#each commentTotalDtoList}}
-        <li class="post_comment_block">
+        <li class="post_comment_block" id={{{hrefCheck
+            commentParentDto.href}}}>
             {{#unless (nullCheck commentParentDto)}}
             {{#if commentParentDto.delete}}
             <span class="post_comment_block_delete_text">댓글이 삭제되었습니다.</span>
@@ -96,7 +97,7 @@
             <!-- 답글 목록 리스트 -->
             <ul class="sub_post_comment_list_block">
                 {{#each commentChildDtoList}}
-                <li class="sub_post_list">
+                <li id={{{hrefCheck href}}} class="sub_post_list">
                     <div class="post_comment_header clear_fix">
                         <div class="comment_user_profile_image_block">
                             {{#if (existImage userProfileImage)}}

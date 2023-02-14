@@ -28,17 +28,4 @@ class CategoryRepositoryTest {
             Assertions.fail();
         }
     }
-
-    @Test
-    @Transactional(readOnly = true)
-    @Disabled
-    void categoryNameTest() {
-        try {
-            String anme = categoryMapper.findCategoryName(7L, 2L, 25L);
-            System.out.println(anme);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assertions.fail();
-        }
-    }
 }

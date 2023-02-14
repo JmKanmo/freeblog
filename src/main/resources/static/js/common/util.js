@@ -14,6 +14,10 @@ class UtilController {
             return param == null || param == '<<<undefined>>>';
         });
 
+        Handlebars.registerHelper('hrefCheck', param => {
+            return !param ? 'comment' : param;
+        });
+
         Handlebars.registerHelper('existImage', image => {
             return image != null && image != '<<<undefined>>>';
         });

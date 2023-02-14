@@ -11,6 +11,7 @@
                c.comment_image,
                c.parent_id,
                date_format(c.register_time, '%y.%m.%d %H:%i') as register_time,
+               c.href,
                c.user_id,
                c.user_password,
                c.user_profile_image,

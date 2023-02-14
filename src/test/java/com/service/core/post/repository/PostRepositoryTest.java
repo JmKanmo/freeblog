@@ -1,5 +1,6 @@
 package com.service.core.post.repository;
 
+import com.service.core.post.dto.PostCardDto;
 import com.service.core.post.dto.PostKeywordSearchDto;
 import com.service.core.post.dto.PostLinkDto;
 import com.service.core.post.dto.PostSearchMapperDto;
@@ -55,5 +56,11 @@ public class PostRepositoryTest {
         );
         int postCount = postMapper.findPostDtoCountByKeyword(postKeywordSearchDto, 5L);
         System.out.println(postCount);
+    }
+
+    @Test
+    public void findPostCardDtoTest() {
+        List<PostCardDto> postCardDto = postMapper.findRecentPostCardDto(6L);
+        Assertions.assertNotNull(postCardDto);
     }
 }

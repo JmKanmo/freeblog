@@ -7,15 +7,15 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class PostResponseDto {
+public class PostResponseDto<T> {
     private final String message;
     private final int responseCode;
-    private final PostTotalDto postTotalDto;
+    private final T postDto;
 
-    public static PostResponseDto success(PostTotalDto postTotalDto) {
+    public static <T> PostResponseDto success(T postDto) {
         return PostResponseDto.builder()
                 .responseCode(HttpStatus.OK.value())
-                .postTotalDto(postTotalDto)
+                .postDto(postDto)
                 .message("success")
                 .build();
     }
@@ -23,7 +23,7 @@ public class PostResponseDto {
     public static PostResponseDto fail(Exception exception) {
         return PostResponseDto.builder()
                 .responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .postTotalDto(null)
+                .postDto(null)
                 .message(String.format("fail: %s", BlogUtil.getErrorMessage(exception)))
                 .build();
     }
