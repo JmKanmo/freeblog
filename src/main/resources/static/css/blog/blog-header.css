@@ -217,7 +217,8 @@
 
 /* 최신글 인기글 스타일 */
 .recent_popular_post_container {
-    padding: 20px 0px 0px 13px;
+    padding: 20px 20px 10px 13px;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .recent_popular_post_container .recent_popular_post_title {
@@ -236,18 +237,20 @@
     margin-left: 30px;
 }
 
-.recent_popular_post_container .recent_popular_post_block {
-    padding-top: 15px;
-    height: 60px;
-    padding-right: 10px;
-}
-
-.recent_popular_post_container .recent_post_block {
+.recent_popular_post_container .recent_post_card_list {
     display: none;
 }
 
-.recent_popular_post_container .popular_post_block {
+.recent_popular_post_container .recent_post_card_list .recent_post_block {
+    margin-top: 20px;
+}
+
+.recent_popular_post_container .popular_post_card_list {
     display: none;
+}
+
+.recent_popular_post_container .popular_post_card_list .popular_post_block {
+    margin-top: 20px;
 }
 
 .recent_popular_post_container .recent_popular_post_block .post_link_container :hover {
@@ -295,7 +298,8 @@
 
 /* 최신 댓글 스타일 */
 .recent_comment_container {
-    padding: 25px 0px 0px 13px;
+    padding: 20px 0px 0px 13px;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .recent_comment_container .recent_comment_title {

@@ -33,6 +33,14 @@ class UtilController {
                 return image;
             }
         });
+
+        Handlebars.registerHelper('getPostThumbnailImage', image => {
+            if (image === '<<<undefined>>>') {
+                return '../images/default_thumbnail.gif';
+            } else {
+                return image;
+            }
+        });
     }
 
     /**

@@ -43,7 +43,7 @@ public class PostRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 최신 포스트 데이터 반환 실패")
     })
     @GetMapping("/recent/{blogId}")
-    public ResponseEntity<PostResponseDto<PostCardDto>> searchRecentPost(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId) {
+    public ResponseEntity<PostResponseDto<List<PostCardDto>>> searchRecentPost(@PathVariable Long blogId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postService.findRecentPostCardDtoByBlogId(blogId)));
         } catch (Exception exception) {

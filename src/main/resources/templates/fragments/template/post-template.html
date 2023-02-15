@@ -230,5 +230,40 @@
         </li>
         {{/each}}
     </script>
+
+    <!-- 최신, 인기 포스트 카드 템플릿 -->
+    <script id="recent-post-card-template" type="text/x-handlebars-template">
+        {{#each postDto}}
+        <li class="recent_popular_post_block recent_post_block" id="recent_post_container">
+            <a href="/post/{{id}}?blogId={{blogId}}" class="post_link_container clear_fix">
+                <div class="post_text_block">
+                    <p class="post_text">{{title}}</p>
+                    <p class="post_date">{{registerTime}}</p>
+                </div>
+
+                <div class="post_image_block">
+                    <img src={{{getPostThumbnailImage thumbnailImage}}} alt="" class="post_image">
+                </div>
+            </a>
+        </li>
+        {{/each}}
+    </script>
+
+    <script id="popular-post-card-template" type="text/x-handlebars-template">
+        {{#each postDto}}
+        <li className="recent_popular_post_block popular_post_block" id="popular_post_container">
+            <a href="/post/{{id}}?blogId={{blogId}}" class="post_link_container clear_fix">
+                <div class="post_text_block">
+                    <p class="post_text">{{title}}</p>
+                    <p class="post_date">{{registerTime}}</p>
+                </div>
+
+                <div class="post_image_block">
+                    <img src={{{getPostThumbnailImage thumbnailImage}}} alt="" class="post_image">
+                </div>
+            </a>
+        </li>
+        {{/each}}
+    </script>
 </th:block>
 </html>
