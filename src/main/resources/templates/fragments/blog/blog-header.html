@@ -110,11 +110,14 @@
         <div class="recent_comment_container">
             <h3 class="recent_comment_title">최신 댓글</h3>
 
-            <ul class="recent_comment_block">
-                <li class="comment_div">
-                    <a href="/" class="comment_link">dfs로 푸는 방법 아주 귀하네요</a>
-                </li>
-            </ul>
+            <th:block th:each="recentComment: ${recent_comment}">
+                <ul class="recent_comment_block">
+                    <li class="comment_div">
+                        <a th:href="'/post/' + ${recentComment.postId} + '?blogId=' + ${blog_info.id} + '#' + ${recentComment.href}"
+                           class="comment_link" th:text="${recentComment.comment}">댓글</a>
+                    </li>
+                </ul>
+            </th:block>
         </div>
 
         <div class="tag_container">

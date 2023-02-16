@@ -2,6 +2,7 @@ package com.service.core.comment.service;
 
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.dto.CommentDto;
+import com.service.core.comment.dto.CommentLinkDto;
 import com.service.core.comment.dto.CommentSearchDto;
 import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.comment.repository.CommentRepository;
@@ -20,6 +21,10 @@ import java.util.List;
 public class CommentInfoServiceImpl implements CommentInfoService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+
+    public List<CommentLinkDto> findCommentLinkDto(String userId) {
+        return commentMapper.findCommentLinkDto(userId);
+    }
 
     @Transactional
     @Override

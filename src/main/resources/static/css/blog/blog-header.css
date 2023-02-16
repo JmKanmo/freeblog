@@ -309,12 +309,12 @@
 }
 
 .recent_comment_container .recent_comment_block {
-    padding: 10px 10px 0px 0px;
+    padding: 5px 10px 0px 0px;
 }
 
 .recent_comment_container .recent_comment_block .comment_div {
     padding: 5px 0 5px;
-    font-size: 0.8125em;
+    font-size: 0.7em;
     line-height: 1.25rem;
     color: #777;
 }

@@ -47,4 +47,11 @@
         from comment
         where parent_id = #{commentId};
     </select>
+
+    <!-- TODO blogId, post, comment 조인을 통한 최신 댓글 불러오기 쿼리 작성 필요, secret, 인덱싱 고려해서... -->
+    <select id="findCommentLinkDto" resultType="com.service.core.comment.dto.CommentLinkDto">
+        select comment.post_id, comment.comment, comment.href
+        from comment
+        where user_id = #{userId} LIMIT 5;
+    </select>
 </mapper>

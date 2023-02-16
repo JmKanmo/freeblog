@@ -10,8 +10,11 @@
                date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                post.blog_id
         from post
-        where blog_id = #{blogId}
-        order by register_time desc limit 5;
+                 inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+        where post.blog_id = b.blog_id
+          and post.is_delete != true
+        order by register_time desc
+            limit 5;
     </select>
 
     <select id="findTotalPostDtoListByPaging" parameterType="com.service.core.post.dto.PostSearchDto"
@@ -90,11 +93,14 @@
 
     <select id="findPostLinkDtoList" resultType="com.service.core.post.dto.PostLinkDto">
         select CONCAT('/post/', p.post_id, '?blogId=', #{blogId}) as link,
-               p.title,
-               p.seq
+        p.title,
+        p.seq
         from post p
         where p.blog_id = #{blogId}
-          and p.post_id in (select post_id from post sq where sq.seq in (#{seq} - 1, #{seq} + 1))
+        and p.seq in (
+        (select sp.seq from post sp where sp.blog_id = #{blogId} and sp.is_delete = false and sp.seq <![CDATA[<]]> #{seq} order by sp.seq desc limit 1),
+        (select sp.seq from post sp where sp.blog_id = #{blogId} and sp.is_delete = false and sp.seq <![CDATA[>]]> #{seq} order by sp.seq asc limit 1)
+        );
     </select>
 
     <select id="findEqualPostCount" resultType="int">

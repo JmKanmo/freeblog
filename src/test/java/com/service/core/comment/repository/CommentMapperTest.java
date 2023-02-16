@@ -1,6 +1,7 @@
 package com.service.core.comment.repository;
 
 import com.service.core.comment.dto.CommentDto;
+import com.service.core.comment.dto.CommentLinkDto;
 import com.service.core.comment.dto.CommentSearchDto;
 import com.service.core.comment.paging.CommentPagination;
 import com.service.core.comment.paging.CommentSearchPagingDto;
@@ -19,6 +20,13 @@ public class CommentMapperTest {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Test
+    @Transactional(readOnly = true)
+    @Disabled
+    void commentLinkDtoTest() {
+        List<CommentLinkDto> commentLinkDtos = commentMapper.findCommentLinkDto("herb16987");
+        Assertions.assertNotNull(commentLinkDtos);
+    }
 
     @Test
     @Transactional(readOnly = true)
