@@ -39,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
     private final UserService userService;
 
     @Override
-    public List<CommentLinkDto> findCommentLinkDto(String userId) {
-        return commentInfoService.findCommentLinkDto(userId);
+    public List<CommentLinkDto> findCommentLinkDto(Long blogId) {
+        return commentInfoService.findCommentLinkDto(blogId);
     }
 
     @Override

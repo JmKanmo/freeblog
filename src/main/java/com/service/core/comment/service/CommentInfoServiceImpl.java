@@ -22,8 +22,8 @@ public class CommentInfoServiceImpl implements CommentInfoService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
-    public List<CommentLinkDto> findCommentLinkDto(String userId) {
-        return commentMapper.findCommentLinkDto(userId);
+    public List<CommentLinkDto> findCommentLinkDto(Long blogId) {
+        return commentMapper.findCommentLinkDto(blogId);
     }
 
     @Transactional

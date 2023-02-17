@@ -8,7 +8,7 @@ import com.service.core.comment.paging.CommentSearchPagingDto;
 import java.util.List;
 
 public interface CommentInfoService {
-    List<CommentLinkDto> findCommentLinkDto(String userId);
+    List<CommentLinkDto> findCommentLinkDto(Long blogId);
 
     Comment saveComment(Comment comment);
 

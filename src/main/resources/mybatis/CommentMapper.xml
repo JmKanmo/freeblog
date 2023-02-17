@@ -48,10 +48,16 @@
         where parent_id = #{commentId};
     </select>
 
-    <!-- TODO blogId, post, comment 조인을 통한 최신 댓글 불러오기 쿼리 작성 필요, secret, 인덱싱 고려해서... -->
     <select id="findCommentLinkDto" resultType="com.service.core.comment.dto.CommentLinkDto">
-        select comment.post_id, comment.comment, comment.href
-        from comment
-        where user_id = #{userId} LIMIT 5;
+        select c.post_id, c.comment, c.href
+        from comment c
+        where c.post_id in (select post.post_id
+                            from post
+                                     inner join blog b on b.blog_id = #{blogId} and b.is_delete = false
+                            where post.is_delete = false
+                              and b.blog_id = post.blog_id)
+          and c.is_delete = false
+          and c.secret = false
+        order by register_time desc limit 5;
     </select>
 </mapper>

@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface CommentService {
-    List<CommentLinkDto> findCommentLinkDto(String userId);
+    List<CommentLinkDto> findCommentLinkDto(Long blogId);
 
     String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
 

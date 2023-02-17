@@ -43,6 +43,25 @@ class UtilController {
         });
     }
 
+    getUrlStr() {
+        return window.location.href;
+    }
+
+    getUrlStrAndParse(separator) {
+        const url = this.getUrlStr();
+        const parsed = url.split(separator);
+
+        if (parsed.length > 1) {
+            return parsed[1];
+        } else {
+            return url;
+        }
+    }
+
+    scrollTargetElement(id) {
+        document.getElementById(id).scrollIntoView();
+    }
+
     /**
      * 오픈소스 참조 (로딩 중 화면 만들기)
      * 추후 다른 라이브러리 대체
