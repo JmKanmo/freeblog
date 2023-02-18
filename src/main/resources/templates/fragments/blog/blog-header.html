@@ -131,11 +131,14 @@
             <h3 class="tag_title">태그 <span class="tag_count">(0)</span></h3>
 
             <div class="tag_scroll_container">
-                <div class="tag_box">
-                    <div class="tag_div">
-                        <a href="" class="tag">#안녕하세요</a>
+                <th:block th:each="tag: ${tag_list}">
+                    <div class="tag_box">
+                        <div class="tag_div">
+                            <a th:href="'/tag/' + ${tag.tagId} + '?blogId=' + ${blog_info.id}" class="tag"
+                               th:text="${tag.name}">태그</a>
+                        </div>
                     </div>
-                </div>
+                </th:block>
             </div>
         </div>
 

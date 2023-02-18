@@ -7,12 +7,12 @@ import lombok.Data;
 @Builder
 @Data
 public class TagDto {
-    private final Long id;
+    private final Long tagId;
     private final String name;
 
     public static TagDto fromEntity(Tag tag) {
         return TagDto.builder()
-                .id(tag.getId())
+                .tagId(tag.getId())
                 .name(tag.getName())
                 .build();
     }

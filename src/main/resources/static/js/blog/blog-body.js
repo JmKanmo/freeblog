@@ -19,7 +19,7 @@ class BlogBodyController extends UtilController {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
 
-        xhr.open("GET", url + '?' + queryParam.toString(),true);
+        xhr.open("GET", url + '?' + queryParam.toString(), true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -37,6 +37,8 @@ class BlogBodyController extends UtilController {
                 this.#handleTemplateList(responseValue);
                 this.#clearPagination();
                 this.#handlePagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
+                // 제일 위로 스크롤 이동
+                this.scrollTargetElement("top");
             }
         });
 

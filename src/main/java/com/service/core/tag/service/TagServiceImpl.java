@@ -2,7 +2,9 @@ package com.service.core.tag.service;
 
 import com.service.core.post.domain.Post;
 import com.service.core.tag.domain.Tag;
+import com.service.core.tag.dto.TagDto;
 import com.service.core.tag.repository.TagRepository;
+import com.service.core.tag.repository.mapper.TagMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
+
+    private final TagMapper tagMapper;
+
+    public List<TagDto> findTagDtoList(Long blogId) {
+        return tagMapper.findTagDtoList(blogId);
+    }
 
     @Transactional
     @Override

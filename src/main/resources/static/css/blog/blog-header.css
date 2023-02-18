@@ -320,6 +320,12 @@
 
 .recent_comment_container .recent_comment_block .comment_div .comment_link {
     color: #777;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 17px;
 }
 
 .recent_comment_container .recent_comment_block .comment_div .comment_link:hover {

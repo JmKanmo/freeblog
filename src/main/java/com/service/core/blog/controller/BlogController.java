@@ -4,6 +4,7 @@ import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.comment.service.CommentService;
+import com.service.core.tag.service.TagService;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
@@ -30,8 +31,9 @@ public class BlogController {
     private final BlogService blogService;
     private final UserService userService;
     private final CategoryService categoryService;
-
     private final CommentService commentService;
+
+    private final TagService tagService;
 
     @Operation(summary = "블로그 페이지 반환", description = "블로그 페이지를 반환하는 GET 메서드")
     @ApiResponses(value = {
@@ -50,7 +52,8 @@ public class BlogController {
         BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(id);
         model.addAttribute("blog_info", blogInfoDto);
         model.addAttribute("recent_comment", commentService.findCommentLinkDto(blogInfoDto.getId()));
-        // TODO 태그, 음악정보, 방문자 수 넘겨줄것
+        model.addAttribute("tag_list", tagService.findTagDtoList(blogInfoDto.getId()));
+        // TODO 음악정보, 방문자 수 넘겨줄것
         return "blog/myblog";
     }
 }

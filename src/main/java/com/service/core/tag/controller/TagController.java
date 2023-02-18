@@ -22,7 +22,7 @@ public class TagController {
             @ApiResponse(responseCode = "200", description = "블로그,사용자 정보가 담긴 블로그 페이지")
     })
     @GetMapping("/{tagId}")
-    public String tagPostPage(@RequestParam(value = "tagId", required = false, defaultValue = "0") Long blogId, Model model) {
+    public String tagPostPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId, Model model) {
         // TODO
         return "tag/blog-tag";
     }
