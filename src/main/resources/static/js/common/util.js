@@ -54,11 +54,14 @@ class UtilController {
         if (parsed.length > 1) {
             return parsed[1];
         } else {
-            return url;
+            return null;
         }
     }
 
     scrollTargetElement(id) {
+        if (!id) {
+            return;
+        }
         document.getElementById(id).scrollIntoView();
     }
 

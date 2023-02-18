@@ -113,8 +113,15 @@
             <th:block th:each="recentComment: ${recent_comment}">
                 <ul class="recent_comment_block">
                     <li class="comment_div">
-                        <a th:href="'/post/' + ${recentComment.postId} + '?blogId=' + ${blog_info.id} + '#' + ${recentComment.href}"
-                           class="comment_link" th:text="${recentComment.comment}">댓글</a>
+                        <th:block th:if="${recentComment.href != null}">
+                            <a th:href="'/post/' + ${recentComment.postId} + '?blogId=' + ${blog_info.id} + '#' + ${recentComment.href}"
+                               class="comment_link" th:text="${recentComment.comment}">댓글</a>
+                        </th:block>
+
+                        <th:block th:if="${recentComment.href == null}">
+                            <a th:href="'/post/' + ${recentComment.postId} + '?blogId=' + ${blog_info.id}"
+                               class="comment_link" th:text="${recentComment.comment}">댓글</a>
+                        </th:block>
                     </li>
                 </ul>
             </th:block>

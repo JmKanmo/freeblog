@@ -227,7 +227,7 @@ class PostCommentController extends PostCommentCommonController {
                 this.#clearPagination();
                 this.#handlePagination(responseValue["commentPaginationResponse"]["commentPagination"], queryParam, url);
                 // 게시글 상세 화면에서 url이 #href일 경우  특정 댓글 위치로 스크롤
-
+                this.scrollTargetElement(this.getUrlStrAndParse('#'));
             }
         });
 

@@ -108,7 +108,7 @@
     width: 15px;
     right: 5px;
     height: 15px;
-    top: 5%;
+    top: 2.5%;
     cursor: pointer;
 }
 
@@ -217,7 +217,7 @@
 
 /* 최신글 인기글 스타일 */
 .recent_popular_post_container {
-    padding: 20px 20px 10px 13px;
+    padding: 20px 20px 15px 13px;
     border-bottom: 1px solid #eeeeee;
 }
 
@@ -316,6 +316,9 @@
     padding: 5px 0 5px;
     font-size: 0.7em;
     line-height: 1.25rem;
+}
+
+.recent_comment_container .recent_comment_block .comment_div .comment_link {
     color: #777;
 }
 
