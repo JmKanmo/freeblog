@@ -10,6 +10,8 @@ public interface BlogService {
 
     BlogInfoDto findBlogInfoDtoByEmail(String email);
 
+    BlogInfoDto findBlogInfoDtoById(Long blogId);
+
     Blog findBlogByEmail(String email);
 
     Blog findBlogByIdOrThrow(Long blogId);

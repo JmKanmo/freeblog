@@ -46,6 +46,9 @@ public enum ServiceExceptionMessage {
     MISMATCH_COMMENT_PASSWORD("작성 된 댓글 비밀번호와 일치하지 않습니다."),
     ALREADY_DELETE_COMMENT("삭제 된 댓글입니다."),
 
+    // 태그 처리 관련 에러 메시지
+
+
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),
     NOT_VALID_FORM_INPUT("폼 입력 정보가 양식 조건에 유효하지 않습니다.");

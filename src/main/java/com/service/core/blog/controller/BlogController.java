@@ -4,6 +4,7 @@ import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
 import com.service.core.comment.service.CommentService;
+import com.service.core.tag.dto.BlogTagDto;
 import com.service.core.tag.service.TagService;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
@@ -52,7 +53,7 @@ public class BlogController {
         BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(id);
         model.addAttribute("blog_info", blogInfoDto);
         model.addAttribute("recent_comment", commentService.findCommentLinkDto(blogInfoDto.getId()));
-        model.addAttribute("tag_list", tagService.findTagDtoList(blogInfoDto.getId()));
+        model.addAttribute("blog_tag", BlogTagDto.from(tagService.findTagDtoList(blogInfoDto.getId())));
         // TODO 음악정보, 방문자 수 넘겨줄것
         return "blog/myblog";
     }

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.tag.repository.mapper.TagMapper">
     <select id="findTagDtoList" resultType="com.service.core.tag.dto.TagDto">
-        select tag.tag_id, tag.name
+        select distinct tag.name
         from tag
         where post_id in (select post_id from post where post.blog_id = #{blogId})
           and tag.name != '';
