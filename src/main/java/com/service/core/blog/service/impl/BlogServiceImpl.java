@@ -43,6 +43,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public BlogInfoDto findBlogInfoDtoById(Long blogId) {
+        Blog blog = findBlogByIdOrThrow(blogId);
+        return BlogInfoDto.fromEntity(blog);
+    }
+
+    @Override
     public Blog findBlogByEmail(String email) {
         Blog blog = userInfoService.findBlogByEmailOrThrow(email);
 
@@ -57,5 +63,14 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog findBlogByIdOrThrow(Long blogId) {
         return blogInfoService.findBlogByIdOrThrow(blogId);
+    }
+
+    @Override
+    public boolean isDeleteOrNotFoundBlog(Long blogId) {
+        try {
+            return findBlogByIdOrThrow(blogId).isDelete();
+        } catch (BlogManageException e) {
+            return true;
+        }
     }
 }

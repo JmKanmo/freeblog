@@ -14,6 +14,10 @@ class UtilController {
             return param == null || param == '<<<undefined>>>';
         });
 
+        Handlebars.registerHelper('hrefCheck', param => {
+            return !param ? 'comment' : param;
+        });
+
         Handlebars.registerHelper('existImage', image => {
             return image != null && image != '<<<undefined>>>';
         });
@@ -29,6 +33,36 @@ class UtilController {
                 return image;
             }
         });
+
+        Handlebars.registerHelper('getPostThumbnailImage', image => {
+            if (image === '<<<undefined>>>') {
+                return '../images/default_thumbnail.gif';
+            } else {
+                return image;
+            }
+        });
+    }
+
+    getUrlStr() {
+        return window.location.href;
+    }
+
+    getUrlStrAndParse(separator) {
+        const url = this.getUrlStr();
+        const parsed = url.split(separator);
+
+        if (parsed.length > 1) {
+            return parsed[1];
+        } else {
+            return null;
+        }
+    }
+
+    scrollTargetElement(id) {
+        if (!id) {
+            return;
+        }
+        document.getElementById(id).scrollIntoView();
     }
 
     /**

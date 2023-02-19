@@ -11,6 +11,7 @@
                c.comment_image,
                c.parent_id,
                date_format(c.register_time, '%y.%m.%d %H:%i') as register_time,
+               c.href,
                c.user_id,
                c.user_password,
                c.user_profile_image,
@@ -45,5 +46,18 @@
         SELECT count(*)
         from comment
         where parent_id = #{commentId};
+    </select>
+
+    <select id="findCommentLinkDto" resultType="com.service.core.comment.dto.CommentLinkDto">
+        select c.post_id, c.comment, c.href
+        from comment c
+        where c.post_id in (select post.post_id
+                            from post
+                                     inner join blog b on b.blog_id = #{blogId} and b.is_delete = false
+                            where post.is_delete = false
+                              and b.blog_id = post.blog_id)
+          and c.is_delete = false
+          and c.secret = false
+        order by register_time desc limit 5;
     </select>
 </mapper>

@@ -3,13 +3,17 @@ class BlogHeaderController extends BlogBodyController {
         super();
         this.recentPostTitle = document.getElementById("recent_post_title");
         this.popularPostTitle = document.getElementById("popular_post_title");
-        this.recentPostBlock = document.getElementById("recent_post_container");
-        this.popularPostBlock = document.getElementById("popular_post_container");
         this.audioPlayer = this.initAudioPlayer(); // TODO
         this.introButton = document.getElementById("intro_button");
 
         this.blogHeaderCategoryList = document.getElementById("blog_header_category_list");
         this.clickedCategoryButton = null;
+        this.postSearchButton = document.getElementById("postSearchButton");
+        this.postSearchForm = document.getElementById("postSearchForm");
+        this.categorySettingButton = document.getElementById("category_setting_button");
+
+        this.recentPostCardList = document.getElementById("recent_post_card_list");
+        this.popularPostCardList = document.getElementById("popular_post_card_list");
     }
 
     initBlogHeaderController() {
@@ -20,22 +24,23 @@ class BlogHeaderController extends BlogBodyController {
 
     initDefault() {
         this.recentPostTitle.style.color = '#333';
-        this.recentPostBlock.style.display = 'block';
+        this.recentPostCardList.style.display = 'block';
+        this.#requestRecentPostCard();
     }
 
     initBlogHeaderEventListener() {
         this.recentPostTitle.addEventListener("click", evt => {
             this.recentPostTitle.style.color = '#333';
-            this.recentPostBlock.style.display = 'block';
+            this.recentPostCardList.style.display = 'block';
             this.popularPostTitle.style.color = '#777';
-            this.popularPostBlock.style.display = 'none';
+            this.popularPostCardList.style.display = 'none';
         });
 
         this.popularPostTitle.addEventListener("click", evt => {
             this.popularPostTitle.style.color = '#333';
-            this.popularPostBlock.style.display = 'block';
+            this.popularPostCardList.style.display = 'block';
             this.recentPostTitle.style.color = '#777';
-            this.recentPostBlock.style.display = 'none';
+            this.recentPostCardList.style.display = 'none';
         });
 
         this.introButton.addEventListener("click", evt => {
@@ -65,6 +70,49 @@ class BlogHeaderController extends BlogBodyController {
                 this.clickedCategoryButton = clickedCategoryButton;
             }
         });
+
+        this.postSearchButton.addEventListener("click", evt => {
+            this.postSearchForm.submit();
+        });
+
+        if (this.categorySettingButton != null) {
+            this.categorySettingButton.addEventListener("click", evt => {
+                this.openPopUp(1080, 750, '/category/setting?blogId=' + document.getElementById("blog_info_id").value, 'popup');
+            })
+        }
+    }
+
+    #requestRecentPostCard() {
+        const xhr = new XMLHttpRequest();
+        const blogId = document.getElementById("blog_info_id").value;
+        xhr.open("GET", `/post/recent/${blogId}`, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#recentPostHandleTemplateList(responseValue);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("게시글 정보를 불러오는데 실패하였습니다.");
+        });
+        xhr.send();
+    }
+
+    #requestPopularPostCard() {
+        this.showToastMessage("인기글 기능은 추후에 개발 될 예정입니다.");
+    }
+
+    #recentPostHandleTemplateList(postDto) {
+        const recentPostCardTemplate = document.getElementById("recent-post-card-template").innerHTML;
+        const recentPostCardTemplateObject = Handlebars.compile(recentPostCardTemplate);
+        const recentPostCardTemplateHTML = recentPostCardTemplateObject(postDto);
+        this.recentPostCardList.innerHTML = recentPostCardTemplateHTML;
     }
 }
 

@@ -1,69 +1,54 @@
 package com.service.core.category.controller;
 
-import com.service.core.category.dto.CategoryResponseDto;
+import com.service.core.blog.dto.BlogInfoDto;
+import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
-import com.service.core.post.dto.PostPagingResponseDto;
-import com.service.core.post.paging.PostSearchPagingDto;
-import io.swagger.v3.oas.annotations.Operation;
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.BlogManageException;
+import com.service.core.error.model.UserManageException;
+import com.service.core.user.dto.UserHeaderDto;
+import com.service.core.user.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.Principal;
 
 @Tag(name = "카테고리", description = "카테고리 관련 API")
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/category")
 @Slf4j
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @Operation(summary = "해당 블로그의 전체 카테고리 반환", description = "해당 블로그의 전체 카테고리 반환 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "전체 카테고리 데이터 반환"),
-            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
-    })
-    @GetMapping("/all/{blogId}")
-    public ResponseEntity<CategoryResponseDto> findTotalCategoryByBlogId(@PathVariable Long blogId) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(categoryService.findCategoryDtoByBlogId(blogId)));
-        } catch (Exception exception) {
-            log.error("[freeblog-findTotalCategoryByBlogId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CategoryResponseDto.fail(exception));
-        }
-    }
+    private final BlogService blogService;
 
-    @Operation(summary = "전체 카테고리의 모든 포스트 반환", description = "전체 카테고리의 모든 포스트 데이터 반환 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "전체 카테고리 모든 포스트 반환"),
-            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
+            @ApiResponse(responseCode = "200", description = "카테고리 설정 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "카테고리 설정 페이지 반환 실패")
     })
-    @GetMapping("/post/all/{blogId}")
-    public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByBlogId(blogId, postSearchPagingDto)));
-        } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
+    @GetMapping("/setting")
+    public String categorySettingPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId, Model model, Principal principal) {
+        if ((principal == null || principal.getName() == null)) {
+            throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
-    }
 
-    @Operation(summary = "해당 카테고리의 전체 포스트 반환", description = "해당 카테고리의 전체 포스트 데이터 반환 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "해당 카테고리 전체 포스트 반환"),
-            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
-    })
-    @GetMapping("/post/{categoryId}")
-    public ResponseEntity<PostPagingResponseDto> findTotalPostByCategoryId(@PathVariable Long categoryId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByCategoryId(categoryId, postSearchPagingDto)));
-        } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByCategoryId] exception occurred ", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+
+        if (blogInfoDto.getId() != blogId) {
+            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
+
+        model.addAttribute("blogId", blogId);
+        model.addAttribute("category", categoryService.findCategoryDtoByBlogId(blogId));
+        return "category/category-setting";
     }
 }

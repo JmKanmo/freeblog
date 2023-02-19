@@ -25,6 +25,8 @@ public class Comment extends BaseTimeEntity {
 
     private boolean isDelete;
 
+    private String href;
+
     @Column(length = 2000)
     private String comment;
 
@@ -44,6 +46,7 @@ public class Comment extends BaseTimeEntity {
     public static Comment from(CommentInput commentInput, Post post) {
         return Comment.builder()
                 .parentId(commentInput.getParentCommentId() == null ? 0 : commentInput.getParentCommentId())
+                .href(BlogUtil.createRandomAlphaNumberString(20))
                 .comment(commentInput.getComment())
                 .commentImage(commentInput.getCommentThumbnailImage() == null || commentInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentInput.getCommentThumbnailImage())
                 .secret(BlogUtil.parseAndGetCheckBox(commentInput.getSecretComment()))

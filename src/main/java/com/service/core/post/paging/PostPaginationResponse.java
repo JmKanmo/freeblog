@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class PostPaginationResponse<T> {
-    private T postTotalDto;
+    private T postDto;
     private PostPagination postPagination;
 
-    public PostPaginationResponse(T postTotalDto, PostPagination postPagination) {
-        this.postTotalDto = postTotalDto;
+    public PostPaginationResponse(T postDto, PostPagination postPagination) {
+        this.postDto = postDto;
         this.postPagination = postPagination;
     }
 

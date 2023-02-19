@@ -8,5 +8,5 @@ import lombok.Data;
 public class PostLinkDto {
     private final String link;
     private final String title;
-    private final Integer seq;
+    private final Long seq;
 }

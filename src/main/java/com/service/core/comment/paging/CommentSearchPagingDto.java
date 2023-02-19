@@ -16,7 +16,7 @@ public class CommentSearchPagingDto {
     private CommentPagination commentPagination;    // 페이지네이션 정보
 
     public CommentSearchPagingDto() {
-        this.page = 1;
+        this.page = 0;
         this.recordSize = 20;
         this.pageSize = 10;
     }

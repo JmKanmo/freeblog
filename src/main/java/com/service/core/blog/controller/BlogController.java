@@ -1,7 +1,11 @@
 package com.service.core.blog.controller;
 
+import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
+import com.service.core.comment.service.CommentService;
+import com.service.core.tag.dto.BlogTagDto;
+import com.service.core.tag.service.TagService;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
@@ -28,6 +32,9 @@ public class BlogController {
     private final BlogService blogService;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final CommentService commentService;
+
+    private final TagService tagService;
 
     @Operation(summary = "블로그 페이지 반환", description = "블로그 페이지를 반환하는 GET 메서드")
     @ApiResponses(value = {
@@ -43,8 +50,11 @@ public class BlogController {
         model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
         model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("category", categoryService.findCategoryDtoByUserId(id));
-        model.addAttribute("blog_info", blogService.findBlogInfoDtoById(id));
-        // TODO 최신글, 전체글, 인기글, 태그, 방문자수, 음악정보, 소개, 최신 게시글 ... 정보 넘겨줄것
+        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(id);
+        model.addAttribute("blog_info", blogInfoDto);
+        model.addAttribute("recent_comment", commentService.findCommentLinkDto(blogInfoDto.getId()));
+        model.addAttribute("blog_tag", BlogTagDto.from(tagService.findTagDtoList(blogInfoDto.getId())));
+        // TODO 음악정보, 방문자 수 넘겨줄것
         return "blog/myblog";
     }
 }

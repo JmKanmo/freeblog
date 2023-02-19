@@ -3,6 +3,7 @@ package com.service.core.comment.service;
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.domain.CommentUser;
 import com.service.core.comment.dto.CommentDto;
+import com.service.core.comment.dto.CommentLinkDto;
 import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
@@ -12,6 +13,7 @@ import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.CommentManageException;
 import com.service.core.post.domain.Post;
+import com.service.core.post.dto.PostLinkDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserCommentDto;
 import com.service.core.user.service.UserService;
@@ -35,6 +37,11 @@ public class CommentServiceImpl implements CommentService {
     private final PostService postService;
     private final CommentInfoService commentInfoService;
     private final UserService userService;
+
+    @Override
+    public List<CommentLinkDto> findCommentLinkDto(Long blogId) {
+        return commentInfoService.findCommentLinkDto(blogId);
+    }
 
     @Override
     public String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
@@ -225,5 +232,10 @@ public class CommentServiceImpl implements CommentService {
         } else {
             comment.setDelete(true);
         }
+    }
+
+    @Override
+    public List<PostLinkDto> findPostListDto(String userId) {
+        return null;
     }
 }

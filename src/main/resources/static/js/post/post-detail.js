@@ -17,6 +17,9 @@ class PostDetailController extends UtilController {
         this.postPageSize = 5;
         this.prevCategoryPostBlock = false;
         this.postDetailDeleteButton = document.getElementById("post_detail_delete_button");
+        this.postSearchButton = document.getElementById("postSearchButton");
+        this.postSearchForm = document.getElementById("postSearchForm");
+        this.postDeleteForm = document.getElementById("post_delete_form");
     }
 
     initPostDetailController() {
@@ -80,9 +83,15 @@ class PostDetailController extends UtilController {
 
         if (this.postDetailDeleteButton != null) {
             this.postDetailDeleteButton.addEventListener("click", evt => {
-                this.showToastMessage("게시글 삭제 버튼 클릭");
+                if (confirm("게시글을 삭제하겠습니까?")) {
+                    this.postDeleteForm.submit();
+                }
             });
         }
+
+        this.postSearchButton.addEventListener("click", evt => {
+            this.postSearchForm.submit();
+        });
     }
 
     #requestCategoryPost(url, page) {
@@ -98,7 +107,7 @@ class PostDetailController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
-                if (responseValue["postPaginationResponse"]["postTotalDto"]["postSummaryDto"]["count"] <= 0) {
+                if (responseValue["postPaginationResponse"]["postDto"]["postSummaryDto"]["count"] <= 0) {
                     this.showToastMessage("게시글 정보가 존재하지 않습니다.");
                     return;
                 }
@@ -118,7 +127,7 @@ class PostDetailController extends UtilController {
     #handleTemplateList(responseValue) {
         const categoryPostTemplate = document.getElementById("category-post-template").innerHTML;
         const categoryPostTemplateObject = Handlebars.compile(categoryPostTemplate);
-        const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postTotalDto"]);
+        const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postDto"]);
         this.categoryPostList.innerHTML = categoryPostTemplateHTML;
     }
 

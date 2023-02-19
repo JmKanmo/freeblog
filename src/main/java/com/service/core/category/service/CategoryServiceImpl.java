@@ -3,7 +3,9 @@ package com.service.core.category.service;
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
+import com.service.core.category.domain.CategoryMapperDto;
 import com.service.core.category.dto.CategoryDto;
+import com.service.core.category.model.CategoryInput;
 import com.service.core.category.repository.CategoryRepository;
 import com.service.core.category.repository.mapper.CategoryMapper;
 import com.service.core.error.constants.ServiceExceptionMessage;
@@ -23,10 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto findCategoryDtoByBlogId(Long blogId) {
-        return CategoryDto.fromEntity(categoryMapper.findCategoriesByBlogId(blogId));
+        return CategoryDto.fromEntity(!blogService.isDeleteOrNotFoundBlog(blogId) ? categoryMapper.findCategoriesByBlogId(blogId) : Collections.emptyList());
     }
 
     @Override
@@ -103,8 +102,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (parentCategoryId == 0 || !categoryRepository.existsById(parentCategoryId)) {
             return categoryName;
         } else {
-            Category parentCategory = categoryRepository.findById(parentCategoryId).get();
-            String parentCategoryName = parentCategory.getName();
+            String parentCategoryName = categoryRepository.findById(parentCategoryId).get().getName();
             return parentCategoryName + "/" + categoryName;
         }
     }
@@ -137,5 +135,109 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category registerBasicCategory(Blog blog) {
         return categoryRepository.save(Category.from(blog));
+    }
+
+    @Transactional
+    @Override
+    public void registerCategory(Long blogId, List<CategoryInput> categoryInputList) {
+        Blog blog = blogService.findBlogByIdOrThrow(blogId);
+        List<Category> categories = blog.getCategoryList();
+        List<Category> newCategories = new ArrayList<>();
+
+        checkCategoryInputRelation(categoryInputList);
+
+        for (Category category : categories) {
+            boolean contains = false;
+
+            for (CategoryInput categoryInput : categoryInputList) {
+                if (checkCategory(category, categoryInput)) {
+                    category.setName(categoryInput.getName());
+                    categoryInputList.remove(categoryInput);
+                    contains = true;
+                    break;
+                }
+            }
+
+            if (!contains) {
+                category.setDelete(true);
+
+                for (Post post : category.getPostList()) {
+                    if (!post.isDelete()) {
+                        post.setDelete(true);
+                    }
+                }
+            }
+        }
+
+        for (CategoryInput categoryInput : categoryInputList) {
+            newCategories.add(Category.from(categoryInput, blog));
+        }
+
+        List<Category> createdCategories = categoryRepository.saveAll(newCategories);
+
+        if (getCategoryTypeSet(createdCategories).size() >= 2) {
+            List<CategoryMapperDto> categoryDtoList = categoryMapper.findCategoriesByBlogId(blogId);
+
+            Map<Long, CategoryMapperDto> parentCategoryMap = new HashMap<>();
+
+            for (CategoryMapperDto categoryMapperDto : categoryDtoList) {
+                if (categoryMapperDto.getParentId() == 0) {
+                    parentCategoryMap.put(categoryMapperDto.getSeq(), categoryMapperDto);
+                }
+            }
+
+            for (Category category : createdCategories) {
+                if (category.getParentId() != 0) {
+                    if (parentCategoryMap.containsKey(category.getSeq())) {
+                        category.setParentId(parentCategoryMap.get(category.getSeq()).getCategoryId());
+                    }
+                }
+            }
+            categoryRepository.saveAll(createdCategories);
+        }
+    }
+
+    private boolean checkCategory(Category category, CategoryInput categoryInput) {
+        String categoryType = categoryInput.getType();
+
+        if (!categoryType.equals("childCategory") && !categoryType.equals("parentCategory")) {
+            throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+        }
+
+        if (category.getId() == categoryInput.getId() &&
+                category.getSeq() == categoryInput.getSeq()) {
+            boolean isChild = category.getParentId() == 0 ? false : true;
+            if (isChild && categoryInput.getType().equals("childCategory") || (!isChild && categoryInput.getType().equals("parentCategory"))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Set<String> getCategoryTypeSet(List<Category> categories) {
+        Set<String> set = new HashSet<>();
+
+        for (Category category : categories) {
+            set.add(category.getParentId() == 0 ? "parentCategory" : "childCategory");
+        }
+        return set;
+    }
+
+    private void checkCategoryInputRelation(List<CategoryInput> categoryInputList) {
+        Map<Long, CategoryInput> categoryInputMap = new HashMap<>();
+        Set<String> categoryTypeSet = new HashSet<>();
+
+        for (CategoryInput categoryInput : categoryInputList) {
+            String categoryType = categoryInput.getType();
+            categoryTypeSet.add(categoryType);
+
+            if (categoryType.equals("parentCategory")) {
+                categoryInputMap.put(categoryInput.getId(), categoryInput);
+            } else if (categoryType.equals("childCategory")) {
+                if (!categoryInputMap.containsKey(categoryInput.getParentId())) {
+                    throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+                }
+            }
+        }
     }
 }

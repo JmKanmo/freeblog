@@ -46,6 +46,10 @@ public class BlogUtil {
         return str == null || str.isEmpty() || str.equals("") ? true : false;
     }
 
+    public static String checkAndGetRepText(String text, String refText) {
+        return checkEmptyOrUndefinedStr(text) ? refText : text;
+    }
+
     public static String getCurrentIp() {
         try {
             return InetAddress.getLocalHost().getHostAddress();
@@ -213,7 +217,17 @@ public class BlogUtil {
             return exception.getMessage();
         } else if (exception instanceof HttpRequestMethodNotSupportedException) {
             return "세션이 만료되어 작업에 실패하였습니다.";
+        } else if (exception instanceof DataAccessException) {
+            return "데이터베이스 쿼리 수행에 실패하였습니다.";
         }
         return "UNDEFINED-ERROR";
+    }
+
+    public static String createKeywordByText(String text) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String parse : text.split(" ")) {
+            stringBuilder.append(parse + "* ");
+        }
+        return stringBuilder.toString();
     }
 }

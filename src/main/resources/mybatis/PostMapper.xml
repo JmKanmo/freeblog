@@ -3,6 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.post.repository.mapper.PostMapper">
+    <select id="findRecentPostCardDto" resultType="com.service.core.post.dto.PostCardDto">
+        select post.post_id,
+               post.title,
+               post.thumbnail_image,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+               post.blog_id
+        from post
+                 inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+        where post.blog_id = b.blog_id
+          and post.is_delete != true
+        order by register_time desc
+            limit 5;
+    </select>
+
     <select id="findTotalPostDtoListByPaging" parameterType="com.service.core.post.dto.PostSearchDto"
             resultType="com.service.core.post.dto.PostDto">
         select post.post_id,
@@ -22,7 +36,8 @@
                  inner join category c on post.category_id = c.category_id and c.is_delete != true
                  inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
+        where post_id in (select post_id from post where blog_id = #{blogId}
+          and is_delete = false order by blog_id)
           and post.is_delete != true
         order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
                                           #{postSearchPagingDto.recordSize}
@@ -44,14 +59,15 @@
                c.category_id,
                b.blog_id
         from post
-                 inner join category c on post.category_id = c.category_id and c.is_delete != true
+                 inner join category c on c.category_id = #{categoryId} and c.is_delete != true
          inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId} order by blog_id)
-          and post_id in (select post_id from category where category_id = #{categoryId} order by c.category_id)
-          and post.is_delete != true
-        order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
-                                          #{postSearchPagingDto.recordSize}
+        where post_id in
+            (select post_id from post p where p.blog_id = #{blogId}
+          and p.category_id = #{categoryId}
+          and p.is_delete = false order by p.blog_id)
+        order by register_time desc
+            LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
     <select id="findPostCount" resultType="int">
@@ -60,20 +76,31 @@
         where blog_id = #{blogId}
     </select>
 
+    <select id="findUndeletePostCount" resultType="int">
+        SELECT count(*)
+        from post
+        where blog_id = #{blogId}
+          and is_delete = false
+    </select>
+
     <select id="findPostCountByBlogCategory" resultType="int">
         SELECT count(*)
         from post
         where blog_id = #{blogId}
           and category_id = #{categoryId}
+          and is_delete = false
     </select>
 
     <select id="findPostLinkDtoList" resultType="com.service.core.post.dto.PostLinkDto">
         select CONCAT('/post/', p.post_id, '?blogId=', #{blogId}) as link,
-               p.title,
-               p.seq
+        p.title,
+        p.seq
         from post p
         where p.blog_id = #{blogId}
-          and p.post_id in (select post_id from post sq where sq.seq in (#{seq} - 1, #{seq} + 1))
+        and p.seq in (
+        (select sp.seq from post sp where sp.blog_id = #{blogId} and sp.is_delete = false and sp.seq <![CDATA[<]]> #{seq} order by sp.seq desc limit 1),
+        (select sp.seq from post sp where sp.blog_id = #{blogId} and sp.is_delete = false and sp.seq <![CDATA[>]]> #{seq} order by sp.seq asc limit 1)
+        );
     </select>
 
     <select id="findEqualPostCount" resultType="int">
@@ -85,4 +112,57 @@
           and p.post_id = #{postId}
           and p.is_delete != true
     </select>
+
+    <select id="findPostDtoByKeyword" parameterType="com.service.core.post.dto.PostKeywordSearchDto"
+            resultType="com.service.core.post.dto.PostSearchMapperDto">
+        select post.post_id,
+        post.title,
+        post.thumbnail_image,
+        post.contents,
+        post.writer,
+        date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+        CASE
+        WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
+        THEN c.name
+        ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
+        END as category,
+        c.category_id,
+        b.blog_id,
+        (select count(*) from comment where comment.post_id = post.post_id) as commentCount
+        from post
+        inner join category c on post.category_id = c.category_id and c.is_delete != true
+        inner join blog b
+        on b.blog_id = #{postKeywordSearchDto.blogId} and b.is_delete != true
+        where post_id in
+        (select post_id from post where blog_id = #{postKeywordSearchDto.blogId}
+        and
+        (<include refid="textSearchQuery"/>)
+        order by blog_id)
+        and post.is_delete != true
+        order by register_time desc
+        LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart},
+        #{postKeywordSearchDto.postSearchPagingDto.recordSize}
+    </select>
+
+    <select id="findPostDtoCountByKeyword" resultType="int">
+        SELECT count(*)
+        FROM post p
+        WHERE p.blog_id = #{blogId}
+        and p.is_delete != true
+        and (<include refid="textSearchQuery"/>)
+    </select>
+
+    <sql id="textSearchQuery">
+        <choose>
+            <when test="postKeywordSearchDto.searchType eq 'LIKE'">
+                contents like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                or title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+            </when>
+
+            <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
+                MATCH(contents) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE) or
+                MATCH(title) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE)
+            </when>
+        </choose>
+    </sql>
 </mapper>

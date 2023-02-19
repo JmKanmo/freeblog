@@ -14,6 +14,7 @@ public class CommentDto {
     private final String commentImage;
     private final Long parentId;
     private final String registerTime;
+    private final String href;
     private final String userId;
     private final String userPassword;
     private final String userProfileImage;
@@ -29,6 +30,7 @@ public class CommentDto {
         return CommentDto.builder()
                 .commentId(comment.getId())
                 .postId(comment.getPost().getId())
+                .href(BlogUtil.checkAndGetRepText(comment.getHref(), "comment"))
                 .comment(comment.getComment())
                 .commentImage(comment.getCommentImage())
                 .parentId(comment.getParentId())

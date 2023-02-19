@@ -1,5 +1,6 @@
 package com.service.core.post.service;
 
+import com.service.config.sql.SqlConfig;
 import com.service.core.blog.domain.Blog;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
@@ -7,6 +8,7 @@ import com.service.core.error.model.PostManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
@@ -34,9 +36,31 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagService tagService;
 
+    private final SqlConfig sqlConfig;
+
+
+    @Override
+    public List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId) {
+        return postMapper.findRecentPostCardDto(blogId);
+    }
+
+    @Override
+    public PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
+        PostKeywordSearchDto postKeywordSearchDto = PostKeywordSearchDto.from(
+                blogPostSearchInput,
+                null,
+                sqlConfig.getSqlSearchPattern()
+        );
+        int postCount = postMapper.findPostDtoCountByKeyword(postKeywordSearchDto, blogPostSearchInput.getBlogId());
+        PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+        postSearchPagingDto.setPostPagination(postPagination);
+        postKeywordSearchDto.setPostSearchPagingDto(postSearchPagingDto);
+        return new PostPaginationResponse<>(PostKeywordDto.from(postMapper.findPostDtoByKeyword(postKeywordSearchDto)), postPagination);
+    }
+
     @Override
     public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
-        int postCount = findPostCountByBlogId(blogId);
+        int postCount = findUndeletePostCountByBlogId(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
         postSearchPagingDto.setPostPagination(postPagination);
         return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postMapper.findTotalPostDtoListByPaging(PostSearchDto.from(blogId, postSearchPagingDto)), postCount, type), postPagination);
@@ -74,6 +98,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostDto findPostDtoById(Long postId) {
+        return PostDto.fromEntity(findPostById(postId));
+    }
+
+    @Override
     public PostUpdateDto findPostUpdateInfo(Long blogId, Long postId) {
         if (!checkPostId(blogId, postId)) {
             throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
@@ -82,7 +111,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq) {
+    public PostAlmostDto findPostAlmostInfo(Long blogId, Long seq) {
         return PostAlmostDto.from(seq, postMapper.findPostLinkDtoList(blogId, seq));
     }
 
@@ -115,8 +144,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public int findUndeletePostCountByBlogId(Long blogId) {
+        return postMapper.findUndeletePostCount(blogId);
+    }
+
+    @Override
     public boolean checkEqualPostByLogin(Long blogId, Long postId) {
         return postMapper.findEqualPostCount(blogId, postId) <= 0 ? false : true;
+    }
+
+    @Transactional
+    @Override
+    public void deletePost(Long postId) {
+        Post post = findPostById(postId);
+        post.setDelete(true);
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

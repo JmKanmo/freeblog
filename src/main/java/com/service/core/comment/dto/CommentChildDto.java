@@ -12,6 +12,7 @@ public class CommentChildDto {
     private final String comment;
     private final String commentImage;
     private final String userId;
+    private final String href;
     @JsonIgnore
     private final String userPassword;
     private final String userProfileImage;
@@ -28,6 +29,7 @@ public class CommentChildDto {
         return CommentChildDto.builder()
                 .id(commentDto.getCommentId())
                 .parentId(commentDto.getParentId())
+                .href(commentDto.getHref())
                 .comment(commentDto.getComment())
                 .commentImage(commentDto.getCommentImage())
                 .userId(commentDto.getUserId())

@@ -26,6 +26,7 @@ public class Category extends BaseTimeEntity {
 
     private Long parentId;
 
+    @Column(length = 25)
     private String name;
 
     private Long seq;
@@ -39,21 +40,22 @@ public class Category extends BaseTimeEntity {
     @OneToMany(mappedBy = "category")
     private List<Post> postList;
 
-    public static Category from(CategoryInput categoryInput, Blog blog) {
-        return Category.builder()
-                .parentId(categoryInput.getParentId())
-                .name(categoryInput.getName())
-                .seq(categoryInput.getSeq())
-                .blog(blog)
-                .build();
-    }
-
     public static Category from(Blog blog) {
         return Category.builder()
                 .parentId(0L)
                 .name("게시판")
                 .seq(1L)
                 .blog(blog)
+                .build();
+    }
+
+    public static Category from(CategoryInput categoryInput, Blog blog) {
+        return Category.builder()
+                .parentId(categoryInput.getParentId())
+                .name(categoryInput.getName())
+                .seq(categoryInput.getSeq())
+                .blog(blog)
+                .isDelete(false)
                 .build();
     }
 }

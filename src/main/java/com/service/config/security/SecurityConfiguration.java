@@ -70,7 +70,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // category
                         "/category/post/**", "/category/all/{blogId}",
                         // post
-                        "/post/all/{blogId}", "/post/{postId}",
+                        "/post/all/{blogId}", "/post/{postId}", "/post/search-keyword",
+                        "/post/search-rest", "/post/search/{blogId}", "/post/recent/{blogId}",
+                        // tag
+                        "/tag/{tagName}",
                         // comment
                         "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}",
                         "/comment/update/**", "/comment/authority/{commentId}", "/comment/delete/{commentId}", "/comment/reply/**",
@@ -87,6 +90,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
          **/
         http.csrf().ignoringAntMatchers(
                 "/user/login", "/user/signup", "/user/update/password", "/user/email-auth",
+                "/category/register/{blogId}",
                 "/comment/**");
         super.configure(http);
     }

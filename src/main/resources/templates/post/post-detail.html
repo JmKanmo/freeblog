@@ -19,6 +19,18 @@
 <input type="hidden" id="blog_post_title" readonly th:value="${postDetail.title}">
 
 <div class="post_detail_container">
+    <div class="search_container">
+        <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
+            <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${postDetail.blogId}">
+            <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
+                   placeholder="검색어를 입력해주세요." spellcheck="false" required>
+            <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
+                <img class="search_blog_button_img" src="../images/search.gif"/>
+            </button>
+            <span class="blind">게시글 검색</span>
+        </form>
+    </div>
+
     <div class="post_title_container">
         <div class="post_title_block clear_fix">
             <h3 class="post_title_text" th:text="${postDetail.title}">포스트 제목</h3>
@@ -58,9 +70,14 @@
                         수정
                     </a>
 
-                    <button class="common_button_text post_detail_delete_button" id="post_detail_delete_button">
+                    <button type="button" class="common_button_text post_detail_delete_button"
+                            id="post_detail_delete_button">
                         삭제
                     </button>
+
+                    <form action="/post/delete" method="post" id="post_delete_form">
+                        <input type="hidden" id="postIdInput" readonly name="postId" th:value="${postDetail.id}">
+                    </form>
                 </th:block>
             </div>
         </div>

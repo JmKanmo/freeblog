@@ -15,7 +15,7 @@ public class PostSearchPagingDto {
     private PostPagination postPagination;    // 페이지네이션 정보
 
     public PostSearchPagingDto() {
-        this.page = 1;
+        this.page = 0;
         this.recordSize = 10;
         this.pageSize = 10;
     }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <title>카테고리 설정</title>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/category/category-setting.css}">
+    <script type="text/javascript" th:src="@{/js/category/category-setting.js}"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="category_setting_container">
+        <h1 class="settings_title">카테고리 관리 · 설정</h1>
+
+        <div class="category_setting_button_container clear_fix">
+            <button class="category_add_button common_check_button one_level_category" id="one_level_category_button">
+                1차 카테고리 추가
+            </button>
+
+            <button class="category_add_button common_check_button two_level_category" id="two_level_category_button">
+                2차 카테고리 추가
+            </button>
+
+            <button class="category_register_button common_check_button" id="register_category_button">
+                등록
+            </button>
+
+            <button class="category_delete_button common_check_button" id="delete_category_button">
+                삭제
+            </button>
+
+            <button class="category_update_button common_check_button" id="update_category_button">
+                수정
+            </button>
+        </div>
+
+        <div class="category_container">
+            <div class="blog_header_category_container">
+                <ul class="blog_header_category_list" id="blog_header_category_list">
+                    <li class="blog_header_category_elem">
+                        <button th:value="'totalCategory'"
+                                class="common_button_text total_category_search_title" id="total_category_search_title">
+                            전체 카테고리
+                            <span class="category_count_text" id="category_count_text"
+                                  th:text="'(' + ${category.totalCategoryDto.totalCount} + ')'">전체개수</span>
+                        </button>
+                    </li>
+
+                    <th:block th:each="subCategoryDtoList: ${category.subCategoryDtoList}">
+                        <li class="blog_header_category_elem">
+                            <button th:value="'parentCategory:' + ${subCategoryDtoList.parentCategoryDto.id} + '&' + ${subCategoryDtoList.parentCategoryDto.parentId} + '=' + ${subCategoryDtoList.parentCategoryDto.seq}"
+                                    class="common_button_text blog_header_category_title"
+                                    th:text="${subCategoryDtoList.parentCategoryDto.name}">
+                                카테고리명
+                            </button>
+                            <span class="category_count_text"
+                                  th:text="'(' + ${subCategoryDtoList.parentCategoryDto.postCount} + ')'">(0)</span>
+
+                            <ul class="blog_header_sub_category_list">
+                                <th:block th:each="childCategoryDtoList: ${subCategoryDtoList.childCategoryDtoList}">
+                                    <li class="blog_header_sub_category_elem">
+                                        <button th:value="'childCategory:' + ${childCategoryDtoList.id} + '&' + ${childCategoryDtoList.parentId} + '=' + ${subCategoryDtoList.parentCategoryDto.seq}"
+                                                class="common_button_text blog_header_sub_category_title"
+                                                th:text="${childCategoryDtoList.name}"> 카테고리명
+                                        </button>
+                                        <span class="sub_category_count_text"
+                                              th:text="'(' + ${childCategoryDtoList.postCount} + ')'">(25)</span>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" readonly id="blogIdInput" , th:value="${blogId}">
+<input type="hidden" readonly id="categoryId" value="0">
+<input type="hidden" readonly id="categorySeq" value="0">
+
+<script th:inline="javascript">
+    const subCategoryDtoList = [[${category.subCategoryDtoList}]];
+    document.getElementById("categorySeq").value = subCategoryDtoList.length;
+
+    let maxCategoryId = 0;
+    for (const subCategoryIdx in subCategoryDtoList) {
+        const subCategoryDto = subCategoryDtoList[subCategoryIdx]['parentCategoryDto'];
+        const childCategoryList = subCategoryDto['childCategoryDtoList'];
+        maxCategoryId = Math.max(maxCategoryId, subCategoryDto['id']);
+
+        for (const idx in childCategoryList) {
+            const childCategory = childCategoryList[idx];
+            maxCategoryId = Math.max(maxCategoryId, childCategory['id']);
+        }
+    }
+    document.getElementById("categoryId").value = maxCategoryId;
+</script>
+</body>
+</html>

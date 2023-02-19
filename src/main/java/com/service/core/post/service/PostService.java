@@ -4,6 +4,7 @@ import com.service.core.category.service.CategoryService;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -13,6 +14,10 @@ import java.util.List;
 
 
 public interface PostService {
+    List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId);
+
+    PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);
+
     PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type);
 
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;
@@ -23,9 +28,11 @@ public interface PostService {
 
     PostDetailDto findPostDetailInfo(Long blogId, Long postId);
 
+    PostDto findPostDtoById(Long postId);
+
     PostUpdateDto findPostUpdateInfo(Long blogId, Long postId);
 
-    PostAlmostDto findPostAlmostInfo(Long blogId, Integer seq);
+    PostAlmostDto findPostAlmostInfo(Long blogId, Long seq);
 
     List<PostDto> findPostPaginationById(PostSearchDto postSearchDto);
 
@@ -35,5 +42,9 @@ public interface PostService {
 
     int findPostCountByBlogId(Long blogId);
 
+    int findUndeletePostCountByBlogId(Long blogId);
+
     boolean checkEqualPostByLogin(Long blogId, Long postId);
+
+    void deletePost(Long postId);
 }
