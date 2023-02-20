@@ -26,9 +26,9 @@
                post.writer,
                date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
-                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
+                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
                        THEN c.name
-                   ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
+                   ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true), '/', c.name)
                    END                                           as category,
                c.category_id,
                b.blog_id
@@ -52,9 +52,9 @@
                post.writer,
                date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
-                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
+                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
                        THEN c.name
-                   ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
+                   ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true), '/', c.name)
                    END                                           as category,
                c.category_id,
                b.blog_id
@@ -122,13 +122,13 @@
         post.writer,
         date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
         CASE
-        WHEN ((select pc.name from category pc where pc.category_id = c.parent_id) is null)
+        WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
         THEN c.name
-        ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id), '/', c.name)
+        ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true), '/', c.name)
         END as category,
         c.category_id,
         b.blog_id,
-        (select count(*) from comment where comment.post_id = post.post_id) as commentCount
+        (select count(*) from comment where comment.post_id = post.post_id and comment.is_delete != true) as commentCount
         from post
         inner join category c on post.category_id = c.category_id and c.is_delete != true
         inner join blog b
@@ -142,6 +142,40 @@
         order by register_time desc
         LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart},
         #{postKeywordSearchDto.postSearchPagingDto.recordSize}
+    </select>
+
+    <select id="findPostDtoByTagKeyword" parameterType="com.service.core.post.dto.PostTagKeywordSearchDto">
+        select main_post.post_id,
+               main_post.title,
+               main_post.thumbnail_image,
+               main_post.contents,
+               main_post.writer,
+               date_format(main_post.register_time, '%y.%m.%d %H:%i') as register_time,
+               CASE
+                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
+               THEN c.name
+           ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true),
+            '/', c.name)
+        END                                                as category,
+       c.category_id,
+       main_post.blog_id,
+       (select count(*)
+        from comment
+        where comment.post_id = main_post.post_id
+          and comment.is_delete != true)                      as commentCount
+from post main_post
+         inner join category c on main_post.category_id = c.category_id and c.is_delete != true
+where main_post.post_id in (select DISTINCT tag.post_id
+                            from tag
+                            where tag.name = #{tagName}
+        and tag.post_id in (select post_id
+        from post
+        inner join blog b on post.blog_id = b.blog_id and b.is_delete != true
+        where post.blog_id = #{blogId}
+        and post.is_delete != true))
+        and main_post.is_delete != true
+        order by main_post.register_time desc
+        LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart}, #{postKeywordSearchDto.postSearchPagingDto.recordSize};
     </select>
 
     <select id="findPostDtoCountByKeyword" resultType="int">
