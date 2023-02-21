@@ -144,7 +144,8 @@
         #{postKeywordSearchDto.postSearchPagingDto.recordSize}
     </select>
 
-    <select id="findPostDtoByTagKeyword" parameterType="com.service.core.post.dto.PostTagKeywordSearchDto">
+    <select id="findPostDtoByTagKeyword" parameterType="com.service.core.post.dto.PostTagKeywordSearchDto"
+    resultType="com.service.core.post.dto.PostSearchMapperDto">
         select main_post.post_id,
                main_post.title,
                main_post.thumbnail_image,
@@ -167,15 +168,15 @@ from post main_post
          inner join category c on main_post.category_id = c.category_id and c.is_delete != true
 where main_post.post_id in (select DISTINCT tag.post_id
                             from tag
-                            where tag.name = #{tagName}
+                            where tag.name = CONCAT('#', #{postTagKeywordSearchDto.keyword})
         and tag.post_id in (select post_id
         from post
         inner join blog b on post.blog_id = b.blog_id and b.is_delete != true
-        where post.blog_id = #{blogId}
+        where post.blog_id = #{postTagKeywordSearchDto.blogId}
         and post.is_delete != true))
         and main_post.is_delete != true
         order by main_post.register_time desc
-        LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart}, #{postKeywordSearchDto.postSearchPagingDto.recordSize};
+        LIMIT #{postTagKeywordSearchDto.postSearchPagingDto.postPagination.limitStart}, #{postTagKeywordSearchDto.postSearchPagingDto.recordSize};
     </select>
 
     <select id="findPostDtoCountByKeyword" resultType="int">
@@ -191,7 +192,7 @@ where main_post.post_id in (select DISTINCT tag.post_id
         from post main_post
         where main_post.post_id in (select DISTINCT tag.post_id
                                     from tag
-                                    where tag.name = #{tagKeyword}
+                                    where tag.name = CONCAT('#', #{keyword})
                                       and tag.post_id in (select post_id
                                                           from post
                                                                    inner join blog b on post.blog_id = b.blog_id and b.is_delete != true

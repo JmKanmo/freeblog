@@ -108,9 +108,12 @@
 
     <div class="post_tag_container">
         <th:block th:each="postTag: ${postDetail.tags}">
-            <a class="post_tag_link" th:href="'/tag/' + ${postTag} + '?blogId=' + ${postDetail.blogId}">
-                <span class="tag_text" th:text="${postTag}">포스트 태그</span>
-            </a>
+            <th:block th:if="${#strings.isEmpty(postTag)} eq false">
+                <a class="post_tag_link"
+                   th:href="'/tag/' + ${#strings.arraySplit(postTag,'#')[0]} + '?blogId=' + ${postDetail.blogId}">
+                    <span class="tag_text" th:text="${postTag}">포스트 태그</span>
+                </a>
+            </th:block>
         </th:block>
     </div>
 
