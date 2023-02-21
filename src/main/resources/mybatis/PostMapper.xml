@@ -186,6 +186,20 @@ where main_post.post_id in (select DISTINCT tag.post_id
         and (<include refid="textSearchQuery"/>)
     </select>
 
+    <select id="findPostDtoCountByTagKeyword" resultType="int">
+        select count(*)
+        from post main_post
+        where main_post.post_id in (select DISTINCT tag.post_id
+                                    from tag
+                                    where tag.name = #{tagKeyword}
+                                      and tag.post_id in (select post_id
+                                                          from post
+                                                                   inner join blog b on post.blog_id = b.blog_id and b.is_delete != true
+        where post.blog_id = #{blogId}
+          and post.is_delete != true))
+          and main_post.is_delete != true;
+    </select>
+
     <sql id="textSearchQuery">
         <choose>
             <when test="postKeywordSearchDto.searchType eq 'LIKE'">

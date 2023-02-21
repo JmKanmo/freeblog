@@ -59,6 +59,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostPaginationResponse<PostTagKeywordDto> findPostSearchPaginationByTagKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
+        PostTagKeywordSearchDto postTagKeywordSearchDto = PostTagKeywordSearchDto.from(
+                blogPostSearchInput,
+                postSearchPagingDto
+        );
+        int postCount = postMapper.findPostDtoCountByTagKeyword(blogPostSearchInput.getBlogId(), blogPostSearchInput.getKeyword());
+        PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+        postSearchPagingDto.setPostPagination(postPagination);
+        postTagKeywordSearchDto.setPostSearchPagingDto(postSearchPagingDto);
+        return new PostPaginationResponse<>(PostTagKeywordDto.from(postMapper.findPostDtoByTagKeyword(postTagKeywordSearchDto)), postPagination);
+    }
+
+    @Override
     public PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type) {
         int postCount = findUndeletePostCountByBlogId(blogId);
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);

@@ -18,6 +18,8 @@ public interface PostService {
 
     PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);
 
+    PostPaginationResponse<PostTagKeywordDto> findPostSearchPaginationByTagKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);
+
     PostPaginationResponse<PostTotalDto> findTotalPaginationPost(Long blogId, PostSearchPagingDto postSearchPagingDto, String type);
 
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;
