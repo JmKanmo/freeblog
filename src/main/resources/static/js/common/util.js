@@ -43,6 +43,10 @@ class UtilController {
         });
     }
 
+    getRemoveSpaceStr(str) {
+        return str.replace(/\s/g, '');
+    }
+
     getUrlStr() {
         return window.location.href;
     }

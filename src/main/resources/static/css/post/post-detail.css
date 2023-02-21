@@ -21,10 +21,13 @@
 .search_container .search_blog_input {
     height: 25px;
     background-color: #ffffff;
-    border: 1px solid #9e9e9e;
+    border-bottom: 1px solid #dfdfdf;
     font-size: 11px;
     line-height: 13px;
     padding: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: #ffffff;
 }
 
 .search_container .search_blog_button {

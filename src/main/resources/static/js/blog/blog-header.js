@@ -3,6 +3,7 @@ class BlogHeaderController extends BlogBodyController {
         super();
         this.recentPostTitle = document.getElementById("recent_post_title");
         this.popularPostTitle = document.getElementById("popular_post_title");
+        this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.audioPlayer = this.initAudioPlayer(); // TODO
         this.introButton = document.getElementById("intro_button");
 
@@ -72,6 +73,12 @@ class BlogHeaderController extends BlogBodyController {
         });
 
         this.postSearchButton.addEventListener("click", evt => {
+            this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+
+            if (this.postSearchKeywordInput.value === '') {
+                this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                return;
+            }
             this.postSearchForm.submit();
         });
 

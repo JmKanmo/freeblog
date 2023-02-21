@@ -2,6 +2,7 @@ class PostDetailController extends UtilController {
     constructor() {
         super();
         this.postTitle = document.getElementById("blog_post_title");
+        this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
         this.postLikeButton = document.getElementById("post_like_button");
         this.postLikeUserCheckButton = document.getElementById("post_like_user_check_button");
@@ -90,6 +91,12 @@ class PostDetailController extends UtilController {
         }
 
         this.postSearchButton.addEventListener("click", evt => {
+            this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+
+            if (this.postSearchKeywordInput.value === '') {
+                this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                return;
+            }
             this.postSearchForm.submit();
         });
     }
