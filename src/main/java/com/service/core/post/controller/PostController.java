@@ -61,7 +61,7 @@ public class PostController {
         model.addAttribute("user_profile", userService.findUserProfileDtoByBlogId(blogId));
         PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, postId);
         model.addAttribute("postDetail", postDetailDto);
-        model.addAttribute("relatedPost", null);
+        model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
         return "post/post-detail";
     }

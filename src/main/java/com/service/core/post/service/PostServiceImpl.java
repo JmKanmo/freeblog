@@ -45,6 +45,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostCardDto> findRelatedPost(Long postId, Long blogId, Long categoryId, Long postSeq) {
+        return postMapper.findRelatedPost(postId, blogId, categoryId, postSeq);
+    }
+
+    @Override
     public PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
         PostKeywordSearchDto postKeywordSearchDto = PostKeywordSearchDto.from(
                 blogPostSearchInput,

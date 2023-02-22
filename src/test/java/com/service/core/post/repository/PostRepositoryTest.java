@@ -9,6 +9,7 @@ import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.repository.mapper.PostMapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,5 +63,12 @@ public class PostRepositoryTest {
     public void findPostCardDtoTest() {
         List<PostCardDto> postCardDto = postMapper.findRecentPostCardDto(6L);
         Assertions.assertNotNull(postCardDto);
+    }
+
+    @Test
+    @Disabled
+    public void findRelatedPostTest() {
+        List<PostCardDto> postCardDtos = postMapper.findRelatedPost(53L, 9L, 19L, 2L);
+        Assertions.assertNotNull(postCardDtos);
     }
 }

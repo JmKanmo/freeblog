@@ -179,6 +179,21 @@ where main_post.post_id in (select DISTINCT tag.post_id
         LIMIT #{postTagKeywordSearchDto.postSearchPagingDto.postPagination.limitStart}, #{postTagKeywordSearchDto.postSearchPagingDto.recordSize};
     </select>
 
+    <select id="findRelatedPost" resultType="com.service.core.post.dto.PostCardDto">
+        select post.post_id,
+               post.title,
+               post.thumbnail_image,
+               post.register_time,
+               post.blog_id
+        from post
+        where post_id != #{postId}
+          and blog_id = #{blogId}
+          and category_id = #{categoryId}
+          and seq > #{postSeq}
+          and is_delete != true
+            limit 0, 4;
+    </select>
+
     <select id="findPostDtoCountByKeyword" resultType="int">
         SELECT count(*)
         FROM post p
