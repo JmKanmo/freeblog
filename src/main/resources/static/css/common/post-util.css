@@ -18,6 +18,10 @@ pre {
     background-color: #ffffff;
 }
 
+.search_result_box {
+    display: none;
+}
+
 /* 포스트 탐색 스타일 */
 .post_search_block {
     min-height: 500px;

@@ -15,8 +15,14 @@
 <div th:replace="fragments/header::header"></div>
 <div class="post_search_container">
     <h3 class="post_search_title">
-        <span th:text="'&quot;' + ${keyword} + '&quot;'"></span>
-        <span>검색 결과: <span style="color: #333" id="post_search_count">0</span>개</span>
+        <div class="search_pause_box" id="search_pause_box">
+            <span>검색 중 입니다.</span>
+        </div>
+
+        <div class="search_result_box" id="search_result_box">
+            <span th:text="'&quot;' + ${keyword} + '&quot;'"></span>
+            <span>검색 결과: <span style="color: #333" id="post_search_count">0</span>개</span>
+        </div>
     </h3>
 
     <div class="post_search_block">

@@ -313,6 +313,61 @@
     cursor: pointer;
 }
 
+/* 관련글 스타일 */
+.post_detail_container .related_post_container {
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.post_detail_container .related_post_container .related_post_h3 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    color: #666666;
+}
+
+.post_detail_container .related_post_container .related_post_list {
+    display: inline-block;
+    width: 101.621621621621622%;
+    margin-left: -1.621621621621622%;
+    vertical-align: top;
+}
+
+.post_detail_container .related_post_container .related_post_list .related_post_box {
+    margin-left: 0;
+    float: left;
+    width: 25%;
+    padding-left: 1.621621621621622%;
+    box-sizing: border-box;
+}
+
+.post_detail_container .related_post_container .related_post_list .related_post_box .related_post_figure {
+    display: block;
+    width: 100%;
+    height: 0;
+    margin-bottom: 9px;
+    padding-bottom: 68.181818181818182%;
+    background-color: #f8f8f8;
+}
+
+.post_detail_container .related_post_container .related_post_list .related_post_box .related_post_figure .related_post_image {
+    width: 100%;
+    height: 160.03px;
+}
+
+.post_detail_container .related_post_container .related_post_list .related_post_box .related_post_title {
+    display: block;
+    overflow: hidden;
+    max-width: 95%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875em;
+    line-height: 1.4;
+    color: #555;
+    margin-top: 10px;
+    text-align: center;
+}
+
 /* 이전/다음글 스타일 */
 .post_detail_container .prev_next_category_post_container {
     padding-top: 35px;

@@ -140,6 +140,29 @@
 
     <input type="hidden" id="blog_post_category_id" readonly th:value="${postDetail.categoryId}">
 
+    <!-- 연관 게시글 컨테이너 -->
+    <div class="related_post_container">
+        <h2 class="related_post_h3">
+            연관 게시글
+        </h2>
+
+        <ul class="related_post_list">
+            <li class="related_post_box">
+                <a href="">
+                    <figure class="related_post_figure">
+                        <img class="related_post_image"
+                             src="https://i1.daumcdn.net/thumb/C176x120/?fname=https…%2Fbtq2x5fyU7T%2FV3c1fkauieHK3Wch39ckR1%2Fimg.png"
+                             alt="">
+                    </figure>
+
+                    <span class="related_post_title">
+                        연관 포스트 게시글
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
     <!-- 게시글 댓글 컨테이너-->
     <div th:replace="fragments/comment/post-comment-container::post-comment-container"></div>
 

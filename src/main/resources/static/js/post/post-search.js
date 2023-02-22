@@ -6,6 +6,8 @@ class PostSearchController extends UtilController {
         this.postSearchCount = document.getElementById("post_search_count");
         this.postSearchList = document.getElementById("blog_post_list");
         this.postSearchPagination = document.getElementById("PostSearchPagination");
+        this.searchPauseBox = document.getElementById("search_pause_box");
+        this.searchResultBox = document.getElementById("search_result_box");
 
         this.postRecordSize = 5;
         this.postPageSize = 5;
@@ -48,6 +50,9 @@ class PostSearchController extends UtilController {
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
             const responseValue = JSON.parse(event.target.responseText);
+
+            this.searchPauseBox.style.display = 'none';
+            this.searchResultBox.style.display = 'block';
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
