@@ -3,6 +3,7 @@ class PostCommentController extends PostCommentCommonController {
         super();
         this.postCommentForm = document.getElementById("post_comment_form");
         this.postCommentSubmitButton = document.getElementById("post_comment_submit_button");
+        this.isClickedPostCommentSubmuitButton = false;
 
         this.postCommentList = document.getElementById("post_comment_list");
         this.commentPagination = document.getElementById("commentPagination");
@@ -23,6 +24,9 @@ class PostCommentController extends PostCommentCommonController {
             if (this.checkCommentForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
                 return;
+            } else if (this.isClickedPostCommentSubmuitButton === true) {
+                this.showToastMessage("댓글 등록이 진행 중입니다.");
+                return;
             }
 
             xhr.open("POST", `/comment/register`, true);
@@ -39,6 +43,7 @@ class PostCommentController extends PostCommentCommonController {
                     const commentCount = responseValue["commentCount"];
                     this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`, Math.ceil((commentCount / this.commentRecordSize)));
                 }
+                this.isClickedPostCommentSubmuitButton = true;
             });
 
             xhr.addEventListener("error", event => {
@@ -229,6 +234,7 @@ class PostCommentController extends PostCommentCommonController {
                 // 게시글 상세 화면에서 url이 #href일 경우  특정 댓글 위치로 스크롤
                 this.scrollTargetElement(this.getUrlStrAndParse('#'));
             }
+            this.isClickedPostCommentSubmuitButton = false;
         });
 
         xhr.addEventListener("error", event => {

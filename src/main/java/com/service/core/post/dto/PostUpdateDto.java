@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Builder
 public class PostUpdateDto {
     private final Long id;
+    private final Long categoryId;
     private final String title;
     private final String contents;
     private final String thumbnailImage;
@@ -19,6 +20,7 @@ public class PostUpdateDto {
     public static PostUpdateDto from(Post post) {
         return PostUpdateDto.builder()
                 .id(post.getId())
+                .categoryId(post.getCategory().getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
                 .thumbnailImage(post.getThumbnailImage())

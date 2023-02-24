@@ -88,6 +88,7 @@
                th:field="*{blogId}">
         <input type="hidden" id="hidden_post_id" name="postId" readonly th:value="${blogPostUpdateInput.postId}"
                th:field="*{postId}">
+        <input type="hidden" id="hidden_post_category_id" th:value="${postUpdate.categoryId}">
         <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">
         <input type="hidden" id="hidden_blog_post_thumbnail_image" name="postThumbnailImage"
                th:field="*{postThumbnailImage}">

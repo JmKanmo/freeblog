@@ -22,6 +22,7 @@ class PostUpdateController extends UtilController {
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
         this.hiddenBlogPostTitle = document.getElementById("hidden_blog_post_title");
+        this.hiddenPostCategoryId = document.getElementById("hidden_post_category_id");
         this.tagSet = new Set();
     }
 
@@ -62,6 +63,7 @@ class PostUpdateController extends UtilController {
                 const categorySelectorOptionTemplateObject = Handlebars.compile(categorySelectorOptionTemplate);
                 const categorySelectorOptionTemplateHTML = categorySelectorOptionTemplateObject(responseValue["categoryDto"]);
                 this.postCategory.innerHTML = categorySelectorOptionTemplateHTML;
+                this.postCategory.value = this.hiddenPostCategoryId.value;
             }
         });
 
