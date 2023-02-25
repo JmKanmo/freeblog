@@ -20,7 +20,7 @@ class PostCommentCommonController extends UtilController {
         this.commentUserPassword = document.getElementById("commentUserPassword");
 
         this.currentTextCount = document.getElementById("current_text_count");
-
+        this.isImageUploadFlag = false;
     }
 
     initEventListener() {
@@ -32,7 +32,13 @@ class PostCommentCommonController extends UtilController {
 
         if (this.postCommentImageFileInput != null) {
             this.postCommentImageFileInput.addEventListener("change", evt => {
+                if (this.isImageUploadFlag === true) {
+                    this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                    return;
+                }
+
                 const imgFile = evt.target.files[0];
+
                 if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
                     if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
                         // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
@@ -44,6 +50,7 @@ class PostCommentCommonController extends UtilController {
                     }
                 } else {
                     this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                    this.isImageUploadFlag = false;
                 }
             });
         }
@@ -86,18 +93,22 @@ class PostCommentCommonController extends UtilController {
                         this.postCommentThumbnailImage.src = responseValue;
                         this.postCommentThumbnailImageValueInput.value = responseValue;
                     }
+                    this.isImageUploadFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
                     this.removeCommentImage();
+                    this.isImageUploadFlag = false;
                 });
                 formData.set("compressed_post_comment_image", imgFile);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
+            this.isImageUploadFlag = true;
         } else {
             this.removeCommentImage();
+            this.isImageUploadFlag = false;
         }
     }
 

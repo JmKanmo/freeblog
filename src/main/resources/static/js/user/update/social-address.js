@@ -22,18 +22,27 @@ class SocialAddressInfoController extends UtilController {
 
         this.userIdInput = document.getElementById("user_id_input");
         this.userIdInput.value = window.opener.document.getElementById("user_basic_info_id").value;
+
+        this.isSubmitFlag = false;
     }
 
     initSocialAddressInfoController() {
         this.socialAddressInfoForm.addEventListener("submit", evt => {
+            if (this.isSubmitFlag === true) {
+                this.showToastMessage("SNS 정보를 수정 중입니다.");
+                return;
+            }
+
             evt.preventDefault();
 
             if (confirm('소셜 정보를 수정하겠습니까?') === true) {
                 if (this.checkPrevChangeSocialInfos()) {
                     this.showToastMessage("변경 된 정보가 없습니다.");
+                    this.isSubmitFlag = false;
                     return false;
                 }
                 this.socialAddressInfoForm.submit();
+                this.isSubmitFlag = true;
                 return true;
             } else {
                 return false;

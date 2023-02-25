@@ -3,6 +3,7 @@ class PostCommentReplyController extends PostCommentCommonController {
         super();
         this.postCommentReplyForm = document.getElementById("post_comment_reply_form");
         this.postReplyCommentButton = document.getElementById("post_reply_comment_button");
+        this.isCommentSubmitFlag = false;
     }
 
     initPostCommentReplyController() {
@@ -23,10 +24,16 @@ class PostCommentReplyController extends PostCommentCommonController {
         }
 
         this.postReplyCommentButton.addEventListener("click", evt => {
+            if (this.isCommentSubmitFlag === true) {
+                this.showToastMessage("게시글을 발행 중입니다.");
+                return;
+            }
+
             const xhr = new XMLHttpRequest();
 
             if (this.checkReplyCommentForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
+                this.isCommentSubmitFlag = false;
                 return;
             }
 
@@ -43,12 +50,15 @@ class PostCommentReplyController extends PostCommentCommonController {
                     this.resetReplyCommentForm();
                     this.showToastMessage(responseValue);
                 }
+                this.isCommentSubmitFlag = false;
             });
 
             xhr.addEventListener("error", event => {
                 this.showToastMessage('오류가 발생하여 답글 등록에 실패하였습니다.');
+                this.isCommentSubmitFlag = false;
             });
             xhr.send(new FormData(this.postCommentReplyForm));
+            this.isCommentSubmitFlag = true;
         });
     }
 

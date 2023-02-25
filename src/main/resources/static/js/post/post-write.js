@@ -21,7 +21,8 @@ class PostWriteController extends UtilController {
         this.hiddenTagTextList = document.getElementById("hidden_tag_text_list");
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
-
+        this.imageUploadFlag = false;
+        this.isSubmitFlag = false;
         this.tagSet = new Set();
     }
 
@@ -176,7 +177,13 @@ class PostWriteController extends UtilController {
         });
 
         this.postThumbnailImageInput.addEventListener("change", evt => {
+            if (this.imageUploadFlag === true) {
+                this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                return;
+            }
+
             const imgFile = evt.target.files[0];
+
             if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
                 if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
                     // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
@@ -188,6 +195,7 @@ class PostWriteController extends UtilController {
                 }
             } else {
                 this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.imageUploadFlag = false;
             }
         });
 
@@ -198,11 +206,16 @@ class PostWriteController extends UtilController {
         });
 
         this.postWriteForm.addEventListener("submit", evt => {
+            if (this.isSubmitFlag === true) {
+                this.showToastMessage("게시글을 발행 중입니다.");
+                return;
+            }
             evt.preventDefault();
 
             if (confirm('게시글을 발행하겟습니까?')) {
                 if (this.checkPostSubmitInfo()) {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
+                    this.isSubmitFlag = false;
                     return false;
                 } else {
                     this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
@@ -211,6 +224,7 @@ class PostWriteController extends UtilController {
                     this.setTagText();
                     this.postWriteForm.submit();
                     this.clearInterval(this.postInterval, "postSaveInfo");
+                    this.isSubmitFlag = true;
                     return true;
                 }
             }
@@ -240,16 +254,20 @@ class PostWriteController extends UtilController {
                         this.postThumbnailImage.src = responseValue;
                         this.postThumbnailImageURL = this.postThumbnailImage.src;
                     }
+                    this.imageUploadFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                    this.imageUploadFlag = false;
                 });
                 formData.set("compressed_post_image", imgFile);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
+            this.imageUploadFlag = true;
         } else {
+            this.imageUploadFlag = false;
             this.removePostThumbnailImage();
         }
     }

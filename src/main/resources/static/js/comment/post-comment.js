@@ -4,6 +4,7 @@ class PostCommentController extends PostCommentCommonController {
         this.postCommentForm = document.getElementById("post_comment_form");
         this.postCommentSubmitButton = document.getElementById("post_comment_submit_button");
         this.isClickedPostCommentSubmuitButton = false;
+        this.isClickedPostCommentDeleteButton = false;
 
         this.postCommentList = document.getElementById("post_comment_list");
         this.commentPagination = document.getElementById("commentPagination");
@@ -103,6 +104,11 @@ class PostCommentController extends PostCommentCommonController {
     }
 
     #deleteComment(commentId) {
+        if (this.isClickedPostCommentDeleteButton === true) {
+            this.showToastMessage("댓글을 삭제 중입니다.");
+            return;
+        }
+
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `/comment/authority/${commentId}`, true);
 
@@ -112,9 +118,11 @@ class PostCommentController extends PostCommentCommonController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.isClickedPostCommentDeleteButton = false;
             } else {
                 if (responseValue["auth"] === false) {
                     this.showToastMessage("댓글을 삭제할 권한이 없습니다. 로그인 후 시도해 주세요.");
+                    this.isClickedPostCommentDeleteButton = false;
                     return;
                 }
 
@@ -122,6 +130,7 @@ class PostCommentController extends PostCommentCommonController {
                     const password = prompt("댓글 작성시 입력한 비밀번호를 입력하세요.");
 
                     if (password == null) {
+                        this.isClickedPostCommentDeleteButton = false;
                         return;
                     }
                     const subXhr = new XMLHttpRequest();
@@ -135,13 +144,16 @@ class PostCommentController extends PostCommentCommonController {
                         this.showToastMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
+                            this.isClickedPostCommentDeleteButton = false;
                             return;
                         }
                         this.requestComment();
+                        this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.addEventListener("error", event => {
                         this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
+                        this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.send();
@@ -156,13 +168,16 @@ class PostCommentController extends PostCommentCommonController {
                         this.showToastMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
+                            this.isClickedPostCommentDeleteButton = false;
                             return;
                         }
                         this.requestComment();
+                        this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.addEventListener("error", event => {
                         this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
+                        this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.send();
@@ -172,9 +187,11 @@ class PostCommentController extends PostCommentCommonController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+            this.isClickedPostCommentDeleteButton = false;
         });
 
         xhr.send();
+        this.isClickedPostCommentDeleteButton = true;
     }
 
     requestComment() {

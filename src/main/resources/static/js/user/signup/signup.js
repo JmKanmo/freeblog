@@ -19,6 +19,8 @@ class SignUpController extends UtilController {
         this.userIntroEditorInput = document.getElementById("user_intro_editor_input");
 
         this.userSignUpForm = document.getElementById("user_signup_form");
+
+        this.isSubmitFlag = false;
     }
 
     initSignUpController() {
@@ -33,7 +35,7 @@ class SignUpController extends UtilController {
             this.idCheckButton.disabled = true;
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/user/check-id?id=${id}`,true);
+            xhr.open("GET", `/user/check-id?id=${id}`, true);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;
@@ -75,7 +77,7 @@ class SignUpController extends UtilController {
             this.emailCheckButton.disabled = true;
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/user/check-email?email=${email}`,true);
+            xhr.open("GET", `/user/check-email?email=${email}`, true);
 
             xhr.addEventListener("loadend", event => {
                 let status = event.target.status;
@@ -154,11 +156,17 @@ class SignUpController extends UtilController {
         });
 
         this.userSignUpForm.addEventListener("submit", evt => {
+            if (this.isSubmitFlag === true) {
+                this.showToastMessage("회원가입을 진행 중입니다.");
+                return;
+            }
+
             evt.preventDefault();
 
             if (confirm('회원가입 폼을 제출하시겠습니까?')) {
                 this.userIntroEditorInput.value = this.introEditor.root.innerHTML;
                 this.userSignUpForm.submit();
+                this.isSubmitFlag = true;
                 return true;
             } else {
                 return false;

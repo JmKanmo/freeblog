@@ -12,6 +12,7 @@ class CategorySettingController extends UtilController {
         this.categoryId = document.getElementById("categoryId").value;
         this.categorySeq = document.getElementById("categorySeq").value;
         this.blogId = document.getElementById("blogIdInput").value;
+        this.isSubmitFlag = false;
     }
 
     initCategorySettingController() {
@@ -128,6 +129,11 @@ class CategorySettingController extends UtilController {
 
         this.registerCategoryButton.addEventListener("click", evt => {
             if (confirm("카테고리를 등록하겠습니까?")) {
+                if (this.isSubmitFlag === true) {
+                    this.showToastMessage("카테고리를 등록 중입니다.");
+                    return;
+                }
+
                 const registeredCategory = this.getRegisteredCategoryList();
                 const xhr = new XMLHttpRequest();
 
@@ -143,15 +149,18 @@ class CategorySettingController extends UtilController {
                     } else {
                         this.showToastMessage("카테고리가 등록되었습니다. 페이지를 새로고침해주세요.");
                     }
+                    this.isSubmitFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage("카테고리 정보를 등록하는데 실패하였습니다.");
+                    this.isSubmitFlag = false;
                 });
 
                 xhr.send(
                     JSON.stringify(registeredCategory)
                 );
+                this.isSubmitFlag = true;
             }
         });
 

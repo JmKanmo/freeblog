@@ -28,6 +28,10 @@ class SettingsController extends HeaderController {
         this.withDrawButton = document.getElementById("with_draw_button");
 
         this.emailAuthTime = document.getElementById("user_email_auth_time");
+
+        this.isSubmitFlag = false;
+        this.isImageUploadFlag = false;
+        this.isImageDeleteFlag = false;
     }
 
     initSettingsController() {
@@ -99,7 +103,13 @@ class SettingsController extends HeaderController {
         }
 
         this.userProfileImageInput.addEventListener("change", evt => {
+            if (this.isImageUploadFlag === true) {
+                this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                return;
+            }
+
             const imgFile = evt.target.files[0];
+
             if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
                 if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
                     // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
@@ -111,6 +121,7 @@ class SettingsController extends HeaderController {
                 }
             } else {
                 this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.isImageUploadFlag = false;
             }
         });
 
@@ -119,15 +130,22 @@ class SettingsController extends HeaderController {
         });
 
         this.userProfileRemoveButton.addEventListener("click", evt => {
+            if (this.isImageDeleteFlag === true) {
+                this.showToastMessage("프로필 이미지를 삭제 중입니다.");
+                return;
+            }
+
             if (confirm("프로필 이미지를 삭제하시겠습니까?")) {
                 if (this.defaultUserProfileImage.src.includes(this.getDefaultUserProfileThumbnail()
                     .split('/')[this.getDefaultUserProfileThumbnail().split('/').length - 1])) {
                     this.showToastMessage("현재 프로필 이미지가 지정되어 있지 않습니다.");
+                    this.isImageDeleteFlag = false;
                     return;
                 }
                 this.removeUserProfileImage();
                 this.removeHeaderUserProfileImage();
                 this.#removeRemoteUserProfileImage();
+                this.isImageDeleteFlag = true;
             }
         });
 
@@ -195,17 +213,21 @@ class SettingsController extends HeaderController {
                         this.defaultUserProfileImage.src = responseValue;
                         this.setHeaderUserProfileImage(responseValue);
                     }
+                    this.isImageUploadFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
                     this.removeUserProfileImage();
+                    this.isImageUploadFlag = false;
                 });
                 formData.set("compressed_user_profile_image", imgFile);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
+            this.isImageUploadFlag = true;
         } else {
+            this.isImageUploadFlag = false;
             this.removeUserProfileImage();
         }
     }
@@ -232,6 +254,7 @@ class SettingsController extends HeaderController {
             } else {
                 this.showToastMessage(`프로필 이미지가 정상적으로 삭제 되었습니다.`);
             }
+            this.isImageDeleteFlag = false;
         });
 
         xhr.addEventListener("error", event => {

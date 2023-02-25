@@ -16,6 +16,8 @@ class BasicInfoController extends UtilController {
         this.prevUserBasicInfoNickName = window.opener.document.getElementById("user_basic_info_nickname").value;
         this.prevUserBasicInfoGreetings = window.opener.document.getElementById("user_basic_info_greetings").value;
         this.prevUserBasicInfoIntro = window.opener.document.getElementById("user_info_intro").value;
+
+        this.isSubmitFlag = false;
     }
 
     initBasicInfoController() {
@@ -92,6 +94,11 @@ class BasicInfoController extends UtilController {
         });
 
         document.getElementById("user_basic_info_form").addEventListener("submit", evt => {
+            if (this.isSubmitFlag === true) {
+                this.showToastMessage("개인정보를 수정 중입니다.");
+                return;
+            }
+
             evt.preventDefault();
 
             if (confirm('기본 정보를 수정하겠습니까?') === true) {
@@ -99,9 +106,11 @@ class BasicInfoController extends UtilController {
 
                 if (this.checkPrevChangeUserInfos()) {
                     this.showToastMessage("변경 된 정보가 없습니다.");
+                    this.isSubmitFlag = false;
                     return false;
                 }
                 this.userBasicInfoForm.submit();
+                this.isSubmitFlag = true;
                 return true;
             } else {
                 return false;
