@@ -20,13 +20,15 @@ class PostCommentController extends PostCommentCommonController {
         super.initEventListener();
 
         this.postCommentSubmitButton.addEventListener("click", evt => {
+            if (this.isClickedPostCommentSubmuitButton === true) {
+                this.showToastMessage("댓글 등록이 진행 중입니다.");
+                return;
+            }
+
             const xhr = new XMLHttpRequest();
 
             if (this.checkCommentForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
-                return;
-            } else if (this.isClickedPostCommentSubmuitButton === true) {
-                this.showToastMessage("댓글 등록이 진행 중입니다.");
                 return;
             }
 
@@ -44,13 +46,16 @@ class PostCommentController extends PostCommentCommonController {
                     const commentCount = responseValue["commentCount"];
                     this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`, Math.ceil((commentCount / this.commentRecordSize)));
                 }
-                this.isClickedPostCommentSubmuitButton = true;
+                this.isClickedPostCommentSubmuitButton = false;
             });
 
             xhr.addEventListener("error", event => {
                 this.showToastMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
+                this.isClickedPostCommentSubmuitButton = false;
             });
+
             xhr.send(new FormData(this.postCommentForm));
+            this.isClickedPostCommentSubmuitButton = true;
         });
 
         this.commentPagination.addEventListener("click", evt => {
