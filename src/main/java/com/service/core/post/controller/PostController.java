@@ -208,7 +208,7 @@ public class PostController {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
-        postService.deletePost(postId);
+        postService.deletePost(blogInfoDto.getId(), postId);
         return String.format("redirect:/blog/%s", blogInfoDto.getName());
     }
 }

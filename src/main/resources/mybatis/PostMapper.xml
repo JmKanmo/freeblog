@@ -37,7 +37,7 @@
                  inner join category c on post.category_id = c.category_id and c.is_delete != true
                  inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
-        where post_id in (select post_id from post where blog_id = #{blogId}
+        where post_id in (select post_id from post where blog_id = b.blog_id
           and is_delete = false order by blog_id)
           and post.is_delete != true
         order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
@@ -65,8 +65,8 @@
          inner join blog b
         on b.blog_id = #{blogId} and b.is_delete != true
         where post_id in
-            (select post_id from post p where p.blog_id = #{blogId}
-          and p.category_id = #{categoryId}
+            (select post_id from post p where p.blog_id = b.blog_id
+          and p.category_id = c.category_id
           and p.is_delete = false order by p.blog_id)
         order by register_time desc
             LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
@@ -137,7 +137,7 @@
         inner join blog b
         on b.blog_id = #{postKeywordSearchDto.blogId} and b.is_delete != true
         where post_id in
-        (select post_id from post where blog_id = #{postKeywordSearchDto.blogId}
+        (select post_id from post where blog_id = b.blog_id
         and
         (<include refid="textSearchQuery"/>)
         order by blog_id)
@@ -155,19 +155,19 @@
                IF(left(REGEXP_REPLACE(main_post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300) = <![CDATA['']]>, <![CDATA['...']]>,
                    left(REGEXP_REPLACE(main_post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300)) as contents,
                main_post.writer,
-               date_format(main_post.register_time, '%y.%m.%d %H:%i') as register_time,
+               date_format(main_post.register_time, '%y.%m.%d %H:%i')           as register_time,
                CASE
                    WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
                THEN c.name
            ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true),
             '/', c.name)
-        END                                                as category,
+        END                                                          as category,
        c.category_id,
        main_post.blog_id,
        (select count(*)
         from comment
         where comment.post_id = main_post.post_id
-          and comment.is_delete != true)                      as commentCount
+          and comment.is_delete != true)                                as commentCount
 from post main_post
          inner join category c on main_post.category_id = c.category_id and c.is_delete != true
 where main_post.post_id in (select DISTINCT tag.post_id
@@ -175,8 +175,8 @@ where main_post.post_id in (select DISTINCT tag.post_id
                             where tag.name = CONCAT('#', #{postTagKeywordSearchDto.keyword})
         and tag.post_id in (select post_id
         from post
-        inner join blog b on post.blog_id = b.blog_id and b.is_delete != true
-        where post.blog_id = #{postTagKeywordSearchDto.blogId}
+        inner join blog b on b.blog_id = #{postTagKeywordSearchDto.blogId} and b.is_delete != true
+        where post.blog_id = b.blog_id
         and post.is_delete != true))
         and main_post.is_delete != true
         order by main_post.register_time desc
@@ -190,11 +190,13 @@ where main_post.post_id in (select DISTINCT tag.post_id
                post.register_time,
                post.blog_id
         from post
-        where post_id != #{postId}
-          and blog_id = #{blogId}
-          and category_id = #{categoryId}
-          and seq > #{postSeq}
-          and is_delete != true
+                 inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+         inner join category c on c.category_id = #{categoryId} and c.is_delete != true
+        where post.post_id != #{postId}
+          and post.blog_id = b.blog_id
+          and post.category_id = c.category_id
+          and post.seq > #{postSeq}
+          and post.is_delete != true
             limit 0, 4;
     </select>
 
@@ -214,8 +216,8 @@ where main_post.post_id in (select DISTINCT tag.post_id
                                     where tag.name = CONCAT('#', #{keyword})
                                       and tag.post_id in (select post_id
                                                           from post
-                                                                   inner join blog b on post.blog_id = b.blog_id and b.is_delete != true
-        where post.blog_id = #{blogId}
+                                                                   inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
+        where post.blog_id = b.blog_id
           and post.is_delete != true))
           and main_post.is_delete != true;
     </select>

@@ -6,7 +6,7 @@
     <select id="findTagDtoList" resultType="com.service.core.tag.dto.TagDto">
         select distinct tag.name
         from tag
-        where post_id in (select post_id from post where post.blog_id = #{blogId})
+        where post_id in (select post_id from post where post.blog_id = #{blogId} and post.is_delete != true)
           and tag.name != '';
     </select>
 </mapper>

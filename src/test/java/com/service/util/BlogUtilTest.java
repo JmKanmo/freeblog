@@ -8,10 +8,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
 class BlogUtilTest {
     @Test
     public void encryptEmailTest() {
@@ -45,5 +46,22 @@ class BlogUtilTest {
     public void randomTextTest() {
         String keyword = BlogUtil.createRandomAlphaNumberString(20);
         System.out.println(keyword);
+    }
+
+    @Test
+    public void hashTest() {
+        Long a = 5L;
+        Long b = 25L;
+        System.out.println(Objects.hash(a, b));
+
+        Long c = 5l;
+        Long d = 25L;
+        System.out.println(Objects.hash(c, d));
+
+        String strA = a.toString() + "&" + b.toString();
+
+        String strC = c.toString() + "&" + d.toString();
+
+        System.out.println(Objects.deepEquals(strA, strC));
     }
 }

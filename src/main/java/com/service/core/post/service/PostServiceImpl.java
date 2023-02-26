@@ -20,7 +20,10 @@ import com.service.util.aws.s3.AwsS3Service;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
+import com.service.util.redis.CacheKey;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -98,6 +101,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
+    @CacheEvict(value = CacheKey.POST_DETAIL_DTO, key = "#blogPostUpdateInput.blogId.toString() + '&' + #blogPostUpdateInput.postId.toString()")
     public void update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
         Post post = findPostById(blogPostUpdateInput.getPostId());
         post.setTitle(blogPostUpdateInput.getTitle());
@@ -107,6 +111,7 @@ public class PostServiceImpl implements PostService {
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
     }
 
+    @Cacheable(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")
     @Override
     public PostDetailDto findPostDetailInfo(Long blogId, Long postId) {
         if (!checkPostId(blogId, postId)) {
@@ -173,7 +178,8 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void deletePost(Long postId) {
+    @CacheEvict(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")
+    public void deletePost(Long blogId, Long postId) {
         Post post = findPostById(postId);
         post.setDelete(true);
     }

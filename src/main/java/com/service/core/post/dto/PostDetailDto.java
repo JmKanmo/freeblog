@@ -3,40 +3,42 @@ package com.service.core.post.dto;
 import com.service.core.category.domain.Category;
 import com.service.core.post.domain.Post;
 import com.service.util.BlogUtil;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostDetailDto {
-    private final Long id;
-    private final Long seq;
-    private final String title;
-    private final String contents;
-    private final String categoryName;
-    private final Long categoryId;
-    private final Long blogId;
-    private final String registerTime;
-    private final String currentUrl;
-    private final List<String> tags;
+    private Long id;
+    private Long seq;
+    private String title;
+    private String contents;
+    private String categoryName;
+    private Long categoryId;
+    private Long blogId;
+    private String registerTime;
+    private String currentUrl;
+    private List<String> tags;
 
     // TODO 좋아요, 조회수, etc 추가
-
     public static PostDetailDto from(Post post) {
-        return PostDetailDto.builder()
-                .id(post.getId())
-                .seq(post.getSeq())
-                .title(post.getTitle())
-                .contents(post.getContents())
-                .categoryName(post.getCategory().getName())
-                .categoryId(post.getCategory().getId())
-                .blogId(post.getBlog().getId())
-                .registerTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()))
-                .currentUrl(BlogUtil.currentRequestUrl())
-                .tags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()))
-                .build();
+        PostDetailDto postDetailDto = new PostDetailDto();
+        postDetailDto.setId(post.getId());
+        postDetailDto.setSeq(post.getSeq());
+        postDetailDto.setTitle(post.getTitle());
+        postDetailDto.setContents(post.getContents());
+        postDetailDto.setCategoryName(post.getCategory().getName());
+        postDetailDto.setCategoryId(post.getCategory().getId());
+        postDetailDto.setBlogId(post.getBlog().getId());
+        postDetailDto.setRegisterTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()));
+        postDetailDto.setCurrentUrl(BlogUtil.currentRequestUrl());
+        postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+        return postDetailDto;
     }
 }

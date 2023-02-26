@@ -50,5 +50,5 @@ public interface PostService {
 
     boolean checkEqualPostByLogin(Long blogId, Long postId);
 
-    void deletePost(Long postId);
+    void deletePost(Long blogId, Long postId);
 }
