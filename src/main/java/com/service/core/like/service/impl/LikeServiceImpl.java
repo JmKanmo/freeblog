@@ -1,7 +1,11 @@
 package com.service.core.like.service.impl;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.LikeManageException;
+import com.service.core.error.model.UserAuthException;
 import com.service.core.like.domain.LikePost;
 import com.service.core.like.dto.PostLikeDto;
+import com.service.core.like.dto.UserLikePostDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.core.like.service.LikeService;
 import com.service.core.post.dto.PostDetailDto;
@@ -32,18 +36,25 @@ public class LikeServiceImpl implements LikeService {
     }
 
 
-    public void postLike(Principal principal, LikePostInput likePostInput) {
+    public String postLike(Principal principal, LikePostInput likePostInput) {
         if (principal == null || principal.getName() == null) {
-            // throw 예외 반환
+            throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
         }
 
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
         PostDetailDto postDetailDto = postService.findPostDetailInfo(likePostInput.getBlogId(), likePostInput.getPostId());
+        likePostInput.setLikePostInput(userHeaderDto, postDetailDto);
 
-        // PostDetailDto null 일 경우 예외 반환
+        return postLikeRedisTemplateService.doPostLike(likePostInput);
+    }
 
-        // LikePostInput setting
+    @Override
+    public UserLikePostDto getUserLikePostDto(Principal principal) {
+        if (principal == null || principal.getName() == null) {
+            throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+        }
 
-        // 메소드 호출 
+        UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+        return UserLikePostDto.from(postLikeRedisTemplateService.getUserLikePostsById(userHeaderDto.getId()));
     }
 }

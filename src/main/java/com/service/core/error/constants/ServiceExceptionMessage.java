@@ -49,6 +49,7 @@ public enum ServiceExceptionMessage {
     // 태그 처리 관련 에러 메시지
 
     // 좋아요 관련 에러 메시지
+    NO_LOGIN_ACCESS("비로그인 상태에서는 이용할 수 없습니다."),
 
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),

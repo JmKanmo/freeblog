@@ -23,6 +23,7 @@ public class PostDetailDto implements Serializable {
     private String title;
     private String contents;
     private String categoryName;
+    private String thumbnailImage;
     private Long categoryId;
     private Long blogId;
     private String registerTime;
@@ -36,6 +37,7 @@ public class PostDetailDto implements Serializable {
         postDetailDto.setSeq(post.getSeq());
         postDetailDto.setTitle(post.getTitle());
         postDetailDto.setContents(post.getContents());
+        postDetailDto.setThumbnailImage(post.getThumbnailImage());
         postDetailDto.setCategoryName(post.getCategory().getName());
         postDetailDto.setCategoryId(post.getCategory().getId());
         postDetailDto.setBlogId(post.getBlog().getId());
