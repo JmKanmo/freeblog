@@ -19,6 +19,8 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @Profile("!test")
@@ -39,9 +41,18 @@ public class RedisConfig {
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
+        Map<String, RedisCacheConfiguration> cacheConfigurationMap = new HashMap<>();
+
+        // USER HEADER DTO TTL
+        cacheConfigurationMap.put(CacheKey.USER_HEADER_DTO, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(CacheKey.USER_HEADER_DTO_TTL_MINUTE)));
+
+        // POST DETAIL DTO TTL
+        cacheConfigurationMap.put(CacheKey.POST_DETAIL_DTO, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(CacheKey.POST_DETAIL_DTO_TTL_MINUTE)));
+
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
                 .cacheDefaults(conf)
+                .withInitialCacheConfigurations(cacheConfigurationMap)
                 .build();
     }
 

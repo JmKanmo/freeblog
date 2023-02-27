@@ -33,7 +33,6 @@ public class BlogController {
     private final UserService userService;
     private final CategoryService categoryService;
     private final CommentService commentService;
-
     private final TagService tagService;
 
     @Operation(summary = "블로그 페이지 반환", description = "블로그 페이지를 반환하는 GET 메서드")

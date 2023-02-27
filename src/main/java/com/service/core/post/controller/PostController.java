@@ -7,6 +7,7 @@ import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
+import com.service.core.like.service.LikeService;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
@@ -41,6 +42,8 @@ public class PostController {
     private final CategoryService categoryService;
     private final BlogService blogService;
 
+    private final LikeService likeService;
+
     @Operation(summary = "포스트 상세 페이지 반환", description = "포스트 상세 페이지 반환 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "포스트 상세 페이지 반환 성공"),
@@ -63,6 +66,7 @@ public class PostController {
         model.addAttribute("postDetail", postDetailDto);
         model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
+        model.addAttribute("post_like", likeService.getPostLikeDto(principal == null ? null : principal.getName(), postId));
         return "post/post-detail";
     }
 

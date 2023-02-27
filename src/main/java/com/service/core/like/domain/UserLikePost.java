@@ -8,24 +8,24 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class LikePost implements Serializable {
+public class UserLikePost implements Serializable {
     private static final long serialVersionUID = -6584044926029805156L;
 
     private Long postId;
 
     private Long blogId;
 
-    private String id;
+    private String userName;
 
-    private String name;
+    private String title;
 
-    private String userProfileThumbnailImage;
+    private String postThumbnailImage;
 
-    public static LikePost from(LikePostInput likePostInput) {
-        return LikePost.builder()
+    public static UserLikePost from(LikePostInput likePostInput) {
+        return UserLikePost.builder()
                 .postId(likePostInput.getPostId())
                 .blogId(likePostInput.getBlogId())
-                .userProfileThumbnailImage(likePostInput.getUserProfileThumbnailImage())
+                .title(likePostInput.getTitle())
                 .build();
     }
 }

@@ -5,6 +5,7 @@ class PostDetailController extends UtilController {
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
         this.postLikeButton = document.getElementById("post_like_button");
+        this.postLikeButtonImage = document.getElementById("post_like_button_image");
         this.postLikeUserCheckButton = document.getElementById("post_like_user_check_button");
         this.post_share_button = document.getElementById("post_share_button");
         this.postUrlButton = document.getElementById("post_url_button");
@@ -54,7 +55,13 @@ class PostDetailController extends UtilController {
         });
 
         this.postLikeButton.addEventListener("click", evt => {
-            this.showToastMessage("post like button clicked");
+            if (this.postLikeButtonImage.src === "../images/empty_heart.png") {
+                // 좋아요 누르기
+                this.postLikeButtonImage.src = "../images/heart.png";
+            } else if (this.postLikeButtonImage.src === "../images/heart.png") {
+                // 싫어요 누르기
+                this.postLikeButtonImage.src = "../images/empty_heart.png";
+            }
         });
 
         this.postLikeUserCheckButton.addEventListener("click", evt => {
