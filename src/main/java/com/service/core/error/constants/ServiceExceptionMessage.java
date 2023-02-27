@@ -48,6 +48,7 @@ public enum ServiceExceptionMessage {
 
     // 태그 처리 관련 에러 메시지
 
+    // 좋아요 관련 에러 메시지
 
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),

@@ -1,11 +1,12 @@
 package com.service.config.redis;
 
 import com.service.core.like.model.LikePostInput;
+import com.service.util.ConstUtil;
 
 import java.io.Serializable;
 
 public class LikePost implements Serializable {
-    private static final long serialVersionUID = -6584044926029805156L;
+    private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;
     private Long postId;
     private String title;
     private String thumbnailImage;

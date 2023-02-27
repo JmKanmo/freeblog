@@ -3,18 +3,21 @@ package com.service.core.post.dto;
 import com.service.core.category.domain.Category;
 import com.service.core.post.domain.Post;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDetailDto {
+public class PostDetailDto implements Serializable {
+    private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;
     private Long id;
     private Long seq;
     private String title;

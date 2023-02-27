@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tag")
 public class TagRestController {
     private final PostService postService;
-    private final BlogService blogService;
 
     @Operation(summary = "태그 키워드 검색 결과 포스트 반환", description = "태그 키워드에 해당하는 포스트 데이터 반환 메서드")
     @ApiResponses(value = {

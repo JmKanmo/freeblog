@@ -35,7 +35,7 @@ public class RedisConfig {
 
     @Bean(name = "cacheManager")
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-        RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
+        RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader())
                 .disableCachingNullValues()
                 .entryTtl(Duration.ofMinutes(CacheKey.DEFAULT_EXPIRE_TTL_MINUTE))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
@@ -44,10 +44,10 @@ public class RedisConfig {
         Map<String, RedisCacheConfiguration> cacheConfigurationMap = new HashMap<>();
 
         // USER HEADER DTO TTL
-        cacheConfigurationMap.put(CacheKey.USER_HEADER_DTO, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(CacheKey.USER_HEADER_DTO_TTL_MINUTE)));
+        cacheConfigurationMap.put(CacheKey.USER_HEADER_DTO, RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader()).entryTtl(Duration.ofMinutes(CacheKey.USER_HEADER_DTO_TTL_MINUTE)));
 
         // POST DETAIL DTO TTL
-        cacheConfigurationMap.put(CacheKey.POST_DETAIL_DTO, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(CacheKey.POST_DETAIL_DTO_TTL_MINUTE)));
+        cacheConfigurationMap.put(CacheKey.POST_DETAIL_DTO, RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader()).entryTtl(Duration.ofMinutes(CacheKey.POST_DETAIL_DTO_TTL_MINUTE)));
 
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)

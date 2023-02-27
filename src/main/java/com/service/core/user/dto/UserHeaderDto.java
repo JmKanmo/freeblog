@@ -8,13 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Random;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserHeaderDto {
+public class UserHeaderDto implements Serializable {
+    private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;
     private String id;
     private String nickname;
     private String profileImages;

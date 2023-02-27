@@ -1,6 +1,7 @@
 package com.service.util;
 
 public class ConstUtil {
+    public static final long SERIAL_VERSION_ID = Long.MIN_VALUE;
     public static final String AUTHENTICATION_MESSAGE = "FLASH_AUTHENTICATION_MESSAGE";
     public static final String UNDEFINED = "<<<undefined>>>";
     public static final String NOT_EXIST_CATEGORY = "분류 없음";

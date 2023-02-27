@@ -19,7 +19,7 @@ public class UserLikePostDto {
 
         private final Long blogId;
 
-        private final String userName;
+        private final String nickName;
 
         private final String title;
 
@@ -29,7 +29,7 @@ public class UserLikePostDto {
             return UserLikePostInner.builder()
                     .postId(userLikePost.getPostId())
                     .blogId(userLikePost.getBlogId())
-                    .userName(userLikePost.getUserName())
+                    .nickName(userLikePost.getNickName())
                     .title(userLikePost.getTitle())
                     .postThumbnailImage(userLikePost.getPostThumbnailImage())
                     .build();
