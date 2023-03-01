@@ -66,7 +66,7 @@ public class PostController {
         model.addAttribute("postDetail", postDetailDto);
         model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
-        model.addAttribute("post_like", likeService.getPostLikeDto(principal == null ? null : principal.getName(), postId));
+        model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, postId));
         return "post/post-detail";
     }
 

@@ -3,6 +3,7 @@ package com.service.util.redis.service.like;
 import com.service.core.like.domain.LikePost;
 import com.service.core.like.domain.UserLikePost;
 import com.service.core.like.dto.PostLikeDto;
+import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.util.redis.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,27 @@ public class PostLikeRedisTemplateService {
         return userLikePostOperation.range(likePostKey, 0, userLikePostOperation.size(likePostKey));
     }
 
-    public PostLikeDto getPostLikeDto(String id, Long postId) {
+    public PostLikeDto getPostLikeDto(Long postId) {
+        HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
+        String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
+        return PostLikeDto.from(hashOperations.values(postLikeKey));
+    }
+
+    public PostLikeResultDto getPostLikeResultDto(String id, Long postId) {
         HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
         String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
         Set<String> userIdSet = hashOperations.keys(postLikeKey);
-        return PostLikeDto.from(userIdSet.contains(id), hashOperations.values(postLikeKey));
+        return PostLikeResultDto.success(userIdSet.contains(id), hashOperations.values(postLikeKey).size());
     }
 
-    public String doPostLike(LikePostInput likePostInput) {
+    public boolean isPostLike(String id, Long postId) {
+        HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
+        String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
+        Set<String> userIdSet = hashOperations.keys(postLikeKey);
+        return userIdSet.contains(id);
+    }
+
+    public boolean doPostLike(LikePostInput likePostInput) {
         HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
         String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, likePostInput.getPostId());
         String likePostKey = String.format(RedisTemplateKey.LIKE_POST, likePostInput.getId());
@@ -40,8 +54,9 @@ public class PostLikeRedisTemplateService {
 
         if (userIdSet.contains(likePostInput.getId())) {
             // 좋아요 취소
-            getLikePostOperation().entries(postLikeKey).remove(likePostInput.getId());
-            return "좋아요를 취소했습니다.";
+            getLikePostOperation().delete(postLikeKey, likePostInput.getId());
+            getUserLikePostOperation().rightPop(likePostKey);
+            return false;
         } else {
             // 좋아요 누르기
 
@@ -57,7 +72,7 @@ public class PostLikeRedisTemplateService {
             }
 
             userLikePostOperation.leftPush(likePostKey, userLikePost);
-            return "좋아요를 눌렀습니다.";
+            return true;
         }
     }
 

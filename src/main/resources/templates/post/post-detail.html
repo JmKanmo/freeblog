@@ -21,7 +21,6 @@
 <div class="post_detail_container">
     <div class="search_container">
         <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
-            <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${postDetail.blogId}">
             <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                    placeholder="검색어를 입력해주세요." spellcheck="false" required>
             <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
@@ -76,7 +75,6 @@
                     </button>
 
                     <form action="/post/delete" method="post" id="post_delete_form">
-                        <input type="hidden" id="postIdInput" readonly name="postId" th:value="${postDetail.id}">
                     </form>
                 </th:block>
             </div>
@@ -120,12 +118,14 @@
     <div class="post_util_container clear_fix">
         <div class="post_like_container">
             <button class="post_like_button" id="post_like_button">
-                <img class="common_button_image_style" src="../images/empty_heart.png" id="post_like_button_image"
+                <img class="common_button_image_style"
+                     th:src="${#bools.isTrue(post_like.isLike) ? '../images/heart.png' : '../images/empty_heart.png'}"
+                     id="post_like_button_image"
                      alt="">
             </button>
 
             <span class="post_like_text">공감</span>
-            <span class="post_like_text">0</span>
+            <span class="post_like_text" id="post_like_count_text" th:text="${post_like.likeCount}"></span>
 
             <button class="post_like_user_check_button" id="post_like_user_check_button">
                 <img class="common_button_image_style post_like_user_list_button" src="../images/dot.png" alt="">
@@ -140,6 +140,8 @@
     </div>
 
     <input type="hidden" id="blog_post_category_id" readonly th:value="${postDetail.categoryId}">
+    <input type="hidden" id="postIdInput" readonly name="postId" th:value="${postDetail.id}">
+    <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${postDetail.blogId}">
 
     <!-- 연관 게시글 컨테이너 -->
     <th:block th:if="${not #lists.isEmpty(relatedPostList)}">

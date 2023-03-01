@@ -1,6 +1,7 @@
 package com.service.core.like.controller;
 
 import com.service.core.like.dto.PostLikeDto;
+import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.dto.UserLikePostDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.core.like.service.LikeService;
@@ -26,33 +27,48 @@ import java.security.Principal;
 public class LikePostController {
     private final LikeService likeService;
 
-    @Operation(summary = "포스트 좋아요", description = "포스트 좋아요 수행 메서드")
+    @Operation(summary = "게시글 좋아요", description = "게시글 좋아요 수행 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "포스트 좋아요 누르기"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 포스트 좋아요 실패")
+            @ApiResponse(responseCode = "200", description = "게시글 좋아요 누르기"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 좋아요 실패")
     })
     @PostMapping("/post")
-    public ResponseEntity<String> postLike(@RequestBody LikePostInput likePostInput, Principal principal) {
+    public ResponseEntity<PostLikeResultDto> postLike(@RequestBody LikePostInput likePostInput, Principal principal) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(likeService.postLike(principal, likePostInput));
+            return ResponseEntity.status(HttpStatus.OK).body(PostLikeResultDto.success(likeService.postLike(principal, likePostInput)));
         } catch (Exception exception) {
             log.error("[freeblog-postLike] exception occurred ", exception);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("작업에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostLikeResultDto.fail(exception));
         }
     }
 
-    @Operation(summary = "좋아요 목록 보기", description = "좋아요 목록 보기 메서드")
+    @Operation(summary = "게시글 좋아요 사용자 목록 조회", description = "게시글 좋아요 사용자 목록 조회 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "좋아요 목록 보기 반환"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 좋아요 목록 보기 실패")
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 좋아요 목록 보기 실패")
     })
-    @GetMapping("/user-post")
-    public ResponseEntity<UserLikePostDto> userPostLike(Principal principal) {
+    @GetMapping("/post/user-list")
+    public ResponseEntity<UserLikePostDto> postLikeUserList(Principal principal) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(likeService.getUserLikePostDto(principal));
         } catch (Exception exception) {
-            log.error("[freeblog-userPostLike] exception occurred ", exception);
+            log.error("[freeblog-postLikeUserList] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UserLikePostDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "좋아요 누른 게시글 조회", description = "좋아요 누른 게시글 조회 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "좋아요 누른 게시글 조회"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 좋아요 누른 게시글 조회 실패")
+    })
+    @GetMapping("/post/liked/{postId}")
+    public ResponseEntity<PostLikeDto> findLikedPost(@PathVariable Long postId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(likeService.getPostLikeDto(postId));
+        } catch (Exception exception) {
+            log.error("[freeblog-findLikedPost] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostLikeDto.fail(exception));
         }
     }
 }

@@ -18,6 +18,7 @@ class PostDetailController extends UtilController {
         this.postRecordSize = 5;
         this.postPageSize = 5;
         this.prevCategoryPostBlock = false;
+        this.postLikeCountText = document.getElementById("post_like_count_text");
         this.postDetailDeleteButton = document.getElementById("post_detail_delete_button");
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchForm = document.getElementById("postSearchForm");
@@ -55,13 +56,7 @@ class PostDetailController extends UtilController {
         });
 
         this.postLikeButton.addEventListener("click", evt => {
-            if (this.postLikeButtonImage.src === "../images/empty_heart.png") {
-                // 좋아요 누르기
-                this.postLikeButtonImage.src = "../images/heart.png";
-            } else if (this.postLikeButtonImage.src === "../images/heart.png") {
-                // 싫어요 누르기
-                this.postLikeButtonImage.src = "../images/empty_heart.png";
-            }
+            this.#requestPostLike();
         });
 
         this.postLikeUserCheckButton.addEventListener("click", evt => {
@@ -106,6 +101,38 @@ class PostDetailController extends UtilController {
             }
             this.postSearchForm.submit();
         });
+    }
+
+    #requestPostLike() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/like/post", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                if (responseValue["like"] === true) {
+                    this.postLikeCountText.innerText = Number(this.postLikeCountText.innerText) + 1;
+                    this.postLikeButtonImage.src = "../images/heart.png";
+                } else {
+                    this.postLikeCountText.innerText = Number(this.postLikeCountText.innerText) - 1;
+                    this.postLikeButtonImage.src = "../images/empty_heart.png";
+                }
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 좋아요를 누르지 못했습니다.');
+        });
+
+        xhr.send(JSON.stringify({
+            "postId": document.getElementById("postIdInput").value,
+            "blogId": document.getElementById("postSearchBlogIdInput").value
+        }));
     }
 
     #requestCategoryPost(url, page) {

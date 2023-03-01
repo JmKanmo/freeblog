@@ -8,19 +8,16 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
 public class PostLikeDto {
-    private final boolean isLike;
     private final List<LikePost> likePostList;
     private final String message;
     private final int responseCode;
 
-    public static PostLikeDto from(boolean isLike, List<LikePost> likePostList) {
+    public static PostLikeDto from(List<LikePost> likePostList) {
         return PostLikeDto.builder()
-                .isLike(isLike)
                 .likePostList(likePostList)
                 .message("success")
                 .responseCode(HttpStatus.OK.value())
@@ -29,7 +26,6 @@ public class PostLikeDto {
 
     public static PostLikeDto fail(Exception exception) {
         return PostLikeDto.builder()
-                .isLike(false)
                 .likePostList(Collections.emptyList())
                 .responseCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(String.format("fail: %s", BlogUtil.getErrorMessage(exception)))
