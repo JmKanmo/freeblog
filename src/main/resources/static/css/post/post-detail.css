@@ -319,6 +319,17 @@
     display: none;
 }
 
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .user_post_like_close_button {
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
 .post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container {
     float: left;
 }

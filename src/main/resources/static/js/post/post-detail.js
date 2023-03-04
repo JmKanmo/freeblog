@@ -32,6 +32,7 @@ class PostDetailController extends UtilController {
         this.postLikeUserListContainer = document.getElementById("post_like_user_list_container");
         this.postLikeUserListBlock = document.getElementById("post_like_user_list_block");
         this.postUserLikePagination = document.getElementById("postUserLikePagination");
+        this.postUserLikeCloseButton = document.getElementById("user_post_like_close_button");
     }
 
     initPostDetailController() {
@@ -72,7 +73,8 @@ class PostDetailController extends UtilController {
             if (this.postLikeUserListContainer.style.display === '' || this.postLikeUserListContainer.style.display === 'none') {
                 if (this.userLikePostBlock === false) {
                     this.#requestPostUserLike("/like/post/liked/" + document.getElementById("postIdInput").value);
-                    this.userLikePostBlock = true;
+                } else {
+                    this.postLikeUserListContainer.style.display = 'block';
                 }
             } else {
                 this.postLikeUserListContainer.style.display = 'none';
@@ -130,6 +132,10 @@ class PostDetailController extends UtilController {
                 }
             }
         });
+
+        this.postUserLikeCloseButton.addEventListener("click", evt => {
+            this.postLikeUserListContainer.style.display = 'none';
+        });
     }
 
     #requestPostLike() {
@@ -186,6 +192,7 @@ class PostDetailController extends UtilController {
                 this.#clearPostLikePagination();
                 this.#handlePostLikePagination(responseValue["likePaginationResponse"]["likePagination"], queryParam, url);
                 this.postLikeUserListContainer.style.display = 'block';
+                this.userLikePostBlock = true;
             }
         });
 
