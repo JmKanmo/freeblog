@@ -41,6 +41,14 @@ class UtilController {
                 return image;
             }
         });
+
+        Handlebars.registerHelper('getCheckedUserName', name => {
+            if (!name || name === '<<<undefined>>>') {
+                return '익명의유저';
+            } else {
+                return name;
+            }
+        });
     }
 
     getRemoveSpaceStr(str) {

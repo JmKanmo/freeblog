@@ -316,6 +316,7 @@
     background-color: #fefefe;
     top: 22px;
     padding: 5px 5px 15px 10px;
+    display: none;
 }
 
 .post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container {
@@ -356,12 +357,16 @@
     font-size: 13px;
     line-height: 30px;
     overflow: hidden;
-    color: #666666;
+    color: #6e6e6e;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .post_like_user_list .post_like_user:nth-child(n+2) {
+    margin-top: 15px;
 }
 
 .post_detail_container .post_util_container .post_like_container .post_like_user_list_container .post_user_like_page_container {

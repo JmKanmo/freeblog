@@ -15,14 +15,23 @@ class PostDetailController extends UtilController {
         this.categoryPostBlockCloseButton = document.getElementById("category_post_block_close_button");
         this.categoryPostList = document.getElementById("category_post_list");
         this.categoryPostPagination = document.getElementById("categoryPostPagination");
+
         this.postRecordSize = 5;
         this.postPageSize = 5;
+
+        this.likeRecordSize = 5;
+        this.likePageSize = 5;
+
         this.prevCategoryPostBlock = false;
+        this.userLikePostBlock = false;
         this.postLikeCountText = document.getElementById("post_like_count_text");
         this.postDetailDeleteButton = document.getElementById("post_detail_delete_button");
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchForm = document.getElementById("postSearchForm");
         this.postDeleteForm = document.getElementById("post_delete_form");
+        this.postLikeUserListContainer = document.getElementById("post_like_user_list_container");
+        this.postLikeUserListBlock = document.getElementById("post_like_user_list_block");
+        this.postUserLikePagination = document.getElementById("postUserLikePagination");
     }
 
     initPostDetailController() {
@@ -60,7 +69,14 @@ class PostDetailController extends UtilController {
         });
 
         this.postLikeUserCheckButton.addEventListener("click", evt => {
-            this.showToastMessage("post like user check button clicked");
+            if (this.postLikeUserListContainer.style.display === '' || this.postLikeUserListContainer.style.display === 'none') {
+                if (this.userLikePostBlock === false) {
+                    this.#requestPostUserLike("/like/post/liked/" + document.getElementById("postIdInput").value);
+                    this.userLikePostBlock = true;
+                }
+            } else {
+                this.postLikeUserListContainer.style.display = 'none';
+            }
         });
 
         this.post_share_button.addEventListener("click", evt => {
@@ -101,6 +117,19 @@ class PostDetailController extends UtilController {
             }
             this.postSearchForm.submit();
         });
+
+        this.postUserLikePagination.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+
+            if (button && !button.closest("li").classList.contains("active")) {
+                const url = button.getAttribute("url");
+                const page = button.getAttribute("page");
+
+                if (url && page) {
+                    this.#requestPostUserLike(url, page);
+                }
+            }
+        });
     }
 
     #requestPostLike() {
@@ -122,6 +151,7 @@ class PostDetailController extends UtilController {
                     this.postLikeCountText.innerText = Number(this.postLikeCountText.innerText) - 1;
                     this.postLikeButtonImage.src = "../images/empty_heart.png";
                 }
+                this.userLikePostBlock = false;
             }
         });
 
@@ -133,6 +163,37 @@ class PostDetailController extends UtilController {
             "postId": document.getElementById("postIdInput").value,
             "blogId": document.getElementById("postSearchBlogIdInput").value
         }));
+    }
+
+    #requestPostUserLike(url, page) {
+        const xhr = new XMLHttpRequest();
+        const queryParam = this.getQueryParam(page, this.likeRecordSize, this.likePageSize);
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                if (responseValue["likePaginationResponse"]["likeDto"].length <= 0) {
+                    this.showToastMessage("공감을 누른 사용자가 없습니다.");
+                    return;
+                }
+                this.#handlePostLikeTemplateList(responseValue);
+                this.#clearPostLikePagination();
+                this.#handlePostLikePagination(responseValue["likePaginationResponse"]["likePagination"], queryParam, url);
+                this.postLikeUserListContainer.style.display = 'block';
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 공감을 누른 사용자 정보를 불러오지 못했습니다.');
+        });
+
+        xhr.send();
     }
 
     #requestCategoryPost(url, page) {
@@ -152,9 +213,9 @@ class PostDetailController extends UtilController {
                     this.showToastMessage("게시글 정보가 존재하지 않습니다.");
                     return;
                 }
-                this.#handleTemplateList(responseValue);
-                this.#clearPagination();
-                this.#handlePagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
+                this.#handleCategoryPostTemplateList(responseValue);
+                this.#clearCategoryPostPagination();
+                this.#handleCategoryPostPagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
             }
         });
 
@@ -165,23 +226,42 @@ class PostDetailController extends UtilController {
         xhr.send();
     }
 
-    #handleTemplateList(responseValue) {
+    #handleCategoryPostTemplateList(responseValue) {
         const categoryPostTemplate = document.getElementById("category-post-template").innerHTML;
         const categoryPostTemplateObject = Handlebars.compile(categoryPostTemplate);
         const categoryPostTemplateHTML = categoryPostTemplateObject(responseValue["postPaginationResponse"]["postDto"]);
         this.categoryPostList.innerHTML = categoryPostTemplateHTML;
     }
 
-    #clearPagination() {
+    #clearCategoryPostPagination() {
         this.categoryPostPagination.innerHTML = ``;
     }
 
-    #handlePagination(pagination, queryParam, url) {
+    #handleCategoryPostPagination(pagination, queryParam, url) {
         if (!pagination || !queryParam) {
             this.categoryPostPagination.innerHTML = '';
             return;
         }
         this.categoryPostPagination.innerHTML = this.drawSimplePagination(pagination, queryParam, url);
+    }
+
+    #handlePostLikeTemplateList(responseValue) {
+        const postLikeTemplate = document.getElementById("like-user-post-template").innerHTML;
+        const postLikeTemplateObject = Handlebars.compile(postLikeTemplate);
+        const postLikeTemplateHTML = postLikeTemplateObject({"userPostLikeList": responseValue["likePaginationResponse"]["likeDto"]});
+        this.postLikeUserListBlock.innerHTML = postLikeTemplateHTML;
+    }
+
+    #clearPostLikePagination() {
+        this.postUserLikePagination.innerHTML = ``;
+    }
+
+    #handlePostLikePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.postUserLikePagination.innerHTML = ``;
+            return;
+        }
+        this.postUserLikePagination.innerHTML = this.drawSimplePagination(pagination, queryParam, url);
     }
 }
 

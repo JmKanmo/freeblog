@@ -1,8 +1,8 @@
 package com.service.core.post.paging;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class PostPaginationResponse<T> {
     private T postDto;
     private PostPagination postPagination;

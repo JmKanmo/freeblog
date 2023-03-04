@@ -26,6 +26,8 @@ public class LikePost implements Serializable {
         return LikePost.builder()
                 .postId(likePostInput.getPostId())
                 .blogId(likePostInput.getBlogId())
+                .id(likePostInput.getId())
+                .name(likePostInput.getNickName())
                 .userProfileThumbnailImage(likePostInput.getUserProfileThumbnailImage())
                 .build();
     }

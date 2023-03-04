@@ -1,8 +1,8 @@
 package com.service.core.comment.paging;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class CommentPaginationResponse<T> {
     private T commentSummaryDto;
     private CommentPagination commentPagination;

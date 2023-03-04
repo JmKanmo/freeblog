@@ -5,6 +5,7 @@ import com.service.core.like.domain.UserLikePost;
 import com.service.core.like.dto.PostLikeDto;
 import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.model.LikePostInput;
+import com.service.core.like.paging.LikeSearchPagingDto;
 import com.service.util.redis.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
@@ -26,11 +27,22 @@ public class PostLikeRedisTemplateService {
         return userLikePostOperation.range(likePostKey, 0, userLikePostOperation.size(likePostKey));
     }
 
-    public PostLikeDto getPostLikeDto(Long postId) {
+    public int getPostLikeCount(Long postId) {
         HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
         String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
-        // TODO
-        return PostLikeDto.from(hashOperations.values(postLikeKey));
+        return hashOperations.values(postLikeKey).size();
+    }
+
+    public List<LikePost> getPostLikeDto(Long postId, LikeSearchPagingDto likeSearchPagingDto) {
+        HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
+        String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
+        int beginIdx = likeSearchPagingDto.getLikePagination().getLimitStart() < 0 ? 0 : likeSearchPagingDto.getLikePagination().getLimitStart();
+        int endIdx = beginIdx + likeSearchPagingDto.getRecordSize();
+
+        if (endIdx > likeSearchPagingDto.getLikePagination().getTotalRecordCount()) {
+            endIdx = likeSearchPagingDto.getLikePagination().getTotalRecordCount();
+        }
+        return hashOperations.values(postLikeKey).subList(beginIdx, endIdx);
     }
 
     public PostLikeResultDto getPostLikeResultDto(String id, Long postId) {

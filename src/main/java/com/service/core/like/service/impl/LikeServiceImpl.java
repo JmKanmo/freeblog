@@ -2,10 +2,14 @@ package com.service.core.like.service.impl;
 
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.LikeManageException;
+import com.service.core.like.domain.LikePost;
 import com.service.core.like.dto.PostLikeDto;
 import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.dto.UserLikePostDto;
 import com.service.core.like.model.LikePostInput;
+import com.service.core.like.paging.LikePagination;
+import com.service.core.like.paging.LikePaginationResponse;
+import com.service.core.like.paging.LikeSearchPagingDto;
 import com.service.core.like.service.LikeService;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.service.PostService;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Service
@@ -30,8 +35,10 @@ public class LikeServiceImpl implements LikeService {
     private final UserService userService;
 
     @Override
-    public PostLikeDto getPostLikeDto(Long postId) {
-        return postLikeRedisTemplateService.getPostLikeDto(postId);
+    public LikePaginationResponse getPostLikeDto(Long postId, LikeSearchPagingDto likeSearchPagingDto) {
+        LikePagination likePagination = new LikePagination(postLikeRedisTemplateService.getPostLikeCount(postId), likeSearchPagingDto);
+        likeSearchPagingDto.setLikePagination(likePagination);
+        return new LikePaginationResponse<>(postLikeRedisTemplateService.getPostLikeDto(postId, likeSearchPagingDto), likeSearchPagingDto.getLikePagination());
     }
 
     @Override
