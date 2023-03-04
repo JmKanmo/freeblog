@@ -272,6 +272,7 @@
     border: 1px solid #959595;
     border-color: rgba(185, 185, 185, 0.5);
     padding: 0px 10px 0 10px;
+    position: relative;
 }
 
 .post_detail_container .post_util_container .post_like_container .post_like_button {
@@ -304,6 +305,73 @@
     color: #557A74;
 }
 
+/* 좋아요 사용자 리스트 스타일 */
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container {
+    position: absolute;
+    width: 200px;
+    left: 65px;
+    min-height: 130px;
+    border: 1px solid #eeeeee;
+    z-index: 5;
+    background-color: #fefefe;
+    top: 22px;
+    padding: 5px 5px 15px 10px;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container {
+    float: left;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container:nth-child(n+2) {
+    margin-top: 15px;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container .like_user_image_container {
+    float: left;
+    overflow: hidden;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container .like_user_image_container .like_user_image {
+    width: 100%;
+    height: 100%;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container .like_user_id_container {
+    float: left;
+    width: 145px;
+    height: 30px;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .like_user_post_container .like_user_id_container .like_user_id_link {
+    font-weight: bold;
+    font-family: Noto Sans KR, sans-serif;
+    line-height: 30px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-size: 13px;
+    line-height: 30px;
+    overflow: hidden;
+    color: #666666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.post_detail_container .post_util_container .post_like_container .post_like_user_list_container .post_user_like_page_container {
+    padding-top: 11px;
+    padding-bottom: 7px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+}
+
 /* post share 스타일 */
 .post_detail_container .post_util_container .post_share_container {
     float: right;
@@ -321,7 +389,7 @@
 /* 관련글 스타일 */
 .post_detail_container .related_post_container {
     margin-bottom: 50px;
-    margin-top: 25px;
+    margin-top: 50px;
 }
 
 .post_detail_container .related_post_container .related_post_h3 {

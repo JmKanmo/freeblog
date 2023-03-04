@@ -24,7 +24,7 @@
             <div class="post_comment_header clear_fix">
                 <div class="comment_user_profile_image_block">
                     {{#if (existImage commentParentDto.userProfileImage)}}
-                    <img class="common_button_image_style" src={{{getCommentUserProfileImage
+                    <img class="common_button_image_style" src={{{getUserProfileImage
                          commentParentDto.userProfileImage}}} alt="">
                     {{else}}
                     <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">
@@ -101,7 +101,7 @@
                     <div class="post_comment_header clear_fix">
                         <div class="comment_user_profile_image_block">
                             {{#if (existImage userProfileImage)}}
-                            <img class="common_button_image_style" src={{{getCommentUserProfileImage userProfileImage}}}
+                            <img class="common_button_image_style" src={{{getUserProfileImage userProfileImage}}}
                                  alt="">
                             {{else}}
                             <img class="common_button_image_style" src="../images/comment_default_user_pic.png" alt="">

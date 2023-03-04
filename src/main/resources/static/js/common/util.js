@@ -26,7 +26,7 @@ class UtilController {
             return tag.replace(/(<([^>]+)>)/ig, "");
         });
 
-        Handlebars.registerHelper('getCommentUserProfileImage', image => {
+        Handlebars.registerHelper('getUserProfileImage', image => {
             if (image === '<<<undefined>>>') {
                 return '../images/comment_default_user_pic.png';
             } else {

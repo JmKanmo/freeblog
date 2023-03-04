@@ -29,6 +29,7 @@ public class PostLikeRedisTemplateService {
     public PostLikeDto getPostLikeDto(Long postId) {
         HashOperations<String, String, LikePost> hashOperations = getLikePostOperation();
         String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, postId);
+        // TODO
         return PostLikeDto.from(hashOperations.values(postLikeKey));
     }
 

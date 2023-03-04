@@ -8,6 +8,7 @@
     <th:block th:replace="fragments/config :: config"></th:block>
     <th:block th:replace="fragments/template/post-template :: post-template"></th:block>
     <th:block th:replace="fragments/template/comment-template :: comment-template"></th:block>
+    <th:block th:replace="fragments/template/like-template :: like-template"></th:block>
     <link th:href="@{/css/post/post-detail.css}" type="text/css" rel="stylesheet">
     <link th:href="@{/css/comment/post-comment.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/post/post-detail.js}"></script>
@@ -21,6 +22,7 @@
 <div class="post_detail_container">
     <div class="search_container">
         <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
+            <input type="hidden" name="blogId" readonly th:value="${postDetail.blogId}">
             <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                    placeholder="검색어를 입력해주세요." spellcheck="false" required>
             <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
@@ -75,6 +77,7 @@
                     </button>
 
                     <form action="/post/delete" method="post" id="post_delete_form">
+                        <input type="hidden" readonly name="postId" th:value="${postDetail.id}">
                     </form>
                 </th:block>
             </div>
@@ -130,6 +133,18 @@
             <button class="post_like_user_check_button" id="post_like_user_check_button">
                 <img class="common_button_image_style post_like_user_list_button" src="../images/dot.png" alt="">
             </button>
+
+            <div class="post_like_user_list_container">
+                <!-- 게시글 좋아요 누른 사용자 리스트 템플릿 -->
+
+                <div class="post_user_like_page_container">
+                    <nav class="common-pagination-justify-content-center" aria-label="Page navigation">
+                        <ul class="pagination" id="postUserLikePagination">
+                            <!-- 페이지 템플릿 -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
 
         <div class="post_share_container">
