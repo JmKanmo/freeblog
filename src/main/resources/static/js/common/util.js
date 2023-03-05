@@ -190,8 +190,7 @@ class UtilController {
 
     getQuillEditor(id) {
         Quill.register("modules/imageCompressor", imageCompressor);
-
-        return new Quill(`#${id}`, {
+        const quill = new Quill(`#${id}`, {
             modules: {
                 "emoji-toolbar": true,
                 "emoji-shortname": true,
@@ -230,6 +229,26 @@ class UtilController {
             theme: 'snow',
             placeholder: '원하는 문장을 자유롭게 입력하세요. :)'
         });
+
+        quill.getModule('toolbar').addHandler('image', () => {
+            /**
+             * TODO  이미지 입력창을 통한 선택 & FTP 서버 전송 API 호출 및 이미지 첨부 까지 전부 진행
+             * 참조 URL : https://velog.io/@onezerokang/Quill%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%97%90%EB%94%94%ED%84%B0-%EB%A7%8C%EB%93%A4%EA%B8%B0Module-Toolbar7-2
+             **/
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.addEventListener("change", async () => {
+                const file = input.files[0];
+                const formData = new FormData();
+                formData.append('img', file);
+                console.log("hello world");
+                // TODO 위에 클릭 된 이미지를 FTP 서버에 전송 및 화면상에 표시 하도록 한다 ... (이미지 한개 or 여러개 전송 및 삽입 가능)
+            })
+        });
+        return quill;
     }
 
     initAudioPlayer() {
