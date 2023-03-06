@@ -268,7 +268,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception {
         try {
-            String profileImageSrc = sftpService.sftpFileUpload(multipartFile);
+            String profileImageSrc = sftpService.sftpImageFileUpload(multipartFile);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);

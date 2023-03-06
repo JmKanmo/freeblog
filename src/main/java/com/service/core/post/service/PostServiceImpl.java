@@ -21,6 +21,7 @@ import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.util.redis.CacheKey;
+import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -39,6 +40,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagService tagService;
 
+    private final SftpService sftpService;
     private final SqlConfig sqlConfig;
 
 
@@ -90,6 +92,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception {
         return awsS3Service.uploadImageFile(multipartFile);
+    }
+
+    @Override
+    public String uploadSftpPostImage(MultipartFile multipartFile) throws Exception {
+        return sftpService.sftpImageFileUpload(multipartFile);
     }
 
     @Transactional

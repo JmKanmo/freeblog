@@ -241,11 +241,78 @@ class UtilController {
             input.click();
 
             input.addEventListener("change", async () => {
-                const file = input.files[0];
-                const formData = new FormData();
-                formData.append('img', file);
-                console.log("hello world");
+                const imgFile = input.files[0];
                 // TODO 위에 클릭 된 이미지를 FTP 서버에 전송 및 화면상에 표시 하도록 한다 ... (이미지 한개 or 여러개 전송 및 삽입 가능)
+                try {
+                    if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                        if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 5 * 1024 * 1024)) {
+                            // if file extension is gif | GIF, 5MB가 넘지 않는 경우, 압축 진행 X
+                            const fileReader = new FileReader();
+
+                            fileReader.onload = (event) => {
+                                const formData = new FormData();
+                                const xhr = new XMLHttpRequest();
+
+                                xhr.open("POST", `/post/upload/post-image`, true);
+                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                                xhr.addEventListener("loadend", event => {
+                                    let status = event.target.status;
+                                    const responseValue = event.target.responseText;
+
+                                    if ((status >= 400 && status <= 500) || (status > 500)) {
+                                        this.showToastMessage(responseValue);
+                                    } else {
+                                        quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
+                                    }
+                                });
+
+                                xhr.addEventListener("error", event => {
+                                    this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                });
+
+                                formData.append("compressed_post_image", imgFile);
+                                xhr.send(formData);
+                            }
+                            fileReader.readAsDataURL(imgFile);
+                        } else {
+                            this.getCompressedImageFile(imgFile).then(compressedImgFile => {
+                                const fileReader = new FileReader();
+
+                                fileReader.onload = (event) => {
+                                    const formData = new FormData();
+                                    const xhr = new XMLHttpRequest();
+
+                                    xhr.open("POST", `/post/upload/post-image`, true);
+                                    xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                                    xhr.addEventListener("loadend", event => {
+                                        let status = event.target.status;
+                                        const responseValue = event.target.responseText;
+
+                                        if ((status >= 400 && status <= 500) || (status > 500)) {
+                                            this.showToastMessage(responseValue);
+                                        } else {
+                                            quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
+                                        }
+                                    });
+
+                                    xhr.addEventListener("error", event => {
+                                        this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                    });
+
+                                    formData.append("compressed_post_image", compressedImgFile);
+                                    xhr.send(formData);
+                                }
+                                fileReader.readAsDataURL(compressedImgFile);
+                            });
+                        }
+                    } else {
+                        this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                    }
+                } catch (error) {
+                    this.showToastMessage("ERROR: " + error);
+                }
             })
         });
         return quill;
@@ -463,6 +530,19 @@ class UtilController {
                 return false;
             } else if (!this.checkImageFileBySize(imgFile, 5 * 1024 * 1024)) {
                 this.showToastMessage('최대 업로드 파일 크기는 5MB 입니다.');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkImageFile(imgFile, size) {
+        if (imgFile) {
+            if (!this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                return false;
+            } else if (!this.checkImageFileBySize(imgFile, size * 1024 * 1024)) {
+                this.showToastMessage('최대 업로드 파일 크기는 ' + size + 'MB 입니다.');
                 return false;
             }
         }

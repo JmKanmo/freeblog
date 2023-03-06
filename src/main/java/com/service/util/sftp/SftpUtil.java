@@ -2,6 +2,7 @@ package com.service.util.sftp;
 
 import com.jcraft.jsch.*;
 import com.service.config.sftp.SFtpConfig;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,24 +25,24 @@ public class SftpUtil {
      * @param fileName
      * @throws Exception
      */
-    public void uploadFile(String fileName) throws Exception {
-        FileInputStream fis = null;
-
-        try {
-            // 대상폴더 이동
-            channelSftp.cd(sFtpConfig.getDirectory());
-
-            File file = new File(fileName);
-            fis = new FileInputStream(file);
-
-            // 파일 업로드
-            channelSftp.put(fis, file.getName());
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            close(fis);
-        }
-    }
+//    public void uploadFile(String fileName) throws Exception {
+//        FileInputStream fis = null;
+//
+//        try {
+//            // 대상폴더 이동
+//            channelSftp.cd(sFtpConfig.getDirectory());
+//
+//            File file = new File(fileName);
+//            fis = new FileInputStream(file);
+//
+//            // 파일 업로드
+//            channelSftp.put(fis, file.getName());
+//        } catch (Exception e) {
+//            throw e;
+//        } finally {
+//            close(fis);
+//        }
+//    }
 
     /**
      * 파일 업로드
@@ -50,13 +51,21 @@ public class SftpUtil {
      * @param inputStream
      * @throws Exception
      */
-    public void uploadFile(String fileUUID, InputStream inputStream) throws Exception {
+    public String uploadFile(String fileUUID, InputStream inputStream, String type) throws Exception {
         try {
             // 대상폴더 이동
-            channelSftp.cd(sFtpConfig.getDirectory());
+            channelSftp.cd(sFtpConfig.getDirectory() + "/" + type);
+            String dir = BlogUtil.formatLocalDateTimeToStrByPattern(BlogUtil.nowByZoneId(), "yyyy-MM-dd");
 
-            // 파일 업로드
-            channelSftp.put(inputStream, fileUUID);
+            try {
+                if (channelSftp.stat(dir).isDir()) {
+                    channelSftp.put(inputStream, dir + "/" + fileUUID);
+                }
+            } catch (Exception e) {
+                channelSftp.mkdir(dir);
+                channelSftp.put(inputStream, dir + "/" + fileUUID);
+            }
+            return dir + "/" + fileUUID;
         } catch (Exception e) {
             throw e;
         } finally {
@@ -192,9 +201,8 @@ public class SftpUtil {
         }
     }
 
-    public String fileUpload(String fileUUID, InputStream fileInputStream) throws Exception {
+    public String fileUpload(String fileUUID, InputStream fileInputStream, String type) throws Exception {
         connectSFTP();
-        uploadFile(fileUUID, fileInputStream);
-        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), fileUUID);
+        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), uploadFile(fileUUID, fileInputStream, type));
     }
 }

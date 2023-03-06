@@ -7,7 +7,7 @@ public class ConstUtil {
     public static final String NOT_EXIST_CATEGORY = "분류 없음";
     public static final String TOTAL_CATEGORY = "전체 카테고리";
     public static final String TOTAL_POST = "전체글";
-    public static final String SFTP_IMAGE_URL = "https://%s/images/jmblog/%s";
+    public static final String SFTP_IMAGE_URL = "http://%s/images/%s"; // 추후에 https 설정 및 변경
 
     public static final String AWS_S3_IMAGE_URL = "https://freelog-s3-bucket.s3.amazonaws.com/image/%s";
     public static final String[] SIGNUP_MAIL_TEXT = {

@@ -26,6 +26,7 @@ public interface PostService {
 
     String uploadAwsS3PostThumbnailImage(MultipartFile multipartFile) throws Exception;
 
+    String uploadSftpPostImage(MultipartFile multipartFile) throws Exception;
     void register(Post post, BlogPostInput blogPostInput);
 
     void update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService);

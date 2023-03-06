@@ -374,13 +374,13 @@ class UserServiceTest {
         String profileImageSrc = "http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif";
         UserDomain userDomain = UserDomain.builder().userId(id).build();
 
-        when(sftpService.sftpFileUpload(multipartFile)).thenReturn(profileImageSrc);
+        when(sftpService.sftpImageFileUpload(multipartFile)).thenReturn(profileImageSrc);
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
         assertDoesNotThrow(() -> userService.uploadSftpProfileImageById(multipartFile, id));
         assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
 
-        verify(sftpService, times(1)).sftpFileUpload(multipartFile);
+        verify(sftpService, times(1)).sftpImageFileUpload(multipartFile);
         verify(userInfoService, times(1)).findUserDomainByIdOrThrow(id);
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }

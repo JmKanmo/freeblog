@@ -4,11 +4,13 @@ import com.service.core.blog.domain.Blog;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,5 +65,12 @@ class BlogUtilTest {
         String strC = c.toString() + "&" + d.toString();
 
         System.out.println(Objects.deepEquals(strA, strC));
+    }
+
+    @Test
+    public void uuidTest() {
+        String date = BlogUtil.formatLocalDateTimeToStrByPattern(BlogUtil.nowByZoneId(), "yyyy-MM-dd");
+        String uuid = date + "/" + UUID.nameUUIDFromBytes("\"C:\\Users\\apdh1\\OneDrive\\사진\\스크린샷\\짤\\99b983892094b5c6d2fc3736e15da7d1.png\"".getBytes(StandardCharsets.UTF_8)) + "." + "png";
+        System.out.println(uuid);
     }
 }

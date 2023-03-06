@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class SftpService {
     private final SftpUtil sftpUtil;
 
-    public String sftpFileUpload(MultipartFile multipartFile) throws Exception {
+    public String sftpImageFileUpload(MultipartFile multipartFile) throws Exception {
         if (multipartFile.getOriginalFilename().isEmpty()) {
             throw new FileHandleException(ServiceExceptionMessage.NOT_VALID_FILE_NAME);
         }
 
-        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUID(multipartFile), multipartFile.getInputStream());
+        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUIDBySftp(multipartFile), multipartFile.getInputStream(), "images");
         return imgSrc;
     }
 }

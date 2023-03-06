@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +118,28 @@ public class BlogUtil {
         return uuid;
     }
 
+    public static String getImageFileUUIDBySftp(MultipartFile multipartFile) {
+        String fileName = multipartFile.getContentType();
+        String extension = getImageException(fileName.substring(fileName.lastIndexOf("/") + 1));
+        String uuid = UUID.nameUUIDFromBytes(fileName.getBytes(StandardCharsets.UTF_8)) + "." + extension;
+        return uuid;
+    }
+
+    public static String getImageException(String extension) {
+        if (extension == null || extension.isEmpty()) {
+            return "png";
+        }
+
+        switch (extension) {
+            case "jpeg":
+                return "jpg";
+            case "GIF":
+                return "gif";
+            default:
+                return extension;
+        }
+    }
+
     public static ObjectMetadata initObjectMetaData(MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(multipartFile.getContentType());
@@ -166,6 +189,10 @@ public class BlogUtil {
     public static String formatLocalDateTimeToStr(LocalDateTime localDateTime, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime != null ? localDateTime.format(formatter) : "";
+    }
+
+    public static LocalDateTime nowByZoneId() {
+        return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
     public static <T> List<T> convertArrayToList(T[] array) {
