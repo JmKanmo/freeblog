@@ -4,15 +4,6 @@ server:
       timeout: 60m
   port: 8400
 
-  ssl:
-    enabled: true
-    key-alias: freelog-keystore
-    key-store: freelog-keystore.pkcs12
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-password: ${KEY_PASSWORD}
-    trust-store: freelog-trust.pkcs12
-    trust-store-password: ${TRUST_STORE_PASSWORD}
-
   tomcat:
     threads:
       max: 5000
