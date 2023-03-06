@@ -121,7 +121,7 @@ public class BlogUtil {
     public static String getImageFileUUIDBySftp(MultipartFile multipartFile) {
         String fileName = multipartFile.getContentType();
         String extension = getImageException(fileName.substring(fileName.lastIndexOf("/") + 1));
-        String uuid = UUID.nameUUIDFromBytes(fileName.getBytes(StandardCharsets.UTF_8)) + "." + extension;
+        String uuid = UUID.randomUUID() + "." + extension;
         return uuid;
     }
 
