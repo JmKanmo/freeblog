@@ -74,6 +74,31 @@ public class SftpUtil {
     }
 
     /**
+     * 파일 삭제
+     *
+     * @param type     (images | videos)
+     * @param dir      (date)
+     * @param fileUUID
+     * @throws Exception
+     */
+    public void deleteFile(String type, String dir, String fileUUID) throws Exception {
+        connectSFTP();
+
+        channelSftp.cd(sFtpConfig.getDirectory() + "/" + type);
+
+        try {
+            if (channelSftp.ls(dir + "/" + fileUUID).size() > 0) {
+                channelSftp.rm(dir + "/" + fileUUID);
+
+                if (channelSftp.ls(dir).size() <= 2) {
+                    channelSftp.rmdir(dir);
+                }
+            }
+        } catch (SftpException sftpException) {
+        }
+    }
+
+    /**
      * SFTP 접속하기
      *
      * @return

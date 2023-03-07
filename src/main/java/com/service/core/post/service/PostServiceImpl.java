@@ -99,6 +99,13 @@ public class PostServiceImpl implements PostService {
         return sftpService.sftpImageFileUpload(multipartFile);
     }
 
+    @Override
+    public void deleteSftpPostImage(List<String> imgSrcList) throws Exception {
+        for (String imgSrc : imgSrcList) {
+            sftpService.sftpImageFileDelete(imgSrc);
+        }
+    }
+
     @Transactional
     @Override
     public void register(Post post, BlogPostInput blogPostInput) {
