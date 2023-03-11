@@ -158,6 +158,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostTitleDto> findPostTitlePaginationById(PostSearchDto postSearchDto) {
+        return postMapper.findCategoryPostTitleDtoListByPaging(postSearchDto);
+    }
+
+    @Override
     public int findPostCountByBlogCategory(Long blogId, Long categoryId) {
         return postMapper.findPostCountByBlogCategory(blogId, categoryId);
     }

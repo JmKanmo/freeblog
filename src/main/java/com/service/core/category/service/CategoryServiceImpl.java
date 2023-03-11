@@ -14,6 +14,7 @@ import com.service.core.error.model.CategoryManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostSearchDto;
+import com.service.core.post.dto.PostTitleDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -86,6 +87,35 @@ public class CategoryServiceImpl implements CategoryService {
             postSearchPagingDto.setPostPagination(postPagination);
 
             return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(postService.findPostPaginationById(PostSearchDto.from(blogId, categoryId, postSearchPagingDto)), postCount, findCategoryName(category)), postPagination);
+        }
+    }
+
+    @Override
+    public PostPaginationResponse<List<PostTitleDto>> findPaginationPostTitleByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto) {
+        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+
+        if (categoryOptional.isEmpty()) {
+            int postCount = 0;
+            PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+            postSearchPagingDto.setPostPagination(postPagination);
+            return new PostPaginationResponse<>(Collections.emptyList(), postPagination);
+        } else {
+            Category category = categoryOptional.get();
+            Blog blog = category.getBlog();
+
+            if (category.isDelete()) {
+                throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
+            } else if (blog == null || blog.isDelete()) {
+                throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
+            }
+
+            Long blogId = blog.getId();
+            int postCount = postService.findPostCountByBlogCategory(blogId, categoryId);
+
+            PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+            postSearchPagingDto.setPostPagination(postPagination);
+
+            return new PostPaginationResponse<>(postService.findPostTitlePaginationById(PostSearchDto.from(blogId, categoryId, postSearchPagingDto)), postPagination);
         }
     }
 

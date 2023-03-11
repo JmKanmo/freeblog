@@ -72,6 +72,24 @@
             LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
+    <select id="findCategoryPostTitleDtoListByPaging" parameterType="com.service.core.post.dto.PostSearchDto"
+            resultType="com.service.core.post.dto.PostTitleDto">
+        select post.post_id,
+               post.title,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+               b.blog_id
+        from post
+                 inner join category c on c.category_id = #{categoryId} and c.is_delete != true
+        inner join blog b
+        on b.blog_id = #{blogId} and b.is_delete != true
+        where post_id in
+        (select post_id from post p where p.blog_id = b.blog_id
+        and p.category_id = c.category_id
+        and p.is_delete = false order by p.blog_id)
+        order by register_time desc
+        LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
+    </select>
+
     <select id="findPostCount" resultType="int">
         SELECT count(*)
         from post

@@ -4,6 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.category.domain.Category;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.model.CategoryInput;
+import com.service.core.post.dto.PostTitleDto;
 import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -18,6 +19,8 @@ public interface CategoryService {
     PostTotalDto findPostByCategoryId(Long categoryId);
 
     PostPaginationResponse<PostTotalDto> findPaginationPostByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto);
+
+    PostPaginationResponse<List<PostTitleDto>> findPaginationPostTitleByCategoryId(Long categoryId, PostSearchPagingDto postSearchPagingDto);
 
     PostPaginationResponse<PostTotalDto> findPaginationPostByBlogId(Long blogId, PostSearchPagingDto postSearchPagingDto);
 

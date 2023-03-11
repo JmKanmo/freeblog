@@ -80,6 +80,21 @@ public class CategoryRestController {
         }
     }
 
+    @Operation(summary = "해당 카테고리의 전체 타이틀 포스트 반환", description = "해당 카테고리의 전체 타이틀 포스트 데이터 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "해당 카테고리 전체 타이틀 포스트 반환"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 반환 실패")
+    })
+    @GetMapping("/post-title/{categoryId}")
+    public ResponseEntity<PostPagingResponseDto> findPostTitleByCategoryId(@PathVariable Long categoryId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostTitleByCategoryId(categoryId, postSearchPagingDto)));
+        } catch (Exception exception) {
+            log.error("[freeblog-findPostTitleByCategoryId] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
+        }
+    }
+
     @Operation(summary = "카테고리 등록", description = "카테고리 등록 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "카테고리 등록 성공"),

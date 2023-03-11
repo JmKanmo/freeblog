@@ -14,6 +14,8 @@ public interface PostMapper {
 
     List<PostDto> findCategoryPostDtoListByPaging(PostSearchDto postSearchDto);
 
+    List<PostTitleDto> findCategoryPostTitleDtoListByPaging(PostSearchDto postSearchDto);
+
     int findPostCount(Long blogId);
 
     int findUndeletePostCount(Long blogId);

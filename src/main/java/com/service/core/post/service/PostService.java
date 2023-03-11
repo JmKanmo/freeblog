@@ -44,6 +44,8 @@ public interface PostService {
 
     List<PostDto> findPostPaginationById(PostSearchDto postSearchDto);
 
+    List<PostTitleDto> findPostTitlePaginationById(PostSearchDto postSearchDto);
+
     int findPostCountByBlogCategory(Long blogId, Long categoryId);
 
     Post findPostById(Long postId);
