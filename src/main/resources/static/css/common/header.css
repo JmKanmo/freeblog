@@ -1,3 +1,4 @@
+/** 헤더 및 로고 박스 스타일 정의 **/
 .header_box {
     margin: 0 auto;
     height: 100px;
@@ -22,12 +23,14 @@
 }
 
 .header_box .user_util_box .user_util_list .user_util_item {
+    position: relative;
     height: 35%;
 }
 
 .user_util_box .user_util_list .user_util_item:nth-child(-n+3) {
     margin-right: 30px;
 }
+
 
 .header_box .user_util_box .header_util_button {
     outline: 0;
@@ -37,6 +40,103 @@
     line-height: normal;
 }
 
+/** 사용자 좋아요 조회 버튼 스타일 정의 **/
+.header_box .user_util_box .user_util_item .user_like_post_container {
+    position: absolute;
+    width: 200px;
+    border: 1px solid #ced4da;
+    top: 25px;
+    left: -93px;
+    background-color: #ffffff;
+    z-index: 5;
+    display: none;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_block_close_button {
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 2px;
+    top: 3px;
+    height: 22px;
+    width: 22px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_block_close_button .user_like_post_block_close_button_image {
+    display: block;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list {
+    max-height: 300px;
+    margin: 35px 10px 15px 10px;
+    overflow-x: clip;
+    overflow-y: scroll;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post {
+    position: relative;
+    height: 35%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_like_block {
+    float: left;
+    width: 100%;
+    height: 100%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_like_block .user_like_post_title {
+    font-size: 13px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 20px;
+    width: 70%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_like_block .user_like_post_writer {
+    font-size: 11px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 15px;
+    margin-top: 4px;
+    margin-left: 0px;
+    color: #8b8b8b;
+    width: 70%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_thumbnail_container {
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    top: 5px;
+    right: 3px;
+    z-index: -3;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_link {
+    display: block;
+    height: 100%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_link:hover {
+    color: black;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_thumbnail_container .user_like_post_thumbnail_image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+/** 로그인 버튼 및 기타 버튼 스타일 정의 **/
 .header_box .user_util_box .login_button {
     padding: 7px 15px 7px 15px;
     font-size: 1rem;
@@ -108,4 +208,25 @@
 .header_box .user_util_box .user_option_div .user_option_item .user_option_link:hover {
     background-color: #eeeeee;
     color: #6de36d;
+}
+
+/** 기타 스타일 정의 **/
+.scroll_container {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.scroll_container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scroll_container::-webkit-scrollbar-thumb {
+    background-color: #9e9e9e;
+    border-radius: 10px;
+}
+
+.scroll_container::-webkit-scrollbar-track {
+    background-color: #babdbf;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 8px #ffffff;
 }

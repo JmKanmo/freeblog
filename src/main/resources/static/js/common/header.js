@@ -7,9 +7,23 @@ class HeaderController extends UtilController {
         this.userProfileBtn = document.getElementById("user_profile_button");
         this.headerProfileImage = document.getElementById("header_profile_image");
         this.noticeButton = document.getElementById("notice_button");
+        this.userLikePostContainer = document.getElementById("user_like_post_container");
+        this.userLikePostBlockCloseButton = document.getElementById("user_like_post_block_close_button");
     }
 
     initHeaderController() {
+        this.initEventHandler();
+    }
+
+    initEventHandler() {
+        if (this.userLikePostBlockCloseButton != null) {
+            this.userLikePostBlockCloseButton.addEventListener("click", evt => {
+                if (this.userLikePostContainer != null) {
+                    this.userLikePostContainer.style.display = "none";
+                }
+            });
+        }
+
         if (this.dayNightSkinButton != null) {
             this.dayNightSkinButton.addEventListener("click", evt => {
                 const img = evt.target.closest("img");
@@ -23,7 +37,15 @@ class HeaderController extends UtilController {
 
         if (this.likePostButton != null) {
             this.likePostButton.addEventListener("click", evt => {
-                this.showToastMessage("좋아요 누른 글 버튼 기능 추가 예정");
+                if (this.userLikePostContainer != null) {
+                    const display = this.userLikePostContainer.style.display;
+
+                    if (display === "" || display === "none") {
+                        this.userLikePostContainer.style.display = "block";
+                    } else {
+                        this.userLikePostContainer.style.display = "none";
+                    }
+                }
             });
         }
 
