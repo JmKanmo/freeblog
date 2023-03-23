@@ -7,8 +7,9 @@ class HeaderController extends UtilController {
         this.userProfileBtn = document.getElementById("user_profile_button");
         this.headerProfileImage = document.getElementById("header_profile_image");
         this.noticeButton = document.getElementById("notice_button");
-        this.userLikePostContainer = document.getElementById("user_like_post_container");
         this.userLikePostBlockCloseButton = document.getElementById("user_like_post_block_close_button");
+        this.userLikePostContainer = document.getElementById("user_like_post_container");
+        this.userLikePostTemplateHTML = null;
     }
 
     initHeaderController() {
@@ -42,6 +43,12 @@ class HeaderController extends UtilController {
 
                     if (display === "" || display === "none") {
                         this.userLikePostContainer.style.display = "block";
+
+                        if (!this.userLikePostTemplateHTML) {
+                            this.#requestUserLikePostInfo();
+                        } else {
+                            this.userLikePostContainer.innerHTML = this.userLikePostTemplateHTML;
+                        }
                     } else {
                         this.userLikePostContainer.style.display = "none";
                     }
@@ -80,12 +87,43 @@ class HeaderController extends UtilController {
         });
     }
 
+    #requestUserLikePostInfo() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "/like/post/user-list", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#handlePostLikeTemplateList(responseValue);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
+        });
+
+        xhr.send();
+    }
+
     removeHeaderUserProfileImage() {
         this.headerProfileImage.src = this.getDefaultUserProfileThumbnail();
     }
 
     setHeaderUserProfileImage(src) {
         this.headerProfileImage.src = src;
+    }
+
+    #handlePostLikeTemplateList(responseValue) {
+        const userLikePostTemplate = document.getElementById("user-like-post-template").innerHTML;
+        const userLikePostTemplateObject = Handlebars.compile(userLikePostTemplate);
+        const userLikePostTemplateHTML = userLikePostTemplateObject({"userLikePostList": responseValue["userLikePostInnerList"]});
+        this.userLikePostContainer.innerHTML = userLikePostTemplateHTML;
+        this.userLikePostTemplateHTML = userLikePostTemplateHTML;
     }
 }
 

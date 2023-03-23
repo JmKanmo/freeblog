@@ -42,6 +42,14 @@ class UtilController {
             }
         });
 
+        Handlebars.registerHelper('getDefaultPostImage', image => {
+            if (image === '<<<undefined>>>') {
+                return '../images/default_post_image.png';
+            } else {
+                return image;
+            }
+        });
+
         Handlebars.registerHelper('getCheckedUserName', name => {
             if (!name || name === '<<<undefined>>>') {
                 return '익명의유저';

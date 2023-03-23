@@ -50,6 +50,7 @@
     background-color: #ffffff;
     z-index: 5;
     display: none;
+    min-height: 55px;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_block_close_button {
@@ -71,7 +72,7 @@
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list {
     max-height: 300px;
-    margin: 35px 10px 15px 10px;
+    margin: 40px 10px 15px 10px;
     overflow-x: clip;
     overflow-y: scroll;
 }
@@ -79,6 +80,10 @@
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post {
     position: relative;
     height: 35%;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post:nth-child(n+2) {
+    margin-top: 20px;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_like_block {
@@ -114,10 +119,10 @@
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_thumbnail_container {
     position: absolute;
-    width: 50px;
+    width: 40px;
     height: 30px;
-    top: 5px;
-    right: 3px;
+    top: 2px;
+    right: 6px;
     z-index: -3;
 }
 

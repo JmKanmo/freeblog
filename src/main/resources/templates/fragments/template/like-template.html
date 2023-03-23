@@ -23,5 +23,33 @@
             {{/each}}
         </ul>
     </script>
+
+    <script id="user-like-post-template" type="text/x-handlebars-template">
+        <button class="user_like_post_block_close_button" id="user_like_post_block_close_button">
+            <img class="common_button_image_style user_like_post_block_close_button_image"
+                 src="../images/close.png" alt="" title="닫기">
+            <span class="blind">닫기 버튼</span>
+        </button>
+
+        <ul class="user_like_post_list scroll_container" id="user_like_post_list">
+            {{#each userLikePostList}}
+            <li class="user_like_post clear_fix">
+                <a href="/post/{{postId}}?blogId={{blogId}}" class="user_like_post_link">
+                    <div class="user_like_post_like_block">
+                        <p class="user_like_post_title">{{title}}</p>
+
+                        <p class="user_like_post_writer">{{nickName}}</p>
+                    </div>
+                </a>
+
+                <div class="user_like_post_thumbnail_container">
+                    <img class="user_like_post_thumbnail_image" src={{{getDefaultPostImage
+                         postThumbnailImage}}}
+                         alt="">
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
 </th:block>
 </html>
