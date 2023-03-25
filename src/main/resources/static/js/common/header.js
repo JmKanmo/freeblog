@@ -42,11 +42,10 @@ class HeaderController extends UtilController {
                     const display = this.userLikePostContainer.style.display;
 
                     if (display === "" || display === "none") {
-                        this.userLikePostContainer.style.display = "block";
-
                         if (!this.userLikePostTemplateHTML) {
                             this.#requestUserLikePostInfo();
                         } else {
+                            this.userLikePostContainer.style.display = "block";
                             this.userLikePostContainer.innerHTML = this.userLikePostTemplateHTML;
                         }
                     } else {
@@ -99,6 +98,7 @@ class HeaderController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
+                this.userLikePostContainer.style.display = "block";
                 this.#handlePostLikeTemplateList(responseValue);
             }
         });

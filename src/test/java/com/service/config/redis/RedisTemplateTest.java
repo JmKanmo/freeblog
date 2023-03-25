@@ -2,51 +2,24 @@ package com.service.config.redis;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.service.core.views.domain.BlogVisitors;
 import com.service.util.redis.RedisTemplateKey;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @SpringBootTest
 public class RedisTemplateTest {
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @Test
-    void incrementBlogViewTest() {
-        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
-        long dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L) + 1;
-        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 1L, dayVisit);
-        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 1L));
-
-        dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L) + 1;
-        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 2L, dayVisit);
-        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 2L));
-
-        dayVisit = hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L) == null ? 1 : hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L) + 1;
-        hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, 3L, dayVisit);
-        System.out.println(hashOperations.get(RedisTemplateKey.BLOG_DAY_VIEWS, 3L));
-    }
-
-    @Test
-    void initBlotViewTest() {
-        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
-
-        List<Long> keyList = new ArrayList<>();
-
-        hashOperations.entries(RedisTemplateKey.BLOG_DAY_VIEWS).forEach((k, v) -> {
-            keyList.add(k);
-        });
-
-        for (Long key : keyList) {
-            hashOperations.put(RedisTemplateKey.BLOG_DAY_VIEWS, key, 0L);
-        }
-    }
 
     @Test
     void commentLikeEmptyTest() {
@@ -66,6 +39,72 @@ public class RedisTemplateTest {
         hashOperations.delete(RedisTemplateKey.COMMENT_LIKE, 1L);
         val = hashOperations.get(RedisTemplateKey.COMMENT_LIKE, 1L);
         System.out.println(val);
+    }
+
+    @Test
+    void blogViewsInitTest() {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = redisTemplate.opsForValue();
+        String blogVisitorId = String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, 2013161003); // 블로거 id
+
+        blogVisitorsValueOperations.set(blogVisitorId,
+                BlogVisitors.builder()
+                        .visitorSet(new HashSet<>())
+                        .build());
+
+        int zerobaseId = "zerobase1".hashCode(); // 방문자 id
+        BlogVisitors blogVisitors = blogVisitorsValueOperations.get(blogVisitorId);
+        blogVisitors.getVisitorSet().add(zerobaseId);
+        blogVisitors.incrementTodayViews();
+
+        blogVisitorsValueOperations.set(blogVisitorId, blogVisitors);
+    }
+
+    @Test
+    void blogViewsIncrementTest() {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = redisTemplate.opsForValue();
+        String blogVisitorId = String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, 2013161003); // 방문 블로거 id
+        int zerobaseId = "zerobase2".hashCode(); // 방문자 id
+        BlogVisitors blogVisitors = blogVisitorsValueOperations.get(blogVisitorId);
+        blogVisitors.getVisitorSet().add(zerobaseId);
+        blogVisitors.incrementTodayViews();
+        blogVisitorsValueOperations.set(blogVisitorId, blogVisitors);
+    }
+
+    @Test
+    void blogViewsDeleteTest() {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = redisTemplate.opsForValue();
+        String blogVisitorId = String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, 2013161003); // 방문 블로거 id
+        BlogVisitors blogVisitors = blogVisitorsValueOperations.get(blogVisitorId);
+        long todayView = blogVisitors.getTodayViews();
+        blogVisitors.setTotalViews(blogVisitors.getTotalViews() + todayView);
+        blogVisitors.setYesterdayViews(todayView);
+        blogVisitors.setTodayViews(0);
+        blogVisitors.getVisitorSet().clear();
+        blogVisitorsValueOperations.set(blogVisitorId, blogVisitors);
+    }
+
+    @Test
+    void blogViewsSearchTest() {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = redisTemplate.opsForValue();
+        String blogVisitorId = String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, 2013161003);
+        int zerobaseId = "zerobase1".hashCode();
+        BlogVisitors blogVisitors = blogVisitorsValueOperations.get(blogVisitorId);
+        Assertions.assertNotNull(blogVisitors);
+        Set<Integer> blogVisitorSet = blogVisitors.getVisitorSet();
+        Assertions.assertNotNull(blogVisitorSet);
+
+        zerobaseId = "zerobase2".hashCode();
+        blogVisitors = blogVisitorsValueOperations.get(blogVisitorId);
+        Assertions.assertNotNull(blogVisitors);
+        blogVisitorSet = blogVisitors.getVisitorSet();
+        Assertions.assertNotNull(blogVisitorSet);
+    }
+
+    @Test
+    void blogViewDeleteTest() {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = redisTemplate.opsForValue();
+        String blogVisitorId = String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, 2013161003); // 방문 블로거 i
+        blogVisitorsValueOperations.getAndDelete(blogVisitorId);
     }
 
     @Test

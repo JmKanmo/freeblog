@@ -8,6 +8,7 @@ import com.service.core.tag.dto.BlogTagDto;
 import com.service.core.tag.service.TagService;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
+import com.service.core.views.service.BlogVisitorService;
 import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Tag(name = "블로그", description = "블로그 관련 API")
@@ -35,12 +37,14 @@ public class BlogController {
     private final CommentService commentService;
     private final TagService tagService;
 
+    private final BlogVisitorService blogVisitorService;
+
     @Operation(summary = "블로그 페이지 반환", description = "블로그 페이지를 반환하는 GET 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "블로그,사용자 정보가 담긴 블로그 페이지")
     })
     @GetMapping("/{id}")
-    public String blog(@PathVariable String id, Model model, Principal principal) {
+    public String blog(@PathVariable String id, Model model, Principal principal, HttpServletRequest httpServletRequest) {
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }
@@ -54,6 +58,8 @@ public class BlogController {
         model.addAttribute("recent_comment", commentService.findCommentLinkDto(blogInfoDto.getId()));
         model.addAttribute("blog_tag", BlogTagDto.from(tagService.findTagDtoList(blogInfoDto.getId())));
         // TODO 음악정보, 방문자 수 넘겨줄것
+        blogVisitorService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogInfoDto.getId()), BlogUtil.getClientAccessId(httpServletRequest, principal));
+        model.addAttribute("blog_visitors", blogVisitorService.getBlogVisitorDto(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogInfoDto.getId())));
         return "blog/myblog";
     }
 }

@@ -147,18 +147,18 @@
             <div class="total_visitor_container">
                 <p class="visitor_notice_title total_visitor_text">전체 방문자</p>
                 <p class="visitor_notice_title total_visitor_count_text"
-                   th:text="${#numbers.formatInteger(1534560, 0, 'COMMA')}">undefined</p>
+                   th:text="${#numbers.formatInteger(blog_visitors.totalVisitors, 0, 'COMMA')}">undefined</p>
             </div>
 
             <div class="day_visitor_container">
                 <div class="today_visitor_container">
                     <span class="today_visitor_text">오늘: </span> <span class="today_visitor_count_text"
-                                                                       th:text="${#numbers.formatInteger(594, 0, 'COMMA')}">undefined</span>
+                                                                       th:text="${#numbers.formatInteger(blog_visitors.todayVisitors, 0, 'COMMA')}">undefined</span>
                 </div>
 
                 <div class="yesterday_visitor_container">
                     <span class="yesterday_visitor_text">어제: </span> <span class="yesterday_visitor_count_text"
-                                                                           th:text="${#numbers.formatInteger(365, 0, 'COMMA')}">undefined</span>
+                                                                           th:text="${#numbers.formatInteger(blog_visitors.yesterdayVisitors, 0, 'COMMA')}">undefined</span>
                 </div>
             </div>
         </div>

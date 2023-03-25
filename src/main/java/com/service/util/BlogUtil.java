@@ -257,4 +257,28 @@ public class BlogUtil {
         }
         return stringBuilder.toString();
     }
+
+    public static int hashCode(Object... args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object arg : args) {
+            stringBuilder.append(arg);
+        }
+        return stringBuilder.toString().hashCode();
+    }
+
+    public static int getClientAccessId(HttpServletRequest httpServletRequest, Principal principal) {
+        String ip = getClientIp(httpServletRequest);
+        String url = httpServletRequest.getHeader("User-Agent");
+
+        if (principal == null || principal.getName() == null) {
+            return (ip + url + "not-logged-in").hashCode();
+        } else {
+            return (ip + url + "logged-in_" + principal.getName()).hashCode();
+        }
+    }
+
+    public static String getClientIp(HttpServletRequest httpServletRequest) {
+        return (null != httpServletRequest.getHeader("X-FORWARDED-FOR")) ?
+                httpServletRequest.getHeader("X-FORWARDED-FOR") : httpServletRequest.getRemoteAddr();
+    }
 }

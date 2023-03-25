@@ -12,6 +12,5 @@ public class RedisTemplateKey {
     public static final String POST_VIEWS = "post-views";
 
     // 방문자 수 관련
-    public static final String BLOG_DAY_VIEWS = "blog-day-views";
-    public static final String BLOG_TOTAL_VIEWS = "blog-total-views";
+    public static final String BLOG_VISITORS_COUNT = "blog-visitors-count:%d";
 }

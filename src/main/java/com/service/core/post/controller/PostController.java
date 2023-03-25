@@ -16,7 +16,10 @@ import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
+import com.service.core.views.service.BlogVisitorService;
+import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -42,6 +46,7 @@ public class PostController {
     private final CategoryService categoryService;
     private final BlogService blogService;
 
+    private final BlogVisitorService blogVisitorService;
     private final LikeService likeService;
 
     @Operation(summary = "포스트 상세 페이지 반환", description = "포스트 상세 페이지 반환 메서드")
@@ -51,7 +56,8 @@ public class PostController {
     })
     @GetMapping("/{postId}")
     public String postDetailPage(@PathVariable Long postId, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
-                                 Model model, Principal principal) {
+                                 Model model, Principal principal,
+                                 HttpServletRequest httpServletRequest) {
         boolean isEqualPostByLogin = false;
 
         if (principal != null) {
@@ -60,13 +66,15 @@ public class PostController {
             isEqualPostByLogin = postService.checkEqualPostByLogin(blogInfoDto.getId(), postId);
         }
 
-        model.addAttribute("isEqualPostByLogin", isEqualPostByLogin);
-        model.addAttribute("user_profile", userService.findUserProfileDtoByBlogId(blogId));
+        UserProfileDto userProfileDto = userService.findUserProfileDtoByBlogId(blogId);
         PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, postId);
+        model.addAttribute("isEqualPostByLogin", isEqualPostByLogin);
+        model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("postDetail", postDetailDto);
         model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
         model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, postId));
+        blogVisitorService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogId), BlogUtil.getClientAccessId(httpServletRequest, principal));
         return "post/post-detail";
     }
 
