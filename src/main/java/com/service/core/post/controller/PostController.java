@@ -73,7 +73,7 @@ public class PostController {
         model.addAttribute("postDetail", postDetailDto);
         model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
-        model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, postId));
+        model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, blogId, postId));
         blogVisitorService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogId), BlogUtil.getClientAccessId(httpServletRequest, principal));
         return "post/post-detail";
     }

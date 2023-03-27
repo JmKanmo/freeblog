@@ -65,9 +65,11 @@ public class LikePostController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글에 좋아요 누른 사용자 목록 조회 실패")
     })
     @GetMapping("/post/liked/{postId}")
-    public ResponseEntity<LikePagingResponseDto> findLikedPost(@PathVariable Long postId, @ModelAttribute LikeSearchPagingDto likeSearchPagingDto) {
+    public ResponseEntity<LikePagingResponseDto> findLikedPost(@PathVariable Long postId,
+                                                               @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
+                                                               @ModelAttribute LikeSearchPagingDto likeSearchPagingDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(LikePagingResponseDto.success(likeService.getPostLikeDto(postId, likeSearchPagingDto)));
+            return ResponseEntity.status(HttpStatus.OK).body(LikePagingResponseDto.success(likeService.getPostLikeDto(postId, blogId, likeSearchPagingDto)));
         } catch (Exception exception) {
             log.error("[freeblog-findLikedPost] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(LikePagingResponseDto.fail(exception));

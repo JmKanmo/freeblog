@@ -35,19 +35,19 @@ public class LikeServiceImpl implements LikeService {
     private final UserService userService;
 
     @Override
-    public LikePaginationResponse getPostLikeDto(Long postId, LikeSearchPagingDto likeSearchPagingDto) {
-        LikePagination likePagination = new LikePagination(postLikeRedisTemplateService.getPostLikeCount(postId), likeSearchPagingDto);
+    public LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto) {
+        LikePagination likePagination = new LikePagination(postLikeRedisTemplateService.getPostLikeCount(postId, blogId), likeSearchPagingDto);
         likeSearchPagingDto.setLikePagination(likePagination);
-        return new LikePaginationResponse<>(postLikeRedisTemplateService.getPostLikeDto(postId, likeSearchPagingDto), likeSearchPagingDto.getLikePagination());
+        return new LikePaginationResponse<>(postLikeRedisTemplateService.getPostLikeDto(postId, blogId, likeSearchPagingDto), likeSearchPagingDto.getLikePagination());
     }
 
     @Override
-    public PostLikeResultDto getPostLikeResultDto(Principal principal, Long postId) {
+    public PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId) {
         if (principal == null || principal.getName() == null) {
-            return postLikeRedisTemplateService.getPostLikeResultDto(null, postId);
+            return postLikeRedisTemplateService.getPostLikeResultDto(null, blogId, postId);
         } else {
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
-            return postLikeRedisTemplateService.getPostLikeResultDto(userHeaderDto.getId(), postId);
+            return postLikeRedisTemplateService.getPostLikeResultDto(userHeaderDto.getId(), blogId, postId);
         }
     }
 

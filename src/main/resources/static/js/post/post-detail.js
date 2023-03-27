@@ -72,7 +72,8 @@ class PostDetailController extends UtilController {
         this.postLikeUserCheckButton.addEventListener("click", evt => {
             if (this.postLikeUserListContainer.style.display === '' || this.postLikeUserListContainer.style.display === 'none') {
                 if (this.userLikePostBlock === false) {
-                    this.#requestPostUserLike("/like/post/liked/" + document.getElementById("postIdInput").value);
+                    this.#requestPostUserLike("/like/post/liked/" + document.getElementById("postIdInput").value
+                        + "?blogId=" + document.getElementById("postSearchBlogIdInput").value);
                 } else {
                     this.postLikeUserListContainer.style.display = 'block';
                 }

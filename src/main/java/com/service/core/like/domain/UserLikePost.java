@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 @Data
 @Builder
-public class UserLikePost implements Serializable {
+public class UserLikePost implements Serializable, Comparable<UserLikePost> {
     private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;
 
     private Long postId;
@@ -22,6 +23,8 @@ public class UserLikePost implements Serializable {
 
     private String postThumbnailImage;
 
+    private long time;
+
     public static UserLikePost from(LikePostInput likePostInput) {
         return UserLikePost.builder()
                 .postId(likePostInput.getPostId())
@@ -29,6 +32,12 @@ public class UserLikePost implements Serializable {
                 .nickName(likePostInput.getNickName())
                 .title(likePostInput.getTitle())
                 .postThumbnailImage(likePostInput.getPostThumbnailImage())
+                .time(System.currentTimeMillis())
                 .build();
+    }
+
+    @Override
+    public int compareTo(UserLikePost o) {
+        return Long.compare(o.getTime(), time);
     }
 }

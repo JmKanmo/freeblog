@@ -6,6 +6,7 @@
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <title>설정 페이지</title>
     <th:block th:replace="fragments/config :: config"></th:block>
+    <th:block th:replace="fragments/template/like-template :: like-template"></th:block>
     <link th:href="@{/css/settings.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/settings.js}"></script>
 </head>
@@ -54,7 +55,8 @@
 
                 <div class="windows_block clear_fix">
                     <span class="common_plain_text">인사말</span>
-                    <button class="greeting_click_button common_badge_button_style" id="greeting_show_button">보기</button>
+                    <button class="greeting_click_button common_badge_button_style" id="greeting_show_button">보기
+                    </button>
 
                     <div id="greetings_hidden_block" class="window_hidden_block">
                         <button type="button" class="common_close_label window_hidden_block_close_button"
@@ -91,7 +93,8 @@
             <input type="hidden" id="user_social_address" readonly th:value="${user_setting.socialAddress.address}">
             <input type="hidden" id="user_github_address" readonly th:value="${user_setting.socialAddress.github}">
             <input type="hidden" id="user_twitter_address" readonly th:value="${user_setting.socialAddress.twitter}">
-            <input type="hidden" id="user_instagram_address" readonly th:value="${user_setting.socialAddress.instagram}">
+            <input type="hidden" id="user_instagram_address" readonly
+                   th:value="${user_setting.socialAddress.instagram}">
         </div>
 
         <div class="user_official_info_container">
@@ -102,7 +105,8 @@
                           th:title="${user_setting.email}">이메일</span>
                 </div>
 
-                <button class="email_auth_button common_badge_button_style" id="email_auth_button" th:if="${#bools.isTrue(user_setting.isAuth)}">
+                <button class="email_auth_button common_badge_button_style" id="email_auth_button"
+                        th:if="${#bools.isTrue(user_setting.isAuth)}">
                     인증 완료
                 </button>
                 <button class="email_not_auth_button" id="email_not_auth_button"

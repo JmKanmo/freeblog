@@ -10,9 +10,9 @@ import com.service.core.like.paging.LikeSearchPagingDto;
 import java.security.Principal;
 
 public interface LikeService {
-    LikePaginationResponse getPostLikeDto(Long postId, LikeSearchPagingDto likeSearchPagingDto);
+    LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto);
 
-    PostLikeResultDto getPostLikeResultDto(Principal principal, Long postId);
+    PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId);
 
     boolean postLike(Principal principal, LikePostInput likePostInput);
 
