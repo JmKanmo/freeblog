@@ -8,6 +8,7 @@ class HeaderController extends UtilController {
         this.headerProfileImage = document.getElementById("header_profile_image");
         this.noticeButton = document.getElementById("notice_button");
         this.userLikePostBlockCloseButton = document.getElementById("user_like_post_block_close_button");
+        this.userLikePostBlockReloadButton = document.getElementById("user_like_post_block_reload_button");
         this.userLikePostContainer = document.getElementById("user_like_post_container");
         this.userLikePostTemplateHTML = null;
     }
@@ -21,7 +22,15 @@ class HeaderController extends UtilController {
             this.userLikePostBlockCloseButton.addEventListener("click", evt => {
                 if (this.userLikePostContainer != null) {
                     this.userLikePostContainer.style.display = "none";
+                    this.userLikePostBlockCloseButton.style.visibility = 'hidden';
+                    this.userLikePostBlockReloadButton.style.visibility = "hidden";
                 }
+            });
+        }
+
+        if (this.userLikePostBlockReloadButton != null) {
+            this.userLikePostBlockReloadButton.addEventListener("click", evt => {
+                this.showToastMessage("사용자가 누른 좋아요 새로고침 버튼 클릭");
             });
         }
 
@@ -46,10 +55,14 @@ class HeaderController extends UtilController {
                             this.#requestUserLikePostInfo();
                         } else {
                             this.userLikePostContainer.style.display = "block";
+                            this.userLikePostBlockCloseButton.style.visibility = "visible";
+                            this.userLikePostBlockReloadButton.style.visibility = "visible";
                             this.userLikePostContainer.innerHTML = this.userLikePostTemplateHTML;
                         }
                     } else {
                         this.userLikePostContainer.style.display = "none";
+                        this.userLikePostBlockCloseButton.style.visibility = "hidden";
+                        this.userLikePostBlockReloadButton.style.visibility = "hidden";
                     }
                 }
             });
@@ -99,6 +112,8 @@ class HeaderController extends UtilController {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 this.userLikePostContainer.style.display = "block";
+                this.userLikePostBlockCloseButton.style.visibility = "visible";
+                this.userLikePostBlockReloadButton.style.visibility = "visible";
                 this.#handlePostLikeTemplateList(responseValue);
             }
         });

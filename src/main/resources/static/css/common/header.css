@@ -41,6 +41,51 @@
 }
 
 /** 사용자 좋아요 조회 버튼 스타일 정의 **/
+.header_box .user_util_box .user_util_item .user_like_post_option_container {
+    position: absolute;
+    top: 26px;
+    width: 200px;
+    height: 33px;
+    left: -93px;
+    z-index: 6;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_close_button {
+    position: absolute;
+    background-color: #ffffff;
+    outline: 0;
+    border: 0;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    top: 0px;
+    right: 2px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_close_button .user_like_post_block_close_button_image {
+    display: block;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_reload_button {
+    position: absolute;
+    background-color: #ffffff;
+    outline: 0;
+    border: 0;
+    width: 17px;
+    height: 17px;
+    padding: 0;
+    top: 3px;
+    right: 35px;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_reload_button .user_like_post_block_reload_button_image {
+    display: block;
+}
+
 .header_box .user_util_box .user_util_item .user_like_post_container {
     position: absolute;
     width: 200px;
@@ -51,23 +96,6 @@
     z-index: 5;
     display: none;
     min-height: 55px;
-}
-
-.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_block_close_button {
-    border: none;
-    outline: none;
-    background-color: #ffffff;
-    position: absolute;
-    right: 2px;
-    top: 3px;
-    height: 22px;
-    width: 22px;
-    cursor: pointer;
-    padding: 0;
-}
-
-.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_block_close_button .user_like_post_block_close_button_image {
-    display: block;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list {
