@@ -17,7 +17,7 @@ public class UserLikePost implements Serializable, Comparable<UserLikePost> {
 
     private Long blogId;
 
-    private String nickName;
+    private String nickName; // 게시글 작성자 닉네임
 
     private String title;
 
@@ -29,7 +29,7 @@ public class UserLikePost implements Serializable, Comparable<UserLikePost> {
         return UserLikePost.builder()
                 .postId(likePostInput.getPostId())
                 .blogId(likePostInput.getBlogId())
-                .nickName(likePostInput.getNickName())
+                .nickName(likePostInput.getWriter())
                 .title(likePostInput.getTitle())
                 .postThumbnailImage(likePostInput.getPostThumbnailImage())
                 .time(System.currentTimeMillis())

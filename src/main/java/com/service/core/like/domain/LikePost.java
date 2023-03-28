@@ -18,7 +18,7 @@ public class LikePost implements Serializable {
 
     private String id;
 
-    private String name;
+    private String name; // 좋아요 누른 사용자 닉네임
 
     private String userProfileThumbnailImage;
 

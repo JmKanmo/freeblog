@@ -114,6 +114,7 @@ public class PostLikeRedisTemplateService {
             userLikePostOperation.put(likePostKey, likePostInput.getPostId(), userLikePost);
         } else {
             List<UserLikePost> userLikePosts = userLikePostOperation.values(likePostKey);
+            Collections.sort(userLikePosts);
             long delIdx = userLikePosts.get(userLikePosts.size() - 1).getPostId();
             userLikePostOperation.delete(likePostKey, delIdx);
             userLikePostOperation.put(likePostKey, likePostInput.getPostId(), userLikePost);

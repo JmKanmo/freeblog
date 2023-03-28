@@ -14,7 +14,9 @@ import javax.validation.constraints.Size;
 public class LikePostInput {
     private String id;
 
-    private String nickName;
+    private String nickName; // 좋아요 누른 사용자 닉네임
+
+    private String writer; // 좋아요 누른 게시글 작성자 닉네임
 
     private String title;
 
@@ -29,6 +31,7 @@ public class LikePostInput {
     public void setLikePostInput(UserHeaderDto userHeaderDto, PostDetailDto postDetailDto) {
         this.setId(userHeaderDto.getId());
         this.setNickName(userHeaderDto.getNickname());
+        this.setWriter(postDetailDto.getWriter());
         this.setTitle(postDetailDto.getTitle());
         this.setUserProfileThumbnailImage(userHeaderDto.getProfileImages() == null ? ConstUtil.UNDEFINED : userHeaderDto.getProfileImages());
         this.setPostThumbnailImage(postDetailDto.getThumbnailImage());
