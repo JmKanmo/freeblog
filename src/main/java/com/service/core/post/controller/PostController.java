@@ -215,12 +215,13 @@ public class PostController {
 
         BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
         PostDto postDto = postService.findPostDtoById(postId);
+        UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
 
         if (blogInfoDto.getId() != postDto.getBlogId()) {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
         postService.deletePost(blogInfoDto.getId(), postId);
-        return String.format("redirect:/blog/%s", blogInfoDto.getName());
+        return String.format("redirect:/blog/%s", userHeaderDto.getId());
     }
 }
