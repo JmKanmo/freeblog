@@ -45,9 +45,26 @@
     position: absolute;
     top: 26px;
     width: 200px;
-    height: 33px;
+    height: 45px;
     left: -93px;
     z-index: 6;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_notice_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 40px;
+    margin: 5px 0px 0px 5px;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_notice_container .user_like_post_notice_text {
+    line-height: 15px;
+    display: block;
+    font-size: 5px;
+    color: #4480b9;
+    visibility: hidden;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_close_button {
@@ -100,7 +117,7 @@
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list {
     max-height: 300px;
-    margin: 40px 10px 15px 10px;
+    margin: 50px 10px 15px 10px;
     overflow-x: clip;
     overflow-y: scroll;
 }

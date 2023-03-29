@@ -9,8 +9,10 @@ class HeaderController extends UtilController {
         this.noticeButton = document.getElementById("notice_button");
         this.userLikePostBlockCloseButton = document.getElementById("user_like_post_block_close_button");
         this.userLikePostBlockReloadButton = document.getElementById("user_like_post_block_reload_button");
+        this.userLikePostNoticeText = document.getElementById("user_like_post_notice_text");
         this.userLikePostContainer = document.getElementById("user_like_post_container");
         this.userLikePostTemplateHTML = null;
+        this.lastSearchTime = null;
     }
 
     initHeaderController() {
@@ -24,13 +26,27 @@ class HeaderController extends UtilController {
                     this.userLikePostContainer.style.display = "none";
                     this.userLikePostBlockCloseButton.style.visibility = 'hidden';
                     this.userLikePostBlockReloadButton.style.visibility = "hidden";
+                    this.userLikePostNoticeText.style.visibility = "hidden";
                 }
             });
         }
 
         if (this.userLikePostBlockReloadButton != null) {
             this.userLikePostBlockReloadButton.addEventListener("click", evt => {
-                this.showToastMessage("사용자가 누른 좋아요 새로고침 버튼 클릭");
+                if (this.lastSearchTime == null) {
+                    this.#requestUserLikePostInfo();
+                    this.lastSearchTime = Date.now();
+                } else {
+                    const now = Date.now();
+                    const diff = Date.now() - this.lastSearchTime;
+                    // 5초에 한번씩 클릭
+                    if (diff > (1000 * 5)) {
+                        this.#requestUserLikePostInfo();
+                        this.lastSearchTime = now;
+                    } else {
+                        this.showToastMessage("잠시후에 다시 시도 해주세요.")
+                    }
+                }
             });
         }
 
@@ -57,12 +73,14 @@ class HeaderController extends UtilController {
                             this.userLikePostContainer.style.display = "block";
                             this.userLikePostBlockCloseButton.style.visibility = "visible";
                             this.userLikePostBlockReloadButton.style.visibility = "visible";
+                            this.userLikePostNoticeText.style.visibility = "visible";
                             this.userLikePostContainer.innerHTML = this.userLikePostTemplateHTML;
                         }
                     } else {
                         this.userLikePostContainer.style.display = "none";
                         this.userLikePostBlockCloseButton.style.visibility = "hidden";
                         this.userLikePostBlockReloadButton.style.visibility = "hidden";
+                        this.userLikePostNoticeText.style.visibility = "hidden";
                     }
                 }
             });
@@ -114,6 +132,7 @@ class HeaderController extends UtilController {
                 this.userLikePostContainer.style.display = "block";
                 this.userLikePostBlockCloseButton.style.visibility = "visible";
                 this.userLikePostBlockReloadButton.style.visibility = "visible";
+                this.userLikePostNoticeText.style.visibility = "visible";
                 this.#handlePostLikeTemplateList(responseValue);
             }
         });
