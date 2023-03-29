@@ -14,7 +14,7 @@ public class RedisTemplateKey {
     public static final long LIKE_POST_MAX_COUNT = 300; // 최대 300개 까지 좋아요 목록 저장
 
     // 게시글 관련 (조회수)
-    public static final String POST_VIEWS = "post-views";
+    public static final String POST_VIEWS = "post-views:%d";
 
     // 방문자 수 관련
     public static final String BLOG_VISITORS_COUNT = "blog-visitors-count:%d";
