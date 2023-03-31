@@ -73,4 +73,9 @@ class BlogUtilTest {
         String uuid = date + "/" + UUID.nameUUIDFromBytes("\"C:\\Users\\apdh1\\OneDrive\\사진\\스크린샷\\짤\\99b983892094b5c6d2fc3736e15da7d1.png\"".getBytes(StandardCharsets.UTF_8)) + "." + "png";
         System.out.println(uuid);
     }
+
+    @Test
+    public void numberCommaTest() {
+        System.out.println(BlogUtil.formatNumberComma(1234234543));
+    }
 }

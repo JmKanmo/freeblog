@@ -204,6 +204,14 @@
     margin-left: 3px;
 }
 
+.post_detail_container .post_title_container .post_writer_profile_container .post_view_text {
+    color: #000;
+    opacity: .5;
+    font-size: 11px;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
 .post_detail_container .post_title_container .post_writer_profile_container .post_url_button {
     background-color: #ffffff;
     border: 0;

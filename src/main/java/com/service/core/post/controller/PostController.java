@@ -19,6 +19,7 @@ import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
 import com.service.core.views.service.BlogVisitorService;
+import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,6 +47,7 @@ public class PostController {
     private final CategoryService categoryService;
     private final BlogService blogService;
 
+    private final PostViewService postViewService;
     private final BlogVisitorService blogVisitorService;
     private final LikeService likeService;
 
@@ -75,6 +77,7 @@ public class PostController {
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
         model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, blogId, postId));
         blogVisitorService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogId), BlogUtil.getClientAccessId(httpServletRequest, principal));
+        model.addAttribute("post_view", BlogUtil.formatNumberComma(postViewService.viewPost(postDetailDto.getBlogId(), postDetailDto.getId())));
         return "post/post-detail";
     }
 

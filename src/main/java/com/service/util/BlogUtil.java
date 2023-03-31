@@ -281,4 +281,8 @@ public class BlogUtil {
         return (null != httpServletRequest.getHeader("X-FORWARDED-FOR")) ?
                 httpServletRequest.getHeader("X-FORWARDED-FOR") : httpServletRequest.getRemoteAddr();
     }
+
+    public static String formatNumberComma(long number) {
+        return String.valueOf(number).replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
+    }
 }

@@ -96,6 +96,10 @@
 
             <span class="post_register_date_text" th:text="${postDetail.registerTime}">게시글 작성 날짜</span>
 
+            <th:block th:if="${#bools.isTrue(isEqualPostByLogin)}">
+                <span class="post_view_text" th:text="${post_view} + ' views'">조회수</span>
+            </th:block>
+
             <button class="post_url_button" id="post_url_button" th:title="${postDetail.currentUrl}">
                 <span class="post_url_text">URL 복사</span>
             </button>

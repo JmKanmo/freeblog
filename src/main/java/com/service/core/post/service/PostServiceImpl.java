@@ -192,7 +192,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean checkEqualPostByLogin(Long blogId, Long postId) {
-        return postMapper.findEqualPostCount(blogId, postId) <= 0 ? false : true;
+        Post post = findPostById(postId);
+        return post.getBlog().getId() == blogId;
     }
 
     @Transactional
