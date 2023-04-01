@@ -1,17 +1,14 @@
 package com.service.util;
 
-import com.service.core.blog.domain.Blog;
+import com.service.util.domain.SortType;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,5 +81,62 @@ class BlogUtilTest {
     public void days() {
         System.out.println(Duration.ofDays(30).getSeconds());
         Duration duration = Duration.ofSeconds(2592000);
+    }
+
+    @Test
+    public void sortTypeTest() {
+        /**
+         * postId
+         * view + like
+         * time
+         */
+        List<SortType<String, Long, Long>> sortTypes = Arrays.asList(
+                SortType.<String, Long, Long>builder()
+                        .v("jmkanmo")
+                        .sort1(3L)
+                        .sort2(42342232L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("nebiros")
+                        .sort1(8L)
+                        .sort2(324232231L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("yahoo")
+                        .sort1(3L)
+                        .sort2(32432422L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("혜옥이")
+                        .sort1(1L)
+                        .sort2(131121L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("정봉")
+                        .sort1(15L)
+                        .sort2(424232L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("혜옥이")
+                        .sort1(9L)
+                        .sort2(123142354L)
+                        .build(),
+                SortType.<String, Long, Long>builder()
+                        .v("혜옥이")
+                        .sort1(8L)
+                        .sort2(1223142354L)
+                        .build());
+
+        Collections.sort(sortTypes, (o1, o2) -> {
+            if (o1.getSort1() == o2.getSort1()) {
+                return Long.compare(o2.getSort2(), o1.getSort2());
+            } else {
+                return Long.compare(o2.getSort1(), o1.getSort1());
+            }
+        });
+
+        for (SortType<String, Long, Long> sortType : sortTypes) {
+            System.out.println(sortType + "\n");
+        }
     }
 }

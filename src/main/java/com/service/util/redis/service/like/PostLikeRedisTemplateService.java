@@ -6,6 +6,7 @@ import com.service.core.like.domain.UserLikePost;
 import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.core.like.paging.LikeSearchPagingDto;
+import com.service.util.domain.SortType;
 import com.service.util.redis.key.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,23 @@ public class PostLikeRedisTemplateService {
     private final RedisTemplate redisTemplate;
 
     private final AppConfig appConfig;
+
+    public List<Long> getPostLikeIdSet(long blogId) {
+        String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, blogId);
+        HashOperations<String, Long, Map<String, LikePost>> likePostHashOperation = getLikePostOperation();
+        List<Long> postIdSet = new ArrayList<>();
+
+        for (Long postId : likePostHashOperation.keys(postLikeKey)) {
+            Map<String, LikePost> likePostMap = likePostHashOperation.get(postLikeKey, postId);
+
+            if (likePostMap.size() <= 0) {
+                continue;
+            }
+            postIdSet.add(postId);
+        }
+
+        return postIdSet;
+    }
 
     public List<UserLikePost> getUserLikePostsById(String id) {
         HashOperations<String, Long, UserLikePost> userLikePostOperation = getUserLikePostOperation();

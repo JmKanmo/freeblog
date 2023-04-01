@@ -27,6 +27,7 @@ class BlogHeaderController extends BlogBodyController {
         this.recentPostTitle.style.color = '#333';
         this.recentPostCardList.style.display = 'block';
         this.#requestRecentPostCard();
+        this.#requestPopularPostCard();
     }
 
     initBlogHeaderEventListener() {
@@ -112,7 +113,25 @@ class BlogHeaderController extends BlogBodyController {
     }
 
     #requestPopularPostCard() {
-        this.showToastMessage("인기글 기능은 추후에 개발 될 예정입니다.");
+        const xhr = new XMLHttpRequest();
+        const blogId = document.getElementById("blog_info_id").value;
+        xhr.open("GET", `/post/popular/${blogId}`, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#popularPostHandleTemplateList(responseValue);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("게시글 정보를 불러오는데 실패하였습니다.");
+        });
+        xhr.send();
     }
 
     #recentPostHandleTemplateList(postDto) {
@@ -120,6 +139,13 @@ class BlogHeaderController extends BlogBodyController {
         const recentPostCardTemplateObject = Handlebars.compile(recentPostCardTemplate);
         const recentPostCardTemplateHTML = recentPostCardTemplateObject(postDto);
         this.recentPostCardList.innerHTML = recentPostCardTemplateHTML;
+    }
+
+    #popularPostHandleTemplateList(postDto) {
+        const popularPostCardTemplate = document.getElementById("popular-post-card-template").innerHTML;
+        const popularPostCardTemplateObject = Handlebars.compile(popularPostCardTemplate);
+        const popularPostCardTemplateHTML = popularPostCardTemplateObject(postDto);
+        this.popularPostCardList.innerHTML = popularPostCardTemplateHTML;
     }
 }
 

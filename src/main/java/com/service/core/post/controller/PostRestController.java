@@ -9,6 +9,7 @@ import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.dto.PostResponseDto;
 import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.paging.PostSearchPagingDto;
+import com.service.core.post.service.PostPopularService;
 import com.service.core.post.service.PostService;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
@@ -35,6 +36,8 @@ import java.util.List;
 @Slf4j
 public class PostRestController {
     private final PostService postService;
+
+    private final PostPopularService postPopularService;
     private final BlogService blogService;
 
     @Operation(summary = "최신 포스트 반환", description = "최신 포스트 데이터 반환 메서드")
@@ -60,7 +63,7 @@ public class PostRestController {
     @GetMapping("/popular/{blogId}")
     public ResponseEntity<PostResponseDto<List<PostCardDto>>> searchPopularPost(@PathVariable Long blogId) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postService.findRecentPostCardDtoByBlogId(blogId)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postPopularService.findPopularPost(blogId)));
         } catch (Exception exception) {
             log.error("[freeblog-searchPopularPost] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(exception));

@@ -16,8 +16,6 @@ import java.util.List;
 public interface PostService {
     List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId);
 
-    List<PostCardDto> findPopularPostCardDtoByBlogId(Long blogId);
-
     List<PostCardDto> findRelatedPost(Long postId, Long blogId, Long categoryId, Long postSeq);
 
     PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);

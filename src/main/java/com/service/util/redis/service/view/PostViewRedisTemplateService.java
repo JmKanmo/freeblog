@@ -8,10 +8,38 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PostViewRedisTemplateService {
     private final RedisTemplate redisTemplate;
+
+    public long getPostViewCount(long postId, long blogId) {
+        String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
+        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
+        PostView postView = postViewHashOperations.get(postViewKey, postId);
+        return postView == null ? 0 : postView.getView();
+    }
+
+    public List<Long> getPostViewIdSet(long blogId) {
+        String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
+        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
+        List<Long> postIdSet = new ArrayList<>();
+
+        for (Long postId : postViewHashOperations.keys(postViewKey)) {
+            PostView postView = postViewHashOperations.get(postViewKey, postId);
+
+            if (postView == null) {
+                continue;
+            }
+
+            postIdSet.add(postId);
+        }
+
+        return postIdSet;
+    }
 
     public PostView viewPost(long blogId, long postId) {
         String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);

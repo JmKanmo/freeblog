@@ -237,20 +237,16 @@
     margin-left: 30px;
 }
 
-.recent_popular_post_container .recent_post_card_list {
+.recent_popular_post_container .recent_popular_post_card_list {
     display: none;
 }
 
-.recent_popular_post_container .recent_post_card_list .recent_post_block {
+.recent_popular_post_container .recent_popular_post_card_list .recent_popular_post_block {
     margin-top: 20px;
 }
 
 .recent_popular_post_container .popular_post_card_list {
     display: none;
-}
-
-.recent_popular_post_container .popular_post_card_list .popular_post_block {
-    margin-top: 20px;
 }
 
 .recent_popular_post_container .recent_popular_post_block .post_link_container :hover {

@@ -11,4 +11,14 @@ public class PostCardDto {
     private final String thumbnailImage;
     private final String registerTime;
     private final Long blogId;
+
+    public static PostCardDto from(PostDetailDto postDetailDto) {
+        return PostCardDto.builder()
+                .id(postDetailDto.getId())
+                .title(postDetailDto.getTitle())
+                .thumbnailImage(postDetailDto.getThumbnailImage())
+                .registerTime(postDetailDto.getRegisterTime())
+                .blogId(postDetailDto.getBlogId())
+                .build();
+    }
 }

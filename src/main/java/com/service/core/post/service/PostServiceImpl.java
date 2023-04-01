@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,8 +43,6 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagService tagService;
     private final PostViewService postViewService;
-
-    private final PostPopularTemplateService postPopularTemplateService;
     private final SftpService sftpService;
     private final SqlConfig sqlConfig;
     private final AppConfig appConfig;
@@ -51,11 +50,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId) {
         return postMapper.findRecentPostCardDto(blogId, appConfig.getRecentAndPopular_post_count());
-    }
-
-    @Override
-    public List<PostCardDto> findPopularPostCardDtoByBlogId(Long blogId) {
-        return null;
     }
 
     @Override

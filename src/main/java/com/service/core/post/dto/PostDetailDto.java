@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class PostDetailDto implements Serializable {
     private Long categoryId;
     private Long blogId;
     private String registerTime;
+    private LocalDateTime registerLocalDateTime;
     private String currentUrl;
     private List<String> tags;
 
@@ -44,6 +46,7 @@ public class PostDetailDto implements Serializable {
         postDetailDto.setCategoryId(post.getCategory().getId());
         postDetailDto.setBlogId(post.getBlog().getId());
         postDetailDto.setRegisterTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()));
+        postDetailDto.setRegisterLocalDateTime(post.getRegisterTime());
         postDetailDto.setCurrentUrl(BlogUtil.currentRequestUrl());
         postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
         return postDetailDto;
