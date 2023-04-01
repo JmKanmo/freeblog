@@ -46,9 +46,6 @@ public class PostController {
     private final UserService userService;
     private final CategoryService categoryService;
     private final BlogService blogService;
-
-    private final PostViewService postViewService;
-    private final BlogVisitorService blogVisitorService;
     private final LikeService likeService;
 
     @Operation(summary = "포스트 상세 페이지 반환", description = "포스트 상세 페이지 반환 메서드")
@@ -76,8 +73,8 @@ public class PostController {
         model.addAttribute("relatedPostList", postService.findRelatedPost(postDetailDto.getId(), postDetailDto.getBlogId(), postDetailDto.getCategoryId(), postDetailDto.getSeq()));
         model.addAttribute("post_almost", postService.findPostAlmostInfo(postDetailDto.getBlogId(), postDetailDto.getSeq()));
         model.addAttribute("post_like", likeService.getPostLikeResultDto(principal, blogId, postId));
-        blogVisitorService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogId), BlogUtil.getClientAccessId(httpServletRequest, principal));
-        model.addAttribute("post_view", BlogUtil.formatNumberComma(postViewService.viewPost(postDetailDto.getBlogId(), postDetailDto.getId())));
+        blogService.visitBlog(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blogId), BlogUtil.getClientAccessId(httpServletRequest, principal));
+        model.addAttribute("post_view", postService.viewPost(postDetailDto));
         return "post/post-detail";
     }
 

@@ -1,5 +1,6 @@
 package com.service.core.post.service;
 
+import com.service.config.app.AppConfig;
 import com.service.config.sql.SqlConfig;
 import com.service.core.blog.domain.Blog;
 import com.service.core.category.service.CategoryService;
@@ -12,15 +13,16 @@ import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
-import com.service.core.tag.domain.Tag;
 import com.service.core.tag.service.TagService;
+import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
-import com.service.util.redis.CacheKey;
+import com.service.util.redis.key.CacheKey;
+import com.service.util.redis.service.popular.PostPopularTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -39,14 +41,21 @@ public class PostServiceImpl implements PostService {
     private final AwsS3Service awsS3Service;
     private final PostRepository postRepository;
     private final TagService tagService;
+    private final PostViewService postViewService;
 
+    private final PostPopularTemplateService postPopularTemplateService;
     private final SftpService sftpService;
     private final SqlConfig sqlConfig;
-
+    private final AppConfig appConfig;
 
     @Override
     public List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId) {
-        return postMapper.findRecentPostCardDto(blogId);
+        return postMapper.findRecentPostCardDto(blogId, appConfig.getRecentAndPopular_post_count());
+    }
+
+    @Override
+    public List<PostCardDto> findPopularPostCardDtoByBlogId(Long blogId) {
+        return null;
     }
 
     @Override
@@ -202,6 +211,11 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long blogId, Long postId) {
         Post post = findPostById(postId);
         post.setDelete(true);
+    }
+
+    @Override
+    public String viewPost(PostDetailDto postDetailDto) {
+        return BlogUtil.formatNumberComma(postViewService.viewPost(postDetailDto.getBlogId(), postDetailDto.getId()));
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

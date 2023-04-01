@@ -58,6 +58,6 @@
                               and b.blog_id = post.blog_id)
           and c.is_delete = false
           and c.secret = false
-        order by register_time desc limit 5;
+        order by register_time desc limit #{commentCount};
     </select>
 </mapper>

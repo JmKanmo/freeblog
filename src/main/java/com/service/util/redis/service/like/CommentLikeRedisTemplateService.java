@@ -1,6 +1,6 @@
 package com.service.util.redis.service.like;
 
-import com.service.util.redis.RedisTemplateKey;
+import com.service.util.redis.key.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;

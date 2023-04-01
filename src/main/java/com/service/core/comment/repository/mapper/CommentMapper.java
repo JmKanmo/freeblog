@@ -11,7 +11,7 @@ import java.util.List;
 public interface CommentMapper {
     List<CommentDto> findCommentDtoListByPaging(CommentSearchDto commentSearchDto);
 
-    List<CommentLinkDto> findCommentLinkDto(Long blogId);
+    List<CommentLinkDto> findCommentLinkDto(Long blogId, int commentCount);
 
     int findCommentCountExist(Long postId);
 

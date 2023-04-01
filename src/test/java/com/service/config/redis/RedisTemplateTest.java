@@ -3,16 +3,14 @@ package com.service.config.redis;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.service.core.views.domain.BlogVisitors;
-import com.service.util.redis.RedisTemplateKey;
+import com.service.util.redis.key.RedisTemplateKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 

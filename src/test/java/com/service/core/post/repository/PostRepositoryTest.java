@@ -61,7 +61,7 @@ public class PostRepositoryTest {
 
     @Test
     public void findPostCardDtoTest() {
-        List<PostCardDto> postCardDto = postMapper.findRecentPostCardDto(6L);
+        List<PostCardDto> postCardDto = postMapper.findRecentPostCardDto(6L, 5);
         Assertions.assertNotNull(postCardDto);
     }
 

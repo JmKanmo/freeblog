@@ -7,6 +7,7 @@ import com.service.core.blog.service.BlogService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.BlogManageException;
 import com.service.core.user.service.UserInfoService;
+import com.service.core.views.service.BlogVisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogServiceImpl implements BlogService {
     private final BlogInfoService blogInfoService;
     private final UserInfoService userInfoService;
+    private final BlogVisitorService blogVisitorService;
 
     @Transactional
     @Override
@@ -72,5 +74,10 @@ public class BlogServiceImpl implements BlogService {
         } catch (BlogManageException e) {
             return true;
         }
+    }
+
+    @Override
+    public void visitBlog(int blogId, int visitorId) {
+        blogVisitorService.visitBlog(blogId, visitorId);
     }
 }

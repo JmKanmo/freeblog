@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface PostMapper {
-    List<PostCardDto> findRecentPostCardDto(Long blogId);
+    List<PostCardDto> findRecentPostCardDto(Long blogId, int recentPopularPostCount);
 
     List<PostDto> findTotalPostDtoListByPaging(PostSearchDto postSearchDto);
 

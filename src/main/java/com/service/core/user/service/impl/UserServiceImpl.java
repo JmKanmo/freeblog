@@ -17,7 +17,7 @@ import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
-import com.service.util.redis.CacheKey;
+import com.service.util.redis.key.CacheKey;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

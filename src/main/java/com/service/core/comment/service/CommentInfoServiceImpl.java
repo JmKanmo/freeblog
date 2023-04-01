@@ -1,5 +1,6 @@
 package com.service.core.comment.service;
 
+import com.service.config.app.AppConfig;
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.dto.CommentDto;
 import com.service.core.comment.dto.CommentLinkDto;
@@ -22,8 +23,10 @@ public class CommentInfoServiceImpl implements CommentInfoService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
+    private final AppConfig appConfig;
+
     public List<CommentLinkDto> findCommentLinkDto(Long blogId) {
-        return commentMapper.findCommentLinkDto(blogId);
+        return commentMapper.findCommentLinkDto(blogId, appConfig.getRecentCommentCount());
     }
 
     @Transactional

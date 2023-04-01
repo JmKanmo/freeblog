@@ -1,15 +1,14 @@
 package com.service.util.redis.service.like;
 
+import com.service.config.app.AppConfig;
 import com.service.core.like.domain.LikePost;
 import com.service.core.like.domain.UserLikePost;
-import com.service.core.like.dto.PostLikeDto;
 import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.core.like.paging.LikeSearchPagingDto;
-import com.service.util.redis.RedisTemplateKey;
+import com.service.util.redis.key.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PostLikeRedisTemplateService {
     private final RedisTemplate redisTemplate;
+
+    private final AppConfig appConfig;
 
     public List<UserLikePost> getUserLikePostsById(String id) {
         HashOperations<String, Long, UserLikePost> userLikePostOperation = getUserLikePostOperation();
@@ -106,11 +107,11 @@ public class PostLikeRedisTemplateService {
     }
 
     private void pushUserLike(HashOperations<String, Long, UserLikePost> userLikePostOperation, String likePostKey, LikePostInput likePostInput) {
-        redisTemplate.expire(likePostKey, RedisTemplateKey.LIKE_POST_EXPIRE_DAYS);
+        redisTemplate.expire(likePostKey, Duration.ofSeconds(appConfig.getUserLikePostExpireDays()));
         UserLikePost userLikePost = UserLikePost.from(likePostInput);
 
         // 해당 사용자 좋아요 정보 push
-        if (userLikePostOperation.size(likePostKey) < RedisTemplateKey.LIKE_POST_MAX_COUNT) {
+        if (userLikePostOperation.size(likePostKey) < appConfig.getUserLikePostMaxCount()) {
             userLikePostOperation.put(likePostKey, likePostInput.getPostId(), userLikePost);
         } else {
             List<UserLikePost> userLikePosts = userLikePostOperation.values(likePostKey);

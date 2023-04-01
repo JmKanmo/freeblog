@@ -1,4 +1,4 @@
-package com.service.util.redis;
+package com.service.util.redis.key;
 
 import java.time.Duration;
 
@@ -9,9 +9,6 @@ public class RedisTemplateKey {
     // 게시글 관련 (좋아요)
     public static final String POST_LIKE = "post-like:%d";
     public static final String LIKE_POST = "like-posts:%s";
-
-    public static final Duration LIKE_POST_EXPIRE_DAYS = Duration.ofDays(30); // 최대 30일 동안 유효
-    public static final long LIKE_POST_MAX_COUNT = 300; // 최대 300개 까지 좋아요 목록 저장
 
     // 게시글 관련 (조회수)
     public static final String POST_VIEWS = "post-views:%d";

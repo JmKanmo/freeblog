@@ -17,4 +17,6 @@ public interface BlogService {
     Blog findBlogByIdOrThrow(Long blogId);
 
     boolean isDeleteOrNotFoundBlog(Long blogId);
+
+    void visitBlog(int blogId, int visitorId);
 }

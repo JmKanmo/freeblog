@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -77,5 +78,11 @@ class BlogUtilTest {
     @Test
     public void numberCommaTest() {
         System.out.println(BlogUtil.formatNumberComma(1234234543));
+    }
+
+    @Test
+    public void days() {
+        System.out.println(Duration.ofDays(30).getSeconds());
+        Duration duration = Duration.ofSeconds(2592000);
     }
 }

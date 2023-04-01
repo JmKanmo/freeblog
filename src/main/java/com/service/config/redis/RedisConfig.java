@@ -1,6 +1,6 @@
 package com.service.config.redis;
 
-import com.service.util.redis.CacheKey;
+import com.service.util.redis.key.CacheKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

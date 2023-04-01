@@ -24,7 +24,7 @@ public class CommentMapperTest {
     @Transactional(readOnly = true)
     @Disabled
     void commentLinkDtoTest() {
-        List<CommentLinkDto> commentLinkDtos = commentMapper.findCommentLinkDto(9L);
+        List<CommentLinkDto> commentLinkDtos = commentMapper.findCommentLinkDto(9L, 5);
         Assertions.assertNotNull(commentLinkDtos);
     }
 
