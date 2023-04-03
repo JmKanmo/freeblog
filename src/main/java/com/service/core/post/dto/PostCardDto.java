@@ -1,7 +1,10 @@
 package com.service.core.post.dto;
 
+import com.service.util.BlogUtil;
 import lombok.Builder;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,7 +20,7 @@ public class PostCardDto {
                 .id(postDetailDto.getId())
                 .title(postDetailDto.getTitle())
                 .thumbnailImage(postDetailDto.getThumbnailImage())
-                .registerTime(postDetailDto.getRegisterTime())
+                .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(postDetailDto.getRegisterLocalDateTime(), "yyyy.MM.dd HH:mm"))
                 .blogId(postDetailDto.getBlogId())
                 .build();
     }
