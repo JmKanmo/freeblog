@@ -23,4 +23,7 @@ public class AppConfig {
 
     @Value("${util-config.app_config.user_like_post_max_count}")
     private int userLikePostMaxCount;
+
+    @Value("${util-config.app_config.max_post_content_size}")
+    private int maxPostContentSize;
 }

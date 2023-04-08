@@ -1,13 +1,14 @@
 package com.service.util.redis.service.popular;
 
 import com.service.config.app.AppConfig;
-import com.service.core.post.dto.PostCardDto;
+import com.service.core.error.model.PostManageException;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.service.PostService;
 import com.service.util.domain.SortType;
 import com.service.util.redis.service.like.PostLikeRedisTemplateService;
 import com.service.util.redis.service.view.PostViewRedisTemplateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostPopularTemplateService {
     private final PostLikeRedisTemplateService postLikeRedisTemplateService;
@@ -40,8 +42,10 @@ public class PostPopularTemplateService {
         for (Long popularId : popularIdSet) {
             int postLikeCount = postLikeRedisTemplateService.getPostLikeCount(popularId, blogId);
             long postViewCount = postViewRedisTemplateService.getPostViewCount(popularId, blogId);
-            PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, popularId);
-            sortTypes.add(SortType.from(popularId, postLikeCount + postViewCount, postDetailDto.getRegisterLocalDateTime()));
+            if (!postService.isDeletedPost(popularId)) {
+                PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, popularId);
+                sortTypes.add(SortType.from(popularId, postLikeCount + postViewCount, postDetailDto.getRegisterLocalDateTime()));
+            }
         }
 
         Collections.sort(sortTypes, (o1, o2) -> {

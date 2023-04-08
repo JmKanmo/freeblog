@@ -6,18 +6,18 @@ import com.service.core.like.domain.UserLikePost;
 import com.service.core.like.dto.PostLikeResultDto;
 import com.service.core.like.model.LikePostInput;
 import com.service.core.like.paging.LikeSearchPagingDto;
-import com.service.util.domain.SortType;
 import com.service.util.redis.key.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostLikeRedisTemplateService {
     private final RedisTemplate redisTemplate;
@@ -138,6 +138,34 @@ public class PostLikeRedisTemplateService {
             long delIdx = userLikePosts.get(userLikePosts.size() - 1).getPostId();
             userLikePostOperation.delete(likePostKey, delIdx);
             userLikePostOperation.put(likePostKey, likePostInput.getPostId(), userLikePost);
+        }
+    }
+
+    // 게시글 삭제 시에, 해당 블로거의 삭제 된 게시글 좋아요 기록 정보를 레디스에서 삭제
+    public void deletePostLikeInfo(Long blogId, Long postId) {
+        try {
+            String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, blogId);
+            HashOperations<String, Long, Map<String, LikePost>> likePostHashOperation = getLikePostOperation();
+            likePostHashOperation.delete(postLikeKey, postId);
+        } catch (Exception e) {
+            log.error("[PostLikeRedisTemplateService:deletePostLikeInfo] error =>", e);
+        }
+    }
+
+    // 블로그 삭제 | 회원탈퇴 시에, 해당 블로거의 모든 게시글 좋아요 정보, 블로거의 좋아요 게시글 목록을 삭제
+    public void deleteUserPostLikeInfo(Long blogId, String id) {
+        try {
+            // 해당 블로그의 모든 게시글 좋아요 정보 삭제
+            String postLikeKey = String.format(RedisTemplateKey.POST_LIKE, blogId);
+            HashOperations<String, Long, Map<String, LikePost>> likePostHashOperation = getLikePostOperation();
+            likePostHashOperation.delete(postLikeKey, likePostHashOperation.keys(postLikeKey));
+
+            // 해당 블로거가 좋아요 누른 모든 게시글 정보 삭제
+            String likePostKey = String.format(RedisTemplateKey.LIKE_POST, id);
+            HashOperations<String, Long, UserLikePost> userLikePostHashOperations = getUserLikePostOperation();
+            userLikePostHashOperations.delete(likePostKey, userLikePostHashOperations.keys(likePostKey));
+        } catch (Exception e) {
+            log.error("[PostLikeRedisTemplateService:deleteUserPostLikeInfo] error =>", e);
         }
     }
 

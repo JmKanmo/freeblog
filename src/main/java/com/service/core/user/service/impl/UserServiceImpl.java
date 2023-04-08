@@ -15,9 +15,12 @@ import com.service.core.user.model.*;
 import com.service.core.user.service.UserAuthService;
 import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
+import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.redis.key.CacheKey;
+import com.service.util.redis.service.like.PostLikeRedisTemplateService;
+import com.service.util.redis.service.view.BlogViewRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -49,6 +52,10 @@ public class UserServiceImpl implements UserService {
     private final SftpService sftpService;
 
     private final AwsS3Service awsS3Service;
+
+    private final PostLikeRedisTemplateService postLikeRedisTemplateService;
+    private final PostViewService postViewService;
+    private final BlogViewRedisTemplateService blogViewRedisTemplateService;
 
     @Override
     public void processSignUp(UserSignUpInput signupForm, UserDomain userDomain) {
@@ -89,10 +96,16 @@ public class UserServiceImpl implements UserService {
             throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
         }
 
+        UserProfileDto userProfileDto = findUserProfileDtoByBlogId(blog.getId());
+
         userDomain.setStatus(UserStatus.WITHDRAW);
         userDomain.setWithdrawTime(LocalDateTime.now());
         blog.setDelete(true);
         userInfoService.saveUserDomain(userDomain);
+
+        postLikeRedisTemplateService.deleteUserPostLikeInfo(blog.getId(), userWithdrawInput.getId());
+        postViewService.deleteBlogPostView(blog.getId());
+        blogViewRedisTemplateService.deleteBlogVisitors(BlogUtil.hashCode(userProfileDto.getId(), userProfileDto.getEmailHash(), blog.getId()));
     }
 
     @Override

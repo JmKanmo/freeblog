@@ -19,4 +19,12 @@ public class PostViewService {
         PostView postView = postViewRedisTemplateService.getPostView(blogId, postId);
         return postView.getView();
     }
+
+    public void deletePostView(long blogId, long postId) {
+        postViewRedisTemplateService.deletePostView(blogId, postId);
+    }
+
+    public void deleteBlogPostView(long blogId) {
+        postViewRedisTemplateService.deleteBlogPostView(blogId);
+    }
 }

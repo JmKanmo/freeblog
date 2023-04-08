@@ -22,7 +22,7 @@ import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostPaginationResponse;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.util.redis.key.CacheKey;
-import com.service.util.redis.service.popular.PostPopularTemplateService;
+import com.service.util.redis.service.like.PostLikeRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,6 +45,7 @@ public class PostServiceImpl implements PostService {
     private final SftpService sftpService;
     private final SqlConfig sqlConfig;
     private final AppConfig appConfig;
+    private final PostLikeRedisTemplateService postLikeRedisTemplateService;
 
     @Override
     public List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId) {
@@ -205,11 +205,27 @@ public class PostServiceImpl implements PostService {
     public void deletePost(Long blogId, Long postId) {
         Post post = findPostById(postId);
         post.setDelete(true);
+        postViewService.deletePostView(blogId, postId);
+        postLikeRedisTemplateService.deletePostLikeInfo(blogId, postId);
     }
 
     @Override
     public String viewPost(PostDetailDto postDetailDto) {
         return BlogUtil.formatNumberComma(postViewService.viewPost(postDetailDto.getBlogId(), postDetailDto.getId()));
+    }
+
+    @Override
+    public boolean isDeletedPost(long postId) {
+        if (!postRepository.existsById(postId)) {
+            return true;
+        }
+
+        Post post = postRepository.findById(postId).get();
+
+        if (post.isDelete()) {
+            return true;
+        }
+        return false;
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

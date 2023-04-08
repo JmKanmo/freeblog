@@ -48,6 +48,12 @@ public class BlogViewRedisTemplateService {
         return blogVisitorsValueOperations.get(String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, blogId));
     }
 
+    // 블로그 삭제 | 회원탈퇴 시에, 해당 블로그의 방문자 정보 삭제
+    public void deleteBlogVisitors(int blogId) {
+        ValueOperations<String, BlogVisitors> blogVisitorsValueOperations = getBlogVisitorsOperation();
+        blogVisitorsValueOperations.getAndDelete(String.format(RedisTemplateKey.BLOG_VISITORS_COUNT, blogId));
+    }
+
     private ValueOperations<String, BlogVisitors> getBlogVisitorsOperation() {
         return redisTemplate.opsForValue();
     }
