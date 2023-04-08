@@ -218,13 +218,13 @@ class PostWriteController extends UtilController {
                     this.isSubmitFlag = false;
                     return false;
                 } else {
+                    this.isSubmitFlag = true;
                     this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();
                     this.postWriteForm.submit();
                     this.clearInterval(this.postInterval, "postSaveInfo");
-                    this.isSubmitFlag = true;
                     return true;
                 }
             }

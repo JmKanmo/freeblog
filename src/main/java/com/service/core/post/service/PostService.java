@@ -59,4 +59,6 @@ public interface PostService {
     void deletePost(Long blogId, Long postId);
 
     String viewPost(PostDetailDto postDetailDto);
+
+    boolean isDeletedPost(long postId);
 }
