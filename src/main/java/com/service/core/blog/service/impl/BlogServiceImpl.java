@@ -77,7 +77,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public void visitBlog(int blogId, int visitorId) {
+    public void visitBlog(int blogId, int visitorId) throws Exception {
         blogVisitorService.visitBlog(blogId, visitorId);
     }
 }

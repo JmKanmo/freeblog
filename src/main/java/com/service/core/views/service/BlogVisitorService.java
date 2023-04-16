@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 public class BlogVisitorService {
     private final BlogViewRedisTemplateService blogViewRedisTemplateService;
 
-    public void visitBlog(int blogId, int visitorId) {
+    public void visitBlog(int blogId, int visitorId) throws Exception {
         blogViewRedisTemplateService.visitBlog(blogId, visitorId);
     }
 
-    public BlogVisitorsDto getBlogVisitorDto(int blogId) {
+    public BlogVisitorsDto getBlogVisitorDto(int blogId) throws Exception {
         return BlogVisitorsDto.from(blogViewRedisTemplateService.getBlogVisitors(blogId));
     }
 }

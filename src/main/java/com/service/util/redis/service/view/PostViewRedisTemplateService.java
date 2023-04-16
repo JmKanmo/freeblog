@@ -2,6 +2,7 @@ package com.service.util.redis.service.view;
 
 
 import com.service.core.views.domain.PostView;
+import com.service.util.json.JsonUtil;
 import com.service.util.redis.key.RedisTemplateKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,35 +19,40 @@ import java.util.List;
 public class PostViewRedisTemplateService {
     private final RedisTemplate redisTemplate;
 
-    public long getPostViewCount(long postId, long blogId) {
+    private final JsonUtil jsonUtil;
+
+    public long getPostViewCount(long postId, long blogId) throws Exception {
         String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
-        PostView postView = postViewHashOperations.get(postViewKey, postId);
+        PostView postView = jsonUtil.readClzValue(getPostViewHashOperation(postViewKey, postId), PostView.class);
         return postView == null ? 0 : postView.getView();
     }
 
     public List<Long> getPostViewIdSet(long blogId) {
         String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
+        HashOperations<String, String, Object> postViewHashOperations = getPostViewHashOperation();
         List<Long> postIdSet = new ArrayList<>();
 
-        for (Long postId : postViewHashOperations.keys(postViewKey)) {
-            PostView postView = postViewHashOperations.get(postViewKey, postId);
+        for (String postId : postViewHashOperations.keys(postViewKey)) {
+            try {
+                PostView postView = jsonUtil.readClzValue(getPostViewHashOperation(postViewKey, postId), PostView.class);
 
-            if (postView == null) {
-                continue;
+                if (postView == null) {
+                    continue;
+                }
+
+                postIdSet.add(Long.parseLong(postId));
+            } catch (Exception e) {
+                log.error("[PostViewRedisTemplateService:getPostViewIdSet] error:{}", e);
             }
-
-            postIdSet.add(postId);
         }
 
         return postIdSet;
     }
 
-    public PostView viewPost(long blogId, long postId) {
+    public PostView viewPost(long blogId, long postId) throws Exception {
         String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
-        PostView postView = postViewHashOperations.get(postViewKey, postId);
+        HashOperations<String, String, Object> postViewHashOperations = getPostViewHashOperation();
+        PostView postView = jsonUtil.readClzValue(getPostViewHashOperation(postViewKey, postId), PostView.class);
 
         if (postView == null) {
             postView = PostView.from(blogId, postId, 1);
@@ -54,14 +60,13 @@ public class PostViewRedisTemplateService {
             postView.incrementView();
         }
 
-        postViewHashOperations.put(postViewKey, postId, postView);
+        writePostViewHashOperation(postViewKey, String.valueOf(postId), postView);
         return postView;
     }
 
-    public PostView getPostView(long blogId, long postId) {
+    public PostView getPostView(long blogId, long postId) throws Exception {
         String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-        HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
-        PostView postView = postViewHashOperations.get(postViewKey, postId);
+        PostView postView = jsonUtil.readClzValue(getPostViewHashOperation(postViewKey, postId), PostView.class);
 
         if (postView == null) {
             return PostView.from(blogId, postId, 1);
@@ -74,8 +79,7 @@ public class PostViewRedisTemplateService {
     public void deletePostView(long blogId, long postId) {
         try {
             String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-            HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
-            postViewHashOperations.delete(postViewKey, postId);
+            deletePostViewHashOperation(postViewKey, postId);
         } catch (Exception e) {
             log.error("[PostViewRedisTemplateService:deletePostView] error =>", e);
         }
@@ -85,14 +89,26 @@ public class PostViewRedisTemplateService {
     public void deleteBlogPostView(long blogId) {
         try {
             String postViewKey = String.format(RedisTemplateKey.POST_VIEWS, blogId);
-            HashOperations<String, Long, PostView> postViewHashOperations = getPostViewHashOperation();
+            HashOperations<String, String, Object> postViewHashOperations = getPostViewHashOperation();
             postViewHashOperations.delete(postViewKey, postViewHashOperations.keys(postViewKey));
         } catch (Exception e) {
             log.error("[PostViewRedisTemplateService:deleteBlogPostView] error =>", e);
         }
     }
 
-    private HashOperations<String, Long, PostView> getPostViewHashOperation() {
+    private void writePostViewHashOperation(String key1, String key2, Object value2) throws Exception {
+        getPostViewHashOperation().put(key1, key2, jsonUtil.writeValueAsString(value2));
+    }
+
+    private String getPostViewHashOperation(Object key, Object value) {
+        return String.valueOf(getPostViewHashOperation().get(String.valueOf(key), String.valueOf(value)));
+    }
+
+    private void deletePostViewHashOperation(Object key, Object value) {
+        getPostViewHashOperation().delete(String.valueOf(key), String.valueOf(value));
+    }
+
+    private HashOperations<String, String, Object> getPostViewHashOperation() {
         return redisTemplate.opsForHash();
     }
 }

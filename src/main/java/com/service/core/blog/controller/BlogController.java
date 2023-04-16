@@ -44,7 +44,7 @@ public class BlogController {
             @ApiResponse(responseCode = "200", description = "블로그,사용자 정보가 담긴 블로그 페이지")
     })
     @GetMapping("/{id}")
-    public String blog(@PathVariable String id, Model model, Principal principal, HttpServletRequest httpServletRequest) {
+    public String blog(@PathVariable String id, Model model, Principal principal, HttpServletRequest httpServletRequest) throws Exception {
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }

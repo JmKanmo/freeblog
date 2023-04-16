@@ -210,7 +210,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String viewPost(PostDetailDto postDetailDto) {
+    public String viewPost(PostDetailDto postDetailDto) throws Exception {
         return BlogUtil.formatNumberComma(postViewService.viewPost(postDetailDto.getBlogId(), postDetailDto.getId()));
     }
 

@@ -14,7 +14,7 @@ public class PopularPostServiceTest {
     private PostPopularService postPopularService;
 
     @Test
-    public void popularPostServiceTest() {
+    public void popularPostServiceTest() throws Exception {
         List<PostCardDto> postCardDtoList = postPopularService.findPopularPost(3L);
         Assertions.assertNotNull(postCardDtoList);
     }

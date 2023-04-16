@@ -1,13 +1,16 @@
 package com.service.core.views.domain;
 
-import com.service.core.post.dto.PostDetailDto;
 import com.service.util.ConstUtil;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PostView implements Serializable {
     private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;

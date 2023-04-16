@@ -56,7 +56,7 @@ public class PostController {
     @GetMapping("/{postId}")
     public String postDetailPage(@PathVariable Long postId, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
                                  Model model, Principal principal,
-                                 HttpServletRequest httpServletRequest) {
+                                 HttpServletRequest httpServletRequest) throws Exception {
         boolean isEqualPostByLogin = false;
 
         if (principal != null) {

@@ -18,5 +18,5 @@ public interface BlogService {
 
     boolean isDeleteOrNotFoundBlog(Long blogId);
 
-    void visitBlog(int blogId, int visitorId);
+    void visitBlog(int blogId, int visitorId) throws Exception;
 }

@@ -1,11 +1,9 @@
 package com.service.core.post.dto;
 
-import com.service.core.category.domain.Category;
 import com.service.core.post.domain.Post;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

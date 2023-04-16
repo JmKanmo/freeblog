@@ -35,14 +35,14 @@ public class LikeServiceImpl implements LikeService {
     private final UserService userService;
 
     @Override
-    public LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto) {
+    public LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto) throws Exception {
         LikePagination likePagination = new LikePagination(postLikeRedisTemplateService.getPostLikeCount(postId, blogId), likeSearchPagingDto);
         likeSearchPagingDto.setLikePagination(likePagination);
         return new LikePaginationResponse<>(postLikeRedisTemplateService.getPostLikeDto(postId, blogId, likeSearchPagingDto), likeSearchPagingDto.getLikePagination());
     }
 
     @Override
-    public PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId) {
+    public PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId) throws Exception {
         if (principal == null || principal.getName() == null) {
             return postLikeRedisTemplateService.getPostLikeResultDto(null, blogId, postId);
         } else {
@@ -51,7 +51,7 @@ public class LikeServiceImpl implements LikeService {
         }
     }
 
-    public boolean postLike(Principal principal, LikePostInput likePostInput) {
+    public boolean postLike(Principal principal, LikePostInput likePostInput) throws Exception {
         if (principal == null || principal.getName() == null) {
             throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
         }
@@ -64,7 +64,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public UserLikePostDto getUserLikePostDto(Principal principal) {
+    public UserLikePostDto getUserLikePostDto(Principal principal) throws Exception {
         if (principal == null || principal.getName() == null) {
             throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
         }

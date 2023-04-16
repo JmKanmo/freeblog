@@ -1,8 +1,10 @@
 package com.service.core.views.domain;
 
 import com.service.util.ConstUtil;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,11 +23,13 @@ import java.util.Set;
  * }
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class BlogVisitors implements Serializable {
     private static final long serialVersionUID = ConstUtil.SERIAL_VERSION_ID;
 
-    private final Set<Integer> visitorSet; // 중복 방문을 막기 위한 set
+    private Set<Integer> visitorSet; // 중복 방문을 막기 위한 set
     private long todayVisitors; // 오늘 방문자 수
 
     private long yesterdayVisitors; // 어제 방문자 수

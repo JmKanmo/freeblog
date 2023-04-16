@@ -1,7 +1,6 @@
 package com.service.util.redis.service.popular;
 
 import com.service.config.app.AppConfig;
-import com.service.core.error.model.PostManageException;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.service.PostService;
 import com.service.util.domain.SortType;
@@ -25,7 +24,7 @@ public class PostPopularTemplateService {
 
     private final AppConfig appConfig;
 
-    public List<Long> getPopularPost(long blogId) {
+    public List<Long> getPopularPost(long blogId) throws Exception {
         List<Long> postViewIdSet = postViewRedisTemplateService.getPostViewIdSet(blogId);
         List<Long> postLikeIdSet = postLikeRedisTemplateService.getPostLikeIdSet(blogId);
         Set<Long> popularIdSet = new HashSet<>();

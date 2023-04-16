@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 public class PostViewService {
     private final PostViewRedisTemplateService postViewRedisTemplateService;
 
-    public long viewPost(long blogId, long postId) {
+    public long viewPost(long blogId, long postId) throws Exception {
         PostView postView = postViewRedisTemplateService.viewPost(blogId, postId);
         return postView.getView();
     }
 
-    public long getPostView(long blogId, long postId) {
+    public long getPostView(long blogId, long postId) throws Exception {
         PostView postView = postViewRedisTemplateService.getPostView(blogId, postId);
         return postView.getView();
     }

@@ -10,11 +10,11 @@ import com.service.core.like.paging.LikeSearchPagingDto;
 import java.security.Principal;
 
 public interface LikeService {
-    LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto);
+    LikePaginationResponse getPostLikeDto(Long postId, Long blogId, LikeSearchPagingDto likeSearchPagingDto) throws Exception;
 
-    PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId);
+    PostLikeResultDto getPostLikeResultDto(Principal principal, Long blogId, Long postId) throws Exception;
 
-    boolean postLike(Principal principal, LikePostInput likePostInput);
+    boolean postLike(Principal principal, LikePostInput likePostInput) throws Exception;
 
-    UserLikePostDto getUserLikePostDto(Principal principal);
+    UserLikePostDto getUserLikePostDto(Principal principal) throws Exception;
 }

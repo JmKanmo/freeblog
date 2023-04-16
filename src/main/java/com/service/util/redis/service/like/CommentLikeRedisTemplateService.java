@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 public class CommentLikeRedisTemplateService {
     private final RedisTemplate redisTemplate;
 
-    public Long incrementCommentLike(long commentId) {
-        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
-        Long like = !hashOperations.hasKey(RedisTemplateKey.COMMENT_LIKE, commentId) ? 1 : hashOperations.get(RedisTemplateKey.COMMENT_LIKE, commentId) + 1;
-        hashOperations.put(RedisTemplateKey.COMMENT_LIKE, commentId, like);
-        return like;
-    }
-
-    public Long getCommentLike(long commentId) {
-        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
-        Long like = !hashOperations.hasKey(RedisTemplateKey.COMMENT_LIKE, commentId) ? 0 : hashOperations.get(RedisTemplateKey.COMMENT_LIKE, commentId);
-        return like;
-    }
+//    public Long incrementCommentLike(long commentId) {
+//        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
+//        Long like = !hashOperations.hasKey(RedisTemplateKey.COMMENT_LIKE, commentId) ? 1 : hashOperations.get(RedisTemplateKey.COMMENT_LIKE, commentId) + 1;
+//        hashOperations.put(RedisTemplateKey.COMMENT_LIKE, commentId, like);
+//        return like;
+//    }
+//
+//    public Long getCommentLike(long commentId) {
+//        HashOperations<String, Long, Long> hashOperations = redisTemplate.opsForHash();
+//        Long like = !hashOperations.hasKey(RedisTemplateKey.COMMENT_LIKE, commentId) ? 0 : hashOperations.get(RedisTemplateKey.COMMENT_LIKE, commentId);
+//        return like;
+//    }
 }

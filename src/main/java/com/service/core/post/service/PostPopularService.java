@@ -16,7 +16,7 @@ public class PostPopularService {
     private final PostPopularTemplateService postPopularTemplateService;
     private final PostService postService;
 
-    public List<PostCardDto> findPopularPost(long blogId) {
+    public List<PostCardDto> findPopularPost(long blogId) throws Exception {
         List<Long> popularPostIds = postPopularTemplateService.getPopularPost(blogId);
         return popularPostIds.stream().map(popularId -> PostCardDto.from(postService.findPostDetailInfo(blogId, popularId))).collect(Collectors.toList());
     }
