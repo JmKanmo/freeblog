@@ -223,6 +223,7 @@ class PostWriteController extends UtilController {
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();
+                    this.setAttribute("disabled", "disabled");
                     this.postWriteForm.submit();
                     this.clearInterval(this.postInterval, "postSaveInfo");
                     return true;

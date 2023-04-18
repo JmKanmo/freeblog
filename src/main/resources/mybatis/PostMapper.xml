@@ -13,7 +13,7 @@
                  inner join blog b on b.blog_id = #{blogId} and b.is_delete != true
         where post.blog_id = b.blog_id
           and post.is_delete != true
-        order by register_time desc
+        order by post.register_time desc
             limit #{recentPopularPostCount};
     </select>
 
@@ -40,7 +40,7 @@
         where post_id in (select post_id from post where blog_id = b.blog_id
         and is_delete = false order by blog_id)
         and post.is_delete != true
-        order by register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
+        order by post.register_time desc LIMIT #{postSearchPagingDto.postPagination.limitStart},
         #{postSearchPagingDto.recordSize}
     </select>
 
@@ -68,7 +68,7 @@
         (select post_id from post p where p.blog_id = b.blog_id
         and p.category_id = c.category_id
         and p.is_delete = false order by p.blog_id)
-        order by register_time desc
+        order by post.register_time desc
         LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
@@ -86,7 +86,7 @@
             (select post_id from post p where p.blog_id = b.blog_id
           and p.category_id = c.category_id
           and p.is_delete = false order by p.blog_id)
-        order by register_time desc
+        order by post.register_time desc
             LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
@@ -175,7 +175,7 @@
         (<include refid="textSearchQuery"/>)
         order by blog_id)
         and post.is_delete != true
-        order by register_time desc
+        order by post.register_time desc
         LIMIT #{postKeywordSearchDto.postSearchPagingDto.postPagination.limitStart},
         #{postKeywordSearchDto.postSearchPagingDto.recordSize}
     </select>
