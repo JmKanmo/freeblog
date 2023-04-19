@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
         userInfoService.saveUserDomain(userDomain);
     }
 
+    @Transactional
     @Override
     @CacheEvict(key = "#authentication.getName()", value = CacheKey.USER_HEADER_DTO)
     public void withdraw(UserWithdrawInput userWithdrawInput, Authentication authentication) {
