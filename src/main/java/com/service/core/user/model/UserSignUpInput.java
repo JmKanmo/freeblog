@@ -37,8 +37,6 @@ public class UserSignUpInput {
     @Size(max = 32, message = "블로그명은 최대 32글자 까지 작성 가능합니다.")
     private final String blogName;
 
-    private final String intro;
-
     @Size(max = 128, message = "주소는 최대 256글자 까지 작성 가능합니다.")
     private final String address;
 

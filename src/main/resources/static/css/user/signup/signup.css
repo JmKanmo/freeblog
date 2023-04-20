@@ -69,39 +69,3 @@
     width: 25px;
     height: 25px;
 }
-
-.signup_form .editor-board .user_intro_editor {
-    height: 375px;
-    padding-bottom: 30px;
-}
-
-.signup_form .user_intro_button {
-    float: left;
-    box-sizing: border-box;
-    border: 0;
-    background-color: #ffffff;
-    color: #009688;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 15px;
-}
-
-.signup_form .intro_block {
-    display: none;
-}
-
-.signup_form .intro_block .view_editor_source_button {
-    position: absolute;
-    right: 20px;
-    bottom: 5px;
-    border: 0;
-    background-color: #ffffff;
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    z-index: 3;
-    cursor: pointer;
-}

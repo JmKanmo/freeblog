@@ -17,7 +17,7 @@
           th:object="${blogPostInput}">
 
         <div class="post_write_top_container clear_fix">
-            <button type="submit" class="post_write_register_button">발행</button>
+            <button type="button" class="post_write_register_button" id="post_write_register_button">발행</button>
         </div>
 
         <div class="common_input_div input_block clear_fix">
@@ -78,6 +78,7 @@
                   class="post_write_validation_err validation_error"></span>
         </div>
 
+        <input type="hidden" id="hidden_user_id" th:value="${user_header.id}">
         <input type="hidden" id="hidden_blog_id" name="id" th:value="${blogPostInput.id}">
         <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">
         <input type="hidden" id="hidden_blog_post_thumbnail_image" name="postThumbnailImage"

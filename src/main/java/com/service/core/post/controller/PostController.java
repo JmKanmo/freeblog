@@ -145,38 +145,6 @@ public class PostController {
         return "post/post-search";
     }
 
-    @Operation(summary = "블로그 포스트 작성 작업", description = "블로그 포스트 작성 페이지 작업 진행")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "블로그 포스트 작성 작업 성공"),
-            @ApiResponse(responseCode = "500", description = "DB 연결 오류, SQL 쿼리 수행 실패 등의 이유로 블로그 포스트 작성 작업 실패")
-    })
-    @PostMapping("/write/{userId}")
-    public String postWrite(@Valid BlogPostInput blogPostInput, BindingResult bindingResult, Model model, Principal principal) {
-        if ((principal == null || principal.getName() == null)) {
-            throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "post/post-write";
-        }
-
-        Post post = Post.from(blogPostInput);
-        UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
-        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
-
-        if (blogInfoDto.getId() != blogPostInput.getId()) {
-            throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
-        }
-        post.setWriter(userHeaderDto.getNickname());
-        post.setBlog(blogService.findBlogByEmail(principal.getName()));
-        post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
-        post.setSeq((long) (postService.findPostCountByBlogId(post.getBlog().getId()) + 1));
-        postService.register(post, blogPostInput);
-        model.addAttribute("result", "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
-
-        return String.format("redirect:/blog/%s", userHeaderDto.getId());
-    }
-
     @Operation(summary = "블로그 포스트 수정 작업", description = "블로그 포스트 수정 작업 진행")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "블로그 포스트 수정 작업 성공"),

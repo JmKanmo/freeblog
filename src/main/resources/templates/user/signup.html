@@ -77,7 +77,7 @@
             <p class="spel_condition_tag small_text_font">최소 8자 ~ 최대 20자로 작성</p>
         </div>
 
-        <div class="input_div common_input_div clear_fix">
+        <div class="input_div common_input_div common_padding_bottom clear_fix">
             <label for="user_blog_name" class="common_input_label common_blog_name_label">
                 <span class="blind">블로그이름</span>
             </label>
@@ -91,7 +91,7 @@
                   class="validation_error"></span>
         </div>
 
-        <div class="input_div common_input_div clear_fix">
+        <div class="input_div common_input_div common_padding_bottom clear_fix">
             <label for="user_nickname" class="common_input_label common_nickname_label">
                 <span class="blind">닉네임</span>
             </label>
@@ -129,26 +129,6 @@
         <div class="spel_div">
             <span th:if="${#fields.hasErrors('greetings')}" th:errors="*{greetings}"
                   id="user_greetings_validation_error" class="validation_error"></span>
-        </div>
-
-        <div class="input_div common_input_div clear_fix">
-            <div class="common_note_write_label custom_note_write_label common_input_label">
-                <span class="blind">인사말</span>
-            </div>
-
-            <button type="button" class="user_intro_button" id="user_intro_button">소개 작성하기</button>
-        </div>
-
-        <div class="input_div common_input_div intro_block" id="user_intro_block">
-            <div class="editor-board">
-                <!-- Contents Here -->
-                <div id="signup_editor" class="user_intro_editor">
-                    <!-- Contents Here -->
-                </div>
-                <button id="view-editor-source" type="button"
-                        class="common_source_view_label view_editor_source_button" title="텍스트 코드 보기"></button>
-            </div>
-            <input type="hidden" id="user_intro_editor_input" name="intro" value="" th:field="*{intro}">
         </div>
 
         <div class="spel_div">

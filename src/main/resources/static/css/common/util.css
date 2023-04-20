@@ -31,8 +31,7 @@ a {
 }
 
 .blind {
-    position: absolute;
-    :overflow: hidden;
+    position: absolute;: overflow: hidden;
     width: 1px;
     height: 1px;
     margin: -1px;
@@ -68,6 +67,10 @@ a {
 
 .common_display_hidden {
     display: none;
+}
+
+.common_padding_bottom {
+    padding-bottom: 10px;
 }
 
 /* outline 테두리 속성 수정 */

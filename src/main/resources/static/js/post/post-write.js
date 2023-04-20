@@ -1,6 +1,7 @@
 class PostWriteController extends UtilController {
     constructor() {
         super();
+        this.postWriteRegisterButton = document.getElementById("post_write_register_button");
         this.postWriteForm = document.getElementById("post_write_form");
         this.postTitle = document.getElementById("post_title");
         this.postWriterEditor = this.getQuillEditor('post_write_editor');
@@ -17,6 +18,7 @@ class PostWriteController extends UtilController {
         this.postThumbnailImageDeleteButton = document.getElementById("post_thumbnail_image_delete_button");
         this.postCategory = document.getElementById("post_category");
 
+        this.hiddenUserId = document.getElementById("hidden_user_id");
         this.hiddenBlogPostThumbnailImage = document.getElementById("hidden_blog_post_thumbnail_image");
         this.hiddenTagTextList = document.getElementById("hidden_tag_text_list");
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
@@ -205,31 +207,51 @@ class PostWriteController extends UtilController {
             }
         });
 
-        this.postWriteForm.addEventListener("submit", evt => {
+        this.postWriteRegisterButton.addEventListener("click", evt => {
             if (this.isSubmitFlag === true) {
                 this.showToastMessage("게시글을 발행 중입니다.");
                 return;
             }
-            evt.preventDefault();
 
             if (confirm('게시글을 발행하겟습니까?')) {
                 if (this.checkPostSubmitInfo()) {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
-                    this.isSubmitFlag = false;
-                    return false;
                 } else {
                     this.isSubmitFlag = true;
                     this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();
-                    this.setAttribute("disabled", "disabled");
-                    this.postWriteForm.submit();
                     this.clearInterval(this.postInterval, "postSaveInfo");
-                    return true;
+                    this.#uploadPost();
                 }
             }
         });
+    }
+
+    #uploadPost() {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData(this.postWriteForm);
+
+        xhr.open("POST", `/post/write/${this.hiddenUserId.value}`, true);
+        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = event.target.responseText;
+
+            if ((status >= 400 && status <= 500) || (status > 500)) {
+                this.showToastMessage(responseValue);
+            } else {
+                window.location.href = `/blog/${this.hiddenUserId.value}`;
+            }
+            this.isSubmitFlag = false;
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 게시글 업로드에 실패하였습니다.');
+        });
+        xhr.send(formData);
     }
 
     #uploadImage(imgFile) {
