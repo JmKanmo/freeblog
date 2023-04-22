@@ -28,6 +28,11 @@
         <ul class="user_like_post_list scroll_container" id="user_like_post_list">
             {{#each userLikePostList}}
             <li class="user_like_post clear_fix">
+                <button class="user_like_delete_button" id="user_like_delete_button"
+                        value="userId={{userId}}&postId={{postId}}">
+                    <img class="user_like_delete_button_image" src="../images/delete.png" alt="좋아요 게시글 삭제">
+                </button>
+
                 <a href="/post/{{postId}}?blogId={{blogId}}" class="user_like_post_link">
                     <div class="user_like_post_like_block">
                         <p class="user_like_post_title">{{title}}</p>

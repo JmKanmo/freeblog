@@ -72,4 +72,14 @@ public class LikeServiceImpl implements LikeService {
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
         return UserLikePostDto.from(postLikeRedisTemplateService.getUserLikePostsById(userHeaderDto.getId()));
     }
+
+    @Override
+    public void deleteUserLikedPost(String userId, Long postId) throws Exception {
+        postLikeRedisTemplateService.deleteUserLikedPostInfo(userId, postId);
+    }
+
+    @Override
+    public void deleteUserLikedPost(String userId) throws Exception {
+        postLikeRedisTemplateService.deleteUserLikedPostInfo(userId);
+    }
 }

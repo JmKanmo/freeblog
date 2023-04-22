@@ -44,6 +44,13 @@
                                  src="../images/close.png" alt="" title="닫기">
                             <span class="blind">닫기 버튼</span>
                         </button>
+
+                        <th:block sec:authorize="isAuthenticated()">
+                            <button class="user_like_post_block_delete_all_button"
+                                    id="user_like_post_block_delete_all_button" th:value="${user_header.id}">
+                                전체삭제
+                            </button>
+                        </th:block>
                     </div>
 
                     <div class="user_like_post_container" id="user_like_post_container">

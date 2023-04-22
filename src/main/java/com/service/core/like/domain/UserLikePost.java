@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 @Data
@@ -19,6 +20,8 @@ public class UserLikePost implements Serializable, Comparable<UserLikePost> {
 
     private Long blogId;
 
+    private String userId;
+
     private String nickName; // 게시글 작성자 닉네임
 
     private String title;
@@ -31,6 +34,7 @@ public class UserLikePost implements Serializable, Comparable<UserLikePost> {
         return UserLikePost.builder()
                 .postId(likePostInput.getPostId())
                 .blogId(likePostInput.getBlogId())
+                .userId(likePostInput.getId())
                 .nickName(likePostInput.getWriter())
                 .title(likePostInput.getTitle())
                 .postThumbnailImage(likePostInput.getPostThumbnailImage())

@@ -81,6 +81,22 @@
     cursor: pointer;
 }
 
+.header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_delete_all_button {
+    position: absolute;
+    top: 32px;
+    cursor: pointer;
+    height: 10px;
+    right: 1px;
+    z-index: 6;
+    line-height: 10px;
+    border: none;
+    outline: none;
+    font-size: 11px;
+    background-color: #ffffff;
+    color: #607D8B;
+    visibility: hidden;
+}
+
 .header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_block_close_button .user_like_post_block_close_button_image {
     display: block;
 }
@@ -117,7 +133,7 @@
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list {
     max-height: 300px;
-    margin: 50px 10px 15px 10px;
+    margin: 55px 10px 15px 10px;
     overflow-x: clip;
     overflow-y: scroll;
 }
@@ -125,6 +141,23 @@
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post {
     position: relative;
     height: 35%;
+    margin-top: 12px;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_delete_button {
+    border: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 15px;
+    top: -13px;
+    right: 0px;
+    cursor: pointer;
+    height: 13px;
+}
+
+.header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_delete_button .user_like_delete_button_image {
+    height: 100%;
+    display: block;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post:nth-child(n+2) {

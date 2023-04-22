@@ -17,4 +17,8 @@ public interface LikeService {
     boolean postLike(Principal principal, LikePostInput likePostInput) throws Exception;
 
     UserLikePostDto getUserLikePostDto(Principal principal) throws Exception;
+
+    void deleteUserLikedPost(String userId, Long postId) throws Exception;
+
+    void deleteUserLikedPost(String userId) throws Exception;
 }

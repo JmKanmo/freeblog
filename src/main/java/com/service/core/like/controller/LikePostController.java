@@ -1,5 +1,7 @@
 package com.service.core.like.controller;
 
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.LikeManageException;
 import com.service.core.like.dto.LikePagingResponseDto;
 import com.service.core.like.dto.PostLikeDto;
 import com.service.core.like.dto.PostLikeResultDto;
@@ -8,6 +10,7 @@ import com.service.core.like.model.LikePostInput;
 import com.service.core.like.paging.LikeSearchPagingDto;
 import com.service.core.like.service.LikeService;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -73,6 +76,49 @@ public class LikePostController {
         } catch (Exception exception) {
             log.error("[freeblog-findLikedPost] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(LikePagingResponseDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "게시글에 좋아요 누른 게시글 정보 삭제", description = "게시글에 좋아요 누른 게시글 정보 삭제 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자가 좋아요 누른 게시글 정보를 삭제"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 사용자가 좋아요 누른 게시글 정보 삭제 실패")
+    })
+    @DeleteMapping("/post/user-list")
+    public ResponseEntity<String> deleteUserLikedPost(@RequestParam(value = "userId", required = false, defaultValue = ConstUtil.UNDEFINED) String userId,
+                                                      @RequestParam(value = "postId", required = false, defaultValue = "0") Long postId,
+                                                      Principal principal) {
+        try {
+            if (principal == null || principal.getName() == null) {
+                throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+
+            likeService.deleteUserLikedPost(userId, postId);
+            return ResponseEntity.status(HttpStatus.OK).body("게시글 정보를 삭제하였습니다.");
+        } catch (Exception exception) {
+            log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("좋아요 누른 게시글 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+        }
+    }
+
+    @Operation(summary = "게시글에 좋아요 누른 게시글 정보 전체 삭제", description = "게시글에 좋아요 누른 게시글 정보 전체 삭제 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자가 좋아요 누른 게시글 정보를 전체 삭제"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 사용자가 좋아요 누른 게시글 정보 전체 삭제 실패")
+    })
+    @DeleteMapping("/post/all-user-list")
+    public ResponseEntity<String> deleteAllUserLikedPost(@RequestParam(value = "userId", required = false, defaultValue = ConstUtil.UNDEFINED) String userId,
+                                                         Principal principal) {
+        try {
+            if (principal == null || principal.getName() == null) {
+                throw new LikeManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+
+            likeService.deleteUserLikedPost(userId);
+            return ResponseEntity.status(HttpStatus.OK).body("게시글 정보를 삭제하였습니다.");
+        } catch (Exception exception) {
+            log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("좋아요 누른 게시글 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 }

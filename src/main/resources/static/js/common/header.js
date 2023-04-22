@@ -11,6 +11,7 @@ class HeaderController extends UtilController {
         this.userLikePostBlockReloadButton = document.getElementById("user_like_post_block_reload_button");
         this.userLikePostNoticeText = document.getElementById("user_like_post_notice_text");
         this.userLikePostContainer = document.getElementById("user_like_post_container");
+        this.userLikePostBlockDeleteAllButton = document.getElementById("user_like_post_block_delete_all_button");
         this.userLikePostTemplateHTML = null;
         this.lastSearchTime = null;
     }
@@ -74,13 +75,16 @@ class HeaderController extends UtilController {
                             this.userLikePostBlockCloseButton.style.visibility = "visible";
                             this.userLikePostBlockReloadButton.style.visibility = "visible";
                             this.userLikePostNoticeText.style.visibility = "visible";
+                            this.userLikePostBlockDeleteAllButton.style.visibility = "visible";
                             this.userLikePostContainer.innerHTML = this.userLikePostTemplateHTML;
+                            this.initUserLikePostDeleteEvent();
                         }
                     } else {
                         this.userLikePostContainer.style.display = "none";
                         this.userLikePostBlockCloseButton.style.visibility = "hidden";
                         this.userLikePostBlockReloadButton.style.visibility = "hidden";
                         this.userLikePostNoticeText.style.visibility = "hidden";
+                        this.userLikePostBlockDeleteAllButton.style.visibility = "hidden";
                     }
                 }
             });
@@ -100,6 +104,38 @@ class HeaderController extends UtilController {
                     } else {
                         this.userOptionDiv.style.display = 'none';
                     }
+                }
+            });
+        }
+
+        if (this.userLikePostBlockDeleteAllButton != null) {
+            this.userLikePostBlockDeleteAllButton.addEventListener("click", evt => {
+                if (confirm("게시글 정보를 모두 삭제하겠습니까?")) {
+                    const userLikePostList = document.getElementById("user_like_post_list");
+                    const userId = this.userLikePostBlockDeleteAllButton.value;
+                    const xhr = new XMLHttpRequest();
+
+                    // /post/all-user-list
+                    xhr.open('DELETE', `/like/post/all-user-list?userId=${userId}`, true);
+
+                    xhr.addEventListener("loadend", event => {
+                        let status = event.target.status;
+                        const responseValue = event.target.responseText;
+
+                        if ((status >= 400 && status <= 500) || (status > 500)) {
+                            this.showToastMessage(responseValue);
+                        } else if (status == 200) {
+                            if (userLikePostList != null) {
+                                userLikePostList.innerHTML = ``;
+                            }
+                        }
+                    });
+
+                    xhr.addEventListener("error", event => {
+                        this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                    });
+
+                    xhr.send();
                 }
             });
         }
@@ -133,7 +169,9 @@ class HeaderController extends UtilController {
                 this.userLikePostBlockCloseButton.style.visibility = "visible";
                 this.userLikePostBlockReloadButton.style.visibility = "visible";
                 this.userLikePostNoticeText.style.visibility = "visible";
+                this.userLikePostBlockDeleteAllButton.style.visibility = "visible";
                 this.#handlePostLikeTemplateList(responseValue);
+                this.initUserLikePostDeleteEvent();
             }
         });
 
@@ -158,6 +196,43 @@ class HeaderController extends UtilController {
         const userLikePostTemplateHTML = userLikePostTemplateObject({"userLikePostList": responseValue["userLikePostInnerList"]});
         this.userLikePostContainer.innerHTML = userLikePostTemplateHTML;
         this.userLikePostTemplateHTML = userLikePostTemplateHTML;
+    }
+
+    initUserLikePostDeleteEvent() {
+        const userLikePostList = document.getElementById("user_like_post_list");
+
+        userLikePostList.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+            const list = evt.target.closest("li");
+
+            if (list != null && button != null) {
+                if (confirm("게시글 정보를 삭제 하겠습니까?")) {
+                    const values = button.value.split("&");
+                    const userId = values[0].split("=")[1];
+                    const postId = values[1].split("=")[1];
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.open('DELETE', `/like/post/user-list?userId=${userId}&postId=${postId}`, true);
+
+                    xhr.addEventListener("loadend", event => {
+                        let status = event.target.status;
+                        const responseValue = event.target.responseText;
+
+                        if ((status >= 400 && status <= 500) || (status > 500)) {
+                            this.showToastMessage(responseValue);
+                        } else if (status == 200) {
+                            list.remove();
+                        }
+                    });
+
+                    xhr.addEventListener("error", event => {
+                        this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                    });
+
+                    xhr.send();
+                }
+            }
+        });
     }
 }
 

@@ -170,6 +170,30 @@ public class PostLikeRedisTemplateService {
         }
     }
 
+    public void deleteUserLikedPostInfo(String userId, Long postId) {
+        String likePostKey = String.format(RedisTemplateKey.LIKE_POST, userId);
+        HashOperations<String, String, Object> userLikePostHashOperations = getUserLikePostOperation();
+
+        if (getUserLikePostOperation(userId, postId).equals("null")) {
+            throw new LikeManageException(ServiceExceptionMessage.LIKE_NOT_FOUND);
+        }
+        deleteUserLikeHashOperation(likePostKey, postId);
+    }
+
+    public void deleteUserLikedPostInfo(String userId) {
+        String likePostKey = String.format(RedisTemplateKey.LIKE_POST, userId);
+        HashOperations<String, String, Object> userLikePostHashOperations = getUserLikePostOperation();
+        Set<String> keys = userLikePostHashOperations.keys(likePostKey);
+
+        if (keys.size() <= 0) {
+            throw new LikeManageException(ServiceExceptionMessage.LIKE_NOT_FOUND);
+        }
+
+        for (String key : keys) {
+            deleteUserLikeHashOperation(likePostKey, key);
+        }
+    }
+
     private void writeLikePostHashOperation(String key1, String key2, Object obj) throws Exception {
         getLikePostOperation().put(key1, key2, jsonUtil.writeValueAsString(obj));
     }
