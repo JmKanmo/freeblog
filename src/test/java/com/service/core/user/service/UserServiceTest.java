@@ -11,6 +11,7 @@ import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
 import com.service.core.user.model.*;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.sftp.SftpService;
 import org.junit.jupiter.api.DisplayName;
@@ -374,13 +375,13 @@ class UserServiceTest {
         String profileImageSrc = "http://53.14.34.26/3fsdfskdfkjgkldfjglkkfdmbfgd.gif";
         UserDomain userDomain = UserDomain.builder().userId(id).build();
 
-        when(sftpService.sftpImageFileUpload(multipartFile)).thenReturn(profileImageSrc);
+        when(sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, id)).thenReturn(profileImageSrc);
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
         assertDoesNotThrow(() -> userService.uploadSftpProfileImageById(multipartFile, id));
         assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
 
-        verify(sftpService, times(1)).sftpImageFileUpload(multipartFile);
+        verify(sftpService, times(1)).sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, id);
         verify(userInfoService, times(1)).findUserDomainByIdOrThrow(id);
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }

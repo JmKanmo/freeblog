@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class SftpService {
     private final SftpUtil sftpUtil;
 
-    public String sftpImageFileUpload(MultipartFile multipartFile) throws Exception {
+    public String sftpImageFileUpload(MultipartFile multipartFile, Object hash, Object id) throws Exception {
         if (multipartFile.getOriginalFilename().isEmpty()) {
             throw new FileHandleException(ServiceExceptionMessage.NOT_VALID_FILE_NAME);
         }
 
-        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUIDBySftp(multipartFile), multipartFile.getInputStream(), "images");
+        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUIDBySftp(multipartFile), multipartFile.getInputStream(), "images", String.valueOf(hash), String.valueOf(id), BlogUtil.formatLocalDateTimeToStrByPattern(BlogUtil.nowByZoneId(), "yyyy-MM-dd"));
         return imgSrc;
     }
 
@@ -27,7 +27,7 @@ public class SftpService {
         }
 
         String[] parsed = parsedSftpImgSrc(imgSrc);
-        sftpUtil.deleteFile(parsed[1], parsed[2], parsed[3]);
+        sftpUtil.deleteFile(parsed[1], parsed[2], parsed[3], parsed[4], parsed[5]);
     }
 
     private String[] parsedSftpImgSrc(String imgSrc) {
@@ -39,7 +39,7 @@ public class SftpService {
 
         parsed = parsed[1].split("/");
 
-        if (parsed.length < 4) {
+        if (parsed.length < 6) {
             throw new FileHandleException(ServiceExceptionMessage.NOT_VALID_FILE_NAME);
         }
 

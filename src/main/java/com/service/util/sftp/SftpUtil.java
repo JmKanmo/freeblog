@@ -51,21 +51,40 @@ public class SftpUtil {
      * @param inputStream
      * @throws Exception
      */
-    public String uploadFile(String fileUUID, InputStream inputStream, String type) throws Exception {
+    public String uploadFile(String fileUUID, InputStream inputStream, String type, String hash, String id, String date) throws Exception {
         try {
-            // 대상폴더 이동
-            channelSftp.cd(sFtpConfig.getDirectory() + "/" + type);
-            String dir = BlogUtil.formatLocalDateTimeToStrByPattern(BlogUtil.nowByZoneId(), "yyyy-MM-dd");
+            StringBuilder dir = new StringBuilder();
 
-            try {
-                if (channelSftp.stat(dir).isDir()) {
-                    channelSftp.put(inputStream, dir + "/" + fileUUID);
-                }
-            } catch (Exception e) {
-                channelSftp.mkdir(dir);
-                channelSftp.put(inputStream, dir + "/" + fileUUID);
+            // 대상폴더 경로 이동
+            dir.append(sFtpConfig.getDirectory() + "/" + type);
+            channelSftp.cd(dir.toString());
+
+            // hash 경로 이동&생성
+            if (!checkDir(hash)) {
+                channelSftp.mkdir(hash);
             }
-            return dir + "/" + fileUUID;
+            dir.append("/" + hash);
+            channelSftp.cd(hash);
+
+            // id 경로 이동&생성
+            if (!checkDir(id)) {
+                channelSftp.mkdir(id);
+            }
+            dir.append("/" + id);
+            channelSftp.cd(id);
+
+            // date 경로 이동&생성
+            if (!checkDir(date)) {
+                channelSftp.mkdir(date);
+            }
+            dir.append("/" + date);
+            channelSftp.cd(date);
+
+            // UUID 파일 생성
+            dir.append("/" + fileUUID);
+            channelSftp.put(inputStream, dir.toString());
+
+            return dir.substring(sFtpConfig.getDirectory().length() + 1);
         } catch (Exception e) {
             throw e;
         } finally {
@@ -77,14 +96,17 @@ public class SftpUtil {
      * 파일 삭제
      *
      * @param type     (images | videos)
-     * @param dir      (date)
+     * @param hash     (hash)
+     * @param id       (unique key)
+     * @param date     (date)
      * @param fileUUID
      * @throws Exception
      */
-    public void deleteFile(String type, String dir, String fileUUID) throws Exception {
+    public void deleteFile(String type, String hash, String id, String date, String fileUUID) throws Exception {
         connectSFTP();
 
-        channelSftp.cd(sFtpConfig.getDirectory() + "/" + type);
+        String dir = sFtpConfig.getDirectory() + "/" + type + "/" + hash + "/" + id + "/" + date;
+        channelSftp.cd(dir);
 
         try {
             if (channelSftp.ls(dir + "/" + fileUUID).size() > 0) {
@@ -93,8 +115,27 @@ public class SftpUtil {
                 if (channelSftp.ls(dir).size() <= 2) {
                     channelSftp.rmdir(dir);
                 }
+
+                dir = sFtpConfig.getDirectory() + "/" + type + "/" + hash + "/" + id;
+                channelSftp.cd(dir);
+                if (channelSftp.ls(dir).size() <= 2) {
+                    channelSftp.rmdir(dir);
+                }
+
+                dir = sFtpConfig.getDirectory() + "/" + type + "/" + hash;
+                channelSftp.cd(dir);
+                if (channelSftp.ls(dir).size() <= 2) {
+                    channelSftp.rmdir(dir);
+                }
+
+                dir = sFtpConfig.getDirectory() + "/" + type;
+                channelSftp.cd(dir);
+                if (channelSftp.ls(dir).size() <= 2) {
+                    channelSftp.rmdir(dir);
+                }
             }
         } catch (SftpException sftpException) {
+            throw sftpException;
         }
     }
 
@@ -226,8 +267,16 @@ public class SftpUtil {
         }
     }
 
-    public String fileUpload(String fileUUID, InputStream fileInputStream, String type) throws Exception {
+    private boolean checkDir(String dir) throws Exception {
+        try {
+            return channelSftp.stat(dir).isDir();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String fileUpload(String fileUUID, InputStream fileInputStream, String type, String hash, String id, String date) throws Exception {
         connectSFTP();
-        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), uploadFile(fileUUID, fileInputStream, type));
+        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), uploadFile(fileUUID, fileInputStream, type, hash, id, date));
     }
 }

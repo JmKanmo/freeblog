@@ -30,6 +30,7 @@ public class PostDetailDto implements Serializable {
     private LocalDateTime registerLocalDateTime;
     private String currentUrl;
     private List<String> tags;
+    private String metaKey;
 
     // TODO 좋아요, 조회수, etc 추가
     public static PostDetailDto from(Post post) {
@@ -47,6 +48,7 @@ public class PostDetailDto implements Serializable {
         postDetailDto.setRegisterLocalDateTime(post.getRegisterTime());
         postDetailDto.setCurrentUrl(BlogUtil.currentRequestUrl());
         postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+        postDetailDto.setMetaKey(post.getMetaKey());
         return postDetailDto;
     }
 }

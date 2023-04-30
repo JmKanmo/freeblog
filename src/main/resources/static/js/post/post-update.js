@@ -23,6 +23,7 @@ class PostUpdateController extends UtilController {
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
         this.hiddenBlogPostTitle = document.getElementById("hidden_blog_post_title");
         this.hiddenPostCategoryId = document.getElementById("hidden_post_category_id");
+        this.hiddenMetaKey = document.getElementById("hidden_meta_key");
         this.isSubmitFlag = false;
         this.isImageUploadFlag = false;
         this.tagSet = new Set();
@@ -214,6 +215,7 @@ class PostUpdateController extends UtilController {
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.hiddenBlogPostTitle.value = this.postTitle.value;
+                    this.hiddenMetaKey.value = document.getElementById("upload_key").value;
                     this.setTagText();
                     this.postUpdateForm.submit();
                     this.isSubmitFlag = true;

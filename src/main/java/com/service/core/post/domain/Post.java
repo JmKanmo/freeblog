@@ -46,6 +46,8 @@ public class Post extends BaseTimeEntity {
     @Lob
     private String contents;
 
+    private String metaKey;
+
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "post")
     private List<Tag> tagList;
@@ -66,6 +68,7 @@ public class Post extends BaseTimeEntity {
                 .title(blogPostInput.getTitle())
                 .thumbnailImage(StringUtil.isNullOrEmpty(blogPostInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostInput.getPostThumbnailImage())
                 .contents(blogPostInput.getContents())
+                .metaKey(blogPostInput.getMetaKey())
                 .build();
     }
 }

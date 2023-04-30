@@ -78,6 +78,7 @@
                   class="post_write_validation_err validation_error"></span>
         </div>
 
+        <input type="hidden" id="upload_key" readonly th:value="${upload_key}" name="metaKey" th:field="*{metaKey}">
         <input type="hidden" id="hidden_user_id" th:value="${user_header.id}">
         <input type="hidden" id="hidden_blog_id" name="id" th:value="${blogPostInput.id}">
         <input type="hidden" id="hidden_tag_text_list" name="tag" th:field="*{tag}">

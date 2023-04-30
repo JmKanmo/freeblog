@@ -17,6 +17,7 @@ import com.service.core.user.service.UserInfoService;
 import com.service.core.user.service.UserService;
 import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.redis.key.CacheKey;
 import com.service.util.redis.service.like.PostLikeRedisTemplateService;
@@ -282,7 +283,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception {
         try {
-            String profileImageSrc = sftpService.sftpImageFileUpload(multipartFile);
+            String profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, id);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);

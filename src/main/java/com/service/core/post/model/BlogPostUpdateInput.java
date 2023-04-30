@@ -28,4 +28,6 @@ public class BlogPostUpdateInput {
     private final Long postId;
 
     private final Long blogId;
+
+    private final String metaKey;
 }

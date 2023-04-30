@@ -16,6 +16,7 @@ public class PostUpdateDto {
     private final String contents;
     private final String thumbnailImage;
     private final List<String> tags;
+    private final String metaKey;
 
     public static PostUpdateDto from(Post post) {
         return PostUpdateDto.builder()
@@ -25,6 +26,7 @@ public class PostUpdateDto {
                 .contents(post.getContents())
                 .thumbnailImage(post.getThumbnailImage())
                 .tags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()))
+                .metaKey(post.getMetaKey())
                 .build();
     }
 }

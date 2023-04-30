@@ -165,8 +165,12 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "기본 정보 수정 페이지")
     })
     @GetMapping("/update/basic-info")
-    public String basicInfoEdit(Model model) {
+    public String basicInfoEdit(Model model, Principal principal) {
+        if (principal == null || principal.getName() == null) {
+            throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+        }
         model.addAttribute("userBasicInfoInput", UserBasicInfoInput.builder().build());
+        model.addAttribute("email_hash", principal.getName().hashCode());
         return "user/update/basic-info";
     }
 

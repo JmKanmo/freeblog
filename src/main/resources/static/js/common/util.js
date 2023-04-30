@@ -255,8 +255,15 @@ class UtilController {
                             fileReader.onload = (event) => {
                                 const formData = new FormData();
                                 const xhr = new XMLHttpRequest();
+                                const uploadKeyDocument = document.getElementById("upload_key")
+                                let uploadKey = uploadKeyDocument.value;
 
-                                xhr.open("POST", `/post/upload/post-image`, true);
+                                if (!uploadKey || uploadKey === '') {
+                                    uploadKey = new Date().getTime();
+                                    uploadKeyDocument.value = uploadKey;
+                                }
+
+                                xhr.open("POST", `/post/upload/post-image/${uploadKey}`, true);
                                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                                 xhr.addEventListener("loadend", event => {
@@ -285,8 +292,15 @@ class UtilController {
                                 fileReader.onload = (event) => {
                                     const formData = new FormData();
                                     const xhr = new XMLHttpRequest();
+                                    const uploadKeyDocument = document.getElementById("upload_key")
+                                    let uploadKey = uploadKeyDocument.value;
 
-                                    xhr.open("POST", `/post/upload/post-image`, true);
+                                    if (!uploadKey || uploadKey === '') {
+                                        uploadKey = new Date().getTime();
+                                        uploadKeyDocument.value = uploadKey;
+                                    }
+
+                                    xhr.open("POST", `/post/upload/post-image/${uploadKey}`, true);
                                     xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
                                     xhr.addEventListener("loadend", event => {

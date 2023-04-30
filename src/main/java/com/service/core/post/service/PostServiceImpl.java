@@ -98,8 +98,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String uploadSftpPostImage(MultipartFile multipartFile) throws Exception {
-        return sftpService.sftpImageFileUpload(multipartFile);
+    public String uploadSftpPostImage(MultipartFile multipartFile, String uploadKey) throws Exception {
+        return sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_POST_IMAGE_HASH, uploadKey);
     }
 
     @Override
@@ -125,6 +125,7 @@ public class PostServiceImpl implements PostService {
         post.setContents(blogPostUpdateInput.getContents());
         post.setCategory(categoryService.findCategoryById(blogPostUpdateInput.getCategory()));
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
+        post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
     }
 

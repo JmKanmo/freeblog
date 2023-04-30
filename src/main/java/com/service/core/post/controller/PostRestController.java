@@ -79,6 +79,7 @@ public class PostRestController {
             post.setBlog(blogService.findBlogByEmail(principal.getName()));
             post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
             post.setSeq((long) (postService.findPostCountByBlogId(post.getBlog().getId()) + 1));
+            post.setMetaKey(blogPostInput.getMetaKey());
             postService.register(post, blogPostInput);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
         } catch (Exception exception) {
@@ -154,13 +155,13 @@ public class PostRestController {
             @ApiResponse(responseCode = "200", description = "게시글 이미지 업로드 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 이미지 업로드 실패")
     })
-    @PostMapping("/upload/post-image")
-    public ResponseEntity<String> uploadPostImage(@RequestParam("compressed_post_image") MultipartFile multipartFile, Principal principal) {
+    @PostMapping("/upload/post-image/{uploadKey}")
+    public ResponseEntity<String> uploadPostImage(@RequestParam("compressed_post_image") MultipartFile multipartFile, Principal principal, @PathVariable String uploadKey) {
         try {
             if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(postService.uploadSftpPostImage(multipartFile));
+            return ResponseEntity.status(HttpStatus.OK).body(postService.uploadSftpPostImage(multipartFile, uploadKey));
         } catch (Exception exception) {
             log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
