@@ -5,15 +5,19 @@ import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
+import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/tag")
 public class TagRestController {
@@ -33,6 +37,9 @@ public class TagRestController {
                     PostPagingResponseDto.success(postService.findPostSearchPaginationByTagKeyword(BlogPostSearchInput.from(blogId, tagKeyword), postSearchPagingDto))
             );
         } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchPostByTag] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }

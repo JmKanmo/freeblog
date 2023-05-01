@@ -42,7 +42,9 @@ public class LikePostController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostLikeResultDto.success(likeService.postLike(principal, likePostInput)));
         } catch (Exception exception) {
-            log.error("[freeblog-postLike] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-postLike] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostLikeResultDto.fail(exception));
         }
     }
@@ -57,7 +59,9 @@ public class LikePostController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(likeService.getUserLikePostDto(principal));
         } catch (Exception exception) {
-            log.error("[freeblog-postLikeUserList] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-postLikeUserList] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UserLikePostDto.fail(exception));
         }
     }
@@ -74,7 +78,9 @@ public class LikePostController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(LikePagingResponseDto.success(likeService.getPostLikeDto(postId, blogId, likeSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-findLikedPost] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findLikedPost] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(LikePagingResponseDto.fail(exception));
         }
     }
@@ -96,7 +102,9 @@ public class LikePostController {
             likeService.deleteUserLikedPost(userId, postId);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 정보를 삭제하였습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("좋아요 누른 게시글 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
@@ -117,7 +125,9 @@ public class LikePostController {
             likeService.deleteUserLikedPost(userId);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 정보를 삭제하였습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-deleteUserLikedPost] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("좋아요 누른 게시글 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }

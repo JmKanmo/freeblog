@@ -83,7 +83,9 @@ public class PostRestController {
             postService.register(post, blogPostInput);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
         } catch (Exception exception) {
-            log.error("[freeblog-postWrite] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-postWrite] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
@@ -98,7 +100,9 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postService.findRecentPostCardDtoByBlogId(blogId)));
         } catch (Exception exception) {
-            log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(exception));
         }
     }
@@ -113,7 +117,9 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postPopularService.findPopularPost(blogId)));
         } catch (Exception exception) {
-            log.error("[freeblog-searchPopularPost] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchPopularPost] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(exception));
         }
     }
@@ -130,7 +136,9 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(BlogPostSearchInput.from(blogId, keyword), postSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -145,7 +153,9 @@ public class PostRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogService.findBlogByIdOrThrow(blogId).getId(), postSearchPagingDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -163,7 +173,9 @@ public class PostRestController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadSftpPostImage(multipartFile, uploadKey));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
@@ -182,7 +194,9 @@ public class PostRestController {
             postService.deleteSftpPostImage(imgSrcList);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 이미지를 삭제하였습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-deletePostImage] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-deletePostImage] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
@@ -200,7 +214,9 @@ public class PostRestController {
             }
             return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
         } catch (Exception exception) {
-            log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }

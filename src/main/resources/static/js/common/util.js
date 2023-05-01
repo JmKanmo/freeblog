@@ -258,7 +258,7 @@ class UtilController {
                                 const uploadKeyDocument = document.getElementById("upload_key")
                                 let uploadKey = uploadKeyDocument.value;
 
-                                if (!uploadKey || uploadKey === '') {
+                                if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
                                     uploadKey = new Date().getTime();
                                     uploadKeyDocument.value = uploadKey;
                                 }
@@ -295,7 +295,7 @@ class UtilController {
                                     const uploadKeyDocument = document.getElementById("upload_key")
                                     let uploadKey = uploadKeyDocument.value;
 
-                                    if (!uploadKey || uploadKey === '') {
+                                    if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
                                         uploadKey = new Date().getTime();
                                         uploadKeyDocument.value = uploadKey;
                                     }

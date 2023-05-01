@@ -4,6 +4,7 @@ import com.service.core.email.service.EmailService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -42,7 +43,9 @@ public class EmailController {
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-sendSignUpEmail] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-sendSignUpEmail] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
@@ -62,7 +65,9 @@ public class EmailController {
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-sendAuthEmail] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-sendAuthEmail] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
@@ -82,7 +87,9 @@ public class EmailController {
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
-            log.error("[freeblog-sendFindPasswordEmail] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-sendFindPasswordEmail] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(String.format("이메일 전송에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }

@@ -11,6 +11,8 @@ import com.service.core.error.model.CategoryManageException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.paging.PostSearchPagingDto;
+import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -45,7 +47,9 @@ public class CategoryRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(categoryService.findCategoryDtoByBlogId(blogId)));
         } catch (Exception exception) {
-            log.error("[freeblog-findTotalCategoryByBlogId] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findTotalCategoryByBlogId] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CategoryResponseDto.fail(exception));
         }
     }
@@ -60,7 +64,9 @@ public class CategoryRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByBlogId(blogId, postSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -75,7 +81,9 @@ public class CategoryRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostByCategoryId(categoryId, postSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-findTotalPostByCategoryId] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findTotalPostByCategoryId] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -90,7 +98,9 @@ public class CategoryRestController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(categoryService.findPaginationPostTitleByCategoryId(categoryId, postSearchPagingDto)));
         } catch (Exception exception) {
-            log.error("[freeblog-findPostTitleByCategoryId] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-findPostTitleByCategoryId] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostPagingResponseDto.fail(exception));
         }
     }
@@ -120,7 +130,9 @@ public class CategoryRestController {
             categoryService.registerCategory(blogId, categoryInput);
             return ResponseEntity.status(HttpStatus.OK).body(CategoryResponseDto.success(null));
         } catch (Exception exception) {
-            log.error("[freeblog-registerCategory] exception occurred ", exception);
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-registerCategory] exception occurred ", exception);
+            }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CategoryResponseDto.fail(exception));
         }
     }

@@ -247,7 +247,7 @@ public class BlogUtil {
         } else if (exception instanceof DataAccessException) {
             return "데이터베이스 쿼리 수행에 실패하였습니다.";
         }
-        return "UNDEFINED-ERROR";
+        return ConstUtil.UNDEFINED_ERROR;
     }
 
     public static String createKeywordByText(String text) {

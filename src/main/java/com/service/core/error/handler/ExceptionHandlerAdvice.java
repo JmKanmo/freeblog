@@ -2,6 +2,7 @@ package com.service.core.error.handler;
 
 import com.service.core.error.dto.ExceptionDto;
 import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,34 +23,46 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String fileSizeLimitExceededHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception);
+        String errorMsg = BlogUtil.getErrorMessage(exception);
+        model.addAttribute("error", errorMsg);
+        if (errorMsg == ConstUtil.UNDEFINED_ERROR) {
+            log.error("[freeblog-fileSizeLimitExceededHandler] MaxUploadSizeExceededException occurred ", exception);
+        }
         return "error/error-page";
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public ResponseEntity<ExceptionDto> httpRequestMethodNotSupportedHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
-        log.error("[freeblog-httpRequestMethodNotSupportedHandler] HttpRequestMethodNotSupportedException occurred ", exception);
+        String errorMsg = BlogUtil.getErrorMessage(exception);
+        if (errorMsg == ConstUtil.UNDEFINED_ERROR) {
+            log.error("[freeblog-httpRequestMethodNotSupportedHandler] HttpRequestMethodNotSupportedException occurred ", exception);
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder().statusCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR)
-                        .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", BlogUtil.getErrorMessage(exception)))
+                        .message(String.format("%s, 페이지를 새로고침 후 다시 시도해주세요.", errorMsg))
                         .build());
     }
 
     @ExceptionHandler(TemplateEngineException.class)
     public String templateEngineExceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-fileSizeLimitExceededHandler] TemplateEngineException occurred ", exception);
+        String errorMsg = BlogUtil.getErrorMessage(exception);
+        model.addAttribute("error", errorMsg);
+        if (errorMsg == ConstUtil.UNDEFINED_ERROR) {
+            log.error("[freeblog-fileSizeLimitExceededHandler] TemplateEngineException occurred ", exception);
+        }
         return "error/error-page";
     }
 
     @ExceptionHandler(value = Exception.class)
     public String exceptionHandler(Exception exception, Model model, HttpServletResponse httpServletResponse) {
         httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        model.addAttribute("error", BlogUtil.getErrorMessage(exception));
-        log.error("[freeblog-exceptionHandler] exception occurred ", exception);
+        String errorMsg = BlogUtil.getErrorMessage(exception);
+        model.addAttribute("error", errorMsg);
+        if (errorMsg == ConstUtil.UNDEFINED_ERROR) {
+            log.error("[freeblog-exceptionHandler] exception occurred ", exception);
+        }
         return "error/error-page";
     }
 }

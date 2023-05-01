@@ -243,7 +243,7 @@ class PostWriteController extends UtilController {
             if ((status >= 400 && status <= 500) || (status > 500)) {
                 this.showToastMessage(responseValue);
             } else {
-                window.location.href = `/blog/${this.hiddenUserId.value}`;
+                window.location.href = `/post/write/${this.hiddenUserId.value}`;
             }
             this.isSubmitFlag = false;
         });
@@ -306,10 +306,11 @@ class PostWriteController extends UtilController {
                 tagInput: this.postTagInput.value == null ? "" : this.postTagInput.value,
                 tagSet: this.tagSet.size > 0 ? JSON.stringify(this.tagSet, (_key, value) => (value instanceof Set ? [...value] : value)) : this.tagSet,
                 contents: this.postWriterEditor.root.innerHTML == null ? "" : this.postWriterEditor.root.innerHTML,
-                thumbnailImage: this.postThumbnailImageURL
+                thumbnailImage: this.postThumbnailImageURL,
+                uploadKey: document.getElementById("upload_key").value
             };
             localStorage.setItem("postSaveInfo", JSON.stringify(jsonObj));
-        }, null, 1000 * 5);
+        }, null, 1000 * 3);
     }
 
     setAutoSaveWriteInfo(autoSaveWriteInfo) {
@@ -331,6 +332,7 @@ class PostWriteController extends UtilController {
                 this.postThumbnailImage.src = autoSaveWriteInfo["thumbnailImage"];
                 this.postThumbnailImageURL = this.postThumbnailImage.src;
             }
+            document.getElementById("upload_key").value = autoSaveWriteInfo["uploadKey"];
         }
     }
 
