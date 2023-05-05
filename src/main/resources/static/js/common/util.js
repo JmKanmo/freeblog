@@ -333,34 +333,38 @@ class UtilController {
             })
         });
 
-        quill.on('text-change', (delta, oldContents, source) => {
-            if (source !== 'user') return;
-            const deletedImgList = this.getQuillEditorImgUrls(quill.getContents().diff(oldContents));
-
-            if (deletedImgList && deletedImgList.length > 0) {
-                const formData = new FormData();
-                const xhr = new XMLHttpRequest();
-
-                xhr.open("POST", `/post/delete/post-image`, true);
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-
-                xhr.addEventListener("loadend", event => {
-                    let status = event.target.status;
-                    const responseValue = event.target.responseText;
-
-                    if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
-                    }
-                });
-
-                xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 이미지 삭제에 실패하였습니다.');
-                });
-
-                formData.append("imgSrcList", deletedImgList);
-                xhr.send(formData);
-            }
-        });
+        /**
+         * Batch Job 통해 주기(N년) 동안 참조되지 않은 리소스 삭제하도록 (방법 조사) ...
+         * 주석 처리
+         */
+        // quill.on('text-change', (delta, oldContents, source) => {
+        //     if (source !== 'user') return;
+        //     const deletedImgList = this.getQuillEditorImgUrls(quill.getContents().diff(oldContents));
+        //
+        //     if (deletedImgList && deletedImgList.length > 0) {
+        //         const formData = new FormData();
+        //         const xhr = new XMLHttpRequest();
+        //
+        //         xhr.open("POST", `/post/delete/post-image`, true);
+        //         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        //
+        //         xhr.addEventListener("loadend", event => {
+        //             let status = event.target.status;
+        //             const responseValue = event.target.responseText;
+        //
+        //             if ((status >= 400 && status <= 500) || (status > 500)) {
+        //                 this.showToastMessage(responseValue);
+        //             }
+        //         });
+        //
+        //         xhr.addEventListener("error", event => {
+        //             this.showToastMessage('오류가 발생하여 이미지 삭제에 실패하였습니다.');
+        //         });
+        //
+        //         formData.append("imgSrcList", deletedImgList);
+        //         xhr.send(formData);
+        //     }
+        // });
 
         return quill;
     }

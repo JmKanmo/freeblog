@@ -134,6 +134,7 @@ public class SftpUtil {
                     channelSftp.rmdir(dir);
                 }
             }
+            disconnectSFTP();
         } catch (SftpException sftpException) {
             throw sftpException;
         }
@@ -277,6 +278,8 @@ public class SftpUtil {
 
     public String fileUpload(String fileUUID, InputStream fileInputStream, String type, String hash, String id, String date) throws Exception {
         connectSFTP();
-        return String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), uploadFile(fileUUID, fileInputStream, type, hash, id, date));
+        String url = String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getIp(), uploadFile(fileUUID, fileInputStream, type, hash, id, date));
+        disconnectSFTP();
+        return url;
     }
 }

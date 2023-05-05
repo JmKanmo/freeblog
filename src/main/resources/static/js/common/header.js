@@ -28,6 +28,7 @@ class HeaderController extends UtilController {
                     this.userLikePostBlockCloseButton.style.visibility = 'hidden';
                     this.userLikePostBlockReloadButton.style.visibility = "hidden";
                     this.userLikePostNoticeText.style.visibility = "hidden";
+                    this.userLikePostBlockDeleteAllButton.style.visibility = "hidden";
                 }
             });
         }
