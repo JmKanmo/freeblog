@@ -76,8 +76,7 @@ public class BlogUtil {
 
     public static String getLoginFailMessage(AuthenticationException exception) {
         if (exception instanceof AuthenticationServiceException) {
-            return exception.getMessage();
-
+            return ServiceExceptionMessage.FAILED_AUTHENTICATION.message();
         } else if (exception instanceof BadCredentialsException) {
             return ServiceExceptionMessage.ID_PW_WRONG.message();
 

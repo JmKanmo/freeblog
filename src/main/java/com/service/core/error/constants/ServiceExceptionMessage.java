@@ -24,7 +24,7 @@ public enum ServiceExceptionMessage {
     NOT_AUTHENTICATED_ACCOUNT("이메일 인증이 완료되지 않은 계정 입니다."),
     WITHDRAW_ACCOUNT("탈퇴 된 계정입니다."),
     STOP_ACCOUNT("정지 된 계정입니다."),
-
+    FAILED_AUTHENTICATION("인증에 실패하였습니다."),
     // 카테고리 처리 관련 에러 메시지
     CATEGORY_NOT_FOUND("카테고리 정보가 존재하지 않습니다."),
     ALREADY_DELETE_CATEGORY("삭제 된 카테고리입니다."),
