@@ -75,22 +75,14 @@ public class BlogUtil {
     }
 
     public static String getLoginFailMessage(AuthenticationException exception) {
-        if (exception instanceof AuthenticationServiceException) {
-            return ServiceExceptionMessage.FAILED_AUTHENTICATION.message();
-        } else if (exception instanceof BadCredentialsException) {
+        if (exception instanceof BadCredentialsException || exception instanceof AuthenticationServiceException) {
             return ServiceExceptionMessage.ID_PW_WRONG.message();
-
         } else if (exception instanceof LockedException) {
             return ServiceExceptionMessage.LOCK_ACCOUNT.message();
-
         } else if (exception instanceof DisabledException) {
             return ServiceExceptionMessage.DEACTIVATE_ACCOUNT.message();
-
-        } else if (exception instanceof AccountExpiredException) {
-            return ServiceExceptionMessage.EXPIRED_ACCOUNT.message();
-
-        } else if (exception instanceof CredentialsExpiredException) {
-            return ServiceExceptionMessage.EXPIRED_PASSWORD.message();
+        } else if (exception instanceof AccountExpiredException || exception instanceof CredentialsExpiredException) {
+            return ServiceExceptionMessage.EXPIRED_CREDENTIAL_ACCOUNT.message();
         }
         return exception.getMessage();
     }
