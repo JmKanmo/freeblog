@@ -107,7 +107,7 @@
     </div>
 
     <div class="post_contents_container">
-        <div class="post_contents" id="post_contents" th:utext="${postDetail.contents}">
+        <div class="post_contents" id="post_contents">
             포스트 컨텐츠
         </div>
     </div>
@@ -251,6 +251,13 @@
             </div>
         </th:block>
     </div>
+
+    <input type="hidden" id="hidden_post_content" readonly>
+
+    <script th:inline="javascript">
+        const postContent = [[${postDetail.contents}]];
+        document.getElementById("hidden_post_content").value = postContent;
+    </script>
 </div>
 </div>
 

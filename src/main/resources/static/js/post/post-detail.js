@@ -1,6 +1,7 @@
 class PostDetailController extends UtilController {
     constructor() {
         super();
+        this.postContentThymeLeaf = null;
         this.postTitle = document.getElementById("blog_post_title");
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
@@ -37,6 +38,7 @@ class PostDetailController extends UtilController {
 
     initPostDetailController() {
         this.initPostTitle();
+        this.initPostContent();
         this.initEventController();
         this.postCommentController.requestComment();
         this.postCommentController.initEventListener();
@@ -44,6 +46,10 @@ class PostDetailController extends UtilController {
 
     initPostTitle() {
         document.title = `게시글: ${this.postTitle.value}`;
+    }
+
+    initPostContent() {
+        document.getElementById("post_contents").innerHTML = document.getElementById("hidden_post_content").value;
     }
 
     initEventController() {
