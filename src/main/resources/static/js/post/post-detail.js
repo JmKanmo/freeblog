@@ -49,7 +49,7 @@ class PostDetailController extends UtilController {
     }
 
     initPostContent() {
-        document.getElementById("post_contents").innerHTML = document.getElementById("hidden_post_content").value;
+        document.getElementById("post_contents").innerHTML = this.getQuillHTML(document.getElementById("hidden_post_content").value, false, false);
     }
 
     initEventController() {

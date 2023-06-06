@@ -183,6 +183,17 @@ class UtilController {
         return window.open(url, target, `width=${width}, height=${height}, left=${left}, top=${tops}`);
     }
 
+    /**
+     * Quill Editor Utils
+     * **/
+    getQuillHTML(htmlTag, data_gramm, contentEditable) {
+        return (
+            `<div class="ql-editor" data-gramm="${data_gramm}" contenteditable="${contentEditable}" data-placeholder="원하는 문장을 자유롭게 입력하세요. :)">` +
+            htmlTag +
+            `</div>`
+        );
+    }
+
     getReadOnlyQuillEditor(id) {
         Quill.register("modules/imageCompressor", imageCompressor);
 
