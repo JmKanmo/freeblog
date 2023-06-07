@@ -30,8 +30,13 @@ class PostUpdateController extends UtilController {
     }
 
     initPostUpdateController() {
+        this.initPostContent();
         this.initElement();
         this.initEventListener();
+    }
+
+    initPostContent() {
+        this.postWriterEditor.root.innerHTML = document.getElementById("hidden_post_content").value;
     }
 
     initElement() {

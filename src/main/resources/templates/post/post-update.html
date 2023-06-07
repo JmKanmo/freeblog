@@ -70,7 +70,7 @@
         <div class="post_write_block">
             <div class="editor-board">
                 <!-- Contents Here -->
-                <div id="post_write_editor" class="post_write_editor" th:utext="${postUpdate.contents}">
+                <div id="post_write_editor" class="post_write_editor">
                     <!-- Contents Here -->
                 </div>
                 <button id="view-editor-source" type="button"
@@ -126,10 +126,15 @@
     </div>
 </div>
 
+<input type="hidden" id="hidden_post_content" readonly>
+
 <script th:inline="javascript">
     const postUpdate = [[${postUpdate}]];
     const tags = postUpdate['tags'];
     const postThumbnailImage = postUpdate['thumbnailImage'];
+    const postContents = [[${postUpdate.contents}]];
+
+    document.getElementById("hidden_post_content").value = postContents;
 
     // tags
     if (tags.length > 0) {
