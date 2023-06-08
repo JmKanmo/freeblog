@@ -49,7 +49,8 @@ class PostDetailController extends UtilController {
     }
 
     initPostContent() {
-        document.getElementById("post_contents").innerHTML = this.getQuillHTML(document.getElementById("hidden_post_content").value, false, false);
+        const decompressedContent = this.compressContent(document.getElementById("hidden_post_content").value, false);
+        document.getElementById("post_contents").innerHTML = this.getQuillHTML(decompressedContent, false, false);
     }
 
     initEventController() {

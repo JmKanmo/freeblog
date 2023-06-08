@@ -23,6 +23,9 @@ class UtilController {
         });
 
         Handlebars.registerHelper('getInnerText', tag => {
+            if (!tag) {
+                return 'UNDEFINED';
+            }
             return tag.replace(/(<([^>]+)>)/ig, "");
         });
 
@@ -201,23 +204,26 @@ class UtilController {
     /**
      * Compress & Decompress string content
      */
-    convertStringContent(content, isCompress) {
+    compressContent(content, isCompress) {
         if (content == null) {
             return "";
         }
 
         if (isCompress === true) {
-            return LZString.compress(content);
+            const compressed = LZString.compressToBase64(content);
+            return !compressed ? content : compressed;
         } else {
-            return LZString.decompress(content);
+            const decompressed = LZString.decompressFromBase64(content);
+            return !decompressed ? content : decompressed;
         }
     }
 
     /**
      * HTML Content remove replace method
      */
-    replaceHTMlTag(tag) {
-        return tag == null ? "" : tag.replace(/(<([^>]+)>)/ig, '');
+    replaceAndSubHTMlTag(tag, limit) {
+        const result = (tag == null) ? "" : tag.replace(/(<([^>]+)>)/ig, '');
+        return limit <= 0 ? result : result.substring(0, limit);
     }
 
     /**

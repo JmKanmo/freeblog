@@ -19,6 +19,10 @@ public class BlogPostUpdateInput {
     @NotBlank(message = "게시글 본문은 공백만 올 수 없습니다.")
     private final String contents;
 
+    @NotEmpty(message = "게시글 요약이 비어있습니다.")
+    @NotBlank(message = "게시글 요약은 공백만 올 수 없습니다.")
+    private final String summary;
+
     private final Long category;
 
     private final String tag;

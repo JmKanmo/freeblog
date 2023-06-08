@@ -22,8 +22,7 @@
         select post.post_id,
                post.title,
                post.thumbnail_image,
-               IF(left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300) = <![CDATA['']]>, <![CDATA['...']]>,
-                   left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300)) as contents,
+               summary,
                post.writer,
                date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
@@ -49,8 +48,7 @@
         select post.post_id,
                post.title,
                post.thumbnail_image,
-               IF(left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300) = <![CDATA['']]>, <![CDATA['...']]>,
-                   left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300)) as contents,
+               summary,
                post.writer,
                date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
                CASE
@@ -150,9 +148,7 @@
         select post.post_id,
         post.title,
         post.thumbnail_image,
-        IF(left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300) = <![CDATA['']]>,
-        <![CDATA['...']]>,
-        left(REGEXP_REPLACE(post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300)) as contents,
+        summary,
         post.writer,
         date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
         CASE
@@ -185,8 +181,7 @@
         select main_post.post_id,
                main_post.title,
                main_post.thumbnail_image,
-               IF(left(REGEXP_REPLACE(main_post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300) = <![CDATA['']]>, <![CDATA['...']]>,
-                   left(REGEXP_REPLACE(main_post.contents, <![CDATA['<[^>]+>']]>, <![CDATA['']]>), 300)) as contents,
+               summary,
                main_post.writer,
                date_format(main_post.register_time, '%y.%m.%d %H:%i')           as register_time,
                CASE

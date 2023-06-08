@@ -23,6 +23,7 @@ class PostWriteController extends UtilController {
         this.hiddenTagTextList = document.getElementById("hidden_tag_text_list");
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
+        this.hiddenBlogPostSummary = document.getElementById("hidden_blog_post_summary");
         this.imageUploadFlag = false;
         this.isSubmitFlag = false;
         this.tagSet = new Set();
@@ -218,7 +219,8 @@ class PostWriteController extends UtilController {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
                 } else {
                     this.isSubmitFlag = true;
-                    this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
+                    this.hiddenBlogPostContents.value = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+                    this.hiddenBlogPostSummary.value = this.replaceAndSubHTMlTag(this.postWriterEditor.root.innerHTML, 200);
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();

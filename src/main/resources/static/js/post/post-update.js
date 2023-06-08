@@ -21,6 +21,7 @@ class PostUpdateController extends UtilController {
         this.hiddenTagTextList = document.getElementById("hidden_tag_text_list");
         this.hiddenBlogPostCategory = document.getElementById("hidden_blog_post_category");
         this.hiddenBlogPostContents = document.getElementById("hidden_blog_post_contents");
+        this.hiddenBlogPostSummary = document.getElementById("hidden_blog_post_summary");
         this.hiddenBlogPostTitle = document.getElementById("hidden_blog_post_title");
         this.hiddenPostCategoryId = document.getElementById("hidden_post_category_id");
         this.hiddenMetaKey = document.getElementById("hidden_meta_key");
@@ -36,7 +37,7 @@ class PostUpdateController extends UtilController {
     }
 
     initPostContent() {
-        this.postWriterEditor.root.innerHTML = document.getElementById("hidden_post_content").value;
+        this.postWriterEditor.root.innerHTML = this.compressContent(document.getElementById("hidden_post_content").value, false);
     }
 
     initElement() {
@@ -216,7 +217,8 @@ class PostUpdateController extends UtilController {
                     this.isSubmitFlag = false;
                     return false;
                 } else {
-                    this.hiddenBlogPostContents.value = this.postWriterEditor.root.innerHTML;
+                    this.hiddenBlogPostContents.value = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+                    this.hiddenBlogPostSummary.value = this.replaceAndSubHTMlTag(this.postWriterEditor.root.innerHTML, 200);
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.hiddenBlogPostTitle.value = this.postTitle.value;

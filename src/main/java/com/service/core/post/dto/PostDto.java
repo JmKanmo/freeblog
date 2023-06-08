@@ -14,7 +14,7 @@ public class PostDto {
     private final Long id;
     private final String title;
     private final String thumbnailImage;
-    private final String contents;
+    private final String summary;
     private final String writer;
     private final String registerTime;
     private final String category;
@@ -28,7 +28,7 @@ public class PostDto {
                     .blogId(Long.MAX_VALUE)
                     .title(ConstUtil.UNDEFINED)
                     .thumbnailImage(ConstUtil.UNDEFINED)
-                    .contents(ConstUtil.UNDEFINED)
+                    .summary(ConstUtil.UNDEFINED)
                     .writer(ConstUtil.UNDEFINED)
                     .category(ConstUtil.UNDEFINED)
                     .categoryId(Long.MAX_VALUE)
@@ -40,7 +40,7 @@ public class PostDto {
                     .blogId(post.getBlog().getId())
                     .title(BlogUtil.ofNull(post.getTitle()))
                     .thumbnailImage(BlogUtil.ofNull(post.getThumbnailImage()))
-                    .contents(BlogUtil.ofNull(post.getContents()))
+                    .summary(BlogUtil.ofNull(post.getSummary()))
                     .writer(BlogUtil.ofNull(post.getWriter()))
                     .category(BlogUtil.ofNull(post.getCategory().getName()))
                     .categoryId(post.getCategory().getId())

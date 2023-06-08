@@ -46,6 +46,8 @@ public class Post extends BaseTimeEntity {
     @Lob
     private String contents;
 
+    private String summary;
+
     private String metaKey;
 
     @Fetch(FetchMode.SUBSELECT)
@@ -68,6 +70,7 @@ public class Post extends BaseTimeEntity {
                 .title(blogPostInput.getTitle())
                 .thumbnailImage(StringUtil.isNullOrEmpty(blogPostInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostInput.getPostThumbnailImage())
                 .contents(blogPostInput.getContents())
+                .summary(blogPostInput.getSummary())
                 .metaKey(blogPostInput.getMetaKey())
                 .build();
     }

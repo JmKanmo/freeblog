@@ -9,7 +9,7 @@ public class PostSearchMapperDto {
     private final Long id;
     private final String title;
     private final String thumbnailImage;
-    private final String contents;
+    private final String summary;
     private final String writer;
     private final String registerTime;
     private final String category;

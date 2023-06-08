@@ -123,6 +123,7 @@ public class PostServiceImpl implements PostService {
         Post post = findPostById(blogPostUpdateInput.getPostId());
         post.setTitle(blogPostUpdateInput.getTitle());
         post.setContents(blogPostUpdateInput.getContents());
+        post.setSummary(blogPostUpdateInput.getSummary());
         post.setCategory(categoryService.findCategoryById(blogPostUpdateInput.getCategory()));
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());

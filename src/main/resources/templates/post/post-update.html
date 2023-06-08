@@ -97,6 +97,7 @@
                th:field="*{postThumbnailImage}">
         <input type="hidden" id="hidden_blog_post_category" name="category" th:field="*{category}">
         <input type="hidden" id="hidden_blog_post_contents" name="contents" th:field="*{contents}">
+        <input type="hidden" id="hidden_blog_post_summary" name="summary" th:field="*{summary}">
         <input type="hidden" id="hidden_blog_post_title" name="title" th:field="*{title}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
