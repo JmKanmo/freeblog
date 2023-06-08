@@ -214,7 +214,7 @@ class UtilController {
             return !compressed ? content : compressed;
         } else {
             const decompressed = LZString.decompressFromBase64(content);
-            return !decompressed ? content : decompressed;
+            return (!decompressed || decompressed === 'P') ? content : decompressed;
         }
     }
 
