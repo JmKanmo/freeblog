@@ -183,6 +183,43 @@ class UtilController {
         return window.open(url, target, `width=${width}, height=${height}, left=${left}, top=${tops}`);
     }
 
+    convertStrByteArr(obj, isEncode) {
+        if (isEncode === true) {
+            return obj.toString()
+        } else {
+            const parsed = obj.split(",");
+            const uint8Arr = new Uint8Array(parsed.length);
+            for (let i = 0; i < parsed.length; i++) {
+                let elem = parseInt(parsed[i]);
+                elem = (elem < 0) ? (elem * -1) : elem;
+                uint8Arr[i] = elem;
+            }
+            return uint8Arr;
+        }
+    }
+
+    /**
+     * Compress & Decompress string content
+     */
+    convertStringContent(content, isCompress) {
+        if (content == null) {
+            return "";
+        }
+
+        if (isCompress === true) {
+            return LZString.compress(content);
+        } else {
+            return LZString.decompress(content);
+        }
+    }
+
+    /**
+     * HTML Content remove replace method
+     */
+    replaceHTMlTag(tag) {
+        return tag == null ? "" : tag.replace(/(<([^>]+)>)/ig, '');
+    }
+
     /**
      * Quill Editor Utils
      * **/
