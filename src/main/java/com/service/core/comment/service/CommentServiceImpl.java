@@ -13,6 +13,7 @@ import com.service.core.comment.paging.CommentSearchPagingDto;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.CommentManageException;
 import com.service.core.post.domain.Post;
+import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostLinkDto;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserCommentDto;
@@ -71,8 +72,8 @@ public class CommentServiceImpl implements CommentService {
             throw new CommentManageException(ServiceExceptionMessage.NOT_SECRET_WHEN_ANONYMOUS);
         }
 
-        Post post = postService.findPostById(commentInput.getCommentPostId());
-        Comment comment = Comment.from(commentInput, post);
+        PostDto postDto = postService.findPostDtoById(commentInput.getCommentPostId());
+        Comment comment = Comment.from(commentInput, Post.builder().id(postDto.getId()).build());
 
         if (!BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && principal != null) {
             UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
@@ -81,7 +82,7 @@ public class CommentServiceImpl implements CommentService {
             commentUser.setUserNickname(userCommentDto.getUserNickname());
             commentUser.setUserId(userCommentDto.getUserId());
             commentUser.setUserPassword(BCrypt.hashpw(userCommentDto.getUserPassword(), BCrypt.gensalt()));
-            commentUser.setOwner(post.getBlog().getId() == userCommentDto.getBlogId() ? true : false);
+            commentUser.setOwner(postDto.getBlogId() == userCommentDto.getBlogId() ? true : false);
             comment.setCommentUser(commentUser);
         }
         commentInfoService.saveComment(comment);
@@ -111,8 +112,8 @@ public class CommentServiceImpl implements CommentService {
             throw new CommentManageException(ServiceExceptionMessage.NOT_SECRET_WHEN_ANONYMOUS);
         }
 
-        Post post = postService.findPostById(commentInput.getCommentPostId());
-        Comment comment = Comment.from(commentInput, post);
+        PostDto postDto = postService.findPostDtoById(commentInput.getCommentPostId());
+        Comment comment = Comment.from(commentInput, Post.builder().id(postDto.getId()).build());
 
         if (!BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()) && principal != null) {
             UserCommentDto userCommentDto = userService.findUserCommentDtoByEmail(principal.getName());
@@ -121,7 +122,7 @@ public class CommentServiceImpl implements CommentService {
             commentUser.setUserNickname(userCommentDto.getUserNickname());
             commentUser.setUserId(userCommentDto.getUserId());
             commentUser.setUserPassword(BCrypt.hashpw(userCommentDto.getUserPassword(), BCrypt.gensalt()));
-            commentUser.setOwner(post.getBlog().getId() == userCommentDto.getBlogId() ? true : false);
+            commentUser.setOwner(postDto.getBlogId() == userCommentDto.getBlogId() ? true : false);
             comment.setCommentUser(commentUser);
         }
         commentInfoService.saveComment(comment);
