@@ -88,6 +88,80 @@
             LIMIT #{postSearchPagingDto.postPagination.limitStart}, #{postSearchPagingDto.recordSize}
     </select>
 
+    <select id="findPostDeleteDtoById" resultType="com.service.core.post.dto.PostDeleteDto">
+        SELECT post.post_id,
+               post.seq,
+               post.is_delete,
+               post.title
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
+
+    <select id="findPostOverViewDtoById" resultType="com.service.core.post.dto.PostOverviewDto">
+        SELECT post.post_id,
+               date_format(post.register_time, '%Y-%m-%d %H:%i:%s') as register_time,
+               date_format(post.update_time, '%Y-%m-%d %H:%i:%s') as update_time
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
+
+    <select id="findPostDtoById" resultType="com.service.core.post.dto.PostDto">
+        select post.post_id,
+               post.title,
+               post.thumbnail_image,
+               post.summary,
+               post.writer,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+               CASE
+                   WHEN ((select pc.name
+                          from category pc
+                          where pc.category_id = category.parent_id and pc.is_delete != true) is null)
+               THEN category.name
+           ELSE CONCAT(
+                   (select pc.name from category pc where pc.category_id = category.parent_id and pc.is_delete != true),
+            '/', category.name)
+        END                                           as category,
+       category.category_id,
+       post.blog_id
+from post
+         inner join category on post.category_id = category.category_id and category.is_delete = false
+where post_id = #{postId} and post.is_delete = false
+    </select>
+
+    <select id="findPostDtoById2" resultType="com.service.core.post.dto.PostDto">
+        select post.post_id,
+               post.title,
+               post.thumbnail_image,
+               post.summary,
+               post.writer,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+               CASE
+                   WHEN ((select pc.name
+                          from category pc
+                          where pc.category_id = category.parent_id
+                            and pc.is_delete != true) is null)
+               THEN category.name
+           ELSE CONCAT(
+                   (select pc.name from category pc where pc.category_id = category.parent_id and pc.is_delete != true),
+            '/', category.name)
+        END                                           as category,
+       category.category_id,
+       post.blog_id
+from post
+         inner join category on post.category_id = category.category_id and category.is_delete = false
+         inner join blog on blog.blog_id = post.blog_id and blog.is_delete = false
+where post_id = #{postId}
+  and post.blog_id = #{blogId}
+  and blog.is_delete = false
+  and post.is_delete = false
+    </select>
+
+    <select id="existsById" resultType="boolean">
+        SELECT IF(COUNT(*) = 1, 1, 0)
+        FROM post
+        WHERE post_id = #{postId}
+    </select>
+
     <select id="findPostCount" resultType="int">
         SELECT count(*)
         from post
@@ -252,15 +326,16 @@ where main_post.post_id in (select DISTINCT tag.post_id
           and main_post.is_delete != true;
     </select>
 
+    <!-- contents 기준으로 검색할 경우, 크기(메모리) 증가로 인한 OOM 발생 가능성 / summary 기준으로 탐색 -->
     <sql id="textSearchQuery">
         <choose>
             <when test="postKeywordSearchDto.searchType eq 'LIKE'">
-                contents like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                summary like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
                 or title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
             </when>
 
             <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
-                MATCH(contents) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE) or
+                MATCH(summary) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE) or
                 MATCH(title) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE)
             </when>
         </choose>

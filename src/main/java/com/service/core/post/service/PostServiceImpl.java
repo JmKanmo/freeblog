@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,7 +40,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final AwsS3Service awsS3Service;
-    private final PostRepository postRepository;
+    private final PostRepository postRepository; // Post 전체 정보를 불러옴 (DB 쿼리로 인한 contents 데이터 등등 메모리 증가 고려)
     private final TagService tagService;
     private final PostViewService postViewService;
     private final SftpService sftpService;
@@ -140,8 +141,39 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostDto findPostDtoInfo(Long blogId, Long postId) {
+        PostDto postDto = postMapper.findPostDtoById2(postId, blogId);
+
+        if (postDto == null) {
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
+        }
+        return postDto;
+    }
+
+    @Override
+    public PostOverviewDto findPostOverViewDtoById(Long postId) {
+        return postMapper.findPostOverViewDtoById(postId);
+    }
+
+    @Override
     public PostDto findPostDtoById(Long postId) {
-        return PostDto.fromEntity(findPostById(postId));
+        PostDto postDto = postMapper.findPostDtoById(postId);
+
+        if (postDto == null) {
+            return PostDto.builder()
+                    .id(Long.MAX_VALUE)
+                    .blogId(Long.MAX_VALUE)
+                    .title(ConstUtil.UNDEFINED)
+                    .thumbnailImage(ConstUtil.UNDEFINED)
+                    .summary(ConstUtil.UNDEFINED)
+                    .writer(ConstUtil.UNDEFINED)
+                    .category(ConstUtil.UNDEFINED)
+                    .categoryId(Long.MAX_VALUE)
+                    .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy.MM.dd HH:mm"))
+                    .build();
+        } else {
+            return postDto;
+        }
     }
 
     @Override
@@ -197,8 +229,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean checkEqualPostByLogin(Long blogId, Long postId) {
-        Post post = findPostById(postId);
-        return post.getBlog().getId() == blogId;
+        PostDto postDto = postMapper.findPostDtoById(postId);
+        return postDto != null && postDto.getBlogId() == blogId;
     }
 
     @Transactional
@@ -218,21 +250,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public boolean isDeletedPost(long postId) {
-        if (!postRepository.existsById(postId)) {
+        if (!postMapper.existsById(postId)) {
             return true;
         }
 
-        Post post = postRepository.findById(postId).get();
+        PostDeleteDto postDeleteDto = postMapper.findPostDeleteDtoById(postId);
 
-        if (post.isDelete()) {
+        if (postDeleteDto.isDelete()) {
             return true;
         }
         return false;
     }
 
     private boolean checkPostId(Long blogId, Long postId) {
-        Post post = findPostById(postId);
-        Blog blog = post.getBlog();
-        return !blog.isDelete() && blog.getId() == blogId;
+        PostDto postDto = postMapper.findPostDtoById2(postId, blogId);
+        return postDto != null;
     }
 }

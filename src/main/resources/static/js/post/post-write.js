@@ -218,8 +218,15 @@ class PostWriteController extends UtilController {
                 if (this.checkPostSubmitInfo()) {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
                 } else {
+                    const compressedContent = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+
+                    if(this.checkPostContentSize(compressedContent)) {
+                        this.showToastMessage("게시글 컨텐츠 크기가 허용 범위를 초과하였습니다.");
+                        return;
+                    }
+
                     this.isSubmitFlag = true;
-                    this.hiddenBlogPostContents.value = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+                    this.hiddenBlogPostContents.value = compressedContent;
                     this.hiddenBlogPostSummary.value = this.replaceAndSubHTMlTag(this.postWriterEditor.root.innerHTML, 200);
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;

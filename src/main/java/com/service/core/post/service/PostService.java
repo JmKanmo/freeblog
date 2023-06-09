@@ -36,6 +36,10 @@ public interface PostService {
 
     PostDetailDto findPostDetailInfo(Long blogId, Long postId);
 
+    PostDto findPostDtoInfo(Long blogId, Long postId);
+
+    PostOverviewDto findPostOverViewDtoById(Long postId);
+
     PostDto findPostDtoById(Long postId);
 
     PostUpdateDto findPostUpdateInfo(Long blogId, Long postId);

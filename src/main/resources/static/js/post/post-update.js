@@ -217,7 +217,14 @@ class PostUpdateController extends UtilController {
                     this.isSubmitFlag = false;
                     return false;
                 } else {
-                    this.hiddenBlogPostContents.value = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+                    const compressedContent = this.compressContent(this.postWriterEditor.root.innerHTML, true);
+
+                    if (this.checkPostContentSize(compressedContent)) {
+                        this.showToastMessage("게시글 컨텐츠 크기가 허용 범위를 초과하였습니다.");
+                        return;
+                    }
+
+                    this.hiddenBlogPostContents.value = compressedContent;
                     this.hiddenBlogPostSummary.value = this.replaceAndSubHTMlTag(this.postWriterEditor.root.innerHTML, 200);
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
