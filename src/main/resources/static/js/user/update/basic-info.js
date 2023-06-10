@@ -30,7 +30,7 @@ class BasicInfoController extends UtilController {
         document.getElementById("user_nickname").value = window.opener.document.getElementById("user_basic_info_nickname").value;
         document.getElementById("user_greeting_textarea").value = window.opener.document.getElementById("user_basic_info_greetings").value;
         this.setTextCount(this.greetingTextArea);
-        this.introEditor.root.innerHTML = window.opener.document.getElementById("user_info_intro").value;
+        this.introEditor.root.innerHTML = this.compressContent(window.opener.document.getElementById("user_info_intro").value, false);
         document.getElementById("user_id").value = window.opener.document.getElementById("user_basic_info_id").value;
     }
 
@@ -102,7 +102,14 @@ class BasicInfoController extends UtilController {
             evt.preventDefault();
 
             if (confirm('기본 정보를 수정하겠습니까?') === true) {
-                this.userIntroEditorInput.value = this.introEditor.root.innerHTML;
+                const compressedContent = this.compressContent(this.introEditor.root.innerHTML, true);
+
+                if (this.checkPostContentSize(compressedContent, this.MAX_INTRO_CONTENT_SIZE)) {
+                    this.showToastMessage("소개글 컨텐츠 크기가 허용 범위를 초과하였습니다.");
+                    return;
+                }
+
+                this.userIntroEditorInput.value = compressedContent;
 
                 if (this.checkPrevChangeUserInfos()) {
                     this.showToastMessage("변경 된 정보가 없습니다.");

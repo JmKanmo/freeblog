@@ -1,5 +1,6 @@
 package com.service.core.category.controller;
 
+import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.dto.CategoryResponseDto;
@@ -121,9 +122,9 @@ public class CategoryRestController {
                 throw new CategoryManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
 
-            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
 
-            if (blogInfoDto.getId() != blogId) {
+            if (blogDeleteDto.getId() != blogId) {
                 throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
             }
 

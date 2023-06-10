@@ -1,5 +1,7 @@
 package com.service.core.post.controller;
 
+import com.service.core.blog.domain.Blog;
+import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
@@ -70,13 +72,13 @@ public class PostRestController {
 
             Post post = Post.from(blogPostInput);
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
-            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
 
-            if (blogInfoDto.getId() != blogPostInput.getId()) {
+            if (blogDeleteDto.getId() != blogPostInput.getId()) {
                 throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
             }
             post.setWriter(userHeaderDto.getNickname());
-            post.setBlog(blogService.findBlogByEmail(principal.getName()));
+            post.setBlog(Blog.builder().id(blogDeleteDto.getId()).build());
             post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
             post.setSeq((long) (postService.findPostCountByBlogId(post.getBlog().getId()) + 1));
             post.setMetaKey(blogPostInput.getMetaKey());
@@ -151,7 +153,7 @@ public class PostRestController {
     @GetMapping("/all/{blogId}")
     public ResponseEntity<PostPagingResponseDto> findTotalPostByBlogId(@PathVariable Long blogId, @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogService.findBlogByIdOrThrow(blogId).getId(), postSearchPagingDto, ConstUtil.TOTAL_POST)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findTotalPaginationPost(blogService.findBlogDeleteDtoByBlogId(blogId).getId(), postSearchPagingDto, ConstUtil.TOTAL_POST)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-findTotalPostByBlogId] exception occurred ", exception);

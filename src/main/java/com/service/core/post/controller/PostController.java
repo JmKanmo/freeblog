@@ -1,5 +1,6 @@
 package com.service.core.post.controller;
 
+import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
@@ -8,7 +9,6 @@ import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.like.service.LikeService;
-import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostUpdateDto;
@@ -18,8 +18,6 @@ import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
-import com.service.core.views.service.BlogVisitorService;
-import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -61,8 +59,8 @@ public class PostController {
 
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
-            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
-            isEqualPostByLogin = postService.checkEqualPostByLogin(blogInfoDto.getId(), postId);
+            BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
+            isEqualPostByLogin = postService.checkEqualPostByLogin(blogDeleteDto.getId(), postId);
         }
 
         UserProfileDto userProfileDto = userService.findUserProfileDtoByBlogId(blogId);
@@ -95,10 +93,10 @@ public class PostController {
             throw new UserAuthException(ServiceExceptionMessage.MISMATCH_ID);
         }
 
-        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(userHeaderDto.getId());
+        BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoById(userHeaderDto.getId());
 
         model.addAttribute("user_header", userHeaderDto);
-        model.addAttribute("blogPostInput", BlogPostInput.builder().id(blogInfoDto.getId()).build());
+        model.addAttribute("blogPostInput", BlogPostInput.builder().id(blogDeleteDto.getId()).build());
         return "post/post-write";
     }
 
@@ -115,15 +113,15 @@ public class PostController {
         }
 
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
-        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(userHeaderDto.getId());
+        BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoById(userHeaderDto.getId());
 
-        if (blogInfoDto.getId() != blogId) {
+        if (blogDeleteDto.getId() != blogId) {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
         PostUpdateDto postUpdateDto = postService.findPostUpdateInfo(blogId, postId);
 
         model.addAttribute("user_header", userHeaderDto);
-        model.addAttribute("blogPostUpdateInput", BlogPostUpdateInput.builder().blogId(blogInfoDto.getId()).postId(postUpdateDto.getId()).build());
+        model.addAttribute("blogPostUpdateInput", BlogPostUpdateInput.builder().blogId(blogDeleteDto.getId()).postId(postUpdateDto.getId()).build());
         model.addAttribute("postUpdate", postUpdateDto);
         return "post/post-update";
     }
@@ -160,9 +158,9 @@ public class PostController {
             return "post/post-update";
         }
 
-        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+        BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
 
-        if (blogInfoDto.getId() != blogPostUpdateInput.getBlogId()) {
+        if (blogDeleteDto.getId() != blogPostUpdateInput.getBlogId()) {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
@@ -181,15 +179,15 @@ public class PostController {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
 
-        BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+        BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
         PostDto postDto = postService.findPostDtoById(postId);
         UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
 
-        if (blogInfoDto.getId() != postDto.getBlogId()) {
+        if (blogDeleteDto.getId() != postDto.getBlogId()) {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
 
-        postService.deletePost(blogInfoDto.getId(), postId);
+        postService.deletePost(blogDeleteDto.getId(), postId);
         return String.format("redirect:/blog/%s", userHeaderDto.getId());
     }
 }

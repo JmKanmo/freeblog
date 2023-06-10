@@ -219,7 +219,7 @@ class PostUpdateController extends UtilController {
                 } else {
                     const compressedContent = this.compressContent(this.postWriterEditor.root.innerHTML, true);
 
-                    if (this.checkPostContentSize(compressedContent)) {
+                    if (this.checkPostContentSize(compressedContent, this.MAX_POST_CONTENT_SIZE)) {
                         this.showToastMessage("게시글 컨텐츠 크기가 허용 범위를 초과하였습니다.");
                         return;
                     }

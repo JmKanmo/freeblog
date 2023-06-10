@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Blog extends BaseTimeEntity {
     private boolean isDelete;
 
     @Lob
+    @Length(max = ConstUtil.MAX_INTRO_CONTENT_SIZE)
     private String intro;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "blog")

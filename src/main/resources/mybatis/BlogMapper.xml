@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.service.core.blog.repository.mapper.BlogMapper">
+    <select id="findBlogMapperDtoByBlogId" resultType="com.service.core.blog.dto.BlogMapperDto">
+        select blog.blog_id, blog.intro, blog.name, blog.is_delete
+        from blog
+        where blog_id = #{blogId};
+    </select>
+
+    <select id="findBlogMapperDtoByUserId" resultType="com.service.core.blog.dto.BlogMapperDto">
+        select blog.blog_id, blog.intro, blog.name, blog.is_delete
+        from user
+                 inner join blog on blog.is_delete = false and user.blog_id = blog.blog_id
+        where user.user_id = #{userId}
+          and user.status not in ('WITHDRAW', 'STOP');
+    </select>
+
+    <select id="findBlogMapperDtoByEmail" resultType="com.service.core.blog.dto.BlogMapperDto">
+        select blog.blog_id, blog.intro, blog.name, blog.is_delete
+        from user
+                 inner join blog on blog.is_delete = false and user.blog_id = blog.blog_id
+        where user.email = #{email}
+          and user.status not in ('WITHDRAW', 'STOP');
+    </select>
+
+    <select id="findBlogDeleteMapperDtoByBlogId" resultType="com.service.core.blog.dto.BlogDeleteMapperDto">
+        select blog.blog_id, blog.is_delete
+        from blog
+        where blog_id = #{blogId};
+    </select>
+
+    <select id="findBlogDeleteMapperDtoByUserId" resultType="com.service.core.blog.dto.BlogDeleteMapperDto">
+        select blog.blog_id, blog.is_delete
+        from user
+                 inner join blog on blog.is_delete = false and user.blog_id = blog.blog_id
+        where user.user_id = #{userId}
+          and user.status not in ('WITHDRAW', 'STOP');
+    </select>
+
+    <select id="findBlogDeleteMapperDtoByEmail" resultType="com.service.core.blog.dto.BlogDeleteMapperDto">
+        select blog.blog_id, blog.is_delete
+        from user
+                 inner join blog on blog.is_delete = false and user.blog_id = blog.blog_id
+        where user.email = #{email}
+          and user.status not in ('WITHDRAW', 'STOP');
+    </select>
+</mapper>

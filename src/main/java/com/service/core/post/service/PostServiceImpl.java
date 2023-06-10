@@ -152,7 +152,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostOverviewDto findPostOverViewDtoById(Long postId) {
-        return postMapper.findPostOverViewDtoById(postId);
+        PostOverviewDto postOverviewDto = postMapper.findPostOverViewDtoById(postId);
+
+        if (postOverviewDto == null) {
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
+        }
+
+        return postOverviewDto;
     }
 
     @Override
@@ -160,20 +166,10 @@ public class PostServiceImpl implements PostService {
         PostDto postDto = postMapper.findPostDtoById(postId);
 
         if (postDto == null) {
-            return PostDto.builder()
-                    .id(Long.MAX_VALUE)
-                    .blogId(Long.MAX_VALUE)
-                    .title(ConstUtil.UNDEFINED)
-                    .thumbnailImage(ConstUtil.UNDEFINED)
-                    .summary(ConstUtil.UNDEFINED)
-                    .writer(ConstUtil.UNDEFINED)
-                    .category(ConstUtil.UNDEFINED)
-                    .categoryId(Long.MAX_VALUE)
-                    .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy.MM.dd HH:mm"))
-                    .build();
-        } else {
-            return postDto;
+            throw new PostManageException(ServiceExceptionMessage.POST_NOT_FOUND);
         }
+
+        return postDto;
     }
 
     @Override

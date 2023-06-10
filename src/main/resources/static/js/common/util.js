@@ -8,8 +8,11 @@ class UtilController {
         this.emailRegex = new RegExp('^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$');
         this.defaultUserProfileThumbnail = "../images/user_default_thumbnail.png";
 
-        // constant
+        // post
         this.MAX_POST_CONTENT_SIZE = 10 * 1024 * 1024 // 압축사이즈: 10MB
+
+        // intro
+        this.MAX_INTRO_CONTENT_SIZE = 5 * 1024 * 1024; // 압축사이즈: 5MB
     }
 
     initHandlerbars() {
@@ -65,8 +68,8 @@ class UtilController {
         });
     }
 
-    checkPostContentSize(content) {
-        return content > this.MAX_POST_CONTENT_SIZE;
+    checkPostContentSize(content, size) {
+        return content > size;
     }
 
     getRemoveSpaceStr(str) {

@@ -43,7 +43,7 @@
             }
 
             initIntroController() {
-                document.getElementById("intro_post_editor").innerHTML = window.opener.document.getElementById("user_info_intro").value;
+                document.getElementById("intro_post_editor").innerHTML = this.compressContent(window.opener.document.getElementById("user_info_intro").value, false);
             }
         }
 

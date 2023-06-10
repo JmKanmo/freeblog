@@ -1,6 +1,7 @@
 package com.service.core.blog.service.impl;
 
 import com.service.core.blog.domain.Blog;
+import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogInfoService;
 import com.service.core.blog.service.BlogService;
@@ -28,26 +29,32 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogInfoDto findBlogInfoDtoById(String id) {
-        Blog blog = userInfoService.findBlogByIdOrThrow(id);
+        return BlogInfoDto.from(blogInfoService.findBlogMapperDtoByUserIdOrThrow(id));
+    }
 
-        if (blog == null) {
-            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
-        } else if (blog.isDelete()) {
-            throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
-        }
-        return BlogInfoDto.fromEntity(blog);
+    @Override
+    public BlogDeleteDto findBlogDeleteDtoById(String id) {
+        return BlogDeleteDto.from(blogInfoService.findBlogDeleteMapperDtoByUserIdOrThrow(id));
     }
 
     @Override
     public BlogInfoDto findBlogInfoDtoByEmail(String email) {
-        Blog blog = findBlogByEmail(email);
-        return BlogInfoDto.fromEntity(blog);
+        return BlogInfoDto.from(blogInfoService.findBlogMapperDtoByEmailOrThrow(email));
+    }
+
+    @Override
+    public BlogDeleteDto findBlogDeleteDtoByEmail(String email) {
+        return BlogDeleteDto.from(blogInfoService.findBlogDeleteMapperDtoByEmailOrThrow(email));
     }
 
     @Override
     public BlogInfoDto findBlogInfoDtoById(Long blogId) {
-        Blog blog = findBlogByIdOrThrow(blogId);
-        return BlogInfoDto.fromEntity(blog);
+        return BlogInfoDto.from(blogInfoService.findBlogMapperDtoByIdOrThrow(blogId));
+    }
+
+    @Override
+    public BlogDeleteDto findBlogDeleteDtoByBlogId(Long blogId) {
+        return BlogDeleteDto.from(blogInfoService.findBlogDeleteMapperDtoByIdOrThrow(blogId));
     }
 
     @Override
@@ -70,7 +77,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public boolean isDeleteOrNotFoundBlog(Long blogId) {
         try {
-            return findBlogByIdOrThrow(blogId).isDelete();
+            return findBlogDeleteDtoByBlogId(blogId).isDelete();
         } catch (BlogManageException e) {
             return true;
         }

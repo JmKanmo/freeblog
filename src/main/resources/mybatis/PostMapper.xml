@@ -102,7 +102,7 @@
                date_format(post.register_time, '%Y-%m-%d %H:%i:%s') as register_time,
                date_format(post.update_time, '%Y-%m-%d %H:%i:%s') as update_time
         FROM post
-        WHERE post_id = #{postId}
+        WHERE post_id = #{postId} and post.is_delete = false
     </select>
 
     <select id="findPostDtoById" resultType="com.service.core.post.dto.PostDto">

@@ -43,4 +43,14 @@ public class UserProfileDto {
                     .build();
         }
     }
+
+    public static UserProfileDto from(UserProfileMapperDto userProfileMapperDto) {
+        return UserProfileDto.builder()
+                .id(BlogUtil.ofNull(userProfileMapperDto.getId()))
+                .emailHash(userProfileMapperDto.getEmail().hashCode())
+                .nickname(BlogUtil.ofNull(userProfileMapperDto.getNickname()))
+                .greetings(BlogUtil.ofNull(userProfileMapperDto.getGreetings()))
+                .profileImages(BlogUtil.ofNull(userProfileMapperDto.getProfileImages()))
+                .build();
+    }
 }

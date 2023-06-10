@@ -3,8 +3,11 @@ package com.service.core.user.service.impl;
 import com.service.core.blog.domain.Blog;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
+import com.service.core.error.model.UserManageException;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.dto.UserEmailFindDto;
+import com.service.core.user.dto.UserProfileDto;
+import com.service.core.user.dto.UserProfileMapperDto;
 import com.service.core.user.repository.CustomUserRepository;
 import com.service.core.user.repository.UserRepository;
 import com.service.core.user.repository.mapper.UserMapper;
@@ -25,7 +28,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserRepository userRepository;
     private final CustomUserRepository customUserRepository;
 
-    //    private final UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Transactional
     @Override
@@ -93,5 +96,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserDomain userDomain = userRepository.findByEmail(email).orElseThrow(() -> new UserAuthException((ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND.message())));
         BlogUtil.checkUserStatus(userDomain.getStatus());
         return userDomain.getBlog();
+    }
+
+    @Override
+    public UserProfileDto findUserProfileDtoByBlogIdOrThrow(Long blogId) {
+        UserProfileMapperDto userProfileMapperDto = userMapper.findUserProfileMapperDtoByBlogId(blogId);
+
+        if (userProfileMapperDto == null) {
+            throw new UserManageException(ServiceExceptionMessage.ACCOUNT_INFO_NOT_FOUND);
+        }
+
+        //  BlogUtil.checkUserStatus(userDomain.getStatus());
+        return UserProfileDto.from(userProfileMapperDto);
     }
 }
