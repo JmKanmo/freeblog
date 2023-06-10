@@ -58,6 +58,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public BlogDeleteDto findBlogDeleteDtoByCategoryId(Long categoryId) {
+        return BlogDeleteDto.from(blogInfoService.findBlogDeleteMapperDtoByCategoryId(categoryId));
+    }
+
+    @Override
     public Blog findBlogByEmail(String email) {
         Blog blog = userInfoService.findBlogByEmailOrThrow(email);
 

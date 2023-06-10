@@ -2,7 +2,7 @@ package com.service.core.post.service;
 
 import com.service.config.app.AppConfig;
 import com.service.config.sql.SqlConfig;
-import com.service.core.blog.domain.Blog;
+import com.service.core.category.domain.Category;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.PostManageException;
@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -125,7 +124,10 @@ public class PostServiceImpl implements PostService {
         post.setTitle(blogPostUpdateInput.getTitle());
         post.setContents(blogPostUpdateInput.getContents());
         post.setSummary(blogPostUpdateInput.getSummary());
-        post.setCategory(categoryService.findCategoryById(blogPostUpdateInput.getCategory()));
+        post.setCategory(
+                Category.builder()
+                        .id(categoryService.findCategoryBasicMapperDtoByCategoryId(blogPostUpdateInput.getCategory()).getId())
+                        .build());
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));

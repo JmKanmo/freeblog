@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.category.repository.mapper.CategoryMapper">
-    <select id="findCategoriesByUserId" resultType="com.service.core.category.domain.CategoryMapperDto">
+    <select id="findCategoriesByUserId" resultType="com.service.core.category.dto.CategoryMapperDto">
         select category.category_id,
                category.parent_id,
                category.name,
@@ -22,7 +22,7 @@
         order by category.seq, category.register_time
     </select>
 
-    <select id="findCategoriesByBlogId" resultType="com.service.core.category.domain.CategoryMapperDto">
+    <select id="findCategoriesByBlogId" resultType="com.service.core.category.dto.CategoryMapperDto">
         select category.category_id,
                category.parent_id,
                category.name,
@@ -36,5 +36,32 @@
                                        where sorted_category.blog_id = #{blogId})
         group by category.category_id
         order by category.seq, category.register_time
+    </select>
+
+    <select id="findCategoryBasicMapperDtoByCategoryId"
+            resultType="com.service.core.category.dto.CategoryBasicMapperDto">
+        select category.category_id,
+               category.name,
+               category.parent_id,
+               category.seq,
+               category.blog_id,
+               category.is_delete
+        from category
+        where category.category_id = #{categoryId};
+    </select>
+
+    <select id="findCategoryBasicMapperDtoByCategoryIdAndEmail"
+            resultType="com.service.core.category.dto.CategoryBasicMapperDto">
+        select category.category_id,
+               category.name,
+               category.parent_id,
+               category.seq,
+               category.blog_id,
+               category.is_delete
+        from category
+                 inner join user on user.blog_id = category.blog_id
+        where category.category_id = #{categoryId}
+          and user.email = #{email}
+          and user.status not in ('WITHDRAW', 'STOP');
     </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.service.core.category.domain;
+package com.service.core.category.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

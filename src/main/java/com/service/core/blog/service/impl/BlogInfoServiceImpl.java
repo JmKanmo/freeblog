@@ -114,4 +114,17 @@ public class BlogInfoServiceImpl implements BlogInfoService {
 
         return blogDeleteMapperDto;
     }
+
+    @Override
+    public BlogDeleteMapperDto findBlogDeleteMapperDtoByCategoryId(Long categoryId) {
+        BlogDeleteMapperDto blogDeleteMapperDto = blogMapper.findBlogDeleteMapperDtoByCategoryId(categoryId);
+
+        if (blogDeleteMapperDto == null) {
+            throw new BlogManageException(ServiceExceptionMessage.BLOG_NOT_FOUND);
+        } else if (blogDeleteMapperDto.getIsDelete()) {
+            throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
+        }
+
+        return blogDeleteMapperDto;
+    }
 }

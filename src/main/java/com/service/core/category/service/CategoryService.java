@@ -2,6 +2,7 @@ package com.service.core.category.service;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.category.domain.Category;
+import com.service.core.category.dto.CategoryBasicMapperDto;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.model.CategoryInput;
 import com.service.core.post.dto.PostTitleDto;
@@ -33,4 +34,8 @@ public interface CategoryService {
     Category registerBasicCategory(Blog blog);
 
     void registerCategory(Long blogId, List<CategoryInput> categoryInputList);
+
+    CategoryBasicMapperDto findCategoryBasicMapperDtoByCategoryId(Long categoryId);
+
+    CategoryBasicMapperDto findCategoryBasicMapperDtoByCategoryIdAndEmail(Long categoryId, String email);
 }

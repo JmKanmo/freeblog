@@ -1,6 +1,5 @@
 package com.service.core.category.dto;
 
-import com.service.core.category.domain.CategoryMapperDto;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import lombok.AllArgsConstructor;

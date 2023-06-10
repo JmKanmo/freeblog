@@ -17,4 +17,6 @@ public interface BlogMapper {
     BlogDeleteMapperDto findBlogDeleteMapperDtoByUserId(String userId);
 
     BlogDeleteMapperDto findBlogDeleteMapperDtoByEmail(String email);
+
+    BlogDeleteMapperDto findBlogDeleteMapperDtoByCategoryId(Long categoryId);
 }

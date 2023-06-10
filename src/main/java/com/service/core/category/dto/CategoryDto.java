@@ -1,6 +1,5 @@
 package com.service.core.category.dto;
 
-import com.service.core.category.domain.CategoryMapperDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

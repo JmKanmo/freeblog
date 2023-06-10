@@ -20,4 +20,6 @@ public interface BlogInfoService {
     BlogDeleteMapperDto findBlogDeleteMapperDtoByUserIdOrThrow(String userId);
 
     BlogDeleteMapperDto findBlogDeleteMapperDtoByEmailOrThrow(String email);
+
+    BlogDeleteMapperDto findBlogDeleteMapperDtoByCategoryId(Long categoryId);
 }

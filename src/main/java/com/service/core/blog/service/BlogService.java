@@ -19,6 +19,8 @@ public interface BlogService {
 
     BlogDeleteDto findBlogDeleteDtoByBlogId(Long blogId);
 
+    BlogDeleteDto findBlogDeleteDtoByCategoryId(Long categoryId);
+
     Blog findBlogByEmail(String email);
 
     Blog findBlogByIdOrThrow(Long blogId);

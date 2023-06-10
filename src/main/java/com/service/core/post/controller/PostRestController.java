@@ -4,6 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
+import com.service.core.category.domain.Category;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.BlogManageException;
@@ -79,8 +80,11 @@ public class PostRestController {
             }
             post.setWriter(userHeaderDto.getNickname());
             post.setBlog(Blog.builder().id(blogDeleteDto.getId()).build());
-            post.setCategory(categoryService.findCategoryById(principal.getName(), blogPostInput.getCategory()));
-            post.setSeq((long) (postService.findPostCountByBlogId(post.getBlog().getId()) + 1));
+            post.setCategory(
+                    Category.builder()
+                            .id(categoryService.findCategoryBasicMapperDtoByCategoryIdAndEmail(blogPostInput.getCategory(), principal.getName()).getId())
+                            .build());
+            post.setSeq((long) (postService.findPostCountByBlogId(blogDeleteDto.getId()) + 1));
             post.setMetaKey(blogPostInput.getMetaKey());
             postService.register(post, blogPostInput);
             return ResponseEntity.status(HttpStatus.OK).body("게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");

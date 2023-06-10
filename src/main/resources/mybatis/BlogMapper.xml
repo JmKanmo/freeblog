@@ -46,4 +46,13 @@
         where user.email = #{email}
           and user.status not in ('WITHDRAW', 'STOP');
     </select>
+
+    <select id="findBlogDeleteMapperDtoByCategoryId" resultType="com.service.core.blog.dto.BlogDeleteMapperDto">
+        select blog.blog_id, blog.is_delete
+        from blog
+                 inner join category c on blog.blog_id = c.blog_id
+        where blog.is_delete = false
+          and c.category_id = #{categoryId}
+          and c.is_delete = false;
+    </select>
 </mapper>

@@ -1,9 +1,11 @@
 package com.service.core.category.service;
 
 import com.service.core.blog.domain.Blog;
+import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
-import com.service.core.category.domain.CategoryMapperDto;
+import com.service.core.category.dto.CategoryBasicMapperDto;
+import com.service.core.category.dto.CategoryMapperDto;
 import com.service.core.category.dto.CategoryDto;
 import com.service.core.category.model.CategoryInput;
 import com.service.core.category.repository.CategoryRepository;
@@ -19,7 +21,6 @@ import com.service.core.post.dto.PostTotalDto;
 import com.service.core.post.paging.PostPagination;
 import com.service.core.post.paging.PostSearchPagingDto;
 import com.service.core.post.service.PostService;
-import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.core.post.paging.PostPaginationResponse;
 import lombok.RequiredArgsConstructor;
@@ -72,15 +73,15 @@ public class CategoryServiceImpl implements CategoryService {
             return new PostPaginationResponse<>(PostTotalDto.fromPostDtoList(Collections.emptyList(), ConstUtil.NOT_EXIST_CATEGORY), postPagination);
         } else {
             Category category = categoryOptional.get();
-            Blog blog = category.getBlog();
+            BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByCategoryId(categoryId);
 
             if (category.isDelete()) {
                 throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
-            } else if (blog == null || blog.isDelete()) {
+            } else if (blogDeleteDto == null || blogDeleteDto.isDelete()) {
                 throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
             }
 
-            Long blogId = blog.getId();
+            Long blogId = blogDeleteDto.getId();
             int postCount = postService.findPostCountByBlogCategory(blogId, categoryId);
 
             PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
@@ -101,15 +102,15 @@ public class CategoryServiceImpl implements CategoryService {
             return new PostPaginationResponse<>(Collections.emptyList(), postPagination);
         } else {
             Category category = categoryOptional.get();
-            Blog blog = category.getBlog();
+            BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByCategoryId(categoryId);
 
             if (category.isDelete()) {
                 throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
-            } else if (blog == null || blog.isDelete()) {
+            } else if (blogDeleteDto == null || blogDeleteDto.isDelete()) {
                 throw new BlogManageException(ServiceExceptionMessage.ALREADY_DELETE_BLOG);
             }
 
-            Long blogId = blog.getId();
+            Long blogId = blogDeleteDto.getId();
             int postCount = postService.findPostCountByBlogCategory(blogId, categoryId);
 
             PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
@@ -225,6 +226,32 @@ public class CategoryServiceImpl implements CategoryService {
             }
             categoryRepository.saveAll(createdCategories);
         }
+    }
+
+    @Override
+    public CategoryBasicMapperDto findCategoryBasicMapperDtoByCategoryId(Long categoryId) {
+        CategoryBasicMapperDto categoryBasicMapperDto = categoryMapper.findCategoryBasicMapperDtoByCategoryId(categoryId);
+
+        if (categoryBasicMapperDto == null) {
+            throw new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND);
+        } else if (categoryBasicMapperDto.getIsDelete()) {
+            throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
+        }
+
+        return categoryBasicMapperDto;
+    }
+
+    @Override
+    public CategoryBasicMapperDto findCategoryBasicMapperDtoByCategoryIdAndEmail(Long categoryId, String email) {
+        CategoryBasicMapperDto categoryBasicMapperDto = categoryMapper.findCategoryBasicMapperDtoByCategoryIdAndEmail(categoryId, email);
+
+        if (categoryBasicMapperDto == null) {
+            throw new CategoryManageException(ServiceExceptionMessage.CATEGORY_NOT_FOUND);
+        } else if (categoryBasicMapperDto.getIsDelete()) {
+            throw new CategoryManageException(ServiceExceptionMessage.ALREADY_DELETE_CATEGORY);
+        }
+
+        return categoryBasicMapperDto;
     }
 
     private boolean checkCategory(Category category, CategoryInput categoryInput) {

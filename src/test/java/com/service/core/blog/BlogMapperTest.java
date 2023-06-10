@@ -1,5 +1,6 @@
 package com.service.core.blog;
 
+import com.service.core.blog.dto.BlogDeleteMapperDto;
 import com.service.core.blog.dto.BlogMapperDto;
 import com.service.core.blog.repository.mapper.BlogMapper;
 import org.junit.jupiter.api.Assertions;
@@ -30,5 +31,11 @@ public class BlogMapperTest {
     public void blogMapperByEmailTest() {
         BlogMapperDto blogMapperDto = blogMapper.findBlogMapperDtoByEmail("nebi25@naver.com");
         Assertions.assertNotNull(blogMapperDto);
+    }
+
+    @Test
+    public void blogDeleteMapperByCategoryIdTest() {
+        BlogDeleteMapperDto blogDeleteMapperDto = blogMapper.findBlogDeleteMapperDtoByCategoryId(4L);
+        Assertions.assertNotNull(blogDeleteMapperDto);
     }
 }
