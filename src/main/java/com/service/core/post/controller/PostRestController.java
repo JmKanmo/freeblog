@@ -182,7 +182,7 @@ public class PostRestController {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 

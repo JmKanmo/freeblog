@@ -138,6 +138,10 @@ public class BlogUtil {
     }
 
     public static String encryptEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return ConstUtil.UNDEFINED;
+        }
+
         String name = email.split("@")[0];
         int nameLen = name.length();
         String domain = email.split("@")[1];
@@ -183,7 +187,7 @@ public class BlogUtil {
     }
 
     public static LocalDateTime nowByZoneId() {
-        return LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        return LocalDateTime.now(ZoneId.of(ConstUtil.ASIA_SEOUL));
     }
 
     public static <T> List<T> convertArrayToList(T[] array) {

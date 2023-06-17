@@ -105,7 +105,7 @@ class BasicInfoController extends UtilController {
                 const compressedContent = this.compressContent(this.introEditor.root.innerHTML, true);
 
                 if (this.checkPostContentSize(compressedContent, this.MAX_INTRO_CONTENT_SIZE)) {
-                    this.showToastMessage("소개글 컨텐츠 크기가 허용 범위를 초과하였습니다.");
+                    this.showToastMessage("소개글 본문 크기가 허용 범위를 초과하였습니다.");
                     return;
                 }
 
