@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.service.core.notice.repository.NoticeMapper">
+    <select id="findNoticeCount" resultType="int">
+        select count(*)
+        from notice
+    </select>
+
+    <select id="findNoticeCountByKeyword" resultType="int">
+        select count(*)
+        from notice
+        <if test="searchType != null and keyword != null">
+            where (<include refid="textSearchCountQuery"/>)
+        </if>
+    </select>
+
+    <select id="findNoticeDtoListByPaging"
+            parameterType="com.service.core.notice.paging.NoticeSearchPagingDto"
+            resultType="com.service.core.notice.dto.NoticeDto">
+        select notice_id,
+        date_format(register_time, '%y.%m.%d %H:%i') as register_time,
+        title,
+        summary,
+        contents
+        from notice
+        <if test="noticeSearchPagingDto.searchType != null and noticeSearchPagingDto.keyword != null">
+            where (<include refid="textSearchQuery"/>)
+        </if>
+        order by register_time desc
+        LIMIT #{noticeSearchPagingDto.noticePagination.limitStart}
+        , #{noticeSearchPagingDto.recordSize}
+    </select>
+
+    <select id="findNoticeDetailDtoById" resultType="com.service.core.notice.dto.NoticeDetailDto">
+        select notice_id,
+               title,
+               contents,
+               summary,
+               upload_key,
+               date_format(register_time, '%y.%m.%d %H:%i') as register_time,
+               date_format(update_time, '%y.%m.%d %H:%i')   as update_time
+        from notice
+        where notice_id = #{noticeId}
+    </select>
+
+    <!-- contents 기준으로 검색할 경우, 크기(메모리) 증가로 인한 OOM 발생 가능성 / summary 기준으로 탐색 -->
+    <sql id="textSearchCountQuery">
+        <choose>
+            <when test="searchType eq 'LIKE'">
+                summary like CONCAT('%',#{keyword}, '%')
+                or title like CONCAT('%',#{keyword}, '%')
+            </when>
+
+            <when test="searchType eq 'FULL-TEXT'">
+                MATCH(summary) AGAINST(CONCAT(#{keyword}, '*') IN BOOLEAN MODE) or
+                MATCH(title) AGAINST(CONCAT(#{keyword}, '*') IN BOOLEAN MODE)
+            </when>
+        </choose>
+    </sql>
+
+    <!-- contents 기준으로 검색할 경우, 크기(메모리) 증가로 인한 OOM 발생 가능성 / summary 기준으로 탐색 -->
+    <sql id="textSearchQuery">
+        <choose>
+            <when test="noticeSearchPagingDto.searchType eq 'LIKE'">
+                summary like CONCAT('%',#{noticeSearchPagingDto.keyword}, '%')
+                or title like CONCAT('%',#{noticeSearchPagingDto.keyword}, '%')
+            </when>
+
+            <when test="noticeSearchPagingDto.searchType eq 'FULL-TEXT'">
+                MATCH(summary) AGAINST(CONCAT(#{noticeSearchPagingDto.keyword}, '*') IN BOOLEAN MODE) or
+                MATCH(title) AGAINST(CONCAT(#{noticeSearchPagingDto.keyword}, '*') IN BOOLEAN MODE)
+            </when>
+        </choose>
+    </sql>
+</mapper>

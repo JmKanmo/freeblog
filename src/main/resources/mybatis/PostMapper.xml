@@ -335,8 +335,8 @@ where main_post.post_id in (select DISTINCT tag.post_id
             </when>
 
             <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
-                MATCH(summary) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE) or
-                MATCH(title) AGAINST(#{postKeywordSearchDto.keyword} IN BOOLEAN MODE)
+                MATCH(summary) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE) or
+                MATCH(title) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
             </when>
         </choose>
     </sql>

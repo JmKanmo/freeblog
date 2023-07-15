@@ -15,6 +15,7 @@ class HeaderController extends UtilController {
         this.userLikePostTemplateHTML = null;
         this.lastSearchTime = null;
         this.noticeAlarmBoard = document.getElementById("notice_alarm_dot_board");
+        this.isReadNoticeAlarm = false;
     }
 
     initHeaderController() {
@@ -41,7 +42,7 @@ class HeaderController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
+            this.showToastMessage('오류가 발생하여 공지사항 알림 정보를 불러오지 못했습니다.');
         });
 
         xhr.send();
@@ -120,28 +121,8 @@ class HeaderController extends UtilController {
 
         if (this.noticeButton != null) {
             this.noticeButton.addEventListener("click", evt => {
-                if (this.noticeAlarmBoard.style.display === 'block') {
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/notice/read-alarm", true);
-                    xhr.setRequestHeader("Content-Type", "application/json");
-
-                    xhr.addEventListener("loadend", evt => {
-                        const status = evt.target.status;
-                        const responseValue = JSON.parse(evt.target.responseText);
-
-                        if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                            this.showToastMessage(responseValue["message"]);
-                        } else {
-                            this.noticeAlarmBoard.style.display = 'none';
-                        }
-                    });
-
-                    xhr.addEventListener("error", event => {
-                        this.showToastMessage('오류가 발생하여 공지사항 알림을 읽는데 실패하였습니다.');
-                    });
-
-                    xhr.send();
-                }
+                this.#requestNoticeAlarmRead();
+                this.#requestNoticeList();
             });
         }
 
@@ -200,6 +181,38 @@ class HeaderController extends UtilController {
                 }
             }
         });
+    }
+
+    #requestNoticeAlarmRead() {
+        if (this.isReadNoticeAlarm === false && this.noticeAlarmBoard.style.display === 'block') {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/notice/read-alarm", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.addEventListener("loadend", evt => {
+                const status = evt.target.status;
+                const responseValue = JSON.parse(evt.target.responseText);
+
+                if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                    this.isReadNoticeAlarm = false;
+                    this.showToastMessage(responseValue["message"]);
+                } else {
+                    this.noticeAlarmBoard.style.display = 'none';
+                }
+            });
+
+            xhr.addEventListener("error", event => {
+                this.showToastMessage('오류가 발생하여 공지사항 알림을 읽는데 실패하였습니다.');
+                this.isReadNoticeAlarm = false;
+            });
+
+            xhr.send();
+            this.isReadNoticeAlarm = true;
+        }
+    }
+
+    #requestNoticeList() {
+        // TODO
     }
 
     #requestUserLikePostInfo() {

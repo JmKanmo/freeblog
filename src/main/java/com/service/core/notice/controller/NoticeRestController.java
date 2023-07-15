@@ -1,6 +1,8 @@
 package com.service.core.notice.controller;
 
 import com.service.core.notice.domain.NoticeAlarm;
+import com.service.core.notice.dto.NoticePagingResponseDto;
+import com.service.core.notice.paging.NoticeSearchPagingDto;
 import com.service.core.notice.service.NoticeService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -25,6 +27,24 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class NoticeRestController {
     private final NoticeService noticeService;
+
+    @Operation(summary = "공지사항 리스트 조회", description = "공지사항 리스트 조회 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "공지사항 리스트 조회 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 공지사항 리스트 조회 실패")
+    })
+    @GetMapping("/search-list")
+    public ResponseEntity<NoticePagingResponseDto> searchNoticeList(@ModelAttribute NoticeSearchPagingDto noticeSearchPagingDto) {
+        try {
+            // TODO
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchNoticeList] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(NoticePagingResponseDto.fail(exception));
+        }
+    }
 
     @Operation(summary = "공지사항 알람 발생 확인", description = "공지사항 알람 발생 확인 메서드")
     @ApiResponses(value = {
