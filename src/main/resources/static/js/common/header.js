@@ -14,10 +14,37 @@ class HeaderController extends UtilController {
         this.userLikePostBlockDeleteAllButton = document.getElementById("user_like_post_block_delete_all_button");
         this.userLikePostTemplateHTML = null;
         this.lastSearchTime = null;
+        this.noticeAlarmBoard = document.getElementById("notice_alarm_dot_board");
     }
 
     initHeaderController() {
+        this.initCheckNotice();
         this.initEventHandler();
+    }
+
+    initCheckNotice() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "/notice/check-alarm", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                if (responseValue === true) {
+                    this.noticeAlarmBoard.style.display = 'block';
+                }
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
+        });
+
+        xhr.send();
     }
 
     initEventHandler() {
@@ -93,7 +120,28 @@ class HeaderController extends UtilController {
 
         if (this.noticeButton != null) {
             this.noticeButton.addEventListener("click", evt => {
-                this.showToastMessage("공지알림,리다이렉트 기능 추후 추가 예정");
+                if (this.noticeAlarmBoard.style.display === 'block') {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/notice/read-alarm", true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    xhr.addEventListener("loadend", evt => {
+                        const status = evt.target.status;
+                        const responseValue = JSON.parse(evt.target.responseText);
+
+                        if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                            this.showToastMessage(responseValue["message"]);
+                        } else {
+                            this.noticeAlarmBoard.style.display = 'none';
+                        }
+                    });
+
+                    xhr.addEventListener("error", event => {
+                        this.showToastMessage('오류가 발생하여 공지사항 알림을 읽는데 실패하였습니다.');
+                    });
+
+                    xhr.send();
+                }
             });
         }
 

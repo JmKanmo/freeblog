@@ -1,6 +1,7 @@
 package com.service.util;
 
 public class ConstUtil {
+    public static final int MAX_NOTICE_CONTENT_SIZE = 5 * 1024 * 1024; // 5MB
     public static final int MAX_POST_CONTENT_SIZE = 10 * 1024 * 1024; // 10MB
     public static final int MAX_INTRO_CONTENT_SIZE = 5 * 1024 * 1024; // 5MB
 

@@ -82,7 +82,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // error
                         "/error/**",
                         // email
-                        "/email/send/**"
+                        "/email/send/**",
+                        // notice alarm
+                        "/notice/check-alarm", "/notice/read-alarm"
                 )
                 .permitAll()
                 .and()
@@ -94,7 +96,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/user/login", "/user/signup", "/user/update/password", "/user/email-auth",
                 "/category/register/{blogId}",
                 "/comment/**",
-                "/like/**");
+                "/like/**", "/notice/read-alarm");
         super.configure(http);
     }
 

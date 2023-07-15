@@ -33,11 +33,22 @@
 
 
 .header_box .user_util_box .header_util_button {
+    position: relative;
     outline: 0;
     border: 0;
     background-color: #ffffff;
     cursor: pointer;
     line-height: normal;
+}
+
+.header_box .user_util_box .header_util_button .notice_alarm_dot_board {
+    display: none;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: -6px;
+    right: 1px;
+    z-index: 10;
 }
 
 /** 사용자 좋아요 조회 버튼 스타일 정의 **/
