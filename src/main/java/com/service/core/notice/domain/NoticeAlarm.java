@@ -15,11 +15,13 @@ public class NoticeAlarm {
     @Id
     private Integer id;
     private String title;
+    private Long createdTime;
 
     public static NoticeAlarm from(Integer id, String title) {
         return NoticeAlarm.builder()
                 .id(id)
                 .title(title)
+                .createdTime(System.currentTimeMillis())
                 .build();
     }
 

@@ -9,9 +9,7 @@ import com.service.core.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,11 @@ public class NoticeServiceImpl implements NoticeService {
         List<NoticeAlarm> noticeAlarmList = new ArrayList<>();
 
         while (noticeAlarmIterator.hasNext()) {
-            noticeAlarmList.add(noticeAlarmIterator.next());
+            NoticeAlarm noticeAlarm = noticeAlarmIterator.next();
+
+            if (noticeAlarm != null && noticeAlarm.getCreatedTime() != null) {
+                noticeAlarmList.add(noticeAlarm);
+            }
         }
         return noticeAlarmList;
     }
@@ -44,7 +46,13 @@ public class NoticeServiceImpl implements NoticeService {
         if (noticeAlarmList.isEmpty()) {
             return null;
         } else {
-            return noticeAlarmList.get(noticeAlarmList.size() - 1);
+            Collections.sort(noticeAlarmList, new Comparator<NoticeAlarm>() {
+                @Override
+                public int compare(NoticeAlarm o1, NoticeAlarm o2) {
+                    return Long.compare(o2.getCreatedTime(), o1.getCreatedTime());
+                }
+            });
+            return noticeAlarmList.get(0);
         }
     }
 }
