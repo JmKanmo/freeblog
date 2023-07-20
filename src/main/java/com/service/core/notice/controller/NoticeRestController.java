@@ -36,8 +36,7 @@ public class NoticeRestController {
     @GetMapping("/search-list")
     public ResponseEntity<NoticePagingResponseDto> searchNoticeList(@ModelAttribute NoticeSearchPagingDto noticeSearchPagingDto) {
         try {
-            // TODO
-            return ResponseEntity.status(HttpStatus.OK).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(NoticePagingResponseDto.success(noticeService.findNoticeByKeyword(noticeSearchPagingDto)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-searchNoticeList] exception occurred ", exception);

@@ -29,8 +29,7 @@
             where (<include refid="textSearchQuery"/>)
         </if>
         order by register_time desc
-        LIMIT #{noticeSearchPagingDto.noticePagination.limitStart}
-        , #{noticeSearchPagingDto.recordSize}
+        LIMIT #{noticeSearchPagingDto.noticePagination.limitStart}, #{noticeSearchPagingDto.recordSize}
     </select>
 
     <select id="findNoticeDetailDtoById" resultType="com.service.core.notice.dto.NoticeDetailDto">
