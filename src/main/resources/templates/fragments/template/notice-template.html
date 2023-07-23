@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="like-template">
+  <!-- handlebars templates -->
+  <script id="notice-template" type="text/x-handlebars-template">
+    <ul class="post_like_user_list">
+      {{#each userPostLikeList}}
+      <li class="post_like_user clear_fix">
+        <div class="like_user_post_container">
+          <div class="like_user_image_container">
+            <img class="like_user_image" src={{{getUserProfileImage
+                 userProfileThumbnailImage}}} alt="">
+          </div>
+
+          <div class="like_user_id_container">
+            <a class="like_user_id_link" href="/blog/{{id}}">{{{getCheckedUserName name}}}</a>
+          </div>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  </script>
+</th:block>
+</html>

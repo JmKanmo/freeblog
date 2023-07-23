@@ -230,6 +230,40 @@
     position: absolute;
 }
 
+/** 공지사항 스타일 정의 **/
+.header_box .user_util_box .notice_container {
+    position: absolute;
+    top: 70px;
+    width: 173px;
+    left: -92px;
+    border: 1px solid #efefef;
+    background-color: #ffffff;
+    z-index: 5;
+    display: none;
+}
+
+.header_box .user_util_box .notice_container .notice_title {
+    line-height: 10px;
+    font-size: 3px;
+    color: #607D8B;
+    padding: 5px;
+}
+
+.header_box .user_util_box .notice_container .notice_list_container .notice_list .notice_link {
+    color: rgb(108, 117, 125);
+    font-size: 13px;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.header_box .user_util_box .notice_container .notice_list_container .notice_list .notice_date {
+    font-size: 5px;
+    color: rgb(158, 158, 158);
+}
+
 /** 로그인 버튼 및 기타 버튼 스타일 정의 **/
 .header_box .user_util_box .login_button {
     padding: 7px 15px 7px 15px;

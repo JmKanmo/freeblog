@@ -16,6 +16,8 @@ class HeaderController extends UtilController {
         this.lastSearchTime = null;
         this.noticeAlarmBoard = document.getElementById("notice_alarm_dot_board");
         this.isReadNoticeAlarm = false;
+        this.noticeContainer = document.getElementById("notice_container");
+        this.noticeTemplateContainer = document.getElementById("notice_template_container");
     }
 
     initHeaderController() {
@@ -97,6 +99,9 @@ class HeaderController extends UtilController {
                     const display = this.userLikePostContainer.style.display;
 
                     if (display === "" || display === "none") {
+                        if (this.noticeContainer != null && this.noticeContainer.style.display === 'block') {
+                            this.noticeContainer.style.display = 'none';
+                        }
                         if (!this.userLikePostTemplateHTML) {
                             this.#requestUserLikePostInfo();
                         } else {
@@ -122,6 +127,7 @@ class HeaderController extends UtilController {
         if (this.noticeButton != null) {
             this.noticeButton.addEventListener("click", evt => {
                 this.#requestNoticeAlarmRead();
+                this.displayNoticeView();
                 this.#requestNoticeList();
             });
         }
@@ -208,6 +214,23 @@ class HeaderController extends UtilController {
 
             xhr.send();
             this.isReadNoticeAlarm = true;
+        }
+    }
+
+    displayNoticeView() {
+        if (this.noticeContainer != null) {
+            if (this.noticeContainer.style.display === '' || this.noticeContainer.style.display === 'none') {
+                if (this.userLikePostContainer != null && this.userLikePostContainer.style.display === 'block') {
+                    this.userLikePostContainer.style.display = "none";
+                    this.userLikePostBlockCloseButton.style.visibility = 'hidden';
+                    this.userLikePostBlockReloadButton.style.visibility = "hidden";
+                    this.userLikePostNoticeText.style.visibility = "hidden";
+                    this.userLikePostBlockDeleteAllButton.style.visibility = "hidden";
+                }
+                this.noticeContainer.style.display = 'block';
+            } else {
+                this.noticeContainer.style.display = 'none';
+            }
         }
     }
 
