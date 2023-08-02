@@ -3,24 +3,14 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<th:block th:fragment="like-template">
+<th:block th:fragment="notice-template">
   <!-- handlebars templates -->
   <script id="notice-template" type="text/x-handlebars-template">
-    <ul class="post_like_user_list">
-      {{#each userPostLikeList}}
-      <li class="post_like_user clear_fix">
-        <div class="like_user_post_container">
-          <div class="like_user_image_container">
-            <img class="like_user_image" src={{{getUserProfileImage
-                 userProfileThumbnailImage}}} alt="">
-          </div>
-
-          <div class="like_user_id_container">
-            <a class="like_user_id_link" href="/blog/{{id}}">{{{getCheckedUserName name}}}</a>
-          </div>
-        </div>
+    <ul class="notice_list_container">
+      <li class="notice_list">
+        <a href="" class="notice_link"></a>
+        <span class="notice_date"></span>
       </li>
-      {{/each}}
     </ul>
   </script>
 </th:block>

@@ -249,6 +249,16 @@
     padding: 5px;
 }
 
+.header_box .user_util_box .notice_container .notice_template_container {
+    min-height: 200px;
+    max-height: 200px;
+}
+
+.header_box .user_util_box .notice_container .notice_list_container .notice_list {
+    position: relative;
+    height: 50px;
+}
+
 .header_box .user_util_box .notice_container .notice_list_container .notice_list .notice_link {
     color: rgb(108, 117, 125);
     font-size: 13px;
@@ -257,9 +267,14 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 30px;
 }
 
 .header_box .user_util_box .notice_container .notice_list_container .notice_list .notice_date {
+    position: absolute;
+    top: 25px;
+    height: 20px;
+    line-height: 20px;
     font-size: 5px;
     color: rgb(158, 158, 158);
 }
