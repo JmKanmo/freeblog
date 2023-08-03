@@ -32,10 +32,10 @@ public class NoticeController {
             @ApiResponse(responseCode = "200", description = "공지사항 상세 페이지 반환 성공"),
             @ApiResponse(responseCode = "500", description = "공지사항 상세 페이지 반환 실패")
     })
-    @GetMapping("/notice/detail/{noticeId}")
+    @GetMapping("/detail/{noticeId}")
     public String noticeDetail(@PathVariable Integer noticeId, Model model) {
         // TODO
-        return "notice/detail";
+        return "notice/notice-detail";
     }
 
     @Operation(summary = "공지사항 개요 페이지", description = "공지사항 개요 페이지 반환")
@@ -43,9 +43,9 @@ public class NoticeController {
             @ApiResponse(responseCode = "200", description = "공지사항 개요 페이지 반환 성공"),
             @ApiResponse(responseCode = "500", description = "공지사항 개요 페이지 반환 실패")
     })
-    @GetMapping("/notice/overview")
+    @GetMapping("/overview")
     public String noticeOverview() {
         // TODO
-        return "notice/overview";
+        return "notice/notice-overview";
     }
 }
