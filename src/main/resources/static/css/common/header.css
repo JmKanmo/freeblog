@@ -246,12 +246,33 @@
     line-height: 10px;
     font-size: 3px;
     color: #607D8B;
-    padding: 5px;
+    padding: 5px 5px 5px 8px;
 }
 
 .header_box .user_util_box .notice_container .notice_template_container {
     min-height: 200px;
-    max-height: 200px;
+    max-height: 500px;
+}
+
+.header_box .user_util_box .notice_container .notice_template_container .notice_close_button {
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 28px;
+    cursor: pointer;
+    line-height: 15px;
+}
+
+.header_box .user_util_box .notice_container .notice_template_container .notice_page_container {
+    padding-top: 11px;
+    padding-bottom: 7px;
+}
+
+.header_box .user_util_box .notice_container .notice_list_container {
+    padding-left: 10px;
 }
 
 .header_box .user_util_box .notice_container .notice_list_container .notice_list {

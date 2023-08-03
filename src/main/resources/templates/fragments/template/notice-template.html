@@ -4,14 +4,14 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <th:block th:fragment="notice-template">
-  <!-- handlebars templates -->
-  <script id="notice-template" type="text/x-handlebars-template">
-    <ul class="notice_list_container">
-      <li class="notice_list">
-        <a href="" class="notice_link"></a>
-        <span class="notice_date"></span>
-      </li>
-    </ul>
-  </script>
+    <!-- handlebars templates -->
+    <script id="notice-template" type="text/x-handlebars-template">
+        {{#each noticeDtoList}}
+        <li class="notice_list">
+            <a href="/notice/detail/{{noticeId}}" class="notice_link">{{title}}</a>
+            <span class="notice_date">{{registerTime}}</span>
+        </li>
+        {{/each}}
+    </script>
 </th:block>
 </html>

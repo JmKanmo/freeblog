@@ -18,6 +18,13 @@ class HeaderController extends UtilController {
         this.isReadNoticeAlarm = false;
         this.noticeContainer = document.getElementById("notice_container");
         this.noticeTemplateContainer = document.getElementById("notice_template_container");
+        this.noticeListContainer = document.getElementById("notice_list_container");
+        this.noticeCloseButton = document.getElementById("notice_close_button");
+        this.noticePagination = document.getElementById("noticePagination");
+        this.noticeTemplateFlag = false;
+
+        this.noticeRecordSize = 5;
+        this.noticePageSize = 5;
     }
 
     initHeaderController() {
@@ -128,7 +135,6 @@ class HeaderController extends UtilController {
             this.noticeButton.addEventListener("click", evt => {
                 this.#requestNoticeAlarmRead();
                 this.displayNoticeView();
-                this.#requestNoticeList();
             });
         }
 
@@ -172,6 +178,27 @@ class HeaderController extends UtilController {
                     });
 
                     xhr.send();
+                }
+            });
+        }
+
+        if (this.noticeCloseButton != null) {
+            this.noticeCloseButton.addEventListener("click", evt => {
+                this.noticeContainer.style.display = 'none';
+            });
+        }
+
+        if (this.noticePagination != null) {
+            this.noticePagination.addEventListener("click", evt => {
+                const button = evt.target.closest("button");
+
+                if (button && !button.closest("li").classList.contains("active")) {
+                    const url = button.getAttribute("url");
+                    const page = button.getAttribute("page");
+
+                    if (url && page) {
+                        this.#requestNoticeList(url, page);
+                    }
                 }
             });
         }
@@ -228,14 +255,42 @@ class HeaderController extends UtilController {
                     this.userLikePostBlockDeleteAllButton.style.visibility = "hidden";
                 }
                 this.noticeContainer.style.display = 'block';
+
+                if (this.noticeTemplateFlag == false) {
+                    this.#requestNoticeList("/notice/search-list");
+                }
             } else {
                 this.noticeContainer.style.display = 'none';
             }
         }
     }
 
-    #requestNoticeList() {
-        // TODO
+    #requestNoticeList(url, page) {
+        const xhr = new XMLHttpRequest();
+        const queryParam = this.getQueryParam(page, this.noticeRecordSize, this.noticePageSize);
+
+        xhr.open("GET", url + '?' + queryParam.toString(), true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.addEventListener("loadend", evt => {
+            const status = evt.target.status;
+            const responseValue = JSON.parse(evt.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#handleNoticeTemplateList(responseValue);
+                this.#clearNoticePagination();
+                this.#handleNoticePagination(responseValue["noticePaginationResponse"]["noticePagination"], queryParam, url);
+                this.noticeTemplateFlag = true;
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage('오류가 발생하여 공지사항 리스트 정보를 불러오지 못했습니다.');
+        });
+
+        xhr.send();
     }
 
     #requestUserLikePostInfo() {
@@ -281,6 +336,25 @@ class HeaderController extends UtilController {
         const userLikePostTemplateHTML = userLikePostTemplateObject({"userLikePostList": responseValue["userLikePostInnerList"]});
         this.userLikePostContainer.innerHTML = userLikePostTemplateHTML;
         this.userLikePostTemplateHTML = userLikePostTemplateHTML;
+    }
+
+    #handleNoticeTemplateList(responseValue) {
+        const noticeTemplate = document.getElementById("notice-template").innerHTML;
+        const noticeTemplateObject = Handlebars.compile(noticeTemplate);
+        const noticeTemplateHTML = noticeTemplateObject({"noticeDtoList": responseValue["noticePaginationResponse"]["noticeDto"]});
+        this.noticeListContainer.innerHTML = noticeTemplateHTML;
+    }
+
+    #clearNoticePagination() {
+        this.noticePagination.innerHTML = ``;
+    }
+
+    #handleNoticePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.noticePagination.innerHTML = '';
+            return;
+        }
+        this.noticePagination.innerHTML = this.drawSimplePagination(pagination, queryParam, url);
     }
 
     initUserLikePostDeleteEvent() {
