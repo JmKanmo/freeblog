@@ -10,13 +10,40 @@
     <link th:href="@{/css/notice/notice-detail.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/notice/notice-detail.js}"></script>
 </head>
+
 <body>
 <div th:replace="fragments/header::header"></div>
-
 <div class="notice_detail_container">
+    <div class="notice_detail_title_container clear_fix">
+        <h3 class="notice_detail_date" th:text="${noticeDetail.registerTime}">
+            2023.06.18 22:37:23
+        </h3>
 
+        <h3 class="notice_detail_title" id="notice_detail_title" th:text="${noticeDetail.title}">
+            공지사항 제목
+        </h3>
+
+        <div class="notice_detail_contents_container">
+            <div class="notice_detail_contents" id="notice_detail_contents">
+                공지사항 컨텐츠
+            </div>
+        </div>
+
+        <div class="notice_list_button_container">
+            <button class="common_blue_button" id="notice_list_button">
+                목록
+            </button>
+        </div>
+    </div>
+
+    <input type="hidden" id="blog_notice_title" readonly th:value="${noticeDetail.title}">
+    <input type="hidden" id="hidden_notice_content" readonly>
+
+    <script th:inline="javascript">
+        const noticeContent = [[${noticeDetail.contents}]];
+        document.getElementById("hidden_notice_content").value = noticeContent;
+    </script>
 </div>
-
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

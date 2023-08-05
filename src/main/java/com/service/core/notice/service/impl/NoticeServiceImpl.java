@@ -3,6 +3,7 @@ package com.service.core.notice.service.impl;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.NoticeManageException;
 import com.service.core.notice.domain.NoticeAlarm;
+import com.service.core.notice.dto.NoticeDetailDto;
 import com.service.core.notice.dto.NoticeDto;
 import com.service.core.notice.paging.NoticePagination;
 import com.service.core.notice.paging.NoticePaginationResponse;
@@ -70,5 +71,10 @@ public class NoticeServiceImpl implements NoticeService {
             });
             return noticeAlarmList.get(0);
         }
+    }
+
+    @Override
+    public NoticeDetailDto findNoticeDetailDtoById(Long noticeId) {
+        return noticeMapper.findNoticeDetailDtoById(noticeId);
     }
 }

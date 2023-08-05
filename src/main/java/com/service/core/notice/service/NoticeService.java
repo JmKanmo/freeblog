@@ -1,6 +1,7 @@
 package com.service.core.notice.service;
 
 import com.service.core.notice.domain.NoticeAlarm;
+import com.service.core.notice.dto.NoticeDetailDto;
 import com.service.core.notice.dto.NoticeDto;
 import com.service.core.notice.paging.NoticePaginationResponse;
 import com.service.core.notice.paging.NoticeSearchPagingDto;
@@ -17,4 +18,6 @@ public interface NoticeService {
     List<NoticeAlarm> findNoticeAlarms();
 
     NoticeAlarm findRecentNoticeAlarm();
+
+    NoticeDetailDto findNoticeDetailDtoById(Long noticeId);
 }
