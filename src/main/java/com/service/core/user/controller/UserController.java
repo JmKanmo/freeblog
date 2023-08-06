@@ -294,13 +294,14 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "이메일 or 인증키 or 비밀번호 인증 오류로 비밀번호 변경 실패")
     })
     @PatchMapping("/update/password")
-    public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model) {
+    public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) throws Exception {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/update/password";
             }
             userService.updatePassword(userPasswordInput);
             model.addAttribute("result", "비밀번호 변경 작업 완료");
+            httpServletRequest.logout();
         } catch (UsernameNotFoundException | UserAuthException exception) {
             model.addAttribute("result", "비밀번호 변경 작업 실패");
             model.addAttribute("error", String.format("비밀번호 변경에 실패하였습니다. %s", exception.getMessage()));
