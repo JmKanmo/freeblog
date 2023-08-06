@@ -127,10 +127,12 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "비밀번호 업데이트 페이지")
     })
     @PatchMapping("/update/social-address")
-    public String updateSocialAddress(@Valid UserSocialAddressInput userSocialAddressInput, BindingResult bindingResult, Model model) {
+    public String updateSocialAddress(@Valid UserSocialAddressInput userSocialAddressInput, BindingResult bindingResult, Principal principal, Model model) {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/update/social-address";
+            } else if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             userService.updateUserSocialAddress(userSocialAddressInput);
             model.addAttribute("result", "소셜 정보 변경 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
@@ -256,6 +258,8 @@ public class UserController {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/withdraw";
+            } else if (authentication == null || authentication.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             userService.withdraw(userWithdrawInput, authentication);
             model.addAttribute("result", "회원탈퇴 작업 완료");
@@ -263,7 +267,7 @@ public class UserController {
         } catch (UsernameNotFoundException | UserAuthException exception) {
             model.addAttribute("result", "회원탈퇴 작업 실패");
             model.addAttribute("error", exception.getMessage());
-        } catch (ServletException e) {
+        } catch (Exception e) {
             model.addAttribute("result", "회원탈퇴 후 로그아웃 작업 실패");
             model.addAttribute("error", e.getMessage());
         }
@@ -276,10 +280,12 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "이메일 or 발급키 인증 오류로 인증 실패")
     })
     @PostMapping("/email-auth")
-    public String emailAuth(@Valid UserAuthInput userAuthInput, BindingResult bindingResult, Model model) {
+    public String emailAuth(@Valid UserAuthInput userAuthInput, BindingResult bindingResult, Principal principal, Model model) {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/auth/email-auth";
+            } else if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             userService.emailAuth(userAuthInput);
         } catch (UserAuthException | UsernameNotFoundException exception) {
@@ -294,10 +300,12 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "이메일 or 인증키 or 비밀번호 인증 오류로 비밀번호 변경 실패")
     })
     @PatchMapping("/update/password")
-    public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) throws Exception {
+    public String updatePassword(@Valid UserPasswordInput userPasswordInput, BindingResult bindingResult, Principal principal, Model model, HttpServletRequest httpServletRequest) throws Exception {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/update/password";
+            } else if (principal == null || principal.getName() == null) {
+                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             userService.updatePassword(userPasswordInput);
             model.addAttribute("result", "비밀번호 변경 작업 완료");
