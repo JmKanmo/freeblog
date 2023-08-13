@@ -10,6 +10,7 @@ import com.service.util.redis.service.view.PostViewRedisTemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class PostPopularTemplateService {
     private final PostLikeRedisTemplateService postLikeRedisTemplateService;

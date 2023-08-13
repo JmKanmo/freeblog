@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.Set;
  * 집계 방식: 로그인:(사용자 id + blogId), 비로그인: (ip, browser, etc...) 정보 조합
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BlogViewRedisTemplateService {
     private final RedisTemplate redisTemplate;

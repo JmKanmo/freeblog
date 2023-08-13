@@ -2,6 +2,10 @@ server:
   servlet:
     session:
       timeout: 60m
+
+  compression:
+    enabled: true
+
   port: 8400
 
   tomcat:
