@@ -456,9 +456,14 @@ class UtilController {
     initAudioPlayer() {
         const ap = new APlayer({
             container: document.getElementById('audio_player'),
+            autoplay: false,
             listFolded: true,
             listMaxHeight: 90,
             lrcType: 0,
+            theme: '#FADFA3',
+            loop: 'all',
+            order: 'random',
+            preload: 'auto',
             audio: [
                 {
                     name: '너에게 쓰는 편지',

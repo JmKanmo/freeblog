@@ -57,6 +57,10 @@ a {
     display: inherit;
 }
 
+.common_gray_underline {
+    border-bottom: 1px solid #eeeeee;
+}
+
 .common_opacity_gray {
     opacity: 30%;
 }
