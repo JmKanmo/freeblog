@@ -15,6 +15,10 @@ class BlogHeaderController extends BlogBodyController {
 
         this.recentPostCardList = document.getElementById("recent_post_card_list");
         this.popularPostCardList = document.getElementById("popular_post_card_list");
+
+        this.audioPlayerCategoryList = document.getElementById("audioPlayerCategoryList");
+        this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
+        this.musicLiveSettingButton = document.getElementById("musicLiveSettingButton");
     }
 
     initBlogHeaderController() {
@@ -88,6 +92,18 @@ class BlogHeaderController extends BlogBodyController {
                 this.openPopUp(1080, 750, '/category/setting?blogId=' + document.getElementById("blog_info_id").value, 'popup');
             })
         }
+
+        this.audioPlayerCategoryList.addEventListener("change", evt => {
+            this.showToastMessage("뮤직 카테고리 변경");
+        });
+
+        this.audioPlayerSettingButton.addEventListener("click", evt => {
+            this.showToastMessage("뮤직 설정 버튼 클릭");
+        });
+
+        this.musicLiveSettingButton.addEventListener("click", evt => {
+            this.showToastMessage("뮤직 재생 설정 버튼 클릭");
+        });
     }
 
     #requestRecentPostCard() {
