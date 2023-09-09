@@ -23,6 +23,11 @@ class HeaderController extends UtilController {
         this.noticePagination = document.getElementById("noticePagination");
         this.noticeTemplateFlag = false;
 
+        this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
+        this.musicPlayButton = document.getElementById("musicPlayButton");
+
+        this.audioPlayer = this.initAudioPlayer();
+
         this.noticeRecordSize = 5;
         this.noticePageSize = 5;
     }
@@ -200,6 +205,18 @@ class HeaderController extends UtilController {
                         this.#requestNoticeList(url, page);
                     }
                 }
+            });
+        }
+
+        if (this.audioPlayerSettingButton != null) {
+            this.audioPlayerSettingButton.addEventListener("click", evt => {
+                this.openPopUp(988, 750, '/music/setting', 'popup');
+            });
+        }
+
+        if (this.musicPlayButton != null) {
+            this.musicPlayButton.addEventListener("click", evt => {
+                this.openPopUp(988, 750, '/music/play', 'popup');
             });
         }
 

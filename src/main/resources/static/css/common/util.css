@@ -596,8 +596,17 @@ input:focus {
 }
 
 /* A-player style */
+.aplayer.aplayer-withlist .aplayer-pic {
+    height: 71px;
+}
+
 .aplayer.aplayer-withlist .aplayer-list {
     display: block;
     height: 360px;
     overflow-y: scroll;
+}
+
+.aplayer.aplayer-withlist .aplayer-info {
+    padding: 23px 7px 0 10px;
+    height: 71px;
 }

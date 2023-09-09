@@ -4,7 +4,7 @@ class BlogHeaderController extends BlogBodyController {
         this.recentPostTitle = document.getElementById("recent_post_title");
         this.popularPostTitle = document.getElementById("popular_post_title");
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
-        this.audioPlayer = this.initAudioPlayer(); // TODO
+
         this.introButton = document.getElementById("intro_button");
 
         this.blogHeaderCategoryList = document.getElementById("blog_header_category_list");
@@ -17,8 +17,6 @@ class BlogHeaderController extends BlogBodyController {
         this.popularPostCardList = document.getElementById("popular_post_card_list");
 
         this.audioPlayerCategoryList = document.getElementById("audioPlayerCategoryList");
-        this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
-        this.musicLiveSettingButton = document.getElementById("musicLiveSettingButton");
     }
 
     initBlogHeaderController() {
@@ -95,14 +93,6 @@ class BlogHeaderController extends BlogBodyController {
 
         this.audioPlayerCategoryList.addEventListener("change", evt => {
             this.showToastMessage("뮤직 카테고리 변경");
-        });
-
-        this.audioPlayerSettingButton.addEventListener("click", evt => {
-            this.showToastMessage("뮤직 설정 버튼 클릭");
-        });
-
-        this.musicLiveSettingButton.addEventListener("click", evt => {
-            this.showToastMessage("뮤직 재생 설정 버튼 클릭");
         });
     }
 

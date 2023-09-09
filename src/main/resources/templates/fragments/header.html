@@ -8,6 +8,27 @@
             <div th:replace="fragments/common.html :: logo_layout"></div>
         </div>
 
+        <div class="audio_player_style">
+            <div class="audioPlayer_Option_Box">
+                <select class="audioPlayer_Category_List" name="categoryName" id="audioPlayerCategoryList">
+                    <!-- 뮤직 카테고리 리스트 -->
+                </select>
+
+                <button class="common_button_text audioPlayer_Setting_Button" title="음악 플레이어 설정"
+                        id="audioPlayerSettingButton">
+                    <span class="blind">설정</span>
+                    <img class="common_button_image_style" src="../images/setting.png" alt="">
+                </button>
+
+                <button class="common_button_text music_play_button" title="뮤직 플레이"
+                        id="musicPlayButton">
+                    <span class="blind">뮤직 플레이 버튼</span>
+                    <img class="common_button_image_style" src="../images/music_setting.png" alt="">
+                </button>
+            </div>
+            <div id="audio_player"></div>
+        </div>
+
         <div class="user_util_box">
             <ul class="user_util_list">
                 <!-- 추후에 dark/light 모드 기능 구현 후, 활성화 예정
