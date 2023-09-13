@@ -35,7 +35,7 @@
         </div>
 
         <div class="search_container">
-            <form action="/post/search" target="_blank" method="get" class="blog_view_search_form" id="postSearchForm">
+            <form action="/post/search" method="get" class="blog_view_search_form" id="postSearchForm">
                 <input type="hidden" id="postSearchBlogIdInput" name="blogId" readonly th:value="${blog_info.id}">
                 <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                        placeholder="검색어를 입력해주세요." spellcheck="false" required>

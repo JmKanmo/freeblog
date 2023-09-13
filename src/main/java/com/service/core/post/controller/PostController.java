@@ -65,6 +65,7 @@ public class PostController {
 
         UserProfileDto userProfileDto = userService.findUserProfileDtoByBlogId(blogId);
         PostDetailDto postDetailDto = postService.findPostDetailInfo(blogId, postId);
+        model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
         model.addAttribute("isEqualPostByLogin", isEqualPostByLogin);
         model.addAttribute("user_profile", userProfileDto);
         model.addAttribute("postDetail", postDetailDto);
@@ -93,9 +94,11 @@ public class PostController {
             throw new UserAuthException(ServiceExceptionMessage.MISMATCH_ID);
         }
 
+        UserProfileDto userProfileDto = userService.findUserProfileDtoById(userId);
         BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoById(userHeaderDto.getId());
 
         model.addAttribute("user_header", userHeaderDto);
+        model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
         model.addAttribute("blogPostInput", BlogPostInput.builder().id(blogDeleteDto.getId()).build());
         return "post/post-write";
     }
@@ -118,9 +121,12 @@ public class PostController {
         if (blogDeleteDto.getId() != blogId) {
             throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
         }
+
+        UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
         PostUpdateDto postUpdateDto = postService.findPostUpdateInfo(blogId, postId);
 
         model.addAttribute("user_header", userHeaderDto);
+        model.addAttribute("blog_owner", BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash()));
         model.addAttribute("blogPostUpdateInput", BlogPostUpdateInput.builder().blogId(blogDeleteDto.getId()).postId(postUpdateDto.getId()).build());
         model.addAttribute("postUpdate", postUpdateDto);
         return "post/post-update";
@@ -134,10 +140,15 @@ public class PostController {
     @GetMapping("/search")
     public String postSearchPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
                                  @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, Model model, Principal principal) {
+        boolean blog_owner = false;
+
         if (principal != null && principal.getName() != null) {
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+            UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
+            blog_owner = BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash());
             model.addAttribute("user_header", userHeaderDto);
         }
+        model.addAttribute("blog_owner", blog_owner);
         model.addAttribute("blogId", blogId);
         model.addAttribute("keyword", keyword);
         return "post/post-search";

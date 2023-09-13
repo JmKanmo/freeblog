@@ -40,6 +40,7 @@ public class NoticeController {
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }
+        model.addAttribute("invisible", true);
         model.addAttribute("noticeDetail", noticeService.findNoticeDetailDtoById(noticeId));
         return "notice/notice-detail";
     }
@@ -54,7 +55,7 @@ public class NoticeController {
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
         }
-        // TODO
+        model.addAttribute("invisible", true);
         return "notice/notice-list";
     }
 }

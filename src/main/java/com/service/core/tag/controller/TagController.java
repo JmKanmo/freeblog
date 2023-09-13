@@ -2,7 +2,10 @@ package com.service.core.tag.controller;
 
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
+import com.service.core.user.dto.UserHeaderDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,12 +32,18 @@ public class TagController {
     })
     @GetMapping("/{tagName}")
     public String tagPostPage(@PathVariable String tagName, @RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId, Model model, Principal principal) {
+        boolean blog_owner = false;
+
         if (principal != null) {
-            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+            UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+            model.addAttribute("user_header", userHeaderDto);
+            UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
+            blog_owner = BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash());
         }
 
         BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoById(blogId);
 
+        model.addAttribute("blog_owner", blog_owner);
         model.addAttribute("blog_info", blogInfoDto);
         model.addAttribute("tagName", tagName);
         return "tag/blog-tag";

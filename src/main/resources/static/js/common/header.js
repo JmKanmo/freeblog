@@ -210,13 +210,13 @@ class HeaderController extends UtilController {
 
         if (this.audioPlayerSettingButton != null) {
             this.audioPlayerSettingButton.addEventListener("click", evt => {
-                this.openPopUp(988, 750, '/music/setting', 'popup');
+                this.openPopUp(1080, 750, '/music/setting', 'popup');
             });
         }
 
         if (this.musicPlayButton != null) {
             this.musicPlayButton.addEventListener("click", evt => {
-                this.openPopUp(988, 750, '/music/play', 'popup');
+                this.openPopUp(1080, 750, '/music/play', 'popup');
             });
         }
 

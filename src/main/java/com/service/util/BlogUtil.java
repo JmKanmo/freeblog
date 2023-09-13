@@ -104,19 +104,19 @@ public class BlogUtil {
 
     public static String getImageFileUUID(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String extension = getImageExtension(fileName.substring(fileName.lastIndexOf(".") + 1));
         String uuid = LocalDateTime.now().toString() + UUID.nameUUIDFromBytes(fileName.getBytes(StandardCharsets.UTF_8)) + "." + extension;
         return uuid;
     }
 
     public static String getImageFileUUIDBySftp(MultipartFile multipartFile) {
         String fileName = multipartFile.getContentType();
-        String extension = getImageException(fileName.substring(fileName.lastIndexOf("/") + 1));
+        String extension = getImageExtension(fileName.substring(fileName.lastIndexOf("/") + 1));
         String uuid = UUID.randomUUID() + "." + extension;
         return uuid;
     }
 
-    public static String getImageException(String extension) {
+    public static String getImageExtension(String extension) {
         if (extension == null || extension.isEmpty()) {
             return "png";
         }

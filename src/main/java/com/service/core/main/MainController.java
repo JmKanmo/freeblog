@@ -1,6 +1,9 @@
 package com.service.core.main;
 
+import com.service.core.user.dto.UserHeaderDto;
+import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
+import com.service.util.BlogUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,10 +41,16 @@ public class MainController {
     })
     @GetMapping("/settings")
     public String settings(Model model, Principal principal) {
+        boolean blog_owner = false;
+
         if (principal != null) {
-            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+            UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+            model.addAttribute("user_header", userHeaderDto);
+            UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
+            blog_owner = BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash());
             model.addAttribute("user_setting", userService.findUserSettingDtoByEmail(principal.getName()));
         }
+        model.addAttribute("blog_owner", blog_owner);
         return "settings";
     }
 }
