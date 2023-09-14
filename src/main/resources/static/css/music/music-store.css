@@ -1,0 +1,38 @@
+.container {
+    padding: 35px;
+}
+
+.music_store_container {
+    max-width: 600px;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+.music_store_container .music_store_title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #424242;
+    text-align: center;
+    padding-bottom: 15px;
+}
+
+.music_store_container .music_store_box {
+    border: 1px solid #ced4da;
+    white-space: normal;
+    height: 350px;
+}
+
+.music_store_container .music_store_box .music_store_list {
+    width: 50%;
+    float: left;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.music_store_container .music_store_box .music_download_list {
+    width: 50%;
+    float: right;
+    box-sizing: border-box;
+    border-left: 1px solid #ced4da;
+    height: 100%;
+}

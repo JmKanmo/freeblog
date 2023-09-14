@@ -24,7 +24,7 @@ class HeaderController extends UtilController {
         this.noticeTemplateFlag = false;
 
         this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
-        this.musicPlayButton = document.getElementById("musicPlayButton");
+        this.musicStoreButton = document.getElementById("musicStoreButton");
 
         this.audioPlayer = this.initAudioPlayer();
 
@@ -214,9 +214,9 @@ class HeaderController extends UtilController {
             });
         }
 
-        if (this.musicPlayButton != null) {
-            this.musicPlayButton.addEventListener("click", evt => {
-                this.openPopUp(1080, 750, '/music/play', 'popup');
+        if (this.musicStoreButton != null) {
+            this.musicStoreButton.addEventListener("click", evt => {
+                this.openPopUp(1080, 750, '/music/store', 'popup');
             });
         }
 

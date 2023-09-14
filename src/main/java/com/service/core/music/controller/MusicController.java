@@ -23,8 +23,8 @@ import java.security.Principal;
 public class MusicController {
     @Operation(summary = "뮤직 설정 페이지 반환", description = "뮤직 설정 페이지 반환 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "블로그 포스트 수정 페이지 반환 성공"),
-            @ApiResponse(responseCode = "500", description = "블로그 포스트 수정 페이지 반환 실패")
+            @ApiResponse(responseCode = "200", description = "뮤직 설정 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "뮤직 설정 페이지 반환 실패")
     })
     @GetMapping("/setting")
     public String musicSettingPage(Model model, Principal principal) {
@@ -34,16 +34,16 @@ public class MusicController {
         return "/music/music-setting";
     }
 
-    @Operation(summary = "뮤직 설정 페이지 반환", description = "뮤직 설정 페이지 반환 메서드")
+    @Operation(summary = "뮤직 스토어 페이지 반환", description = "뮤직 스토어 페이지 반환 메서드")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "블로그 포스트 수정 페이지 반환 성공"),
-            @ApiResponse(responseCode = "500", description = "블로그 포스트 수정 페이지 반환 실패")
+            @ApiResponse(responseCode = "200", description = "뮤직 스토어 페이지 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "뮤직 스토어 페이지 반환 실패")
     })
-    @GetMapping("/play")
-    public String musicPlayPage(Model model, Principal principal) {
+    @GetMapping("/store")
+    public String musicStorePage(Model model, Principal principal) {
         if ((principal == null || principal.getName() == null)) {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
-        return "/music/music-play";
+        return "/music/music-store";
     }
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <title>뮤직 스토어 페이지</title>
+    <th:block th:replace="fragments/config :: config"></th:block>
+    <link th:href="@{/css/music/music-store.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/music/music-store.js}"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="music_store_container">
+        <h3 class="music_store_title">뮤직 스토어</h3>
+
+        <div class="music_store_box">
+            <ul class="music_store_list">
+
+            </ul>
+
+            <ul class="music_download_list">
+
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
