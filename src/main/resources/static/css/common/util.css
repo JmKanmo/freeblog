@@ -310,6 +310,18 @@ input:focus {
     box-shadow: none;
 }
 
+.common_red_button {
+    font-size: 12px;
+    height: 30px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+    transition-duration: 0.3s;
+    box-shadow: 3px 3px 3px #eeeeee;
+    border: 1px solid #d0274b;
+    background-color: #d0274b;
+}
+
 .common_orange_button {
     font-size: 12px;
     height: 30px;

@@ -17,7 +17,120 @@
 
         <div class="music_store_box">
             <ul class="music_store_list">
+                <h3 class="music_store_list_title">
+                    뮤직 플레이 리스트
+                </h3>
 
+                <button class="common_button_text common_orange_button music_store_reload_button"
+                        id="musicStoreReloadButton">
+                    새로고침
+                </button>
+
+                <div class="music_store_list_util_box clear_fix">
+                    <form class="music_store_list_search_form" id="musicStoreListSearchForm">
+                        <input type="text" class="music_store_list_search_input" id="musicStoreListSearchInput"
+                               name="searchText" placeholder="검색어를 입력하세요">
+                        <button type="button" class="music_store_list_search_button">
+                            <img class="common_button_image_style" src="../images/search.gif"/>
+                        </button>
+                    </form>
+
+                    <select class="music_store_list_sort_selector" name="musicStoreListSortSelector"
+                            id="musicStoreListSortSelector">
+                        <option value="">최신순</option>
+                        <option value="">과거순</option>
+                        <option value="">제목순</option>
+                        <option value="">가수순</option>
+                    </select>
+                    <select class="music_store_list_category_selector" name="musicStoreListCategorySelector"
+                            id="musicStoreListCategorySelector">
+                        <!-- music store category list -->
+                    </select>
+                </div>
+
+                <div class="clear_fix music_store_option_box">
+                    <div class="clear_fix music_store_option_select_box">
+                        <button type="button" class="common_button_text music_store_option_all_select_button"
+                                id="musicStoreOptionAllSelectButton">
+                            전체선택
+                        </button>
+                        <button type="button" class="common_button_text music_store_option_select_cancel_button"
+                                id="musicStoreOptionSelectCancelButton">
+                            선택해제
+                        </button>
+                    </div>
+
+                    <div class="clear_fix music_store_option_add_box">
+                        <button type="button" class="common_red_button music_store_option_add_button">
+                            담기
+                        </button>
+                    </div>
+                </div>
+
+                <div class="music_store_list_box">
+                    <!-- music store list template -->
+                    <li class="music_store">
+                        <div class="music_store_image_box">
+                            <img class="music_store_image"
+                                 src="https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg"
+                                 alt="music store image">
+                        </div>
+
+                        <div class="music_store_desc_box">
+                            <p class="music_store_sing_title">잠못드는밤 비는 내리고</p>
+                            <p class="music_store_singer">SG워너비</p>
+                        </div>
+                    </li>
+                    <li class="music_store">
+                        <div class="music_store_image_box">
+                            <img class="music_store_image"
+                                 src="https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg"
+                                 alt="music store image">
+                        </div>
+
+                        <div class="music_store_desc_box">
+                            <p class="music_store_sing_title">잠못드는밤 비는 내리고</p>
+                            <p class="music_store_singer">SG워너비</p>
+                        </div>
+                    </li>
+                    <li class="music_store">
+                        <div class="music_store_image_box">
+                            <img class="music_store_image"
+                                 src="https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg"
+                                 alt="music store image">
+                        </div>
+
+                        <div class="music_store_desc_box">
+                            <p class="music_store_sing_title">잠못드는밤 비는 내리고</p>
+                            <p class="music_store_singer">SG워너비</p>
+                        </div>
+                    </li>
+                    <li class="music_store">
+                        <div class="music_store_image_box">
+                            <img class="music_store_image"
+                                 src="https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg"
+                                 alt="music store image">
+                        </div>
+
+                        <div class="music_store_desc_box">
+                            <p class="music_store_sing_title">잠못드는밤 비는 내리고</p>
+                            <p class="music_store_singer">SG워너비</p>
+                        </div>
+                    </li>
+
+                    <li class="music_store">
+                        <div class="music_store_image_box">
+                            <img class="music_store_image"
+                                 src="https://freelog-s3-bucket.s3.amazonaws.com/image/artworks-000358972065-nx6b7a-original.jpg"
+                                 alt="music store image">
+                        </div>
+
+                        <div class="music_store_desc_box">
+                            <p class="music_store_sing_title">잠못드는밤 비는 내리고</p>
+                            <p class="music_store_singer">SG워너비</p>
+                        </div>
+                    </li>
+                </div>
             </ul>
 
             <ul class="music_download_list">

@@ -3,7 +3,7 @@
 }
 
 .music_store_container {
-    max-width: 600px;
+    max-width: 750px;
     margin: 0 auto;
     white-space: nowrap;
 }
@@ -16,10 +16,19 @@
     padding-bottom: 15px;
 }
 
+.music_store_container .music_store_reload_button {
+    position: absolute;
+    right: 5px;
+    top: 3px;
+    width: 50px;
+    height: 20px;
+    font-size: 10px;
+}
+
 .music_store_container .music_store_box {
     border: 1px solid #ced4da;
     white-space: normal;
-    height: 350px;
+    height: 500px;
 }
 
 .music_store_container .music_store_box .music_store_list {
@@ -27,6 +36,151 @@
     float: left;
     box-sizing: border-box;
     height: 100%;
+    position: relative;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_title {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 7px;
+    color: #495057;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box {
+    padding-right: 10px;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dedede;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box .music_store_list_search_form {
+    float: left;
+    padding-left: 7px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box .music_store_list_search_form .music_store_list_search_input {
+    width: 106px;
+    height: 25px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+    font-size: 11px;
+    line-height: 13px;
+    padding: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: #ffffff;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box .music_store_list_search_form .music_store_list_search_button {
+    border: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    background-color: #ffffff;
+    padding: 0;
+    margin-left: 2px;
+    width: 17px;
+    height: 17px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box .music_store_list_sort_selector {
+    float: right;
+    width: 52px;
+    border: none;
+    font-size: 11px;
+    margin-top: 1.5px;
+    color: #444;
+    outline: none;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_util_box .music_store_list_category_selector {
+    float: right;
+    margin-right: 20px;
+    border: 1px solid #eeeeee;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .07), 0 1px 5px 0 rgba(0, 0, 0, .1);
+    font-size: 12px;
+    color: #666;
+    margin-right: 10px;
+    min-width: 42px;
+    outline: none;
+}
+
+/* music store option box style */
+.music_store_container .music_store_box .music_store_list .music_store_option_box {
+    padding: 5px 10px 5px 5px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_option_box .music_store_option_select_box {
+    float: left;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_option_box .music_store_option_select_box .music_store_option_all_select_button {
+    font-size: 11px;
+    color: #666;
+    cursor: pointer;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_option_box .music_store_option_select_box .music_store_option_select_cancel_button {
+    font-size: 11px;
+    color: #666;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_option_box .music_store_option_add_box {
+    float: right;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_option_box .music_store_option_add_box .music_store_option_add_button {
+    width: 45px;
+    height: 25px;
+    font-size: 11px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* music store list style */
+.music_store_container .music_store_box .music_store_list .music_store_list_box {
+    margin-top: 5px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store {
+    padding: 0px 20px 0px 20px;
+    cursor: pointer;
+    height: 50px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store:nth-child(n+2) {
+    margin-top: 20px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_image_box {
+    width: 55px;
+    height: 100%;
+    float: left;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_image_box .music_store_image {
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_desc_box {
+    height: 100%;
+    float: left;
+    padding: 10px 0px 0px 10px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_desc_box .music_store_sing_title {
+    font-size: 13px;
+    color: #444;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_desc_box .music_store_singer {
+    color: #666;
+    font-size: 11px;
+    margin-top: 10px;
 }
 
 .music_store_container .music_store_box .music_download_list {
