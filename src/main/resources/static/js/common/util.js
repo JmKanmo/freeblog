@@ -454,6 +454,10 @@ class UtilController {
     }
 
     initAudioPlayer() {
+        if (!document.getElementById('audio_player')) {
+            return;
+        }
+
         const ap = new APlayer({
             container: document.getElementById('audio_player'),
             autoplay: false,
@@ -630,7 +634,9 @@ class UtilController {
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
             titleFormat: function (date) {
-                return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+                const year = date.date.year;
+                const month = (parseInt(date.date.month) + 1);
+                return year + '년 ' + month + '월 ';
             },
             //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
             selectable: true, // 달력 일자 드래그 설정가능

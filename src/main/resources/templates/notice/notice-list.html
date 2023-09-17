@@ -9,6 +9,8 @@
     <script type="text/javascript" th:src="@{/js/notice/notice-list.js}"></script>
 </head>
 <body>
+<div th:replace="fragments/header::header"></div>
+
 <h3 class="notice_header">
     공지사항
 </h3>
@@ -26,5 +28,6 @@
         </nav>
     </div>
 </div>
+<div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

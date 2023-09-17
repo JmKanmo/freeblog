@@ -560,17 +560,21 @@ input:focus {
     background: #103E62;
 }
 
-/* Firefox Integration */
-
+/* Full Calendar Custom Style */
 .fc-scroller {
     scrollbar-color: #103E62 #fff;
 }
 
 /* SCROLLBAR - END - */
 .fc .fc-toolbar-title {
-    font-size: 1.70em;
-    margin: 0;
-    color: #777777;
+    font-size: 1.75em !important;
+    color: #165593;
+}
+
+.fc .fc-view-harness {
+    flex-grow: 1;
+    position: relative;
+    height: 255px !important;
 }
 
 /* blog title style */

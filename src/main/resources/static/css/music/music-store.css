@@ -145,13 +145,23 @@
 }
 
 .music_store_container .music_store_box .music_store_list .music_store_list_box .music_store {
-    padding: 0px 20px 0px 20px;
-    cursor: pointer;
-    height: 50px;
+    padding: 0px 20px 0px 10px;
+    max-height: 55px;
 }
 
 .music_store_container .music_store_box .music_store_list .music_store_list_box .music_store:nth-child(n+2) {
     margin-top: 20px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_check_box {
+    float: left;
+    margin-top: 20px;
+}
+
+.music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_total_box {
+    cursor: pointer;
+    float: left;
+    margin-left: 10px;
 }
 
 .music_store_container .music_store_box .music_store_list .music_store_list_box .music_store .music_store_image_box {
