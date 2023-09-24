@@ -1,7 +1,6 @@
 package com.service.core.music.domain;
 
-import com.service.core.blog.domain.Blog;
-import com.service.core.tag.domain.Tag;
+import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,22 +16,16 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_music_category")
-public class UserMusicCategory {
+@Table(name = "music_category")
+public class MusicCategory extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_music_category_id")
+    @Column(name = "music_category_id")
     private Long id;
 
     private String name;
 
-    private boolean isDelete;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_id")
-    private Blog blog;
-
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "userMusicCategory")
-    private List<UserMusic> userMusicList;
+    @OneToMany(mappedBy = "musicCategory")
+    private List<Music> musicList;
 }

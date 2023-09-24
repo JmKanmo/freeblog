@@ -1,5 +1,6 @@
 package com.service.core.music.domain;
 
+import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +13,11 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_music")
-public class UserMusic {
+@Table(name = "music")
+public class Music extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_music_id")
+    @Column(name = "music_id")
     private Long id;
 
     private String name;
@@ -29,9 +30,7 @@ public class UserMusic {
 
     private String lrc;
 
-    private boolean isDelete;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_category_id")
-    private UserMusicCategory userMusicCategory;
+    private MusicCategory musicCategory;
 }

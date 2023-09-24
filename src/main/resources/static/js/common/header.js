@@ -50,7 +50,9 @@ class HeaderController extends UtilController {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 if (responseValue === true) {
-                    this.noticeAlarmBoard.style.display = 'block';
+                    if (this.noticeAlarmBoard) {
+                        this.noticeAlarmBoard.style.display = 'block';
+                    }
                 }
             }
         });
@@ -234,7 +236,7 @@ class HeaderController extends UtilController {
     }
 
     #requestNoticeAlarmRead() {
-        if (this.isReadNoticeAlarm === false && this.noticeAlarmBoard.style.display === 'block') {
+        if (this.isReadNoticeAlarm === false && this.noticeAlarmBoard && this.noticeAlarmBoard.style.display === 'block') {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "/notice/read-alarm", true);
             xhr.setRequestHeader("Content-Type", "application/json");
@@ -247,7 +249,9 @@ class HeaderController extends UtilController {
                     this.isReadNoticeAlarm = false;
                     this.showToastMessage(responseValue["message"]);
                 } else {
-                    this.noticeAlarmBoard.style.display = 'none';
+                    if (this.noticeAlarmBoard) {
+                        this.noticeAlarmBoard.style.display = 'none';
+                    }
                 }
             });
 
