@@ -19,14 +19,14 @@ public class MusicTest {
     @Test
     public void musicTest() {
         MusicSearchPagingDto musicSearchPagingDto = new MusicSearchPagingDto();
-        musicSearchPagingDto.setKeyword("r");
+        musicSearchPagingDto.setKeyword("");
         musicSearchPagingDto.setSearchType("LIKE");
-        musicSearchPagingDto.setKeywordType("NAME");
+        musicSearchPagingDto.setKeywordType("ALL");
         musicSearchPagingDto.setOrderBy("ASC");
-        MusicPagination musicPagination = new MusicPagination(3, musicSearchPagingDto);
+        MusicPagination musicPagination = new MusicPagination(12, musicSearchPagingDto);
         // parameter 값이 -10과 같거나 ... 혹은 더 낮거나 그러면 에러 발생..
         musicSearchPagingDto.setMusicPagination(musicPagination);
-        List<MusicDto> musicDtoList = musicMapper.searchMusicDto(musicSearchPagingDto, -255L);
+        List<MusicDto> musicDtoList = musicMapper.searchMusicDto(musicSearchPagingDto, 1L);
         Assertions.assertNotNull(musicDtoList);
     }
 }

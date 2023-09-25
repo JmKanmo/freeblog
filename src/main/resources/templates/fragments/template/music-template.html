@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="music-template">
+    <!-- handlebars templates -->
+    <script id="music-template" type="text/x-handlebars-template">
+        {{#each musicList}}
+        <li class="music_store clear_fix">
+            <input type="checkbox" class="music_store_check_box" id="musicStoreCheckBox{{musicId}}">
+
+            <div class="clear_fix music_store_total_box">
+                <div class="music_store_image_box">
+                    <img class="music_store_image"
+                         src={{{getPostThumbnailImage cover}}}
+                         alt="music store image">
+                </div>
+
+                <div class="music_store_desc_box">
+                    <p class="music_store_sing_title">{{name}}</p>
+                    <p class="music_store_singer">{{artist}}</p>
+                </div>
+
+                <input type="hidden" id="musicStoreUrlInput{{musicId}}" value="{{url}}">
+                <input type="hidden" id="musicStoreLrcInput{{musicId}}" value="{{lrc}}">
+            </div>
+        </li>
+        {{/each}}
+    </script>
+</th:block>
+</html>

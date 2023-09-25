@@ -31,10 +31,9 @@ public class MusicRestController {
     })
     @GetMapping("/play-list")
     public ResponseEntity<MusicPagingResponseDto> searchMusicPlayList(@RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
-                                                                      @RequestParam(value = "sortOrder", required = false, defaultValue = "asc") String sortOrder,
                                                                       @ModelAttribute MusicSearchPagingDto musicSearchPagingDto) {
         try {
-            return null;
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(musicService.searchMusicDto(musicSearchPagingDto, categoryId)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-searchMusicPlayList] exception occurred ", exception);

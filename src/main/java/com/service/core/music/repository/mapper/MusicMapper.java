@@ -10,4 +10,6 @@ import java.util.List;
 @Mapper
 public interface MusicMapper {
     List<MusicDto> searchMusicDto(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId);
+
+    int searchMusicCount();
 }

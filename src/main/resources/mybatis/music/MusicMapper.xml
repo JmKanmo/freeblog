@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.music.repository.mapper.MusicMapper">
+
+    <select id="searchMusicCount" resultType="int">
+        select count(*)
+        from music
+    </select>
+
     <select id="searchMusicDto"
             parameterType="com.service.core.music.paging.MusicSearchPagingDto"
             resultType="com.service.core.music.dto.MusicDto">
