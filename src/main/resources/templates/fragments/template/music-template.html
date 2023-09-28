@@ -28,5 +28,13 @@
         </li>
         {{/each}}
     </script>
+
+    <script id="music-category-template" type="text/x-handlebars-template">
+        {{#each musicCategoryList}}
+        <option value={{categoryId}}>
+            {{name}}
+        </option>
+        {{/each}}
+    </script>
 </th:block>
 </html>

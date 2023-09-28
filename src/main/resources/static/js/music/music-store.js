@@ -6,21 +6,48 @@ class MusicPlayController extends UtilController {
         this.musicStoreListSortSelector = document.getElementById("musicStoreListSortSelector");
         this.musicStoreListBox = document.getElementById("musicStoreListBox");
         this.musicStorePagination = document.getElementById("musicStorePagination");
+        this.musicStoreListSearchButton = document.getElementById("musicStoreListSearchButton");
+        this.musicSearchTypeSelector = document.getElementById("musicSearchTypeSelector");
+        this.musicStoreReloadButton = document.getElementById("musicStoreReloadButton");
+
         // page size
         this.musicStoreRecordSize = 5;
         this.musicStorePageSize = 5;
     }
 
     initMusicPlayController() {
+        this.#requestMusicCategoryList();
         this.#requestMusicStoreList("/music/play-list");
         this.initEventListener();
+    }
+
+    #requestMusicCategoryList() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `/music-category/list`, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                this.#handleMusicCategoryTemplate(responseValue);
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
+        });
+        xhr.send();
     }
 
     #requestMusicStoreList(url, page) {
         const musicStoreSearchKeywordValue = !this.musicStoreListSearchInput.value ? '' : this.musicStoreListSearchInput.value;
         const musicStoreListCategoryValue = !this.musicStoreListCategorySelector.value ? -1 : this.musicStoreListCategorySelector.value;
-        const musicStoreListOrderByValue = !this.musicStoreListSortSelector.value ? "ASC" : '';
-        const musicStoreKeywordTypeValue = `ALL`;
+        const musicStoreListOrderByValue = !this.musicStoreListSortSelector.value ? "ASC" : this.musicStoreListSortSelector.value;
+        const musicStoreKeywordTypeValue = this.musicSearchTypeSelector.value;
         const musicStoreSearchTypeValue = `LIKE`;  // TODO 실제 서비스 시에는 FULL-TEXT 방식 고려
 
         const xhr = new XMLHttpRequest();
@@ -38,12 +65,13 @@ class MusicPlayController extends UtilController {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 if (responseValue["musicPaginationResponse"]["musicDto"].length <= 0) {
-                    this.#handleTemplateList(responseValue);
+                    this.showToastMessage("해당 카테고리 내 뮤직 플레이 리스트가 비었습니다.", 100);
+                    this.#handleMusicTemplate(responseValue);
                     this.#clearPagination();
                     return;
                 }
 
-                this.#handleTemplateList(responseValue);
+                this.#handleMusicTemplate(responseValue);
                 this.#clearPagination();
                 this.#handlePagination(responseValue["musicPaginationResponse"]["musicPagination"], queryParam, url);
             }
@@ -68,9 +96,41 @@ class MusicPlayController extends UtilController {
                 }
             }
         });
+
+        this.musicStoreListCategorySelector.addEventListener("change", evt => {
+            this.#requestMusicStoreList("/music/play-list");
+        });
+
+        this.musicStoreListSearchInput.addEventListener("keyup", evt => {
+            if (evt.keyCode == 13) {
+                this.#requestMusicStoreList("/music/play-list");
+            }
+        });
+
+        this.musicStoreListSearchButton.addEventListener("click", evt => {
+            this.#requestMusicStoreList("/music/play-list");
+        });
+
+        this.musicStoreListSortSelector.addEventListener("change", evt => {
+            this.#requestMusicStoreList("/music/play-list");
+        });
+
+        this.musicStoreReloadButton.addEventListener("click", evt => {
+            
+            this.#requestMusicCategoryList();
+            this.#requestMusicStoreList("/music/play-list");
+        });
     }
 
-    #handleTemplateList(responseValue) {
+    #handleMusicCategoryTemplate(responseValue) {
+        const musicCategoryTemplate = document.getElementById("music-category-template").innerHTML;
+        const musicCategoryTemplateObject = Handlebars.compile(musicCategoryTemplate);
+        const jsonObj = responseValue["musicPaginationResponse"];
+        const musicTemplateHTML = musicCategoryTemplateObject({"musicCategoryList": jsonObj});
+        this.musicStoreListCategorySelector.innerHTML = musicTemplateHTML;
+    }
+
+    #handleMusicTemplate(responseValue) {
         const musicTemplate = document.getElementById("music-template").innerHTML;
         const musicTemplateObject = Handlebars.compile(musicTemplate);
         const jsonObj = responseValue["musicPaginationResponse"]["musicDto"];

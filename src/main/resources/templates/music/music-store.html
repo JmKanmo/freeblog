@@ -28,24 +28,28 @@
                 </button>
 
                 <div class="music_store_list_util_box clear_fix">
-                    <form class="music_store_list_search_form" id="musicStoreListSearchForm">
+                    <div class="music_store_list_search_form">
+                        <select class="music_search_type_selector" id="musicSearchTypeSelector">
+                            <option value="ALL">전체</option>
+                            <option value="NAME">제목</option>
+                            <option value="ARTIST">아티스트</option>
+                        </select>
+
                         <input type="text" class="music_store_list_search_input" id="musicStoreListSearchInput"
                                name="searchText" placeholder="검색어를 입력하세요">
-                        <button type="button" class="music_store_list_search_button">
+                        <button type="button" class="music_store_list_search_button" id="musicStoreListSearchButton">
                             <img class="common_button_image_style" src="../images/search.gif"/>
                         </button>
-                    </form>
+                    </div>
 
                     <select class="music_store_list_sort_selector" name="musicStoreListSortSelector"
                             id="musicStoreListSortSelector">
-                        <option value="">최신순</option>
-                        <option value="">과거순</option>
-                        <option value="">제목순</option>
-                        <option value="">가수순</option>
+                        <option value="ASC">최신순</option>
+                        <option value="DESC">과거순</option>
                     </select>
                     <select class="music_store_list_category_selector" name="musicStoreListCategorySelector"
                             id="musicStoreListCategorySelector">
-                        <!-- music store category list -->
+                        <!-- music store category list template -->
                     </select>
                 </div>
 

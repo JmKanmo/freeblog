@@ -144,6 +144,19 @@ class UtilController {
         return new Promise((resolve) => setTimeout(resolve, ms))
     }
 
+    showToastMessage(message, _duration) {
+        Toastify({
+            text: message,
+            duration: _duration,
+            close: true,
+            position: "center",
+            stopOnFocus: true,
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+    }
+
     showToastMessage(message) {
         Toastify({
             text: message,

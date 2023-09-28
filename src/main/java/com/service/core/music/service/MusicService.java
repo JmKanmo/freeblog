@@ -20,7 +20,7 @@ public class MusicService {
     private final MusicRepository musicRepository;
 
     public MusicPaginationResponse<List<MusicDto>> searchMusicDto(MusicSearchPagingDto musicSearchPagingDto, long categoryId) {
-        int musicCount = musicMapper.searchMusicCount();
+        int musicCount = musicMapper.searchMusicCount(musicSearchPagingDto, categoryId);
         MusicPagination musicPagination = new MusicPagination(musicCount, musicSearchPagingDto);
         musicSearchPagingDto.setMusicPagination(musicPagination);
         return new MusicPaginationResponse<>(musicMapper.searchMusicDto(musicSearchPagingDto, categoryId), musicPagination);
