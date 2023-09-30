@@ -13,6 +13,7 @@ public class ConstUtil {
     public static final String NOT_EXIST_CATEGORY = "분류 없음";
     public static final String DEFAULT_USER_INTRO = "안녕하세요! 반가워요. :)";
     public static final String TOTAL_CATEGORY = "전체 카테고리";
+    public static final String TOTAL = "전체";
     public static final String TOTAL_POST = "전체글";
     public static final String SFTP_IMAGE_URL = "http://%s/%s"; // 추후에 https 설정 및 변경
     public static final int SFTP_PROFILE_THUMBNAIL_HASH = "profile-thumbnail".hashCode();

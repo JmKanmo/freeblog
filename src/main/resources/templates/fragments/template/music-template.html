@@ -8,9 +8,9 @@
     <script id="music-template" type="text/x-handlebars-template">
         {{#each musicList}}
         <li class="music_store clear_fix">
-            <input type="checkbox" class="music_store_check_box" id="musicStoreCheckBox{{musicId}}">
+            <input type="checkbox" class="music_store_check_box" id="musicStoreCheckBox">
 
-            <div class="clear_fix music_store_total_box">
+            <div class="clear_fix music_store_total_box" id="musicStoreTotalBox">
                 <div class="music_store_image_box">
                     <img class="music_store_image"
                          src={{{getPostThumbnailImage cover}}}
@@ -22,8 +22,13 @@
                     <p class="music_store_singer">{{artist}}</p>
                 </div>
 
-                <input type="hidden" id="musicStoreUrlInput{{musicId}}" value="{{url}}">
-                <input type="hidden" id="musicStoreLrcInput{{musicId}}" value="{{lrc}}">
+                <input type="hidden" readonly id="musicStoreIdInput" value="{{musicId}}">
+                <input type="hidden" readonly id="musicStoreCategoryIdInput" value="{{categoryId}}">
+                <input type="hidden" readonly id="musicStoreTitleInput" value="{{name}}">
+                <input type="hidden" readonly id="musicStoreArtistInput" value="{{artist}}">
+                <input type="hidden" readonly id="musicStoreUrlInput" value="{{url}}">
+                <input type="hidden" readonly id="musicStoreCoverInput" value="{{cover}}">
+                <input type="hidden" readonly id="musicStoreLrcInput" value="{{lrc}}">
             </div>
         </li>
         {{/each}}

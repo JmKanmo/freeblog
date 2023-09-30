@@ -57,9 +57,14 @@ public enum ServiceExceptionMessage {
     // 공지 관련 에러 메시지
     NOTICE_NOT_FOUND("공지사항 정보가 존재하지 않습니다."),
 
+    // 뮤직 관련 에러 메시지
+    MUSIC_NOT_FOUND("뮤직 정보가 존재하지 않습니다."),
+    MUSIC_CATEGORY_NOT_FOUND("뮤직 카테고리 정보가 존재하지 않습니다."),
+
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),
     NOT_VALID_FORM_INPUT("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
+
     private final String message;
 
     ServiceExceptionMessage(String message) {

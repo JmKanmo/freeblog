@@ -6,6 +6,8 @@
     max-width: 850px;
     margin: 0 auto;
     white-space: nowrap;
+    position: relative;
+    margin-top: 35px;
 }
 
 .music_store_container .music_store_title {
@@ -14,6 +16,14 @@
     color: #424242;
     text-align: center;
     padding-bottom: 15px;
+}
+
+.music_store_container .audio_player_style {
+    position: absolute;
+    top: -65px;
+    left: -5px;
+    width: 300px;
+    z-index: 10;
 }
 
 .music_store_container .music_store_reload_button {

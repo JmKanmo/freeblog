@@ -1,7 +1,9 @@
 package com.service.core.music.controller;
 
+import com.service.core.music.dto.MusicCategoryDto;
 import com.service.core.music.dto.MusicPagingResponseDto;
 import com.service.core.music.paging.MusicSearchPagingDto;
+import com.service.core.music.service.MusicCategoryService;
 import com.service.core.music.service.MusicService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MusicRestController {
     private final MusicService musicService;
+    private final MusicCategoryService musicCategoryService;
 
     @Operation(summary = "뮤직 리스트 반환", description = "뮤직 리스트 데이터 반환 메서드")
     @ApiResponses(value = {
@@ -33,6 +36,11 @@ public class MusicRestController {
     public ResponseEntity<MusicPagingResponseDto> searchMusicPlayList(@RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
                                                                       @ModelAttribute MusicSearchPagingDto musicSearchPagingDto) {
         try {
+            MusicCategoryDto musicCategoryDto = musicCategoryService.findMusicCategoryDtoById(categoryId);
+
+            if (BlogUtil.checkEmptyOrUndefinedStr(musicCategoryDto.getName()) || musicCategoryDto.getName().equals(ConstUtil.TOTAL)) {
+                categoryId = 0L;
+            }
             return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(musicService.searchMusicDto(musicSearchPagingDto, categoryId)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {

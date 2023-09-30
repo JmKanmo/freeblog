@@ -1,5 +1,6 @@
 package com.service.core.music.dto;
 
+import com.service.core.music.domain.MusicCategory;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,4 +13,13 @@ public class MusicCategoryDto {
     private final String name;
     private final LocalDateTime registerTime;
     private final LocalDateTime updateTime;
+
+    public static MusicCategoryDto from(MusicCategory musicCategory) {
+        return MusicCategoryDto.builder()
+                .categoryId(musicCategory.getId())
+                .name(musicCategory.getName())
+                .registerTime(musicCategory.getRegisterTime())
+                .updateTime(musicCategory.getUpdateTime())
+                .build();
+    }
 }
