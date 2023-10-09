@@ -91,7 +91,59 @@
 
             <!-- 사용자 영역 -->
             <ul class="music_download_list">
+                <h3 class="music_download_list_title">
+                    뮤직 다운로드 리스트
+                </h3>
 
+                <div class="music_download_list_util_box clear_fix">
+                    <div class="music_download_list_search_form">
+                        <select class="music_download_search_type_selector" id="musicDownloadSearchTypeSelector">
+                            <option value="ALL">전체</option>
+                            <option value="NAME">제목</option>
+                            <option value="ARTIST">아티스트</option>
+                        </select>
+
+                        <input type="text" class="music_download_list_search_input" id="musicDownloadListSearchInput"
+                               placeholder="검색어를 입력하세요">
+
+                        <button type="button" class="music_download_list_search_button"
+                                id="musicDownloadListSearchButton">
+                            <img class="common_button_image_style" src="../images/search.gif" alt="">
+                        </button>
+                    </div>
+
+                    <select class="music_download_list_sort_selector" id="musicDownloadListSortSelector">
+                        <option value="ASC">최신순</option>
+                        <option value="DESC">과거순</option>
+                    </select>
+
+                    <select class="music_download_list_category_selector" id="musicDownloadListCategorySelector">
+                        <option value="1">전체</option>
+                    </select>
+                </div>
+
+                <div class="music_download_option_box clear_fix">
+                    <div class="clear_fix music_download_option_select_box">
+                        <button type="button" class="common_button_text music_download_option_all_select_button"
+                                id="musicDownloadOptionAllSelectButton">
+                            전체선택
+                        </button>
+                        <button type="button" class="common_button_text music_download_option_select_cancel_button"
+                                id="musicDownloadOptionSelectCancelButton">
+                            선택해제
+                        </button>
+                    </div>
+
+                    <div class="clear_fix music_download_option_manage_box">
+                        <button type="button" class="common_blue_button music_download_option_save_button">
+                            저장
+                        </button>
+
+                        <button type="button" class="common_orange_button music_download_option_delete_button">
+                            삭제
+                        </button>
+                    </div>
+                </div>
             </ul>
         </div>
     </div>

@@ -2,6 +2,7 @@
     padding: 35px;
 }
 
+/* 뮤직 스토어 스타일 */
 .music_store_container {
     max-width: 850px;
     margin: 0 auto;
@@ -220,10 +221,131 @@
     margin-top: 30px;
 }
 
+/* 뮤직 다운로드 스타일 */
 .music_store_container .music_store_box .music_download_list {
     width: 50%;
     float: right;
     box-sizing: border-box;
     border-left: 1px solid #ced4da;
     height: 100%;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_title {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 7px;
+    color: #495057;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box {
+    padding-right: 10px;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dedede;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_list_search_form {
+    float: left;
+    padding-left: 7px;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_search_type_selector {
+    float: left;
+    border: 1px solid #eeeeee;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .07), 0 1px 5px 0 rgba(0, 0, 0, .1);
+    font-size: 12px;
+    color: #666;
+    margin-right: 5px;
+    width: 70px;
+    outline: none;
+    margin-top: 3px;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_list_search_input {
+    width: 106px;
+    height: 25px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ffffff;
+    font-size: 11px;
+    line-height: 13px;
+    padding: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: #ffffff;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_list_search_button {
+    border: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    background-color: #ffffff;
+    padding: 0;
+    margin-left: 2px;
+    width: 17px;
+    height: 17px;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_list_sort_selector {
+    float: right;
+    width: 52px;
+    border: none;
+    font-size: 11px;
+    margin-top: 1.5px;
+    color: #444;
+    outline: none;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_list_util_box .music_download_list_category_selector {
+    float: right;
+    margin-right: 20px;
+    border: 1px solid #eeeeee;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .07), 0 1px 5px 0 rgba(0, 0, 0, .1);
+    font-size: 12px;
+    color: #666;
+    margin-right: 10px;
+    min-width: 45px;
+    outline: none;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box {
+    padding: 5px 10px 5px 5px;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_select_box {
+    float: left;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_select_box .music_download_option_all_select_button {
+    font-size: 11px;
+    color: #666;
+    cursor: pointer;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_select_box .music_download_option_select_cancel_button {
+    font-size: 11px;
+    color: #666;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_manage_box {
+    float: right;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_manage_box .music_download_option_save_button {
+    width: 45px;
+    height: 25px;
+    font-size: 11px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.music_store_container .music_store_box .music_download_list .music_download_option_box .music_download_option_manage_box .music_download_option_delete_button {
+    width: 45px;
+    height: 25px;
+    font-size: 11px;
+    border-radius: 5px;
+    cursor: pointer;
 }

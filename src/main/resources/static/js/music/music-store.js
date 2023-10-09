@@ -10,7 +10,16 @@ class MusicPlayController extends UtilController {
         this.musicStoreListSearchButton = document.getElementById("musicStoreListSearchButton");
         this.musicSearchTypeSelector = document.getElementById("musicSearchTypeSelector");
         this.musicStoreReloadButton = document.getElementById("musicStoreReloadButton");
+        this.musicStoreOptionAllSelectButton = document.getElementById("musicStoreOptionAllSelectButton");
         this.musicUtilController = new MusicUtilController();
+
+        this.reloadTimeOut = 1000;
+        this.searchKeywordTimout = 1000;
+
+        this.prevSearchKeywordTime = 0;
+        this.prevReloadTime = 0;
+
+        this.musicPlaySelectmap = new Map();
 
         // page size
         this.musicStoreRecordSize = 5;
@@ -97,6 +106,7 @@ class MusicPlayController extends UtilController {
                     this.#requestMusicStoreList(url, page);
                 }
             }
+            this.musicPlaySelectmap.clear();
         });
 
         this.musicStoreListCategorySelector.addEventListener("change", evt => {
@@ -105,7 +115,14 @@ class MusicPlayController extends UtilController {
 
         this.musicStoreListSearchInput.addEventListener("keyup", evt => {
             if (evt.keyCode == 13) {
-                this.#requestMusicStoreList("/music/play-list");
+                const current = new Date().getTime();
+
+                if (current - this.prevSearchKeywordTime > this.searchKeywordTimout) {
+                    this.#requestMusicStoreList("/music/play-list");
+                    this.prevSearchKeywordTime = current;
+                } else {
+                    this.showToastMessage("잠시 후에 요청 해주세요.");
+                }
             }
         });
 
@@ -118,9 +135,15 @@ class MusicPlayController extends UtilController {
         });
 
         this.musicStoreReloadButton.addEventListener("click", evt => {
+            const current = new Date().getTime();
 
-            this.#requestMusicCategoryList();
-            this.#requestMusicStoreList("/music/play-list");
+            if (current - this.prevReloadTime > this.reloadTimeOut) {
+                this.#requestMusicCategoryList();
+                this.#requestMusicStoreList("/music/play-list");
+                this.prevReloadTime = current;
+            } else {
+                this.showToastMessage("잠시 후에 요청 해주세요.");
+            }
         });
 
         this.musicStoreListBox.addEventListener("click", evt => {
@@ -145,6 +168,65 @@ class MusicPlayController extends UtilController {
                     theme: null
                 });
             }
+        });
+
+        this.musicStoreOptionAllSelectButton.addEventListener("click", evt => {
+            const musicStoreListBoxArray = Array.from(this.musicStoreListBox.children);
+
+            musicStoreListBoxArray.forEach(musicStoreListBox => {
+                let isChecked = false;
+
+                if (musicStoreListBox.tagName.toLowerCase() === 'li') {
+                    const childNodeArr = Array.from(musicStoreListBox.children);
+                    childNodeArr.forEach(childNode => {
+                        if (childNode.tagName.toLowerCase() === 'input') {
+                            if (childNode.id === "musicStoreCheckBox") {
+                                if (childNode.checked === true) {
+                                    childNode.checked = false;
+                                    isChecked = false;
+                                } else {
+                                    childNode.checked = true;
+                                    isChecked = true;
+                                }
+                            }
+                        }
+                        if (childNode.id === "musicStoreTotalBox") {
+                            const musicTotalNodeArr = Array.from(childNode.children);
+                            const musicStoreInfoMap = new Map();
+
+                            musicTotalNodeArr.forEach(musicTotalNode => {
+                                if (musicTotalNode.tagName.toLowerCase() === 'input') {
+                                    if (musicTotalNode.id === 'musicStoreIdInput') {
+                                        musicStoreInfoMap.set('musicStoreId', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreCategoryIdInput') {
+                                        musicStoreInfoMap.set('musicStoreCategoryId', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreTitleInput') {
+                                        musicStoreInfoMap.set('musicStoreTitle', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreArtistInput') {
+                                        musicStoreInfoMap.set('musicStoreArtist', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreUrlInput') {
+                                        musicStoreInfoMap.set('musicStoreUrl', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreCoverInput') {
+                                        musicStoreInfoMap.set('musicStoreCover', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreLrcInput') {
+                                        musicStoreInfoMap.set('musicStoreLrc', musicTotalNode.value);
+                                    }
+                                }
+                            });
+
+                            for (const [key, value] of musicStoreInfoMap) {
+                                const key = `${musicStoreInfoMap.get('musicStoreId')}&${musicStoreInfoMap.get('musicStoreCategoryId')}`;
+
+                                if (isChecked === true) {
+                                    this.musicPlaySelectmap.set(key, musicStoreInfoMap);
+                                } else {
+                                    this.musicPlaySelectmap.delete(key);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         });
     }
 
