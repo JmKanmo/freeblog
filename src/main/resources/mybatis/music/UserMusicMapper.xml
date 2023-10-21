@@ -3,5 +3,95 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.music.repository.mapper.UserMusicMapper">
+    <select id="searchUserMusicCount"
+            parameterType="com.service.core.music.paging.MusicSearchPagingDto"
+            resultType="int">
+        select count(*)
+        from user_music
+        where
+        (<include refid="musicKeywordSearchQuery"/>)
+        <include refid="musicCategoryJoinQuery"/>
+        <include refid="musicOrderBySortQuery"/>
+    </select>
 
+    <select id="searchUserMusicDto"
+            parameterType="com.service.core.music.paging.MusicSearchPagingDto"
+            resultType="com.service.core.music.dto.UserMusicDto">
+        select music_id,
+        artist,
+        cover,
+        lrc,
+        name,
+        url,
+        hashCode,
+        music_category_id as category_id,
+        register_time,
+        update_time
+        from user_music
+        where
+        (<include refid="musicKeywordSearchQuery"/>)
+        <include refid="musicCategoryJoinQuery"/>
+        <include refid="musicOrderBySortQuery"/>
+        LIMIT #{musicSearchPagingDto.musicPagination.limitStart}
+        , #{musicSearchPagingDto.recordSize}
+    </select>
+
+    <sql id="musicCategoryJoinQuery">
+        <choose>
+            <when test="categoryId > 0">
+                and music_category_id = #{categoryId}
+            </when>
+        </choose>
+    </sql>
+
+    <sql id="musicOrderBySortQuery">
+        <choose>
+            <when test="musicSearchPagingDto.orderBy eq 'ASC'">
+                order by register_time asc
+            </when>
+
+            <when test="musicSearchPagingDto.orderBy eq 'DESC'">
+                order by register_time desc
+            </when>
+        </choose>
+    </sql>
+
+    <!-- contents 기준으로 검색할 경우, 크기(메모리) 증가로 인한 OOM 발생 가능성 / summary 기준으로 탐색 -->
+    <sql id="musicKeywordSearchQuery">
+        <choose>
+            <when test="musicSearchPagingDto.searchType eq 'LIKE'">
+                <choose>
+                    <when test="musicSearchPagingDto.keywordType eq 'ALL'">
+                        name like CONCAT('%',#{musicSearchPagingDto.keyword}, '%') or
+                        artist like CONCAT('%',#{musicSearchPagingDto.keyword}, '%')
+                    </when>
+
+                    <when test="musicSearchPagingDto.keywordType eq 'NAME'">
+                        name like CONCAT('%',#{musicSearchPagingDto.keyword}, '%')
+                    </when>
+
+                    <when test="musicSearchPagingDto.keywordType eq 'ARTIST'">
+                        artist like CONCAT('%',#{musicSearchPagingDto.keyword}, '%')
+                    </when>
+                </choose>
+            </when>
+
+            <when test="musicSearchPagingDto.searchType eq 'FULL-TEXT'">
+                <choose>
+                    <when test="musicSearchPagingDto.keywordType eq 'ALL'">
+                        MATCH(name) AGAINST(CONCAT(#{musicSearchPagingDto.keyword}, '*') IN BOOLEAN MODE) or
+                        MATCH(artist) AGAINST(CONCAT(#{musicSearchPagingDto.keyword}, '*') IN BOOLEAN MODE)
+                    </when>
+
+                    <when test="musicSearchPagingDto.keywordType eq 'NAME'">
+                        MATCH(name) AGAINST(CONCAT(#{musicSearchPagingDto.keyword}, '*') IN BOOLEAN MODE)
+                    </when>
+
+                    <when test="musicSearchPagingDto.keywordType eq 'ARTIST'">
+                        MATCH(artist) AGAINST(CONCAT(#{musicSearchPagingDto.keyword}, '*') IN BOOLEAN MODE)
+                    </when>
+                </choose>
+            </when>
+        </choose>
+    </sql>
 </mapper>

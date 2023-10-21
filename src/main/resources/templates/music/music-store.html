@@ -71,7 +71,8 @@
                     </div>
 
                     <div class="clear_fix music_store_option_add_box">
-                        <button type="button" class="common_red_button music_store_option_add_button">
+                        <button type="button" class="common_red_button music_store_option_add_button"
+                                id="musicStoreTakeButton">
                             담기
                         </button>
                     </div>
@@ -94,6 +95,11 @@
                 <h3 class="music_download_list_title">
                     뮤직 다운로드 리스트
                 </h3>
+
+                <button class="common_button_text common_orange_button music_store_reload_button"
+                        id="musicDownloadReloadButton">
+                    새로고침
+                </button>
 
                 <div class="music_download_list_util_box clear_fix">
                     <div class="music_download_list_search_form">
@@ -135,14 +141,21 @@
                     </div>
 
                     <div class="clear_fix music_download_option_manage_box">
-                        <button type="button" class="common_blue_button music_download_option_save_button">
-                            저장
-                        </button>
-
                         <button type="button" class="common_orange_button music_download_option_delete_button">
                             삭제
                         </button>
                     </div>
+                </div>
+
+                <div class="music_download_list_box" id="musicDownloadListBox">
+                    <!-- music download list template -->
+                </div>
+                <div class="music_download_page_container">
+                    <nav class="common-pagination-justify-content-center" aria-label="Page navigation">
+                        <ul class="pagination" id="musicDownloadPagination">
+                            <!-- 페이지 템플릿 -->
+                        </ul>
+                    </nav>
                 </div>
             </ul>
         </div>

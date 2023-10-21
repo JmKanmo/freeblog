@@ -3,5 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.music.repository.mapper.UserMusicCategoryMapper">
-
+    <select id="searchMusicCategoryDto"
+            resultType="com.service.core.music.dto.UserMusicCategoryDto">
+        select user_music_category_id, target_id, name, register_time, update_time
+        from user_music_category
+        order by user_music_category_id, register_time
+    </select>
 </mapper>

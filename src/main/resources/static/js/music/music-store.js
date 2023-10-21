@@ -1,16 +1,7 @@
 class MusicPlayController extends UtilController {
     constructor() {
         super();
-        this.musicStoreListSearchInput = document.getElementById("musicStoreListSearchInput");
-        this.musicStoreListCategorySelector = document.getElementById("musicStoreListCategorySelector");
-        this.musicStoreListSortSelector = document.getElementById("musicStoreListSortSelector");
-        this.musicStoreListBox = document.getElementById("musicStoreListBox");
         this.audioPlayerContainer = document.getElementById("audioPlayerContainer");
-        this.musicStorePagination = document.getElementById("musicStorePagination");
-        this.musicStoreListSearchButton = document.getElementById("musicStoreListSearchButton");
-        this.musicSearchTypeSelector = document.getElementById("musicSearchTypeSelector");
-        this.musicStoreReloadButton = document.getElementById("musicStoreReloadButton");
-        this.musicStoreOptionAllSelectButton = document.getElementById("musicStoreOptionAllSelectButton");
         this.musicUtilController = new MusicUtilController();
 
         this.reloadTimeOut = 1000;
@@ -24,14 +15,30 @@ class MusicPlayController extends UtilController {
         // page size
         this.musicStoreRecordSize = 5;
         this.musicStorePageSize = 5;
+
+        // music play
+        this.musicStoreListSearchInput = document.getElementById("musicStoreListSearchInput");
+        this.musicStoreListCategorySelector = document.getElementById("musicStoreListCategorySelector");
+        this.musicStoreListSortSelector = document.getElementById("musicStoreListSortSelector");
+        this.musicStoreListBox = document.getElementById("musicStoreListBox");
+        this.musicStorePagination = document.getElementById("musicStorePagination");
+        this.musicStoreListSearchButton = document.getElementById("musicStoreListSearchButton");
+        this.musicSearchTypeSelector = document.getElementById("musicSearchTypeSelector");
+        this.musicStoreReloadButton = document.getElementById("musicStoreReloadButton");
+        this.musicStoreOptionAllSelectButton = document.getElementById("musicStoreOptionAllSelectButton");
+        this.musicStoreOptionSelectCancelButton = document.getElementById("musicStoreOptionSelectCancelButton");
+        this.musicStoreTakeButton = document.getElementById("musicStoreTakeButton");
+
+        // music download
     }
 
     initMusicPlayController() {
-        this.#requestMusicCategoryList();
+        this.#requestMusicPlayCategoryList();
+        this.#requestMusicDownloadCategoryList();
         this.initEventListener();
     }
 
-    #requestMusicCategoryList() {
+    #requestMusicPlayCategoryList() {
         const xhr = new XMLHttpRequest();
 
         xhr.open("GET", `/music-category/list`, true);
@@ -52,6 +59,10 @@ class MusicPlayController extends UtilController {
             this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
+    }
+
+    #requestMusicDownloadCategoryList() {
+
     }
 
     #requestMusicStoreList(url, page) {
@@ -138,7 +149,7 @@ class MusicPlayController extends UtilController {
             const current = new Date().getTime();
 
             if (current - this.prevReloadTime > this.reloadTimeOut) {
-                this.#requestMusicCategoryList();
+                this.#requestMusicPlayCategoryList();
                 this.#requestMusicStoreList("/music/play-list");
                 this.prevReloadTime = current;
             } else {
@@ -228,6 +239,62 @@ class MusicPlayController extends UtilController {
                 }
             });
         });
+
+        this.musicStoreOptionSelectCancelButton.addEventListener("click", evt => {
+            const musicStoreListBoxArray = Array.from(this.musicStoreListBox.children);
+
+            musicStoreListBoxArray.forEach(musicStoreListBox => {
+                if (musicStoreListBox.tagName.toLowerCase() === 'li') {
+                    const childNodeArr = Array.from(musicStoreListBox.children);
+                    childNodeArr.forEach(childNode => {
+                        if (childNode.tagName.toLowerCase() === 'input') {
+                            if (childNode.checked === true) {
+                                childNode.checked = false;
+                            }
+                        }
+                        if (childNode.id === "musicStoreTotalBox") {
+                            const musicTotalNodeArr = Array.from(childNode.children);
+                            const musicStoreInfoMap = new Map();
+
+                            musicTotalNodeArr.forEach(musicTotalNode => {
+                                if (musicTotalNode.tagName.toLowerCase() === 'input') {
+                                    if (musicTotalNode.id === 'musicStoreIdInput') {
+                                        musicStoreInfoMap.set('musicStoreId', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreCategoryIdInput') {
+                                        musicStoreInfoMap.set('musicStoreCategoryId', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreTitleInput') {
+                                        musicStoreInfoMap.set('musicStoreTitle', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreArtistInput') {
+                                        musicStoreInfoMap.set('musicStoreArtist', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreUrlInput') {
+                                        musicStoreInfoMap.set('musicStoreUrl', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreCoverInput') {
+                                        musicStoreInfoMap.set('musicStoreCover', musicTotalNode.value);
+                                    } else if (musicTotalNode.id === 'musicStoreLrcInput') {
+                                        musicStoreInfoMap.set('musicStoreLrc', musicTotalNode.value);
+                                    }
+                                }
+                            });
+
+                            for (const [key, value] of musicStoreInfoMap) {
+                                const key = `${musicStoreInfoMap.get('musicStoreId')}&${musicStoreInfoMap.get('musicStoreCategoryId')}`;
+                                this.musicPlaySelectmap.delete(key);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        this.musicStoreTakeButton.addEventListener("click", evt => {
+            const musicPlaySelectMap = this.musicPlaySelectmap;
+            this.#setMusicDownloadList(musicPlaySelectMap)
+        });
+    }
+
+    #setMusicDownloadList(musicPlaySelectMap) {
+        // 위 Map 저장 데이터를 기반으로 TODO 뮤직 다운로드 리스트에 ui 표시 작업 진행
+
     }
 
     #setMusicPlayer(musicStoreMap) {

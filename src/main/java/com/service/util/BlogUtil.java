@@ -280,4 +280,14 @@ public class BlogUtil {
     public static String formatNumberComma(long number) {
         return String.valueOf(number).replaceAll("\\B(?=(\\d{3})+(?!\\d))", ",");
     }
+
+    public static int getHashCode(Object... objects) {
+        int n = 0;
+        for (Object object : objects) {
+            if (object != null) {
+                n += object.hashCode();
+            }
+        }
+        return n;
+    }
 }

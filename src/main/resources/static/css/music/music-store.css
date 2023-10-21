@@ -228,6 +228,7 @@
     box-sizing: border-box;
     border-left: 1px solid #ced4da;
     height: 100%;
+    position: relative;
 }
 
 .music_store_container .music_store_box .music_download_list .music_download_list_title {
