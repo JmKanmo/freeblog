@@ -15,7 +15,10 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_music")
+@Table(name = "user_music",
+        indexes = {
+                @Index(name = "hashcode_idx_id", columnList = "hashCode")
+        })
 public class UserMusic extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

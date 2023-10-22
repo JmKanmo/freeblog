@@ -97,7 +97,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/category/register/{blogId}",
                 "/comment/**",
                 "/like/**",
-                "/notice/**");
+                "/notice/**",
+                "/music/download");
         super.configure(http);
     }
 

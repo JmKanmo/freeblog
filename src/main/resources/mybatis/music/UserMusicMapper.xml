@@ -17,13 +17,13 @@
     <select id="searchUserMusicDto"
             parameterType="com.service.core.music.paging.MusicSearchPagingDto"
             resultType="com.service.core.music.dto.UserMusicDto">
-        select music_id,
+        select user_music_id,
         artist,
         cover,
         lrc,
         name,
         url,
-        hashCode,
+        hash_code,
         music_category_id as category_id,
         register_time,
         update_time

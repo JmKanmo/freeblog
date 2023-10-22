@@ -21,8 +21,8 @@ public class UserMusicCategoryService {
     private final UserMusicCategoryRepository userMusicCategoryRepository;
 
     @Transactional
-    public void saveUserMusicCategory(UserMusicCategory userMusicCategory) {
-        userMusicCategoryRepository.save(userMusicCategory);
+    public UserMusicCategory saveUserMusicCategory(UserMusicCategory userMusicCategory) {
+        return userMusicCategoryRepository.save(userMusicCategory);
     }
 
     public boolean isExistUserMusicCategoryByTargetId(Long targetId) {
@@ -41,7 +41,15 @@ public class UserMusicCategoryService {
         return UserMusicCategoryDto.from(userMusicCategoryRepository.findById(categoryId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_CATEGORY_NOT_FOUND)));
     }
 
-    public UserMusicCategory findUserMusicCategoryById(Long categoryId) {
+    public UserMusicCategory findUserMusicCategoryByIdOrElseThrow(Long categoryId) {
         return userMusicCategoryRepository.findById(categoryId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_CATEGORY_NOT_FOUND));
+    }
+
+    public UserMusicCategory findUserMusicCategoryById(Long categoryId) {
+        return userMusicCategoryRepository.findById(categoryId).orElse(null);
+    }
+
+    public UserMusicCategory findUserMusicCategoryByTargetId(Long targetId) {
+        return userMusicCategoryRepository.findByTargetId(targetId);
     }
 }

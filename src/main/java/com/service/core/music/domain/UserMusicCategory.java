@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(
         name = "user_music_category", indexes = {
-        @Index(name = "target_id_idx", columnList = "targetId")
+        @Index(name = "target_idx_id", columnList = "targetId")
 })
 public class UserMusicCategory extends BaseTimeEntity {
     @Id
@@ -46,6 +46,7 @@ public class UserMusicCategory extends BaseTimeEntity {
         return UserMusicCategory.builder()
                 .targetId(targetId)
                 .name(name)
+                .isDelete(false)
                 .blog(blog)
                 .build();
     }

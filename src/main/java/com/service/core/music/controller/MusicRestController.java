@@ -1,6 +1,5 @@
 package com.service.core.music.controller;
 
-import com.service.core.blog.service.BlogService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserManageException;
 import com.service.core.music.dto.MusicCategoryDto;
@@ -34,7 +33,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class MusicRestController {
-    private final BlogService blogService;
     private final MusicService musicService;
     private final MusicCategoryService musicCategoryService;
     private final UserMusicCategoryService userMusicCategoryService;
@@ -97,7 +95,7 @@ public class MusicRestController {
             if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.downloadMusic(blogService.findBlogByEmail(principal.getName()), userMusicInputList)));
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.downloadMusic(principal.getName(), userMusicInputList)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-downloadMusic] exception occurred ", exception);

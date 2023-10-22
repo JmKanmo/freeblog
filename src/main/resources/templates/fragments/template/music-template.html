@@ -34,9 +34,46 @@
         {{/each}}
     </script>
 
+    <script id="music-download-template" type="text/x-handlebars-template">
+        {{#each musicList}}
+        <li class="music_download clear_fix">
+            <input type="checkbox" class="music_download_check_box" id="musicDownloadCheckBox">
+
+            <div class="clear_fix music_download_total_box" id="musicDownloadTotalBox">
+                <div class="music_download_image_box">
+                    <img class="music_download_image"
+                         src={{{getPostThumbnailImage cover}}}
+                         alt="music download image">
+                </div>
+
+                <div class="music_download_desc_box">
+                    <p class="music_download_sing_title">{{name}}</p>
+                    <p class="music_download_singer">{{artist}}</p>
+                </div>
+
+                <input type="hidden" readonly id="musicDownloadIdInput" value="{{musicId}}">
+                <input type="hidden" readonly id="musicDownloadCategoryIdInput" value="{{categoryId}}">
+                <input type="hidden" readonly id="musicDownloadTitleInput" value="{{name}}">
+                <input type="hidden" readonly id="musicDownloadArtistInput" value="{{artist}}">
+                <input type="hidden" readonly id="musicDownloadUrlInput" value="{{url}}">
+                <input type="hidden" readonly id="musicDownloadCoverInput" value="{{cover}}">
+                <input type="hidden" readonly id="musicDownloadLrcInput" value="{{lrc}}">
+            </div>
+        </li>
+        {{/each}}
+    </script>
+
     <script id="music-category-template" type="text/x-handlebars-template">
         {{#each musicCategoryList}}
         <option value={{categoryId}}>
+            {{name}}
+        </option>
+        {{/each}}
+    </script>
+
+    <script id="music-download-category-template" type="text/x-handlebars-template">
+        {{#each musicCategoryList}}
+        <option value={{id}}>
             {{name}}
         </option>
         {{/each}}
