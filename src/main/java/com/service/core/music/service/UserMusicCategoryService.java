@@ -33,8 +33,8 @@ public class UserMusicCategoryService {
         return userMusicCategoryRepository.existsById(categoryId);
     }
 
-    public List<UserMusicCategoryDto> searchUserMusicCategoryDto() {
-        return userMusicCategoryMapper.searchUserMusicCategoryDto();
+    public List<UserMusicCategoryDto> searchUserMusicCategoryDto(Long blogId) {
+        return userMusicCategoryMapper.searchUserMusicCategoryDto(blogId);
     }
 
     public UserMusicCategoryDto findUserMusicCategoryDtoById(Long categoryId) {
@@ -49,7 +49,7 @@ public class UserMusicCategoryService {
         return userMusicCategoryRepository.findById(categoryId).orElse(null);
     }
 
-    public UserMusicCategory findUserMusicCategoryByTargetId(Long targetId) {
-        return userMusicCategoryRepository.findByTargetId(targetId);
+    public UserMusicCategory findUserMusicCategoryByTargetIdAndBlogId(Long targetId, Long blogId) {
+        return userMusicCategoryRepository.findByTargetIdAndBlogId(targetId, blogId);
     }
 }

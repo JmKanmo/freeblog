@@ -1,5 +1,6 @@
 package com.service.core.music.domain;
 
+import com.service.core.blog.domain.Blog;
 import com.service.core.music.model.UserMusicInput;
 import com.service.util.BlogUtil;
 import com.service.util.domain.BaseTimeEntity;
@@ -43,7 +44,7 @@ public class UserMusic extends BaseTimeEntity {
     @JoinColumn(name = "music_category_id")
     private UserMusicCategory userMusicCategory;
 
-    public static UserMusic from(UserMusicInput userMusicInput, UserMusicCategory userMusicCategory) {
+    public static UserMusic from(String email, Blog blog, UserMusicInput userMusicInput, UserMusicCategory userMusicCategory) {
         return UserMusic.builder()
                 .name(userMusicInput.getTitle())
                 .artist(userMusicInput.getArtist())
@@ -51,6 +52,8 @@ public class UserMusic extends BaseTimeEntity {
                 .cover(userMusicInput.getCover())
                 .lrc(userMusicInput.getLrc())
                 .hashCode(BlogUtil.getHashCode(
+                        email,
+                        blog.getId(),
                         userMusicInput.getMusicId(),
                         userMusicInput.getMusicCategoryId(),
                         userMusicInput.getTitle(),

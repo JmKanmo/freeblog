@@ -7,6 +7,9 @@
             resultType="com.service.core.music.dto.UserMusicCategoryDto">
         select user_music_category_id, target_id, name, register_time, update_time
         from user_music_category
+        where blog_id = #{blogId}
         order by user_music_category_id, register_time
     </select>
+
+
 </mapper>

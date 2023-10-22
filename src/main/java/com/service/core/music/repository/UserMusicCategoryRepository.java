@@ -7,4 +7,6 @@ public interface UserMusicCategoryRepository extends JpaRepository<UserMusicCate
     boolean existsByTargetId(Long targetId);
 
     UserMusicCategory findByTargetId(Long targetId);
+
+    UserMusicCategory findByTargetIdAndBlogId(Long targetId, Long blogId);
 }

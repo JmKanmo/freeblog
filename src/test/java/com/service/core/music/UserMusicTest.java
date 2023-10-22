@@ -24,7 +24,7 @@ public class UserMusicTest {
 
     @Test
     public void userMusicCategoryTest() {
-        List<UserMusicCategoryDto> s = userMusicCategoryMapper.searchUserMusicCategoryDto();
+        List<UserMusicCategoryDto> s = userMusicCategoryMapper.searchUserMusicCategoryDto(3L);
         Assertions.assertNotNull(s);
     }
 

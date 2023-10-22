@@ -282,12 +282,13 @@ public class BlogUtil {
     }
 
     public static int getHashCode(Object... objects) {
-        int n = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+
         for (Object object : objects) {
             if (object != null) {
-                n += object.hashCode();
+                stringBuilder.append(object);
             }
         }
-        return n;
+        return stringBuilder.toString().hashCode();
     }
 }

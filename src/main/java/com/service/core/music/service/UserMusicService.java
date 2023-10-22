@@ -45,7 +45,7 @@ public class UserMusicService {
         for (UserMusicInput userMusicInput : userMusicInputList) {
             Long categoryId = userMusicInput.getMusicCategoryId();
             MusicCategoryDto musicCategoryDto = musicCategoryService.findMusicCategoryDtoById(categoryId);
-            UserMusicCategory userMusicCategory = userMusicCategoryService.findUserMusicCategoryByTargetId(categoryId);
+            UserMusicCategory userMusicCategory = userMusicCategoryService.findUserMusicCategoryByTargetIdAndBlogId(categoryId, blog.getId());
 
             if (userMusicCategory == null) {
                 userMusicCategory = userMusicCategoryService.saveUserMusicCategory(UserMusicCategory.from(
@@ -53,7 +53,7 @@ public class UserMusicService {
                         musicCategoryDto.getName(),
                         blog));
             }
-            UserMusic userMusic = UserMusic.from(userMusicInput, userMusicCategory);
+            UserMusic userMusic = UserMusic.from(email, blog, userMusicInput, userMusicCategory);
 
             if (findUserMusicByHashCode(userMusic.getHashCode()) == false) {
                 userMusicList.add(userMusic);
