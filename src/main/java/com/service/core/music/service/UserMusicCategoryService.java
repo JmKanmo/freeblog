@@ -41,11 +41,20 @@ public class UserMusicCategoryService {
         return UserMusicCategoryDto.from(userMusicCategoryRepository.findById(categoryId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_CATEGORY_NOT_FOUND)));
     }
 
+    public UserMusicCategoryDto findUserMusicCategoryDtoByIdOrElseNull(Long categoryId) {
+        UserMusicCategory userMusicCategory = findUserMusicCategoryByIdOrElseNull(categoryId);
+        if (userMusicCategory == null) {
+            return null;
+        } else {
+            return UserMusicCategoryDto.from(userMusicCategory);
+        }
+    }
+
     public UserMusicCategory findUserMusicCategoryByIdOrElseThrow(Long categoryId) {
         return userMusicCategoryRepository.findById(categoryId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_CATEGORY_NOT_FOUND));
     }
 
-    public UserMusicCategory findUserMusicCategoryById(Long categoryId) {
+    public UserMusicCategory findUserMusicCategoryByIdOrElseNull(Long categoryId) {
         return userMusicCategoryRepository.findById(categoryId).orElse(null);
     }
 

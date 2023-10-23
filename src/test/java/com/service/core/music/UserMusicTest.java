@@ -38,7 +38,7 @@ public class UserMusicTest {
         MusicPagination musicPagination = new MusicPagination(7, musicSearchPagingDto);
         // parameter 값이 -10과 같거나 ... 혹은 더 낮거나 그러면 에러 발생..
         musicSearchPagingDto.setMusicPagination(musicPagination);
-        List<UserMusicDto> musicDtoList = userMusicMapper.searchUserMusicDto(musicSearchPagingDto, 1L);
+        List<UserMusicDto> musicDtoList = userMusicMapper.searchUserMusicDto(musicSearchPagingDto, 1L, 1L);
         Assertions.assertNotNull(musicDtoList);
     }
 

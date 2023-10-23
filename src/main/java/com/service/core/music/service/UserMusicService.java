@@ -30,11 +30,11 @@ public class UserMusicService {
     private final UserMusicRepository userMusicRepository;
 
     @Transactional(readOnly = true)
-    public MusicPaginationResponse<List<UserMusicDto>> searchUserMusicDto(MusicSearchPagingDto musicSearchPagingDto, long categoryId) {
-        int userMusicCount = userMusicMapper.searchUserMusicCount(musicSearchPagingDto, categoryId);
+    public MusicPaginationResponse<List<UserMusicDto>> searchUserMusicDto(MusicSearchPagingDto musicSearchPagingDto, long categoryId, long blogId) {
+        int userMusicCount = userMusicMapper.searchUserMusicCount(musicSearchPagingDto, categoryId, blogId);
         MusicPagination musicPagination = new MusicPagination(userMusicCount, musicSearchPagingDto);
         musicSearchPagingDto.setMusicPagination(musicPagination);
-        return new MusicPaginationResponse<>(userMusicMapper.searchUserMusicDto(musicSearchPagingDto, categoryId), musicPagination);
+        return new MusicPaginationResponse<>(userMusicMapper.searchUserMusicDto(musicSearchPagingDto, categoryId, blogId), musicPagination);
     }
 
     @Transactional

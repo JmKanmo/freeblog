@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface UserMusicMapper {
-    List<UserMusicDto> searchUserMusicDto(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId);
+    List<UserMusicDto> searchUserMusicDto(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId, Long blogId);
 
-    int searchUserMusicCount(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId);
+    int searchUserMusicCount(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId, Long blogId);
 }

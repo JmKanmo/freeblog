@@ -1,5 +1,7 @@
 package com.service.core.music.controller;
 
+import com.service.core.blog.dto.BlogInfoDto;
+import com.service.core.blog.service.BlogService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserManageException;
 import com.service.core.music.dto.MusicCategoryDto;
@@ -33,6 +35,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class MusicRestController {
+    private final BlogService blogService;
     private final MusicService musicService;
     private final MusicCategoryService musicCategoryService;
     private final UserMusicCategoryService userMusicCategoryService;
@@ -67,15 +70,19 @@ public class MusicRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 다운로드 리스트 데이터 반환 실패")
     })
     @GetMapping("/download-list")
-    public ResponseEntity<MusicPagingResponseDto> searchMusicDownloadList(@RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
+    public ResponseEntity<MusicPagingResponseDto> searchMusicDownloadList(Principal principal, @RequestParam(value = "categoryId", required = false, defaultValue = "0") Long categoryId,
                                                                           @ModelAttribute MusicSearchPagingDto musicSearchPagingDto) {
         try {
-            UserMusicCategoryDto userMusicCategoryDto = userMusicCategoryService.findUserMusicCategoryDtoById(categoryId);
+            if ((principal == null || principal.getName() == null)) {
+                throw new UserManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+            UserMusicCategoryDto userMusicCategoryDto = userMusicCategoryService.findUserMusicCategoryDtoByIdOrElseNull(categoryId);
+            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
 
-            if (BlogUtil.checkEmptyOrUndefinedStr(userMusicCategoryDto.getName()) || userMusicCategoryDto.getName().equals(ConstUtil.TOTAL)) {
+            if (userMusicCategoryDto == null) {
                 categoryId = 0L;
             }
-            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.searchUserMusicDto(musicSearchPagingDto, categoryId)));
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.searchUserMusicDto(musicSearchPagingDto, categoryId, blogInfoDto.getId())));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-searchMusicDownloadList] exception occurred ", exception);

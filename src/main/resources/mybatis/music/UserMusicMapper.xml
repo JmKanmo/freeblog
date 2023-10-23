@@ -41,6 +41,11 @@
             <when test="categoryId > 0">
                 and music_category_id = #{categoryId}
             </when>
+            <otherwise>
+                and music_category_id in (
+                select user_music_category_id from user_music_category
+                where blog_id = #{blogId})
+            </otherwise>
         </choose>
     </sql>
 

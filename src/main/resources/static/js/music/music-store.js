@@ -708,8 +708,9 @@ class MusicPlayController extends UtilController {
         const musicCategoryTemplate = document.getElementById("music-download-category-template").innerHTML;
         const musicCategoryTemplateObject = Handlebars.compile(musicCategoryTemplate);
         const jsonObj = responseValue["musicPaginationResponse"];
+        const totalMusicTemplateHTML = `<option value="0">전체</option>`;
         const musicTemplateHTML = musicCategoryTemplateObject({"musicCategoryList": jsonObj});
-        this.musicDownloadListCategorySelector.innerHTML = musicTemplateHTML;
+        this.musicDownloadListCategorySelector.innerHTML = (totalMusicTemplateHTML + musicTemplateHTML);
     }
 
     #handleMusicPlayTemplate(responseValue) {
