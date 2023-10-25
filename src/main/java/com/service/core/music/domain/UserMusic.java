@@ -4,10 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.music.model.UserMusicInput;
 import com.service.util.BlogUtil;
 import com.service.util.domain.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -20,6 +17,7 @@ import javax.persistence.*;
         indexes = {
                 @Index(name = "hashcode_idx_id", columnList = "hashCode")
         })
+@ToString(exclude = "userMusicCategory")
 public class UserMusic extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

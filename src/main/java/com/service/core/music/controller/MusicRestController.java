@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -106,6 +107,27 @@ public class MusicRestController {
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-downloadMusic] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "뮤직 삭제", description = "뮤직 삭제 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "뮤직 다운로드 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 다운로드 실패")
+    })
+    @DeleteMapping("/delete")
+    public ResponseEntity<MusicPagingResponseDto> deleteMusic(Principal principal, @RequestBody @Valid List<UserMusicInput> userMusicInputList) {
+        try {
+            if ((principal == null || principal.getName() == null)) {
+                throw new UserManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+            userMusicService.deleteMusic(userMusicInputList);
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success("OK"));
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-deleteMusic] exception occurred ", exception);
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
         }

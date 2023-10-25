@@ -2,6 +2,8 @@ package com.service.core.music.service;
 
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
+import com.service.core.error.constants.ServiceExceptionMessage;
+import com.service.core.error.model.MusicManageException;
 import com.service.core.music.domain.UserMusic;
 import com.service.core.music.domain.UserMusicCategory;
 import com.service.core.music.dto.MusicCategoryDto;
@@ -66,9 +68,21 @@ public class UserMusicService {
         return "OK";
     }
 
+    @Transactional
+    public void deleteMusic(List<UserMusicInput> userMusicInputList) {
+        for (UserMusicInput userMusicInput : userMusicInputList) {
+            UserMusic userMusic = findUserMusicById(userMusicInput.getMusicId());
+            userMusic.setDelete(true);
+        }
+    }
+
     public boolean findUserMusicByHashCode(int hashcode) {
-        UserMusic userMusic = userMusicRepository.findByHashCode(hashcode);
-        return userMusic == null ? false : true;
+        int userMusicCount = userMusicMapper.searchUserMusicByHashCode(hashcode);
+        return (userMusicCount <= 0) ? false : true;
+    }
+
+    public UserMusic findUserMusicById(long musicId) {
+        return userMusicRepository.findById(musicId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_NOT_FOUND));
     }
 
     @Transactional

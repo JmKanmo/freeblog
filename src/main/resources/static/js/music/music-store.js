@@ -128,7 +128,7 @@ class MusicPlayController extends UtilController {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 if (responseValue["musicPaginationResponse"]["musicDto"].length <= 0) {
-                    this.showToastMessage("해당 카테고리 내 뮤직 플레이 리스트가 비었습니다.", 100);
+                    // this.showToastMessage("해당 카테고리 내 뮤직 플레이 리스트가 비었습니다.", 100);
                     this.#handleMusicPlayTemplate(responseValue);
                     this.#clearMusicPlayPagination();
                     return;
@@ -173,7 +173,7 @@ class MusicPlayController extends UtilController {
                 this.showToastMessage(responseValue["message"]);
             } else {
                 if (responseValue["musicPaginationResponse"]["musicDto"].length <= 0) {
-                    this.showToastMessage("해당 카테고리 내 뮤직 다운로드 리스트가 비었습니다.", 100);
+                    // this.showToastMessage("해당 카테고리 내 뮤직 다운로드 리스트가 비었습니다.", 100);
                     this.#handleMusicDownloadTemplate(responseValue);
                     this.#clearMusicDownloadPagination();
                     return;
@@ -357,6 +357,8 @@ class MusicPlayController extends UtilController {
 
         this.musicDownloadListBox.addEventListener("click", evt => {
             const selectedMusicBox = evt.target.closest("#musicDownloadTotalBox");
+            const selectedMusicCheckBox = evt.target.closest("#musicDownloadCheckBox");
+
 
             if (selectedMusicBox) {
                 // evt.target.closest("#musicStoreTotalBox").querySelectorAll('#musicStoreIdInput')[0].value
@@ -376,6 +378,41 @@ class MusicPlayController extends UtilController {
                     cover: musicCover,
                     theme: null
                 });
+            } else if (selectedMusicCheckBox) {
+                const musicDownloadTotalBox = evt.target.closest(".music_download").querySelector("#musicDownloadTotalBox");
+
+                if (musicDownloadTotalBox) {
+                    const musicId = musicDownloadTotalBox.querySelector("#musicDownloadIdInput").value;
+                    const musicCategoryId = musicDownloadTotalBox.querySelector("#musicDownloadCategoryIdInput").value;
+                    const musicTitle = musicDownloadTotalBox.querySelector("#musicDownloadTitleInput").value;
+                    const musicArtist = musicDownloadTotalBox.querySelector("#musicDownloadArtistInput").value;
+                    const musicUrl = musicDownloadTotalBox.querySelector("#musicDownloadUrlInput").value;
+                    const musicCover = musicDownloadTotalBox.querySelector("#musicDownloadCoverInput").value;
+                    const musicLrc = musicDownloadTotalBox.querySelector("#musicDownloadLrcInput").value;
+                    let isChecked = false;
+
+                    if (selectedMusicCheckBox.checked === true) {
+                        isChecked = true;
+                    } else {
+                        isChecked = false;
+                    }
+                    const musicStoreInfoMap = new Map();
+                    const key = `${musicId}&${musicCategoryId}`;
+
+                    musicStoreInfoMap.set('musicStoreId', musicId);
+                    musicStoreInfoMap.set('musicStoreCategoryId', musicCategoryId);
+                    musicStoreInfoMap.set('musicStoreTitle', musicTitle);
+                    musicStoreInfoMap.set('musicStoreArtist', musicArtist);
+                    musicStoreInfoMap.set('musicStoreUrl', musicUrl);
+                    musicStoreInfoMap.set('musicStoreCover', musicCover);
+                    musicStoreInfoMap.set('musicStoreLrc', musicLrc);
+
+                    if (isChecked === true) {
+                        this.musicDownloadSelectMap.set(key, musicStoreInfoMap);
+                    } else {
+                        this.musicDownloadSelectMap.delete(key);
+                    }
+                }
             }
         });
 
@@ -601,7 +638,47 @@ class MusicPlayController extends UtilController {
         });
 
         this.musicDownloadDeleteButton.addEventListener("click", evt => {
-            this.showToastMessage("기능 구현 예정");
+            if (this.musicDownloadSelectMap == null || this.musicDownloadSelectMap.size <= 0) {
+                this.showToastMessage("항목을 선택해주세요.");
+                return;
+            }
+
+            if (confirm("해당 뮤직을 삭제하겠습니까?")) {
+                const musicList = [];
+                const musicDownloadSelectMap = this.musicDownloadSelectMap;
+
+                for (const [key, value] of musicDownloadSelectMap) {
+                    musicList.push({
+                        musicId: value.get("musicDownloadId"),
+                        musicCategoryId: value.get("musicDownloadCategoryId"),
+                        title: value.get("musicDownloadTitle"),
+                        artist: value.get("musicDownloadArtist"),
+                        url: value.get("musicDownloadUrl"),
+                        cover: value.get("musicDownloadCover"),
+                        lrc: value.get("musicDownloadLrc")
+                    });
+                }
+
+                const xhr = new XMLHttpRequest();
+                xhr.open("DELETE", `/music/delete`, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = JSON.parse(event.target.responseText);
+
+                    if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                        this.showToastMessage(responseValue["message"]);
+                    } else {
+                        this.#requestMusicDownloadList("/music/download-list");
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage("뮤직 삭제에 실패했습니다.");
+                });
+                xhr.send(JSON.stringify(musicList));
+            }
         });
     }
 

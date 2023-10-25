@@ -12,4 +12,6 @@ public interface UserMusicMapper {
     List<UserMusicDto> searchUserMusicDto(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId, Long blogId);
 
     int searchUserMusicCount(@Param("musicSearchPagingDto") MusicSearchPagingDto musicSearchPagingDto, Long categoryId, Long blogId);
+
+    int searchUserMusicByHashCode(int hashCode);
 }
