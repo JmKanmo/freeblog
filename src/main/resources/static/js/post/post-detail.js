@@ -34,6 +34,8 @@ class PostDetailController extends UtilController {
         this.postLikeUserListBlock = document.getElementById("post_like_user_list_block");
         this.postUserLikePagination = document.getElementById("postUserLikePagination");
         this.postUserLikeCloseButton = document.getElementById("user_post_like_close_button");
+
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initPostDetailController() {
@@ -42,6 +44,7 @@ class PostDetailController extends UtilController {
         this.initEventController();
         this.postCommentController.requestComment();
         this.postCommentController.initEventListener();
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initPostTitle() {

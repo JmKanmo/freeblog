@@ -9,6 +9,7 @@ import com.service.core.music.domain.UserMusicCategory;
 import com.service.core.music.dto.MusicCategoryDto;
 import com.service.core.music.dto.UserMusicDto;
 import com.service.core.music.model.UserMusicInput;
+import com.service.core.music.model.UserMusicSearchInput;
 import com.service.core.music.paging.MusicPagination;
 import com.service.core.music.paging.MusicPaginationResponse;
 import com.service.core.music.paging.MusicSearchPagingDto;
@@ -30,6 +31,12 @@ public class UserMusicService {
     private final UserMusicCategoryService userMusicCategoryService;
     private final UserMusicMapper userMusicMapper;
     private final UserMusicRepository userMusicRepository;
+
+
+    @Transactional(readOnly = true)
+    public List<UserMusicDto> openSearchUserMusicDto(UserMusicSearchInput userMusicSearchInput) {
+        return userMusicMapper.openSearchUserMusicDto(userMusicSearchInput);
+    }
 
     @Transactional(readOnly = true)
     public MusicPaginationResponse<List<UserMusicDto>> searchUserMusicDto(MusicSearchPagingDto musicSearchPagingDto, long categoryId, long blogId) {

@@ -84,7 +84,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // email
                         "/email/send/**",
                         // notice
-                        "/notice/**"
+                        "/notice/**",
+                        // music
+                        "/music-category/open/**", "/music/open/**"
                 )
                 .permitAll()
                 .and()

@@ -23,7 +23,7 @@
 <div class="post_detail_container">
     <div class="search_container">
         <form action="/post/search" method="get" class="blog_view_search_form" id="postSearchForm">
-            <input type="hidden" name="blogId" readonly th:value="${postDetail.blogId}">
+            <input type="hidden" id="blogIdHiddenInput" name="blogId" readonly th:value="${postDetail.blogId}">
             <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
                    placeholder="검색어를 입력해주세요." spellcheck="false" required>
             <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">

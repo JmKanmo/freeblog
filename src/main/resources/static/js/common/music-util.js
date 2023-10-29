@@ -1,5 +1,7 @@
 class MusicUtilController {
     constructor() {
+        this.musicPlayerIds = [];
+        this.playSeq = 0;
         this.musicPlayer = new Map();
         this.documentId = `audio_player`;
         this.TOTAL_MUSIC_CATEGORY_INDEX = 1; // 전체 카테고리 디폴트 인덱스는 1로 규정
@@ -28,6 +30,7 @@ class MusicUtilController {
                     const category = key;
                     const audios = value["audio"];
 
+                    this.musicPlayerIds.push(category);
                     this.musicPlayer.set(category, new APlayer({
                         container: document.getElementById(this.documentId),
                         listFolded: musicConfig["listFolded"],
@@ -106,6 +109,18 @@ class MusicUtilController {
 
     clearAudioPlayer() {
         this.musicPlayer.clear();
+    }
+
+    autoPlayAudioPlayer() {
+        const musicPlayerId = this.musicPlayerIds[this.playSeq];
+
+        if (musicPlayerId) {
+            const ap = this.musicPlayer.get(musicPlayerId);
+
+            if (ap) {
+                ap.play();
+            }
+        }
     }
 
     playAudioPlayer(id) {

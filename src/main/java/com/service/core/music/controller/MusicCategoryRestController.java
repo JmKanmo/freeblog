@@ -71,4 +71,21 @@ public class MusicCategoryRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
         }
     }
+
+    @Operation(summary = "사용자 뮤직 카테고리 리스트 반환", description = "사용자 뮤직 카테고리 리스트 데이터 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자 뮤직 카테고리 리스트 데이터 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 사용자 뮤직 카테고리 리스트 데이터 반환 실패")
+    })
+    @GetMapping("/open/user-list/{blogId}")
+    public ResponseEntity<MusicPagingResponseDto> openSearchUserMusicCategoryList(@PathVariable Long blogId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicCategoryService.searchUserMusicCategoryDto(blogId)));
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-openSearchUserMusicCategoryList] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
+        }
+    }
 }

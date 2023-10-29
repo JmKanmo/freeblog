@@ -8,6 +8,7 @@ import com.service.core.music.dto.MusicCategoryDto;
 import com.service.core.music.dto.MusicPagingResponseDto;
 import com.service.core.music.dto.UserMusicCategoryDto;
 import com.service.core.music.model.UserMusicInput;
+import com.service.core.music.model.UserMusicSearchInput;
 import com.service.core.music.paging.MusicSearchPagingDto;
 import com.service.core.music.service.MusicCategoryService;
 import com.service.core.music.service.MusicService;
@@ -41,6 +42,28 @@ public class MusicRestController {
     private final MusicCategoryService musicCategoryService;
     private final UserMusicCategoryService userMusicCategoryService;
     private final UserMusicService userMusicService;
+
+    @Operation(summary = "뮤직 다운로드 리스트 반환", description = "뮤직 다운로드 리스트 데이터 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "뮤직 다운로드 리스트 데이터 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 다운로드 리스트 데이터 반환 실패")
+    })
+    @GetMapping("/open/play-list")
+    public ResponseEntity<MusicPagingResponseDto> openSearchMusicPlayList(@ModelAttribute UserMusicSearchInput userMusicSearchInput) {
+        try {
+            UserMusicCategoryDto userMusicCategoryDto = userMusicCategoryService.findUserMusicCategoryDtoByIdOrElseNull(userMusicSearchInput.getCategoryId());
+
+            if (userMusicCategoryDto == null) {
+                userMusicSearchInput.setCategoryId(0L);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.openSearchUserMusicDto(userMusicSearchInput)));
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-openSearchMusicPlayList] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
+        }
+    }
 
     @Operation(summary = "뮤직 리스트 반환", description = "뮤직 리스트 데이터 반환 메서드")
     @ApiResponses(value = {

@@ -26,8 +26,6 @@ class HeaderController extends UtilController {
         this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
         this.musicStoreButton = document.getElementById("musicStoreButton");
 
-        this.audioPlayer = this.initAudioPlayer();
-
         this.noticeRecordSize = 5;
         this.noticePageSize = 5;
     }
