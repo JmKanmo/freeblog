@@ -59,7 +59,9 @@
         </div>
     </div>
 </div>
-
+<th:block sec:authorize="isAuthenticated()">
+    <input type="hidden" id="blogIdHiddenInput" readonly th:value="${blog_info.id}">
+</th:block>
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>

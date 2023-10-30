@@ -1,5 +1,7 @@
 package com.service.core.main;
 
+import com.service.core.blog.dto.BlogInfoDto;
+import com.service.core.blog.service.BlogService;
 import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.dto.UserProfileDto;
 import com.service.core.user.service.UserService;
@@ -22,6 +24,7 @@ import java.security.Principal;
 @Slf4j
 public class MainController {
     private final UserService userService;
+    private final BlogService blogService;
 
     @Operation(summary = "메인 페이지 반환", description = "메인 페이지 반환 메서드")
     @ApiResponses(value = {
@@ -31,6 +34,10 @@ public class MainController {
     public String main(Model model, Principal principal) {
         if (principal != null) {
             model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            model.addAttribute("blog_info", blogInfoDto);
+        } else {
+            model.addAttribute("invisible", true);
         }
         return "index";
     }
@@ -45,6 +52,8 @@ public class MainController {
 
         if (principal != null) {
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
+            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            model.addAttribute("blog_info", blogInfoDto);
             model.addAttribute("user_header", userHeaderDto);
             UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
             blog_owner = BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash());

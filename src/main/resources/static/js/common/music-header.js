@@ -4,15 +4,21 @@ class MusicHeaderController extends UtilController {
         this.musicUtilController = new MusicUtilController();
         this.audioPlayerCategoryList = document.getElementById("audioPlayerCategoryList");
         this.blogIdHiddenInput = document.getElementById("blogIdHiddenInput");
+        this.TOTAL_CATEGORY_INDEX = Number.MAX_SAFE_INTEGER;
     }
 
     initMusicPlayer() {
         this.#requestMusicConfig();
         this.#requestMusicCategory();
+        this.initEventListener();
     }
 
     initEventListener() {
-
+        if (this.audioPlayerCategoryList) {
+            this.audioPlayerCategoryList.addEventListener("change", evt => {
+                this.#requestMusic(this.audioPlayerCategoryList.value);
+            });
+        }
     }
 
     #requestMusicConfig() {
@@ -21,8 +27,11 @@ class MusicHeaderController extends UtilController {
 
     #requestMusicCategory() {
         // 뮤직 카테고리, 뮤직, 뮤직 설정 정보 로드
+        if (!this.blogIdHiddenInput) {
+            return;
+        }
         const xhr = new XMLHttpRequest();
-        const blogId = !this.blogIdHiddenInput ? 0 : this.blogIdHiddenInput.value;
+        const blogId = !this.blogIdHiddenInput.value ? 0 : this.blogIdHiddenInput.value;
 
         xhr.open("GET", `/music-category/open/user-list/${blogId}`, true);
 
@@ -77,10 +86,9 @@ class MusicHeaderController extends UtilController {
         const musicMap = new Map();
         const musicCategoryMap = new Map();
         const musicConfigMap = new Map();
-        //
-        // const musicPlayerId = `${musicStoreMap["categoryId"]}&${musicStoreMap["musicId"]}`;
-        //
-        // 기본 값 지정
+        const totalMusicList = [];
+
+        // 기본 값 지정, 추후에 DB 저장 및 페이지 구성을 통해 관리
         musicConfigMap.set('config', {
             listFolded: true,
             listMaxHeight: 90,
@@ -91,23 +99,45 @@ class MusicHeaderController extends UtilController {
             mode: {
                 fixed: true,
                 mini: false
-            }
+            },
+            immediatelyStart: true // 페이지 로드 시에 바로 재생
         });
 
         musicResponse.forEach(music => {
-            const musicPlayerId = `${music["musicId"]}&${music["categoryId"]}`;
-            musicCategoryMap.set(musicPlayerId, {
-                audio: [
-                    {
-                        name: music["name"],
-                        artist: music["artist"],
-                        url: music["url"],
-                        cover: music["cover"],
-                        theme: music["theme"],
-                    }
-                ]
+            const categoryId = music["categoryId"];
+            const mapValue = musicCategoryMap.get(categoryId);
+
+            if (mapValue) {
+                const audioList = mapValue["audio"];
+                audioList.push({
+                    name: music["name"],
+                    artist: music["artist"],
+                    url: music["url"],
+                    cover: music["cover"],
+                    theme: music["theme"]
+                });
+            } else {
+                musicCategoryMap.set(categoryId, {
+                    audio: [
+                        {
+                            name: music["name"],
+                            artist: music["artist"],
+                            url: music["url"],
+                            cover: music["cover"],
+                            theme: music["theme"],
+                        }
+                    ]
+                });
+            }
+            totalMusicList.push({
+                name: music["name"],
+                artist: music["artist"],
+                url: music["url"],
+                cover: music["cover"],
+                theme: music["theme"]
             });
         });
+        musicCategoryMap.set(this.TOTAL_CATEGORY_INDEX, {audio: totalMusicList});
 
         musicMap.set('data', musicCategoryMap);
         musicMap.set('config', musicConfigMap.get('config'));
@@ -115,16 +145,16 @@ class MusicHeaderController extends UtilController {
         this.musicUtilController.clearAudioPlayer();
         this.musicUtilController.initAudioPlayer(musicMap);
 
-        if (musicConfigMap.get("config")["autoplay"] === true) {
-            this.musicUtilController.autoPlayAudioPlayer();
+        if (musicConfigMap.get("config")["immediatelyStart"] == true) {
+            this.musicUtilController.autoPlayAudioPlayer(this.TOTAL_CATEGORY_INDEX, 0);
         }
     }
 
     #handleMusicCategoryTemplate(responseValue) {
-        const musicCategoryTemplate = document.getElementById("music-category-template").innerHTML;
+        const musicCategoryTemplate = document.getElementById("music-download-category-template").innerHTML;
         const musicCategoryTemplateObject = Handlebars.compile(musicCategoryTemplate);
         const jsonObj = responseValue["musicPaginationResponse"];
-        const totalMusicTemplateHTML = `<option value="0">전체</option>`;
+        const totalMusicTemplateHTML = `<option value=${this.TOTAL_CATEGORY_INDEX}>전체</option>`;
         const musicTemplateHTML = musicCategoryTemplateObject({"musicCategoryList": jsonObj});
         this.audioPlayerCategoryList.innerHTML = (totalMusicTemplateHTML + musicTemplateHTML);
     }

@@ -32,10 +32,13 @@ class SettingsController extends HeaderController {
         this.isSubmitFlag = false;
         this.isImageUploadFlag = false;
         this.isImageDeleteFlag = false;
+
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initSettingsController() {
         this.initEventListener();
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initEventListener() {

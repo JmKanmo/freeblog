@@ -11,12 +11,15 @@ class PostSearchController extends UtilController {
 
         this.postRecordSize = 5;
         this.postPageSize = 5;
+
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initPostSearchController() {
         this.initPostTitle();
         this.initEventListener();
         this.#requestPostSearch("/post/search-rest");
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initPostTitle() {

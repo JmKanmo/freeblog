@@ -28,12 +28,14 @@ class PostUpdateController extends UtilController {
         this.isSubmitFlag = false;
         this.isImageUploadFlag = false;
         this.tagSet = new Set();
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initPostUpdateController() {
         this.initPostContent();
         this.initElement();
         this.initEventListener();
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initPostContent() {

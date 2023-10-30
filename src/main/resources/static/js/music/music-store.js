@@ -739,7 +739,7 @@ class MusicPlayController extends UtilController {
 
         const musicPlayerId = `${musicStoreMap["categoryId"]}&${musicStoreMap["musicId"]}`;
 
-        // 기본 값 지정
+        // 기본 값 지정, 추후에 DB 저장 및 페이지 구성을 통해 관리
         musicConfigMap.set('config', {
             listFolded: true,
             listMaxHeight: 90,

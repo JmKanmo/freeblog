@@ -42,6 +42,7 @@
         </nav>
     </div>
     <input type="hidden" readonly id="blog_id_input" th:value="${blog_info.id}">
+    <input type="hidden" readonly id="blogIdHiddenInput" th:value="${blog_info.id}">
     <input type="hidden" readonly id="tag_name_input" th:value="${tagName}">
 </div>
 <div th:replace="fragments/footer::footer"></div>

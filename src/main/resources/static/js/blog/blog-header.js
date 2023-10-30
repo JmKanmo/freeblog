@@ -15,8 +15,6 @@ class BlogHeaderController extends BlogBodyController {
 
         this.recentPostCardList = document.getElementById("recent_post_card_list");
         this.popularPostCardList = document.getElementById("popular_post_card_list");
-
-        this.audioPlayerCategoryList = document.getElementById("audioPlayerCategoryList");
     }
 
     initBlogHeaderController() {
@@ -90,10 +88,6 @@ class BlogHeaderController extends BlogBodyController {
                 this.openPopUp(1080, 750, '/category/setting?blogId=' + document.getElementById("blog_info_id").value, 'popup');
             })
         }
-
-        this.audioPlayerCategoryList.addEventListener("change", evt => {
-            this.showToastMessage("뮤직 카테고리 변경");
-        });
     }
 
     #requestRecentPostCard() {

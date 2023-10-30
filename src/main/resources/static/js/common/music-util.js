@@ -1,7 +1,5 @@
 class MusicUtilController {
     constructor() {
-        this.musicPlayerIds = [];
-        this.playSeq = 0;
         this.musicPlayer = new Map();
         this.documentId = `audio_player`;
         this.TOTAL_MUSIC_CATEGORY_INDEX = 1; // 전체 카테고리 디폴트 인덱스는 1로 규정
@@ -30,7 +28,6 @@ class MusicUtilController {
                     const category = key;
                     const audios = value["audio"];
 
-                    this.musicPlayerIds.push(category);
                     this.musicPlayer.set(category, new APlayer({
                         container: document.getElementById(this.documentId),
                         listFolded: musicConfig["listFolded"],
@@ -54,7 +51,7 @@ class MusicUtilController {
         const musicCategoryMap = new Map();
         const musicConfigMap = new Map();
 
-        // 기본 값 지정
+        // 기본 값 지정, 추후에 DB 저장 및 페이지 구성을 통해 관리
         musicConfigMap.set('config', {
             listFolded: true,
             listMaxHeight: 90,
@@ -111,12 +108,20 @@ class MusicUtilController {
         this.musicPlayer.clear();
     }
 
-    autoPlayAudioPlayer() {
-        const musicPlayerId = this.musicPlayerIds[this.playSeq];
+    /*
+        아래 버그 해결 전까지 개발 진행 X
+        특이사항: 리스트 내 원소가 1개 일땐 정상 동작, 여러개 경우, 동작 X
+        ap.play() bug report
+        https://github.com/DIYgod/APlayer/issues/784
+     */
+    autoPlayAudioPlayer(category, idx) {
+        const musicPlayInfo = localStorage.getItem("musicPlayInfo");
 
-        if (musicPlayerId) {
-            const ap = this.musicPlayer.get(musicPlayerId);
-
+        if (musicPlayInfo) {
+            // TODO
+        } else {
+            //
+            const ap = this.musicPlayer.get(category);
             if (ap) {
                 ap.play();
             }

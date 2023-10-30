@@ -3,6 +3,8 @@ class MyBlogController extends UtilController {
         super();
         this.blocUserNickName = document.getElementById("blog_user_nickname");
         this.initLocalStorage();
+        this.musicHeaderController = new MusicHeaderController();
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initLocalStorage() {

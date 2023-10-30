@@ -11,12 +11,15 @@ class TagController extends UtilController {
 
         this.postRecordSize = 5;
         this.postPageSize = 5;
+
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initTagController() {
         this.initTagTitle();
         this.initEventListener();
         this.#requestPostSearch("/tag/search-post");
+        this.musicHeaderController.initMusicPlayer();
     }
 
     initTagTitle() {

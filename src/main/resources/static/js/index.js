@@ -3,6 +3,7 @@ class BlogViewController extends UtilController {
         super();
         this.blog_view_select_sort_turn = document.getElementById("blog_view_select_sort_turn");
         this.blog_view_select_sort_term = document.getElementById("blog_view_select_sort_term");
+        this.musicHeaderController = new MusicHeaderController();
     }
 
     initBlogViewController() {
@@ -13,6 +14,8 @@ class BlogViewController extends UtilController {
         this.blog_view_select_sort_term.addEventListener("change", evt => {
             this.requestHttpBlogView([evt.target.value, this.blog_view_select_sort_term.value]);
         });
+
+        this.musicHeaderController.initMusicPlayer();
     }
 
     requestHttpBlogView(parameter) {

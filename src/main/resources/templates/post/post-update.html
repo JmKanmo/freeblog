@@ -88,6 +88,7 @@
         <input type="hidden" id="upload_key" readonly th:value="${postUpdate.metaKey}">
         <input type="hidden" id="hidden_meta_key" readonly name="metaKey"
                th:field="*{metaKey}">
+        <input type="hidden" readonly id="blogIdHiddenInput" th:value="${blogPostUpdateInput.blogId}">
         <input type="hidden" id="hidden_blog_id" name="blogId" readonly th:value="${blogPostUpdateInput.blogId}"
                th:field="*{blogId}">
         <input type="hidden" id="hidden_post_id" name="postId" readonly th:value="${blogPostUpdateInput.postId}"
@@ -157,7 +158,6 @@
         document.getElementById("post_thumbnail_image").src = postThumbnailImage;
     }
 </script>
-
 <div th:replace="fragments/footer::footer"></div>
 </body>
 </html>
