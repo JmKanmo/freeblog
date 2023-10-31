@@ -31,7 +31,7 @@ public class MusicController {
         if ((principal == null || principal.getName() == null)) {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
-        return "/music/music-setting";
+        return "music/music-setting";
     }
 
     @Operation(summary = "뮤직 스토어 페이지 반환", description = "뮤직 스토어 페이지 반환 메서드")
@@ -44,6 +44,6 @@ public class MusicController {
         if ((principal == null || principal.getName() == null)) {
             throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
         }
-        return "/music/music-store";
+        return "music/music-store";
     }
 }
