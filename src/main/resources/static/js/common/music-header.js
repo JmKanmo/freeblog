@@ -8,7 +8,6 @@ class MusicHeaderController extends UtilController {
     }
 
     initMusicPlayer() {
-        this.#requestMusicConfig();
         this.#requestMusicCategory();
         this.initEventListener();
     }
@@ -21,8 +20,10 @@ class MusicHeaderController extends UtilController {
         }
     }
 
-    #requestMusicConfig() {
-        // TODO
+    reloadMusicPlayer() {
+        if (this.audioPlayerCategoryList) {
+            this.#requestMusic(this.audioPlayerCategoryList.value);
+        }
     }
 
     #requestMusicCategory() {
@@ -62,7 +63,9 @@ class MusicHeaderController extends UtilController {
         }).toString();
 
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `/music/open/play-list?${urlSearchParam}`, true);
+        const blogId = !this.blogIdHiddenInput.value ? 0 : this.blogIdHiddenInput.value;
+
+        xhr.open("GET", `/music/open/play-list/${blogId}?${urlSearchParam}`, true);
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
@@ -82,7 +85,8 @@ class MusicHeaderController extends UtilController {
     }
 
     #handleMusicTemplate(responseValue) {
-        const musicResponse = responseValue["musicPaginationResponse"];
+        const musicResponse = responseValue["musicPaginationResponse"]["userMusicDtoList"];
+        const musicConfigResponse = responseValue["musicPaginationResponse"]["userMusicConfigDto"];
         const musicMap = new Map();
         const musicCategoryMap = new Map();
         const musicConfigMap = new Map();
@@ -90,15 +94,15 @@ class MusicHeaderController extends UtilController {
 
         // 기본 값 지정, 추후에 DB 저장 및 페이지 구성을 통해 관리
         musicConfigMap.set('config', {
-            listFolded: true,
-            listMaxHeight: 90,
+            listFolded: musicConfigResponse["listFolded"],
+            listMaxHeight: musicConfigResponse["listMaxHeight"],
             lrcType: 0,
-            autoplay: true,
-            mutex: true,
-            order: 'random',
+            autoplay: musicConfigResponse["autoPlay"],
+            mutex: musicConfigResponse["duplicatePlay"],
+            order: musicConfigResponse["playOrder"].toLowerCase(),
             mode: {
-                fixed: true,
-                mini: false
+                fixed: musicConfigResponse["playMode"].toLowerCase() === 'fixed' ? true : false,
+                mini: musicConfigResponse["playMode"].toLowerCase() === 'mini' ? true : false
             },
             immediatelyStart: true // 페이지 로드 시에 바로 재생
         });
@@ -145,9 +149,9 @@ class MusicHeaderController extends UtilController {
         this.musicUtilController.clearAudioPlayer();
         this.musicUtilController.initAudioPlayer(musicMap);
 
-        if (musicConfigMap.get("config")["immediatelyStart"] == true) {
-            this.musicUtilController.autoPlayAudioPlayer(this.TOTAL_CATEGORY_INDEX, 0);
-        }
+        // if (musicConfigMap.get("config")["immediatelyStart"] == true) {
+        //     this.musicUtilController.autoPlayAudioPlayer(this.TOTAL_CATEGORY_INDEX, 0);
+        // }
     }
 
     #handleMusicCategoryTemplate(responseValue) {

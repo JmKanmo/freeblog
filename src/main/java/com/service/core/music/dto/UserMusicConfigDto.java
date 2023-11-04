@@ -17,7 +17,7 @@ public class UserMusicConfigDto {
 
     public static UserMusicConfigDto getDefaultUserMusicConifgDto() {
         return UserMusicConfigDto.builder()
-                .autoPlay(true)
+                .autoPlay(false)
                 .listFolded(true)
                 .listMaxHeight(300)
                 .lrcType(0)

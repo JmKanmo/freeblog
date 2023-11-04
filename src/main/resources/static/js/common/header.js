@@ -29,6 +29,7 @@ class HeaderController extends UtilController {
         this.musicStoreButton = document.getElementById("musicStoreButton");
         this.musicConfigSaveButton = document.getElementById("musicConfigSaveButton");
 
+        this.musicHeaderController = new MusicHeaderController();
         this.noticeRecordSize = 5;
         this.noticePageSize = 5;
     }
@@ -249,7 +250,7 @@ class HeaderController extends UtilController {
                     if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                         this.showToastMessage(responseValue["message"]);
                     } else {
-                        this.showToastMessage("뮤직 설정이 저장되었습니다.");
+                        location.reload();
                     }
                 });
 
@@ -260,7 +261,7 @@ class HeaderController extends UtilController {
                 // music config data setting
                 document.getElementById("listFoldedHiddenInput").value = document.getElementById("listFoldedInput").checked;
                 document.getElementById("listMaxHeightHiddenInput").value = !document.getElementById("listMaxHeightInput").value ? 0 : document.getElementById("listMaxHeightInput").value;
-                document.getElementById("autoPlayHiddenInput").value = document.getElementById("autoPlayInput").checked;
+                document.getElementById("autoPlayHiddenInput").value = false; // document.getElementById("autoPlayInput").checked;
                 document.getElementById("duplicatePlayHiddenInput").value = document.getElementById("duplicatePlayInput").checked;
                 document.getElementById("playOrderHiddenInput").value = document.getElementById("playOrderInput").value;
                 document.getElementById("playModeHiddenInput").value = document.getElementById("playModeInput").value;

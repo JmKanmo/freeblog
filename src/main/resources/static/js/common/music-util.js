@@ -11,35 +11,61 @@ class MusicUtilController {
 
         if (musicMap && musicConfig) {
             if (musicData.size <= 0) {
-                this.musicPlayer.set("NONE", new APlayer({
-                    container: document.getElementById(this.documentId),
-                    listFolded: musicConfig["listFolded"],
-                    listMaxHeight: musicConfig["listMaxHeight"],
-                    lrcType: musicConfig["lrcType"],
-                    autoplay: musicConfig["autoplay"],
-                    mutex: musicConfig["mutex"],
-                    order: musicConfig["order"],
-                    mini: musicConfig["mini"],
-                    fixed: musicConfig["fixed"],
-                    audio: []
-                }));
+                if (musicConfig["mode"]["mini"] === true) {
+                    this.musicPlayer.set("NONE", new APlayer({
+                        container: document.getElementById(this.documentId),
+                        listFolded: musicConfig["listFolded"],
+                        listMaxHeight: musicConfig["listMaxHeight"] + 'px',
+                        lrcType: musicConfig["lrcType"],
+                        autoplay: musicConfig["autoplay"],
+                        mutex: musicConfig["mutex"],
+                        order: musicConfig["order"],
+                        mini: musicConfig["mode"]["mini"],
+                        audio: []
+                    }));
+                } else if (musicConfig["mode"]["fixed"] === true) {
+                    this.musicPlayer.set("NONE", new APlayer({
+                        container: document.getElementById(this.documentId),
+                        listFolded: musicConfig["listFolded"],
+                        listMaxHeight: musicConfig["listMaxHeight"] + 'px',
+                        lrcType: musicConfig["lrcType"],
+                        autoplay: musicConfig["autoplay"],
+                        mutex: musicConfig["mutex"],
+                        order: musicConfig["order"],
+                        fixed: null, // fixed:true로 햇더니, UI가 바닥에 고꾸라짐...
+                        audio: []
+                    }));
+                }
             } else {
                 musicData.forEach((value, key) => {
                     const category = key;
                     const audios = value["audio"];
 
-                    this.musicPlayer.set(category, new APlayer({
-                        container: document.getElementById(this.documentId),
-                        listFolded: musicConfig["listFolded"],
-                        listMaxHeight: musicConfig["listMaxHeight"],
-                        lrcType: musicConfig["lrcType"],
-                        autoplay: musicConfig["autoplay"],
-                        mutex: musicConfig["mutex"],
-                        order: musicConfig["order"],
-                        mini: musicConfig["mini"],
-                        fixed: musicConfig["fixed"],
-                        audio: audios
-                    }));
+                    if (musicConfig["mode"]["mini"] === true) {
+                        this.musicPlayer.set(category, new APlayer({
+                            container: document.getElementById(this.documentId),
+                            listFolded: musicConfig["listFolded"],
+                            listMaxHeight: musicConfig["listMaxHeight"] + 'px',
+                            lrcType: musicConfig["lrcType"],
+                            autoplay: musicConfig["autoplay"],
+                            mutex: musicConfig["mutex"],
+                            order: musicConfig["order"],
+                            mini: musicConfig["mode"]["mini"],
+                            audio: audios
+                        }));
+                    } else if (musicConfig["mode"]["fixed"] === true) {
+                        this.musicPlayer.set(category, new APlayer({
+                            container: document.getElementById(this.documentId),
+                            listFolded: musicConfig["listFolded"],
+                            listMaxHeight: musicConfig["listMaxHeight"] + 'px',
+                            lrcType: musicConfig["lrcType"],
+                            autoplay: musicConfig["autoplay"],
+                            mutex: musicConfig["mutex"],
+                            order: musicConfig["order"],
+                            fixed: null, // fixed:true로 햇더니, UI가 바닥에 고꾸라짐...
+                            audio: audios
+                        }));
+                    }
                 });
             }
         }

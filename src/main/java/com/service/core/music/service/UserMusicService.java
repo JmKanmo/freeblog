@@ -8,6 +8,7 @@ import com.service.core.music.domain.UserMusic;
 import com.service.core.music.domain.UserMusicCategory;
 import com.service.core.music.dto.MusicCategoryDto;
 import com.service.core.music.dto.UserMusicDto;
+import com.service.core.music.dto.UserMusicPlaySetDto;
 import com.service.core.music.model.UserMusicInput;
 import com.service.core.music.model.UserMusicSearchInput;
 import com.service.core.music.paging.MusicPagination;
@@ -31,11 +32,11 @@ public class UserMusicService {
     private final UserMusicCategoryService userMusicCategoryService;
     private final UserMusicMapper userMusicMapper;
     private final UserMusicRepository userMusicRepository;
-
+    private final UserMusicConfigService userMusicConfigService;
 
     @Transactional(readOnly = true)
-    public List<UserMusicDto> openSearchUserMusicDto(UserMusicSearchInput userMusicSearchInput) {
-        return userMusicMapper.openSearchUserMusicDto(userMusicSearchInput);
+    public UserMusicPlaySetDto openSearchUserMusicDto(UserMusicSearchInput userMusicSearchInput, Long blogId) {
+        return UserMusicPlaySetDto.from(userMusicMapper.openSearchUserMusicDto(userMusicSearchInput), userMusicConfigService.findUserMusicConfigDtoById(blogId));
     }
 
     @Transactional(readOnly = true)

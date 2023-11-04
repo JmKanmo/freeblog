@@ -47,15 +47,15 @@ public class MusicRestController {
             @ApiResponse(responseCode = "200", description = "뮤직 다운로드 리스트 데이터 반환 성공"),
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 다운로드 리스트 데이터 반환 실패")
     })
-    @GetMapping("/open/play-list")
-    public ResponseEntity<MusicPagingResponseDto> openSearchMusicPlayList(@ModelAttribute UserMusicSearchInput userMusicSearchInput) {
+    @GetMapping("/open/play-list/{blogId}")
+    public ResponseEntity<MusicPagingResponseDto> openSearchMusicPlayList(@ModelAttribute UserMusicSearchInput userMusicSearchInput, @PathVariable Long blogId) {
         try {
             UserMusicCategoryDto userMusicCategoryDto = userMusicCategoryService.findUserMusicCategoryDtoByIdOrElseNull(userMusicSearchInput.getCategoryId());
 
             if (userMusicCategoryDto == null) {
                 userMusicSearchInput.setCategoryId(0L);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.openSearchUserMusicDto(userMusicSearchInput)));
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicService.openSearchUserMusicDto(userMusicSearchInput, blogId)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-openSearchMusicPlayList] exception occurred ", exception);
