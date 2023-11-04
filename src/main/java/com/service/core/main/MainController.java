@@ -32,13 +32,19 @@ public class MainController {
     })
     @GetMapping("/")
     public String main(Model model, Principal principal) {
+        boolean blog_owner = false;
+
         if (principal != null) {
-            model.addAttribute("user_header", userService.findUserHeaderDtoByEmail(principal.getName()));
+            UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
             BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            UserProfileDto userProfileDto = userService.findUserProfileDtoById(userHeaderDto.getId());
+            model.addAttribute("user_header", userHeaderDto);
             model.addAttribute("blog_info", blogInfoDto);
+            blog_owner = BlogUtil.checkBlogOwner(principal, userProfileDto.getEmailHash());
         } else {
             model.addAttribute("invisible", true);
         }
+        model.addAttribute("blog_owner", blog_owner);
         return "index";
     }
 

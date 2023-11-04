@@ -36,7 +36,7 @@ public class UserMusicService {
 
     @Transactional(readOnly = true)
     public UserMusicPlaySetDto openSearchUserMusicDto(UserMusicSearchInput userMusicSearchInput, Long blogId) {
-        return UserMusicPlaySetDto.from(userMusicMapper.openSearchUserMusicDto(userMusicSearchInput), userMusicConfigService.findUserMusicConfigDtoById(blogId));
+        return UserMusicPlaySetDto.from(userMusicMapper.openSearchUserMusicDto(userMusicSearchInput), userMusicConfigService.findUserMusicConfigDtoByIdOrDefault(blogId));
     }
 
     @Transactional(readOnly = true)
