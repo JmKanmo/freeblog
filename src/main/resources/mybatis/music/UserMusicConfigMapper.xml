@@ -3,5 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.music.repository.mapper.UserMusicConfigMapper">
+    <select id="searchUserMusicConfigCountByBlogId"
+            resultType="int">
+        select count(*)
+        from user_music_config
+        where blog_id = #{blogId};
+    </select>
 
+    <select id="searchUserMusicConfigByBlogId"
+            resultType="com.service.core.music.dto.UserMusicConfigDto">
+        select user_music_config_id,
+               auto_play,
+               duplicate_play,
+               list_folded,
+               list_max_height,
+               lrc_type,
+               play_mode,
+               play_order,
+               blog_id
+        from user_music_config
+        where blog_id = #{blogId};
+    </select>
 </mapper>

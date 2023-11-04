@@ -7,13 +7,11 @@ import com.service.core.error.model.UserManageException;
 import com.service.core.music.dto.MusicCategoryDto;
 import com.service.core.music.dto.MusicPagingResponseDto;
 import com.service.core.music.dto.UserMusicCategoryDto;
+import com.service.core.music.model.UserMusicConfigInput;
 import com.service.core.music.model.UserMusicInput;
 import com.service.core.music.model.UserMusicSearchInput;
 import com.service.core.music.paging.MusicSearchPagingDto;
-import com.service.core.music.service.MusicCategoryService;
-import com.service.core.music.service.MusicService;
-import com.service.core.music.service.UserMusicCategoryService;
-import com.service.core.music.service.UserMusicService;
+import com.service.core.music.service.*;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,6 +40,7 @@ public class MusicRestController {
     private final MusicCategoryService musicCategoryService;
     private final UserMusicCategoryService userMusicCategoryService;
     private final UserMusicService userMusicService;
+    private final UserMusicConfigService userMusicConfigService;
 
     @Operation(summary = "뮤직 다운로드 리스트 반환", description = "뮤직 다운로드 리스트 데이터 반환 메서드")
     @ApiResponses(value = {
@@ -151,6 +150,48 @@ public class MusicRestController {
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-deleteMusic] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "뮤직 설정 반환", description = "뮤직 설정 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "뮤직 설정 데이터 반환 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 설정 데이터 반환 실패")
+    })
+    @GetMapping("/config")
+    public ResponseEntity<MusicPagingResponseDto> searchMusicConfig(Principal principal) {
+        try {
+            if ((principal == null || principal.getName() == null)) {
+                throw new UserManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+            BlogInfoDto blogInfoDto = blogService.findBlogInfoDtoByEmail(principal.getName());
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success(userMusicConfigService.findUserMusicConfigDtoByIdOrDefault(blogInfoDto.getId())));
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-searchMusicConfig] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
+        }
+    }
+
+    @Operation(summary = "뮤직 다운로드", description = "뮤직 다운로드 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "뮤직 다운로드 성공"),
+            @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 뮤직 다운로드 실패")
+    })
+    @PostMapping("/config_save")
+    public ResponseEntity<MusicPagingResponseDto> musicConfigSave(Principal principal, @Valid UserMusicConfigInput userMusicConfigInput) {
+        try {
+            if ((principal == null || principal.getName() == null)) {
+                throw new UserManageException(ServiceExceptionMessage.NO_LOGIN_ACCESS);
+            }
+            userMusicConfigService.saveUserMusicConfig(userMusicConfigInput, principal.getName());
+            return ResponseEntity.status(HttpStatus.OK).body(MusicPagingResponseDto.success("success"));
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-downloadMusic] exception occurred ", exception);
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(MusicPagingResponseDto.fail(exception));
         }

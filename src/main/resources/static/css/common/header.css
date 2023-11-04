@@ -93,6 +93,34 @@
     cursor: pointer;
 }
 
+/** 뮤직 플레이어 설정 스타일 정의 **/
+.music_player_config_box {
+    padding: 0 0 0 0;
+}
+
+.music_player_config_box:nth-child(n+2) {
+    margin-top: 15px;
+}
+
+.music_player_config_box .music_config_label_style {
+    font-size: 13px;
+    color: #3d2c2c;
+}
+
+.music_player_config_box .music_config_checkbox_style {
+    vertical-align: middle;
+    margin-left: 3px;
+}
+
+.music_player_config_box .music_config_number_style {
+    width: 100px;
+}
+
+.music_player_config_box .music_config_select_style {
+    margin-left: 3px;
+    font-size: 13px;
+}
+
 /** 사용자 좋아요 조회 버튼 스타일 정의 **/
 .header_box .user_util_box .user_util_item .user_like_post_option_container {
     position: absolute;
@@ -115,7 +143,7 @@
 .header_box .user_util_box .user_util_item .user_like_post_option_container .user_like_post_notice_container .user_like_post_notice_text {
     line-height: 15px;
     display: block;
-    font-size: 5px;
+    font-size: 10px;
     color: #4480b9;
     visibility: hidden;
 }
@@ -286,7 +314,7 @@
 
 .header_box .user_util_box .notice_container .notice_title {
     line-height: 10px;
-    font-size: 3px;
+    font-size: 11px;
     color: #607D8B;
     padding: 5px 5px 5px 8px;
 }
@@ -338,7 +366,7 @@
     top: 25px;
     height: 20px;
     line-height: 20px;
-    font-size: 5px;
+    font-size: 10px;
     color: rgb(158, 158, 158);
 }
 

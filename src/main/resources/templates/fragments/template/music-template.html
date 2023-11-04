@@ -78,5 +78,43 @@
         </option>
         {{/each}}
     </script>
+
+    <script id="music-config-template" type="text/x-handlebars-template">
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="listFoldedInput">리스트 접기</label>
+            <input class="music_config_checkbox_style" type="checkbox" id="listFoldedInput" {{ternaryOperator listFolded true 'checked' null}}>
+        </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="listMaxHeightInput">리스트 최대 높이(px)</label>
+            <input class="music_config_number_style" type="number" id="listMaxHeightInput" min="0" value={{listMaxHeight}}>
+        </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="autoPlayInput">자동재생</label>
+            <input class="music_config_checkbox_style" type="checkbox" id="autoPlayInput" {{ternaryOperator autoPlay true 'checked' null}}>
+        </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="duplicatePlayInput">중복재생</label>
+            <input  class="music_config_checkbox_style" type="checkbox" id="duplicatePlayInput" {{ternaryOperator duplicatePlay true 'checked' null}}>
+        </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="playOrderInput">재생순서</label>
+            <select class="music_config_select_style" id="playOrderInput">
+                <option {{ternaryOperator playOrder 'FIXED' 'selected' null}} value="FIXED">고정</option>
+                <option {{ternaryOperator playOrder 'RANDOM' 'selected' null}} value="RANDOM">랜덤</option>
+            </select>
+        </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="playModeInput">재생모드</label>
+            <select class="music_config_select_style" id="playModeInput">
+                <option {{ternaryOperator playMode 'FIXED' 'selected' null}} value="FIXED">Fixed</option>
+                <option {{ternaryOperator playMode 'MINI' 'selected' null}} value="MINI">Mini</option>
+            </select>
+        </div>
+    </script>
 </th:block>
 </html>

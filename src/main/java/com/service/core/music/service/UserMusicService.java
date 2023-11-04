@@ -83,11 +83,13 @@ public class UserMusicService {
         }
     }
 
+    @Transactional(readOnly = true)
     public boolean findUserMusicByHashCode(int hashcode) {
         int userMusicCount = userMusicMapper.searchUserMusicByHashCode(hashcode);
         return (userMusicCount <= 0) ? false : true;
     }
 
+    @Transactional(readOnly = true)
     public UserMusic findUserMusicById(long musicId) {
         return userMusicRepository.findById(musicId).orElseThrow(() -> new MusicManageException(ServiceExceptionMessage.MUSIC_NOT_FOUND));
     }

@@ -34,5 +34,5 @@ public class UserMusicInput {
     private final String cover;
 
     @Size(max = 300, message = "뮤직 LRC은 최대 10000글자 까지 작성 가능합니다.")
-    private final String lrc;
+    private final String lrc; // TODO lrc 데이터 구하는 것이 어려워 차후 방안 모색 ...
 }

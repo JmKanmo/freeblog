@@ -24,7 +24,10 @@ class HeaderController extends UtilController {
         this.noticeTemplateFlag = false;
 
         this.audioPlayerSettingButton = document.getElementById("audioPlayerSettingButton");
+        this.musicPlayerConfigBox = document.getElementById("musicPlayerConfigBox");
+        this.musicPlayerConfigForm = document.getElementById("musicPlayerConfigForm");
         this.musicStoreButton = document.getElementById("musicStoreButton");
+        this.musicConfigSaveButton = document.getElementById("musicConfigSaveButton");
 
         this.noticeRecordSize = 5;
         this.noticePageSize = 5;
@@ -210,7 +213,58 @@ class HeaderController extends UtilController {
 
         if (this.audioPlayerSettingButton != null) {
             this.audioPlayerSettingButton.addEventListener("click", evt => {
-                this.openPopUp(1080, 750, '/music/setting', 'popup');
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "/music/config", true);
+
+                xhr.addEventListener("loadend", evt => {
+                    const status = evt.target.status;
+                    const responseValue = JSON.parse(evt.target.responseText);
+
+                    if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                        this.showToastMessage(responseValue["message"]);
+                    } else {
+                        const musicPlayerConfigTemplate = document.getElementById("music-config-template").innerHTML;
+                        const musicPlayerConfigTemplateObject = Handlebars.compile(musicPlayerConfigTemplate);
+                        const musicPlayerConfigTemplateObjectHTML = musicPlayerConfigTemplateObject(responseValue["musicPaginationResponse"]);
+                        this.musicPlayerConfigBox.innerHTML = musicPlayerConfigTemplateObjectHTML;
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('오류가 발생하여 뮤직 설정을 읽는데 실패하였습니다.');
+                });
+                xhr.send();
+            });
+        }
+
+        if (this.musicConfigSaveButton != null) {
+            this.musicConfigSaveButton.addEventListener("click", evt => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/music/config_save", true);
+
+                xhr.addEventListener("loadend", evt => {
+                    const status = evt.target.status;
+                    const responseValue = JSON.parse(evt.target.responseText);
+
+                    if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                        this.showToastMessage(responseValue["message"]);
+                    } else {
+                        this.showToastMessage("뮤직 설정이 저장되었습니다.");
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showToastMessage('오류가 발생하여 뮤직 설정 저장에 실패하였습니다.');
+                });
+
+                // music config data setting
+                document.getElementById("listFoldedHiddenInput").value = document.getElementById("listFoldedInput").checked;
+                document.getElementById("listMaxHeightHiddenInput").value = !document.getElementById("listMaxHeightInput").value ? 0 : document.getElementById("listMaxHeightInput").value;
+                document.getElementById("autoPlayHiddenInput").value = document.getElementById("autoPlayInput").checked;
+                document.getElementById("duplicatePlayHiddenInput").value = document.getElementById("duplicatePlayInput").checked;
+                document.getElementById("playOrderHiddenInput").value = document.getElementById("playOrderInput").value;
+                document.getElementById("playModeHiddenInput").value = document.getElementById("playModeInput").value;
+                xhr.send(new FormData(this.musicPlayerConfigForm));
             });
         }
 

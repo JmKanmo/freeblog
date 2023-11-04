@@ -16,6 +16,10 @@ class UtilController {
     }
 
     initHandlerbars() {
+        Handlebars.registerHelper('ternaryOperator', function (object, target, valueIfTrue, valueIfFalse) {
+            return (object === target) ? valueIfTrue : valueIfFalse;
+        });
+
         Handlebars.registerHelper('nullCheck', param => {
             return param == null || param == '<<<undefined>>>';
         });

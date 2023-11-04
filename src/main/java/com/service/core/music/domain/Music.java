@@ -26,7 +26,7 @@ public class Music extends BaseTimeEntity {
 
     private String cover;
 
-    private String lrc;
+    private String lrc; // TODO lrc 데이터 구하는 것이 어려워 차후 방안 모색 ...
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_category_id")

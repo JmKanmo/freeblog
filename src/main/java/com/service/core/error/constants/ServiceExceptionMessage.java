@@ -60,6 +60,7 @@ public enum ServiceExceptionMessage {
     // 뮤직 관련 에러 메시지
     MUSIC_NOT_FOUND("뮤직 정보가 존재하지 않습니다."),
     MUSIC_CATEGORY_NOT_FOUND("뮤직 카테고리 정보가 존재하지 않습니다."),
+    MUSIC_CONFIG_NOT_FOUND("뮤직 설정 정보가 존재하지 않습니다."),
 
     // 기타 처리 관련 에러 메시지
     NOT_VALID_FILE_NAME("파일 명이 유효하지 않습니다."),

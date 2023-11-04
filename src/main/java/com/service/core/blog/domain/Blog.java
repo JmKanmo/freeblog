@@ -1,6 +1,7 @@
 package com.service.core.blog.domain;
 
 import com.service.core.category.domain.Category;
+import com.service.core.music.domain.UserMusicCategory;
 import com.service.core.post.domain.Post;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserSignUpInput;
@@ -46,6 +47,10 @@ public class Blog extends BaseTimeEntity {
     @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "blog")
     private List<Post> postList;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "blog")
+    private List<UserMusicCategory> userMusicCategoryList;
 
     public static Blog from(UserSignUpInput userSignUpInput) {
         return Blog.builder()

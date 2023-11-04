@@ -16,7 +16,7 @@
 
                 <th:block th:if="${#bools.isTrue(blog_owner)}">
                     <button class="common_button_text audioPlayer_Setting_Button" title="음악 플레이어 설정"
-                            id="audioPlayerSettingButton">
+                            id="audioPlayerSettingButton" data-toggle="modal" data-target="#music_setting_modal">
                         <span class="blind">설정</span>
                         <img class="common_button_image_style" src="/images/setting.png" alt="">
                     </button>
@@ -29,6 +29,39 @@
                 </th:block>
             </div>
             <div id="audio_player"></div>
+        </div>
+
+        <!-- Music Setting Modal -->
+        <div class="modal fade" id="music_setting_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">뮤직 플레이어 설정</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="musicPlayerConfigBox">
+                            <!-- music config template -->
+                        </div>
+
+                        <form method="post" action="/music/config_save" id="musicPlayerConfigForm">
+                            <input type="hidden" readonly id="listFoldedHiddenInput" name="listFolded">
+                            <input type="hidden" readonly id="listMaxHeightHiddenInput" name="listMaxHeight">
+                            <input type="hidden" readonly id="autoPlayHiddenInput" name="autoPlay">
+                            <input type="hidden" readonly id="duplicatePlayHiddenInput" name="duplicatePlay">
+                            <input type="hidden" readonly id="playOrderHiddenInput" name="playOrder">
+                            <input type="hidden" readonly id="playModeHiddenInput" name="playMode">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" id="musicConfigSaveButton">저장</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="user_util_box">

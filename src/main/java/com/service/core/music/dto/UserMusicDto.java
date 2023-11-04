@@ -12,7 +12,7 @@ public class UserMusicDto {
     private final long musicId;
     private final String artist;
     private final String cover;
-    private final String lrc;
+    private final String lrc; // TODO lrc 데이터 구하는 것이 어려워 차후 방안 모색 ...
     private final String name;
     private final String url;
     private final int hashCode;

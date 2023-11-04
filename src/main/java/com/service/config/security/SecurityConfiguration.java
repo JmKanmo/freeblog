@@ -100,7 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/comment/**",
                 "/like/**",
                 "/notice/**",
-                "/music/download", "/music/delete");
+                "/music/download", "/music/delete", "/music/config_save");
         super.configure(http);
     }
 

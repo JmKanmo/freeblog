@@ -618,7 +618,7 @@ input:focus {
 
 .aplayer.aplayer-withlist .aplayer-list {
     display: block;
-    height: 360px;
+    /*height: 360px;*/
     overflow-y: scroll;
 }
 
