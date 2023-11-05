@@ -24,11 +24,10 @@
         </select>
 
         <select class="blog_view_select_text blog_view_select blog_view_select_sort_term"
-                id="blog_view_select_sort_term" name="blogSelect">
-            <option value="today">오늘</option>
-            <option value="week">이번 주</option>
-            <option value="month">이번 달</option>
-            <option value="year">올해</option>
+                id="blog_search_option_selector" name="searchOption">
+            <option value="title">제목</option>
+            <option value="title">내용</option>
+            <option value="title">블로그명</option>
         </select>
 
         <!-- /searcg?searchQuery GET 요청 -->
@@ -37,6 +36,8 @@
             <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색"></button>
             <span class="blind">게시글 검색</span>
         </form>
+
+        <!-- TODO 날짜순, 좋아요순, etc 우측에 UI 구성 -->
     </div>
 
     <!-- 포스트 카테고리 레이아웃 -->

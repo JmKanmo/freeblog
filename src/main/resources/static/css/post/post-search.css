@@ -1,5 +1,6 @@
 /* post search container 스타일 */
 .post_search_container {
+    position: relative;
     margin: 0 auto;
     width: 988px;
     padding-bottom: 140px;
@@ -11,4 +12,50 @@
     color: #666666;
     text-align: center;
     padding-bottom: 40px;
+}
+
+.post_search_container .post_search_option_container {
+    position: absolute;
+    right: 0;
+}
+
+.post_search_container .post_search_option_container .blog_view_search_option {
+    margin-right: 5px;
+    float: left;
+    font-size: 11px;
+    margin-top: 5px;
+    color: #666;
+    border: 1px solid #eeeeee;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .07), 0 1px 5px 0 rgba(0, 0, 0, .1);
+}
+
+.post_search_container .post_search_option_container .blog_view_search_form {
+    float: right;
+}
+
+.post_search_container .post_search_option_container .blog_view_search_form .search_blog_input {
+    height: 25px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dfdfdf;
+    font-size: 11px;
+    line-height: 13px;
+    padding: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: #ffffff;
+}
+
+.post_search_container .post_search_option_container .blog_view_search_form .search_blog_button {
+    border: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    background-color: #ffffff;
+    padding: 0;
+    margin-left: 2px;
+}
+
+.post_search_container .post_search_option_container .blog_view_search_form .search_blog_button .search_blog_button_img {
+    width: 20px;
+    height: 20px;
 }

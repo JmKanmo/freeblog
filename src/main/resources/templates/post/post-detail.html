@@ -21,7 +21,13 @@
 <input type="hidden" id="blog_post_title" readonly th:value="${postDetail.title}">
 
 <div class="post_detail_container">
-    <div class="search_container">
+    <div class="search_container clear_fix">
+        <select class="blog_view_search_option" name="postSearchOption" id="postSearchOptionSelector">
+            <option value="ALL">전체</option>
+            <option value="TITLE">제목</option>
+            <option value="CONTENT">내용</option>
+        </select>
+
         <form action="/post/search" method="get" class="blog_view_search_form" id="postSearchForm">
             <input type="hidden" id="blogIdHiddenInput" name="blogId" readonly th:value="${postDetail.blogId}">
             <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"

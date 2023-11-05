@@ -2,7 +2,7 @@ class BlogViewController extends UtilController {
     constructor() {
         super();
         this.blog_view_select_sort_turn = document.getElementById("blog_view_select_sort_turn");
-        this.blog_view_select_sort_term = document.getElementById("blog_view_select_sort_term");
+        this.blogSearchOptionSelector = document.getElementById("blog_search_option_selector");
         this.musicHeaderController = new MusicHeaderController();
     }
 
@@ -11,8 +11,8 @@ class BlogViewController extends UtilController {
             this.requestHttpBlogView([evt.target.value, this.blog_view_select_sort_term.value]);
         });
 
-        this.blog_view_select_sort_term.addEventListener("change", evt => {
-            this.requestHttpBlogView([evt.target.value, this.blog_view_select_sort_term.value]);
+        this.blogSearchOptionSelector.addEventListener("change", evt => {
+            this.showToastMessage("옵션 변경");
         });
 
         this.musicHeaderController.initMusicPlayer();
