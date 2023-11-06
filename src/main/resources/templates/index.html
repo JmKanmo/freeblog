@@ -18,26 +18,33 @@
 <div class="blog_view_container footer_bottom_padding">
     <div class="blog_view_div clear_fix">
         <!-- /post GET 요청 (select option에 따라 정렬), js에서 이벤트 리스너 설정 -->
-        <select class="blog_view_select_text blog_view_select" id="blog_view_select_sort_turn" name="blogSelect">
-            <option value="recent">최신 순</option>
-            <option value="oldest">오래된 순</option>
-        </select>
+        <div class=" blog_view_box clear_fix">
+            <div class="blog_view_search_selector">
+                <select class="blog_view_select_text blog_view_select blog_view_select_sort_term"
+                        id="blog_search_option_selector" name="searchOption">
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                </select>
 
-        <select class="blog_view_select_text blog_view_select blog_view_select_sort_term"
-                id="blog_search_option_selector" name="searchOption">
-            <option value="title">제목</option>
-            <option value="title">내용</option>
-            <option value="title">블로그명</option>
-        </select>
+                <form action="/search-post" method="get" class="blog_view_search_form" id="blogViewSearchForm">
+                    <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog">
+                    <button type="button" class="search_blog_button" id="searchBlogButton" title="게시글 검색"></button>
 
-        <!-- /searcg?searchQuery GET 요청 -->
-        <form action="/" method="get" class="blog_view_search_form">
-            <input type="text" class="search_blog_input" id="search_blog_input" name="searchBlog">
-            <button type="submit" class="search_blog_button" id="searchBlogButton" title="게시글 검색"></button>
-            <span class="blind">게시글 검색</span>
-        </form>
+                    <input type="hidden" readonly id="blogViewSearchOption" name="searchOption">
+                    <input type="hidden" readonly id="blogViewSearchKeyword" name="searchKeyword">
+                    <input type="hidden" readonly id="blogViewSortOption" name="dateSortOption">
+                    <span class="blind">게시글 검색</span>
+                </form>
+            </div>
 
-        <!-- TODO 날짜순, 좋아요순, etc 우측에 UI 구성 -->
+            <div class="blog_view_sort_selector clear_fix">
+                <select class="blog_view_select_text blog_view_select" id="blog_view_select_sort_turn"
+                        name="blogSelect">
+                    <option value="recent">최신순</option>
+                    <option value="oldest">오래된순</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <!-- 포스트 카테고리 레이아웃 -->

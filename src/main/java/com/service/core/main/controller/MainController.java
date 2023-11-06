@@ -1,4 +1,4 @@
-package com.service.core.main;
+package com.service.core.main.controller;
 
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;

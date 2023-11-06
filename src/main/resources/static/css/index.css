@@ -10,6 +10,16 @@
     align-items: center;
 }
 
+.blog_view_div .blog_view_search_selector {
+    float: left;
+}
+
+.blog_view_div .blog_view_sort_selector {
+    float: left;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
 .blog_view_div .blog_view_select_text {
     font-size: 15px;
     text-align: center;
@@ -29,6 +39,7 @@
 
 .blog_view_div .blog_view_select_sort_term {
     margin-left: 10px;
+    margin-top: 5px;
 }
 
 .blog_view_div .blog_view_search_form {
@@ -60,6 +71,10 @@
 }
 
 /* blog post style -1 (thumbnail) */
+.blog_view_container .blog_post_board {
+    min-height: 550px;
+}
+
 .blog_post_board .blog_list {
     padding: 25px 0 0 0;
 }
