@@ -1,6 +1,7 @@
 package com.service.core.post.service;
 
 import com.service.core.category.service.CategoryService;
+import com.service.core.main.model.MainPostSearchInput;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
@@ -17,6 +18,8 @@ public interface PostService {
     List<PostCardDto> findRecentPostCardDtoByBlogId(Long blogId);
 
     List<PostCardDto> findRelatedPost(Long postId, Long blogId, Long categoryId, Long postSeq);
+
+    PostPaginationResponse<PostKeywordDto> findMainPostSearchPaginationByKeyword(MainPostSearchInput mainPostSearchInput, PostSearchPagingDto postSearchPagingDto);
 
     PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto);
 

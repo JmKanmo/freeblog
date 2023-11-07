@@ -533,3 +533,9 @@
     vertical-align: middle;
     content: "";
 }
+
+/** blog post pagination style **/
+.blog_view_container .post_search_page_container {
+    padding-top: 11px;
+    padding-bottom: 7px;
+}

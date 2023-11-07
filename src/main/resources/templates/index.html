@@ -38,7 +38,7 @@
             </div>
 
             <div class="blog_view_sort_selector clear_fix">
-                <select class="blog_view_select_text blog_view_select" id="blog_view_select_sort_turn"
+                <select class="blog_view_select_text blog_view_select" id="blog_view_select_sort_option"
                         name="blogSelect">
                     <option value="recent">최신순</option>
                     <option value="oldest">오래된순</option>
@@ -49,22 +49,18 @@
 
     <!-- 포스트 카테고리 레이아웃 -->
     <div class="blog_post_board">
-        <ul class="blog_list clear_fix" id="blog_list">
+        <ul class="blog_list clear_fix" id="blog_post_list">
             <!-- blog post template -->
-
-            <div class="default_image_div" id="default_image_div">
-                <img src="../images/empty_post.png">
-                <h3 class="message">검색 된 포스트가 없습니다.</h3>
-                <span class="blind">빈 포스트 이미지</span>
-            </div>
         </ul>
+    </div>
 
-        <div class="more_post_btn_div">
-            <button class="more_post_btn" id="morePostBtn">
-                <span href="/" class="total_post_text">포스트 더보기</span>
-                <span class="blind">더보기 버튼</span>
-            </button>
-        </div>
+    <!-- 포스트 페이지네이션 레이아웃 -->
+    <div class="post_search_page_container">
+        <nav class="common-pagination-justify-content-center" aria-label="Page navigation">
+            <ul class="pagination" id="PostSearchPagination">
+                <!-- 페이지 템플릿 -->
+            </ul>
+        </nav>
     </div>
 </div>
 <th:block sec:authorize="isAuthenticated()">

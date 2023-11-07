@@ -4,8 +4,13 @@ class BlogViewController extends UtilController {
         this.searchBlogInput = document.getElementById("search_blog_input");
         this.blogSearchOptionSelector = document.getElementById("blog_search_option_selector");
         this.searchBlogButton = document.getElementById("searchBlogButton");
-        this.blogViewSelectSortTurn = document.getElementById("blog_view_select_sort_turn");
-        this.blogViewSearchForm = document.getElementById("blogViewSearchForm");
+        this.blogViewSelectSortOption = document.getElementById("blog_view_select_sort_option");
+        this.postSearchPagination = document.getElementById("PostSearchPagination");
+        this.blogPostList = document.getElementById("blog_post_list");
+
+        this.postRecordSize = 10;
+        this.postPageSize = 10;
+
         this.musicHeaderController = new MusicHeaderController();
     }
 
@@ -17,13 +22,53 @@ class BlogViewController extends UtilController {
     initEventListener() {
         this.searchBlogInput.addEventListener("keyup", evt => {
             if (evt.keyCode == 13) {
-                this.showToastMessage("todo, key up");
+                this.#requestSearchPost("/search-post");
             }
         })
 
         this.searchBlogButton.addEventListener("click", evt => {
-            this.showToastMessage("todo, click");
+            this.#requestSearchPost("/search-post");
         });
+
+        this.postSearchPagination.addEventListener("click", evt => {
+            const button = evt.target.closest("button");
+
+            if (button && !button.closest("li").classList.contains("active")) {
+                const url = button.getAttribute("url");
+                const page = button.getAttribute("page");
+
+                if (url && page) {
+                    this.#requestSearchPost(url, page);
+                }
+            }
+        });
+    }
+
+    #requestSearchPost(url, page) {
+        const searchOption = !this.blogSearchOptionSelector.value ? "title" : this.blogSearchOptionSelector.value;
+        const sortOption = !this.blogViewSelectSortOption.value ? "recent" : this.blogViewSelectSortOption.value;
+        const keyword = !this.searchBlogInput.value ? "" : this.searchBlogInput.value;
+        const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
+        const totalUrl = `${url}?searchOption=${searchOption}&sortOption=${sortOption}&keyword=${keyword}&${queryParam.toString()}`;
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("GET", totalUrl, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = JSON.parse(event.target.responseText);
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue["message"]);
+            } else {
+                // TODO parse and handle template
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("포스트 정보를 불러오는데 실패하였습니다.");
+        });
+        xhr.send();
     }
 }
 

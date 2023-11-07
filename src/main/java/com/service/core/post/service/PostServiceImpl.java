@@ -6,6 +6,7 @@ import com.service.core.category.domain.Category;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.PostManageException;
+import com.service.core.main.model.MainPostSearchInput;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
@@ -55,6 +56,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<PostCardDto> findRelatedPost(Long postId, Long blogId, Long categoryId, Long postSeq) {
         return postMapper.findRelatedPost(postId, blogId, categoryId, postSeq);
+    }
+
+    @Override
+    public PostPaginationResponse<PostKeywordDto> findMainPostSearchPaginationByKeyword(MainPostSearchInput mainPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
+        // TODO
+        return null;
     }
 
     @Override
