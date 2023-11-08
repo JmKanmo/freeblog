@@ -9,7 +9,7 @@ class BlogViewController extends UtilController {
         this.blogPostList = document.getElementById("blog_post_list");
 
         this.prevPostSearchReloadTime = 0;
-        this.postSearchReloadTimeOut = 1000;
+        this.postSearchReloadTimeOut = 100;
 
         this.postRecordSize = 10;
         this.postPageSize = 10;
