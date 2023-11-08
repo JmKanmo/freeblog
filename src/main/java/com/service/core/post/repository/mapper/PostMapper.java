@@ -44,5 +44,9 @@ public interface PostMapper {
 
     int findPostDtoCountByKeyword(@Param("postKeywordSearchDto") PostKeywordSearchDto postKeywordSearchDto, Long blogId);
 
+    int findPostMainSearchDtoCountByKeyword(@Param("postMainSearchDto") PostMainSearchDto postMainSearchDto);
+
+    List<PostSearchMapperDto> findPostMainSearchDtoByKeyword(@Param("postMainSearchDto") PostMainSearchDto postMainSearchDto);
+
     int findPostDtoCountByTagKeyword(Long blogId, String keyword);
 }

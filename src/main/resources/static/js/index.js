@@ -8,6 +8,9 @@ class BlogViewController extends UtilController {
         this.postSearchPagination = document.getElementById("PostSearchPagination");
         this.blogPostList = document.getElementById("blog_post_list");
 
+        this.prevPostSearchReloadTime = 0;
+        this.postSearchReloadTimeOut = 1000;
+
         this.postRecordSize = 10;
         this.postPageSize = 10;
 
@@ -15,6 +18,7 @@ class BlogViewController extends UtilController {
     }
 
     initBlogViewController() {
+        this.#requestSearchPost("/search-post");
         this.initEventListener();
         this.musicHeaderController.initMusicPlayer();
     }
@@ -45,6 +49,12 @@ class BlogViewController extends UtilController {
     }
 
     #requestSearchPost(url, page) {
+        const current = new Date().getTime();
+
+        if (current - this.prevPostSearchReloadTime <= this.postSearchReloadTimeOut) {
+            this.showToastMessage("잠시 후에 요청 해주세요.");
+            return;
+        }
         const searchOption = !this.blogSearchOptionSelector.value ? "title" : this.blogSearchOptionSelector.value;
         const sortOption = !this.blogViewSelectSortOption.value ? "recent" : this.blogViewSelectSortOption.value;
         const keyword = !this.searchBlogInput.value ? "" : this.searchBlogInput.value;
@@ -61,14 +71,43 @@ class BlogViewController extends UtilController {
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
             } else {
-                // TODO parse and handle template
+                const totalCount = responseValue["postPaginationResponse"]["postPagination"]["totalRecordCount"];
+
+                if (totalCount > 0) {
+                    this.#handleTemplateList(responseValue);
+                    this.#clearPagination();
+                    this.#handlePagination(responseValue["postPaginationResponse"]["postPagination"], queryParam, url);
+                } else {
+                    this.blogPostList.innerHTML = `<span class="no_data_span_text">검색 결과가 없습니다.</span>`;
+                    this.#clearPagination();
+                }
             }
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("포스트 정보를 불러오는데 실패하였습니다.");
+            this.showToastMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
+        this.prevPostSearchReloadTime = current;
+    }
+
+    #handleTemplateList(responseValue) {
+        const postSearchTemplate = document.getElementById("post_search_template").innerHTML;
+        const postSearchTemplateObject = Handlebars.compile(postSearchTemplate);
+        const postSearchTemplateHTML = postSearchTemplateObject(responseValue["postPaginationResponse"]["postDto"]);
+        this.blogPostList.innerHTML = postSearchTemplateHTML;
+    }
+
+    #clearPagination() {
+        this.postSearchPagination.innerHTML = ``;
+    }
+
+    #handlePagination(pagination, queryParam, url) {
+        if (!pagination || !queryParam) {
+            this.postSearchPagination.innerHTML = '';
+            return;
+        }
+        this.postSearchPagination.innerHTML = this.drawSimplePagination(pagination, queryParam, url);
     }
 }
 

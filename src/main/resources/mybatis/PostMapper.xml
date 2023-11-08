@@ -3,6 +3,37 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.service.core.post.repository.mapper.PostMapper">
+    <select id="findPostMainSearchDtoCountByKeyword" parameterType="com.service.core.post.dto.PostMainSearchDto"
+            resultType="int">
+        SELECT count(*)
+        FROM post
+        WHERE post.is_delete != true
+        and (<include refid="mainTextSearchQuery"/>)
+        <include refid="mainSortQuery"/>
+    </select>
+
+    <select id="findPostMainSearchDtoByKeyword" parameterType="com.service.core.post.dto.PostMainSearchDto"
+            resultType="com.service.core.post.dto.PostSearchMapperDto">
+        select post.post_id,
+               post.title,
+               post.thumbnail_image,
+               summary,
+               post.writer,
+               date_format(post.register_time, '%y.%m.%d %H:%i') as register_time,
+               CASE
+                   WHEN ((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true) is null)
+               THEN c.name
+           ELSE CONCAT((select pc.name from category pc where pc.category_id = c.parent_id and pc.is_delete != true), '/', c.name)
+           END as category, c.category_id, b.blog_id, (select count(*) from comment where comment.post_id = post.post_id and comment.is_delete != true) as commentCount
+        from post
+         inner join category c on post.category_id = c.category_id and c.is_delete != true
+         inner join blog b on b.blog_id = post.blog_id and b.is_delete != true
+        where post_id in (select post_id from post) and post.is_delete != true
+        and (<include refid="mainTextSearchQuery"/>)
+        <include refid="mainSortQuery"/>
+        LIMIT #{postMainSearchDto.postSearchPagingDto.postPagination.limitStart}, #{postMainSearchDto.postSearchPagingDto.recordSize}
+    </select>
+
     <select id="findRecentPostCardDto" resultType="com.service.core.post.dto.PostCardDto">
         select post.post_id,
                post.title,
@@ -337,6 +368,46 @@ where main_post.post_id in (select DISTINCT tag.post_id
             <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
                 MATCH(summary) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE) or
                 MATCH(title) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
+            </when>
+        </choose>
+    </sql>
+
+    <sql id="mainTextSearchQuery">
+        <choose>
+            <when test="postMainSearchDto.searchType eq 'LIKE'">
+                <choose>
+                    <when test="postMainSearchDto.searchOption eq 'title'">
+                        post.title like CONCAT('%',#{postMainSearchDto.keyword}, '%')
+                    </when>
+
+                    <when test="postMainSearchDto.searchOption eq 'content'">
+                        post.summary like CONCAT('%',#{postMainSearchDto.keyword}, '%')
+                    </when>
+                </choose>
+            </when>
+
+            <when test="postMainSearchDto.searchType eq 'FULL-TEXT'">
+                <choose>
+                    <when test="postMainSearchDto.searchOption eq 'title'">
+                        MATCH(post.title) AGAINST(CONCAT(#{postMainSearchDto.keyword}, '*') IN BOOLEAN MODE)
+                    </when>
+
+                    <when test="postMainSearchDto.searchOption eq 'content'">
+                        MATCH(post.summary) AGAINST(CONCAT(#{postMainSearchDto.keyword}, '*') IN BOOLEAN MODE)
+                    </when>
+                </choose>
+            </when>
+        </choose>
+    </sql>
+
+    <sql id="mainSortQuery">
+        <choose>
+            <when test="postMainSearchDto.sortOption eq 'recent'">
+                order by post.register_time desc
+            </when>
+
+            <when test="postMainSearchDto.sortOption eq 'oldest'">
+                order by post.register_time asc
             </when>
         </choose>
     </sql>

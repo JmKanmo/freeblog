@@ -60,8 +60,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostPaginationResponse<PostKeywordDto> findMainPostSearchPaginationByKeyword(MainPostSearchInput mainPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
-        // TODO
-        return null;
+        PostMainSearchDto postMainSearchDto = PostMainSearchDto.from(mainPostSearchInput, postSearchPagingDto, sqlConfig.getSqlSearchPattern());
+        int postCount = postMapper.findPostMainSearchDtoCountByKeyword(postMainSearchDto);
+        PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
+        postSearchPagingDto.setPostPagination(postPagination);
+        postMainSearchDto.setPostSearchPagingDto(postSearchPagingDto);
+        return new PostPaginationResponse<>(PostKeywordDto.from(postMapper.findPostMainSearchDtoByKeyword(postMainSearchDto)), postPagination);
     }
 
     @Override
