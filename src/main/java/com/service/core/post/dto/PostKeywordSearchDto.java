@@ -10,6 +10,7 @@ import lombok.Data;
 public class PostKeywordSearchDto {
     private final Long blogId;
     private final String keyword;
+    private final String searchOption;
     private final String searchType;
     private PostSearchPagingDto postSearchPagingDto;
 
@@ -18,6 +19,7 @@ public class PostKeywordSearchDto {
                 .blogId(blogPostSearchInput.getBlogId())
                 .keyword(blogPostSearchInput.getKeyword())
                 .searchType(searchType)
+                .searchOption(blogPostSearchInput.getSearchOption())
                 .postSearchPagingDto(postSearchPagingDto)
                 .build();
     }

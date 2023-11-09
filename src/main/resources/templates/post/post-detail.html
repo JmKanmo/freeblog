@@ -23,19 +23,24 @@
 <div class="post_detail_container">
     <div class="search_container clear_fix">
         <select class="blog_view_search_option" name="postSearchOption" id="postSearchOptionSelector">
-            <option value="ALL">전체</option>
-            <option value="TITLE">제목</option>
-            <option value="CONTENT">내용</option>
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="content">내용</option>
         </select>
 
-        <form action="/post/search" method="get" class="blog_view_search_form" id="postSearchForm">
-            <input type="hidden" id="blogIdHiddenInput" name="blogId" readonly th:value="${postDetail.blogId}">
-            <input type="text" class="search_blog_input" id="postSearchKeywordInput" name="keyword"
+        <div class="blog_view_search_form">
+            <input type="text" class="search_blog_input" id="postSearchKeywordInput"
                    placeholder="검색어를 입력해주세요." spellcheck="false" required>
             <button type="button" class="search_blog_button" id="postSearchButton" title="게시글 검색">
                 <img class="search_blog_button_img" src="../images/search.gif"/>
             </button>
             <span class="blind">게시글 검색</span>
+        </div>
+
+        <form action="/post/search" method="get" id="postSearchForm">
+            <input type="hidden" id="blogIdHiddenInput" name="blogId" readonly th:value="${postDetail.blogId}">
+            <input type="hidden" id="postSearchOptionInput" name="searchOption">
+            <input type="hidden" id="postSearchKeywordHiddenInput" name="keyword">
         </form>
     </div>
 

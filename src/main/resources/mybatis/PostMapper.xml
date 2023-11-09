@@ -361,13 +361,37 @@ where main_post.post_id in (select DISTINCT tag.post_id
     <sql id="textSearchQuery">
         <choose>
             <when test="postKeywordSearchDto.searchType eq 'LIKE'">
-                summary like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
-                or title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                <choose>
+                    <when test="postKeywordSearchDto.searchOption eq 'all'">
+                        summary like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                        or title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                    </when>
+
+                    <when test="postKeywordSearchDto.searchOption eq 'title'">
+                        title like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                    </when>
+
+                    <when test="postKeywordSearchDto.searchOption eq 'content'">
+                        summary like CONCAT('%',#{postKeywordSearchDto.keyword}, '%')
+                    </when>
+                </choose>
             </when>
 
             <when test="postKeywordSearchDto.searchType eq 'FULL-TEXT'">
-                MATCH(summary) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE) or
-                MATCH(title) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
+            <choose>
+                <when test="postKeywordSearchDto.searchOption eq 'all'">
+                    MATCH(summary) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE) or
+                    MATCH(title) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
+                </when>
+
+                <when test="postKeywordSearchDto.searchOption eq 'title'">
+                    MATCH(title) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
+                </when>
+
+                <when test="postKeywordSearchDto.searchOption eq 'content'">
+                    MATCH(summary) AGAINST(CONCAT(#{postKeywordSearchDto.keyword}, '*') IN BOOLEAN MODE)
+                </when>
+            </choose>
             </when>
         </choose>
     </sql>

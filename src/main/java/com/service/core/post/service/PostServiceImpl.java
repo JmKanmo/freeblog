@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
     public PostPaginationResponse<PostKeywordDto> findPostSearchPaginationByKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
         PostKeywordSearchDto postKeywordSearchDto = PostKeywordSearchDto.from(
                 blogPostSearchInput,
-                null,
+                postSearchPagingDto,
                 sqlConfig.getSqlSearchPattern()
         );
         int postCount = postMapper.findPostDtoCountByKeyword(postKeywordSearchDto, blogPostSearchInput.getBlogId());

@@ -136,11 +136,10 @@ public class PostRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 포스트 데이터 반환 실패")
     })
     @GetMapping("/search-rest")
-    public ResponseEntity<PostPagingResponseDto> searchPostByKeyword(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
-                                                                     @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+    public ResponseEntity<PostPagingResponseDto> searchPostByKeyword(@ModelAttribute @Valid BlogPostSearchInput blogPostSearchInput,
                                                                      @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(BlogPostSearchInput.from(blogId, keyword), postSearchPagingDto)));
+            return ResponseEntity.status(HttpStatus.OK).body(PostPagingResponseDto.success(postService.findPostSearchPaginationByKeyword(blogPostSearchInput, postSearchPagingDto)));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-searchPostByKeyword] exception occurred ", exception);

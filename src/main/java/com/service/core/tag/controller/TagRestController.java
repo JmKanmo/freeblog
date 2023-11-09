@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -29,12 +31,12 @@ public class TagRestController {
             @ApiResponse(responseCode = "500", description = "데이터베이스 연결 불량, 쿼리 동작 실패 등으로 포스트 데이터 반환 실패")
     })
     @GetMapping("/search-post")
-    public ResponseEntity<PostPagingResponseDto> searchPostByTag(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
-                                                                 @RequestParam(value = "tagKeyword", required = false, defaultValue = "") String tagKeyword,
+    public ResponseEntity<PostPagingResponseDto> searchPostByTag(@ModelAttribute @Valid BlogPostSearchInput blogPostSearchInput,
                                                                  @ModelAttribute PostSearchPagingDto postSearchPagingDto) {
         try {
+            // TODO 태그 검색 API 수정 (왜 태그로 검색을 안하고 키워드로..?)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    PostPagingResponseDto.success(postService.findPostSearchPaginationByTagKeyword(BlogPostSearchInput.from(blogId, tagKeyword), postSearchPagingDto))
+                    PostPagingResponseDto.success(postService.findPostSearchPaginationByTagKeyword(blogPostSearchInput, postSearchPagingDto))
             );
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {

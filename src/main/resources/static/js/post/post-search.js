@@ -3,6 +3,7 @@ class PostSearchController extends UtilController {
         super();
         this.blogIdInput = document.getElementById("blogIdInput");
         this.keywordInput = document.getElementById("keywordInput");
+        this.searchOptionInput = document.getElementById("searchOptionInput");
         this.postSearchCount = document.getElementById("post_search_count");
         this.postSearchList = document.getElementById("blog_post_list");
         this.postSearchPagination = document.getElementById("PostSearchPagination");
@@ -10,6 +11,7 @@ class PostSearchController extends UtilController {
         this.searchResultBox = document.getElementById("search_result_box");
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.postSearchButton = document.getElementById("postSearchButton");
+        this.postSearchOptionSelector = document.getElementById("postSearchOptionSelector");
         this.postRecordSize = 5;
         this.postPageSize = 5;
 
@@ -55,7 +57,7 @@ class PostSearchController extends UtilController {
     #requestPostSearchSelf(url, page) {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
-        const totalUrl = url + '?' + "blogId=" + this.blogIdInput.value + "&" + "keyword=" + this.postSearchKeywordInput.value
+        const totalUrl = url + '?' + "blogId=" + this.blogIdInput.value + "&" + "keyword=" + this.postSearchKeywordInput.value + "&" + "searchOption=" + this.postSearchOptionSelector.value
             + "&" + queryParam.toString();
 
         xhr.open("GET", totalUrl, true);
@@ -102,8 +104,8 @@ class PostSearchController extends UtilController {
     #requestPostSearch(url, page) {
         const xhr = new XMLHttpRequest();
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
-        const totalUrl = url + '?' + "blogId=" + this.blogIdInput.value + "&" + "keyword=" + this.keywordInput.value
-            + "&" + queryParam.toString();
+        const totalUrl = url + '?' + "blogId=" + this.blogIdInput.value + "&" + "keyword=" + this.keywordInput.value + "&" + "searchOption="
+            + this.searchOptionInput.value + "&" + queryParam.toString();
 
         xhr.open("GET", totalUrl, true);
         xhr.setRequestHeader("Content-Type", "application/json");

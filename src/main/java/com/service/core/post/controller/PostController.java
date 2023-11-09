@@ -13,6 +13,7 @@ import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostDto;
 import com.service.core.post.dto.PostUpdateDto;
 import com.service.core.post.model.BlogPostInput;
+import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.service.PostService;
 import com.service.core.user.dto.UserHeaderDto;
@@ -138,8 +139,8 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "키워드 기반 포스트 검색 페이지 반환 실패")
     })
     @GetMapping("/search")
-    public String postSearchPage(@RequestParam(value = "blogId", required = false, defaultValue = "0") Long blogId,
-                                 @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword, Model model, Principal principal) {
+    public String postSearchPage(@ModelAttribute @Valid BlogPostSearchInput blogPostSearchInput,
+                                 Model model, Principal principal) {
         boolean blog_owner = false;
 
         if (principal != null && principal.getName() != null) {
@@ -149,8 +150,9 @@ public class PostController {
             model.addAttribute("user_header", userHeaderDto);
         }
         model.addAttribute("blog_owner", blog_owner);
-        model.addAttribute("blogId", blogId);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute("blogId", blogPostSearchInput.getBlogId());
+        model.addAttribute("keyword", blogPostSearchInput.getKeyword());
+        model.addAttribute("searchOption", blogPostSearchInput.getSearchOption());
         return "post/post-search";
     }
 

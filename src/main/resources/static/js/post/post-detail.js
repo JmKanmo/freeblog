@@ -4,6 +4,7 @@ class PostDetailController extends UtilController {
         this.postContentThymeLeaf = null;
         this.postTitle = document.getElementById("blog_post_title");
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
+        this.postSearchKeywordHiddenInput = document.getElementById("postSearchKeywordHiddenInput");
         this.postTitleCategoryButton = document.getElementById("post_title_category_button");
         this.postLikeButton = document.getElementById("post_like_button");
         this.postLikeButtonImage = document.getElementById("post_like_button_image");
@@ -16,6 +17,8 @@ class PostDetailController extends UtilController {
         this.categoryPostBlockCloseButton = document.getElementById("category_post_block_close_button");
         this.categoryPostList = document.getElementById("category_post_list");
         this.categoryPostPagination = document.getElementById("categoryPostPagination");
+        this.postSearchOptionSelector = document.getElementById("postSearchOptionSelector");
+        this.postSearchOptionInput = document.getElementById("postSearchOptionInput");
 
         this.postRecordSize = 5;
         this.postPageSize = 5;
@@ -123,12 +126,28 @@ class PostDetailController extends UtilController {
 
         this.postSearchButton.addEventListener("click", evt => {
             this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+            this.postSearchKeywordHiddenInput.value = this.postSearchKeywordInput.value;
+            this.postSearchOptionInput.value = this.postSearchOptionSelector.value;
 
             if (this.postSearchKeywordInput.value === '') {
                 this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
                 return;
             }
             this.postSearchForm.submit();
+        });
+
+        this.postSearchKeywordInput.addEventListener("keyup", evt => {
+            if (evt.keyCode == 13) {
+                this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+                this.postSearchKeywordHiddenInput.value = this.postSearchKeywordInput.value;
+                this.postSearchOptionInput.value = this.postSearchOptionSelector.value;
+
+                if (this.postSearchKeywordInput.value === '') {
+                    this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                    return;
+                }
+                this.postSearchForm.submit();
+            }
         });
 
         this.postUserLikePagination.addEventListener("click", evt => {

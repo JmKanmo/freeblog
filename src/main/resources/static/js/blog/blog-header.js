@@ -4,6 +4,9 @@ class BlogHeaderController extends BlogBodyController {
         this.recentPostTitle = document.getElementById("recent_post_title");
         this.popularPostTitle = document.getElementById("popular_post_title");
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
+        this.postSearchKeywordHiddenInput = document.getElementById("postSearchKeywordHiddenInput");
+        this.postSearchOptionSelector = document.getElementById("postSearchOptionSelector");
+        this.postSearchOptionHiddenInput = document.getElementById("postSearchOptionHiddenInput");
 
         this.introButton = document.getElementById("intro_button");
 
@@ -73,8 +76,24 @@ class BlogHeaderController extends BlogBodyController {
             }
         });
 
+        this.postSearchKeywordInput.addEventListener("keyup", evt => {
+            if (evt.keyCode == 13) {
+                this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+                this.postSearchKeywordHiddenInput.value = this.postSearchKeywordInput.value;
+                this.postSearchOptionHiddenInput.value = this.postSearchOptionSelector.value;
+
+                if (this.postSearchKeywordInput.value === '') {
+                    this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                    return;
+                }
+                this.postSearchForm.submit();
+            }
+        });
+
         this.postSearchButton.addEventListener("click", evt => {
             this.postSearchKeywordInput.value = this.getRemoveSpaceStr(this.postSearchKeywordInput.value);
+            this.postSearchKeywordHiddenInput.value = this.postSearchKeywordInput.value;
+            this.postSearchOptionHiddenInput.value = this.postSearchOptionSelector.value;
 
             if (this.postSearchKeywordInput.value === '') {
                 this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
