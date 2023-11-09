@@ -1,7 +1,7 @@
 package com.service.core.post.dto;
 
 
-import com.service.core.post.model.BlogPostSearchInput;
+import com.service.core.post.model.BlogPostTagInput;
 import com.service.core.post.paging.PostSearchPagingDto;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +13,10 @@ public class PostTagKeywordSearchDto {
     private final String keyword;
     private PostSearchPagingDto postSearchPagingDto;
 
-    public static PostTagKeywordSearchDto from(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
+    public static PostTagKeywordSearchDto from(BlogPostTagInput blogPostTagInput, PostSearchPagingDto postSearchPagingDto) {
         return PostTagKeywordSearchDto.builder()
-                .blogId(blogPostSearchInput.getBlogId())
-                .keyword(blogPostSearchInput.getKeyword())
+                .blogId(blogPostTagInput.getBlogId())
+                .keyword(blogPostTagInput.getTagKeyword())
                 .postSearchPagingDto(postSearchPagingDto)
                 .build();
     }

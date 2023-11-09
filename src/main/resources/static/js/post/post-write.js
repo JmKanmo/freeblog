@@ -368,9 +368,9 @@ class PostWriteController extends UtilController {
 
     checkPostSubmitInfo() {
         if (!this.postTitle.value || !this.postCategory.value ||
-            (this.postWriterEditor.root.innerText === '\n' ||
-                this.postWriterEditor.root.innerText.replace(/ /g, "") === '\n') ||
-            !this.postWriterEditor.root.innerText.replace(/ /g, "")) {
+            ((this.postWriterEditor.root.innerText === '\n' && this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
+                (this.postWriterEditor.root.innerText.replace(/ /g, "") === '\n' && this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
+            (!this.postWriterEditor.root.innerText.replace(/ /g, "") && this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
             return true;
         } else {
             return false;

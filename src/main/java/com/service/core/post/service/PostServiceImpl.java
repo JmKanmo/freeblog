@@ -11,6 +11,7 @@ import com.service.core.post.domain.Post;
 import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.model.BlogPostSearchInput;
+import com.service.core.post.model.BlogPostTagInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
@@ -83,12 +84,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostPaginationResponse<PostTagKeywordDto> findPostSearchPaginationByTagKeyword(BlogPostSearchInput blogPostSearchInput, PostSearchPagingDto postSearchPagingDto) {
+    public PostPaginationResponse<PostTagKeywordDto> findPostSearchPaginationByTagKeyword(BlogPostTagInput blogPostTagInput, PostSearchPagingDto postSearchPagingDto) {
         PostTagKeywordSearchDto postTagKeywordSearchDto = PostTagKeywordSearchDto.from(
-                blogPostSearchInput,
+                blogPostTagInput,
                 postSearchPagingDto
         );
-        int postCount = postMapper.findPostDtoCountByTagKeyword(blogPostSearchInput.getBlogId(), blogPostSearchInput.getKeyword());
+        int postCount = postMapper.findPostDtoCountByTagKeyword(blogPostTagInput.getBlogId(), blogPostTagInput.getTagKeyword());
         PostPagination postPagination = new PostPagination(postCount, postSearchPagingDto);
         postSearchPagingDto.setPostPagination(postPagination);
         postTagKeywordSearchDto.setPostSearchPagingDto(postSearchPagingDto);
