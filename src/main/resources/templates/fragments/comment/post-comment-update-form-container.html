@@ -88,9 +88,13 @@
         const commentImage = [[${comment_image}]];
         const commentNickname = [[${comment_nickname}]];
         const commentSecret = [[${comment_secret}]];
+        const commentIsAnonymous = [[${is_anonymous}]];
 
         document.getElementById("post_comment_text_input").value = commentText;
-        document.getElementById("commentUserNickname").value = commentNickname;
+
+        if (commentIsAnonymous === true) {
+            document.getElementById("commentUserNickname").value = commentNickname;
+        }
 
         if (commentSecret === true) {
             document.getElementById("post_comment_is_secret_input").checked = true;

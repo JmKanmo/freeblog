@@ -33,6 +33,7 @@ public class Category extends BaseTimeEntity {
     private Long seq;
 
     private boolean isDelete;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id")
     private Blog blog;

@@ -49,7 +49,7 @@ class BlogHeaderController extends BlogBodyController {
         });
 
         this.introButton.addEventListener("click", evt => {
-            this.openPopUp(988, 750, '/user/intro', 'popup');
+            this.openPopUp(1080, 750, '/user/intro', 'popup');
         });
 
         // category button event listener

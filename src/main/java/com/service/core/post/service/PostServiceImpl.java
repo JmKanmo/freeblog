@@ -135,6 +135,7 @@ public class PostServiceImpl implements PostService {
     public PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
         Post post = findPostById(blogPostUpdateInput.getPostId());
         Category category = categoryService.findCategoryById(blogPostUpdateInput.getCategory());
+
         post.setTitle(blogPostUpdateInput.getTitle());
         post.setContents(blogPostUpdateInput.getContents());
         post.setSummary(blogPostUpdateInput.getSummary());

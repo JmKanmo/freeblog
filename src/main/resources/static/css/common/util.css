@@ -613,7 +613,11 @@ input:focus {
 
 /* A-player style */
 .aplayer.aplayer-withlist .aplayer-pic {
-    height: 71px;
+    height: 70px;
+}
+
+.aplayer .aplayer-body .aplayer-pic {
+    height: 70px;
 }
 
 .aplayer.aplayer-withlist .aplayer-list {
@@ -622,7 +626,18 @@ input:focus {
     overflow-y: scroll;
 }
 
+.aplayer .aplayer-body .aplayer-list {
+    display: block;
+    /*height: 360px;*/
+    overflow-y: scroll;
+}
+
 .aplayer.aplayer-withlist .aplayer-info {
-    padding: 23px 7px 0 10px;
-    height: 71px;
+    padding: 24px 7px 0 10px;
+    height: 70px;
+}
+
+.aplayer .aplayer-body .aplayer-info {
+    padding: 24px 7px 0 10px;
+    height: 70px;
 }

@@ -19,8 +19,9 @@ public class BlogPostInput {
     @Size(max = ConstUtil.MAX_POST_CONTENT_SIZE, message = "게시글 본문 크기가 허용 범위를 초과하였습니다.")
     private final String contents;
 
-    /* 이미지 태그만 포함시키는 경우, 공백만 포함 */
-    @NotEmpty(message = "게시글 요약이 비어있습니다.")
+    /* 이미지 태그만 포함시키는 경우 고려 */
+    @NotNull
+//    @NotEmpty(message = "게시글 요약이 비어있습니다.")
     //    @NotBlank(message = "게시글 요약은 공백만 올 수 없습니다.")
     private final String summary;
 
