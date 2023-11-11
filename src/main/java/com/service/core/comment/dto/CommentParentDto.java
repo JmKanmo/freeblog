@@ -21,6 +21,7 @@ public class CommentParentDto {
     private boolean secret;
     private final boolean anonymous;
     private final String registerTime;
+    private final Boolean isBaseTimezone;
 
     public static CommentParentDto from(CommentDto commentDto) {
         return CommentParentDto.builder()
@@ -37,6 +38,7 @@ public class CommentParentDto {
                 .secret(commentDto.isSecret())
                 .anonymous(commentDto.isAnonymous())
                 .registerTime(commentDto.getRegisterTime())
+                .isBaseTimezone(commentDto.getIsBaseTimezone())
                 .build();
     }
 }

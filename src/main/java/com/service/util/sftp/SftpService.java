@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class SftpService {
@@ -17,7 +19,7 @@ public class SftpService {
             throw new FileHandleException(ServiceExceptionMessage.NOT_VALID_FILE_NAME);
         }
 
-        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUIDBySftp(multipartFile), multipartFile.getInputStream(), "images", String.valueOf(hash), String.valueOf(id), BlogUtil.formatLocalDateTimeToStrByPattern(BlogUtil.nowByZoneId(), "yyyy-MM-dd"));
+        String imgSrc = sftpUtil.fileUpload(BlogUtil.getImageFileUUIDBySftp(multipartFile), multipartFile.getInputStream(), "images", String.valueOf(hash), String.valueOf(id), BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy-MM-dd"));
         return imgSrc;
     }
 

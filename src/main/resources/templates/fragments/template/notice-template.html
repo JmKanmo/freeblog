@@ -9,7 +9,7 @@
         {{#each noticeDtoList}}
         <li class="notice_list">
             <a href="/notice/detail/{{noticeId}}" class="notice_link">{{title}}</a>
-            <span class="notice_date">{{registerTime}}</span>
+            <span class="notice_date">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
         </li>
         {{/each}}
     </script>

@@ -29,7 +29,7 @@
                         </div>
                         <div class="post_sub_info_div clear_fix">
                             <div class="post_upload_div">
-                                <span class="post_upload_day">{{registerTime}}</span>
+                                <span class="post_upload_day">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
                                 <span class="post_upload_day">·</span>
                                 <span class="post_upload_day">{{commentCount}}개의 댓글</span>
                             </div>
@@ -90,7 +90,7 @@
                         </div>
                         <div class="no_thumbnail_post_sub_info_div clear_fix">
                             <div class="no_thumbnail_post_upload_div">
-                                <span class="no_thumbnail_post_upload_day">{{registerTime}}</span>
+                                <span class="no_thumbnail_post_upload_day">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
                                 <span class="no_thumbnail_post_upload_day">·</span>
                                 <span class="no_thumbnail_post_upload_day">{{commentCount}}개의 댓글</span>
                             </div>
@@ -177,7 +177,7 @@
                 <button value="/category/post/{{categoryId}}" class="common_button_text blog_post_category_link">
                     {{category}}
                 </button>
-                <span class="blog_post_post_date_text">{{registerTime}}</span>
+                <span class="blog_post_post_date_text">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
             </div>
         </li>
         {{else}}
@@ -198,7 +198,7 @@
                 <button value="/category/post/{{categoryId}}" class="common_button_text blog_post_category_link">
                     {{category}}
                 </button>
-                <span class="blog_post_post_date_text">{{registerTime}}</span>
+                <span class="blog_post_post_date_text">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
             </div>
         </li>
         {{/if}}
@@ -226,7 +226,7 @@
         {{#each postDtoList}}
         <li class="category_post">
             <a class="category_post_link" href="/post/{{id}}?blogId={{blogId}}">{{title}}</a>
-            <span class="category_post_date">{{registerTime}}</span>
+            <span class="category_post_date">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</span>
         </li>
         {{/each}}
     </script>
@@ -238,7 +238,7 @@
             <a href="/post/{{id}}?blogId={{blogId}}" class="post_link_container clear_fix">
                 <div class="post_text_block">
                     <p class="post_text">{{title}}</p>
-                    <p class="post_date">{{registerTime}}</p>
+                    <p class="post_date">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</p>
                 </div>
 
                 <div class="post_image_block">
@@ -255,7 +255,7 @@
             <a href="/post/{{id}}?blogId={{blogId}}" class="post_link_container clear_fix">
                 <div class="post_text_block">
                     <p class="post_text">{{title}}</p>
-                    <p class="post_date">{{registerTime}}</p>
+                    <p class="post_date">{{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}</p>
                 </div>
 
                 <div class="post_image_block">

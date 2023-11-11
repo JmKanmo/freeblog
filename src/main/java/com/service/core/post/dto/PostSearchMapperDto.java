@@ -16,4 +16,5 @@ public class PostSearchMapperDto {
     private final Long categoryId;
     private final Long blogId;
     private final Long commentCount;
+    private final Boolean isBaseTimezone;
 }

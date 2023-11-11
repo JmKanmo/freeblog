@@ -26,7 +26,11 @@
         url,
         music_category_id as category_id,
         register_time,
-        update_time
+        update_time,
+        CASE
+        WHEN(is_base_timezone is null) THEN false
+        ELSE is_base_timezone
+        END as isBaseTimezone
         from music
         where
         (<include refid="musicKeywordSearchQuery"/>)

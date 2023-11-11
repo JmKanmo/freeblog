@@ -5,12 +5,13 @@ import com.service.core.music.model.UserMusicInput;
 import com.service.util.BlogUtil;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_music",
@@ -60,6 +61,7 @@ public class UserMusic extends BaseTimeEntity {
                         userMusicInput.getCover(),
                         userMusicInput.getLrc()))
                 .userMusicCategory(userMusicCategory)
+                .isBaseTimezone(true)
                 .build();
     }
 }

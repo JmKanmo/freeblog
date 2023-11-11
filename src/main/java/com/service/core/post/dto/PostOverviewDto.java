@@ -10,4 +10,5 @@ public class PostOverviewDto {
     private final Long id;
     private final String registerTime;
     private final String updateTime;
+    private final Boolean isBaseTimezone;
 }

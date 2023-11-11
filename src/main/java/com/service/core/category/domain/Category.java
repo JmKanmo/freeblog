@@ -5,6 +5,7 @@ import com.service.core.category.model.CategoryInput;
 import com.service.core.post.domain.Post;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "blog")
@@ -56,6 +57,7 @@ public class Category extends BaseTimeEntity {
                 .seq(categoryInput.getSeq())
                 .blog(blog)
                 .isDelete(false)
+                .isBaseTimezone(true)
                 .build();
     }
 }

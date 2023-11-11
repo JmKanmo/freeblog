@@ -25,6 +25,7 @@ public class CommentDto {
     private final boolean isDelete;
     private final boolean secret;
     private final boolean anonymous;
+    private final Boolean isBaseTimezone;
 
     public static CommentDto from(Comment comment) {
         return CommentDto.builder()
@@ -45,6 +46,7 @@ public class CommentDto {
                 .isDelete(comment.isDelete())
                 .secret(comment.isSecret())
                 .anonymous(comment.isAnonymous())
+                .isBaseTimezone(comment.getIsBaseTimezone())
                 .build();
     }
 }

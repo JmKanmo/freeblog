@@ -6,12 +6,13 @@ import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "post")
@@ -53,6 +54,7 @@ public class Comment extends BaseTimeEntity {
                 .anonymous(BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()))
                 .commentUser(CommentUser.from(commentInput))
                 .post(post)
+                .isBaseTimezone(true)
                 .build();
     }
 }

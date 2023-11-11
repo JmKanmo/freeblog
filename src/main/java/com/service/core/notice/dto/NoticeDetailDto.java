@@ -13,4 +13,5 @@ public class NoticeDetailDto {
     private String uploadKey;
     private final String registerTime;
     private final String updateTime;
+    private final Boolean isBaseTimezone;
 }

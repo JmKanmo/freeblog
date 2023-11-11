@@ -31,6 +31,7 @@ public class PostDetailDto implements Serializable {
     private String currentUrl;
     private List<String> tags;
     private String metaKey;
+    private Boolean isBaseTimezone;
 
     // TODO 좋아요, 조회수, etc 추가
     public static PostDetailDto from(Post post) {
@@ -49,6 +50,7 @@ public class PostDetailDto implements Serializable {
         postDetailDto.setCurrentUrl(BlogUtil.currentRequestUrl());
         postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
         postDetailDto.setMetaKey(post.getMetaKey());
+        postDetailDto.setIsBaseTimezone(post.getIsBaseTimezone());
         return postDetailDto;
     }
 }

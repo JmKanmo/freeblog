@@ -5,7 +5,15 @@
 <mapper namespace="com.service.core.music.repository.mapper.UserMusicCategoryMapper">
     <select id="searchUserMusicCategoryDto"
             resultType="com.service.core.music.dto.UserMusicCategoryDto">
-        select user_music_category_id, target_id, name, register_time, update_time
+        select user_music_category_id,
+               target_id,
+               name,
+               register_time,
+               update_time,
+               CASE
+                   WHEN(is_base_timezone is null) THEN false
+                   ELSE is_base_timezone
+                   END as isBaseTimezone
         from user_music_category
         where blog_id = #{blogId}
           and (select count(*)

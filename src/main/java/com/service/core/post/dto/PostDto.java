@@ -20,6 +20,8 @@ public class PostDto {
     private final String category;
     private final Long categoryId;
     private final Long blogId;
+    private final Boolean isBaseTimezone;
+
 
     public static PostDto fromEntity(Post post) {
         if (post == null) {
@@ -33,6 +35,7 @@ public class PostDto {
                     .category(ConstUtil.UNDEFINED)
                     .categoryId(Long.MAX_VALUE)
                     .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(LocalDateTime.now(), "yyyy.MM.dd HH:mm"))
+                    .isBaseTimezone(false)
                     .build();
         } else {
             return PostDto.builder()
@@ -45,6 +48,7 @@ public class PostDto {
                     .category(BlogUtil.ofNull(post.getCategory().getName()))
                     .categoryId(post.getCategory().getId())
                     .registerTime(BlogUtil.formatLocalDateTimeToStrByPattern(post.getRegisterTime(), "yyyy.MM.dd HH:mm"))
+                    .isBaseTimezone(post.getIsBaseTimezone())
                     .build();
         }
     }

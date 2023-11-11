@@ -20,10 +20,14 @@
             parameterType="com.service.core.notice.paging.NoticeSearchPagingDto"
             resultType="com.service.core.notice.dto.NoticeDto">
         select notice_id,
-        date_format(register_time, '%y.%m.%d %H:%i') as register_time,
+        date_format(register_time, '%x.%m.%d %H:%i') as register_time,
         title,
         summary,
-        contents
+        contents,
+        CASE
+        WHEN(is_base_timezone is null) THEN false
+        ELSE is_base_timezone
+        END as isBaseTimezone
         from notice
         <if test="noticeSearchPagingDto.searchType != null and noticeSearchPagingDto.keyword != null">
             where (<include refid="textSearchQuery"/>)
@@ -38,8 +42,12 @@
                contents,
                summary,
                upload_key,
-               date_format(register_time, '%y.%m.%d %H:%i') as register_time,
-               date_format(update_time, '%y.%m.%d %H:%i')   as update_time
+               date_format(register_time, '%x.%m.%d %H:%i') as register_time,
+               date_format(update_time, '%x.%m.%d %H:%i')   as update_time,
+               CASE
+                   WHEN(is_base_timezone is null) THEN false
+                   ELSE is_base_timezone
+                   END as isBaseTimezone
         from notice
         where notice_id = #{noticeId}
     </select>

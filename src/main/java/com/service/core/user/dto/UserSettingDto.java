@@ -26,6 +26,7 @@ public class UserSettingDto {
     private final String emailAuthTime;
     private final String registerTime;
     private final String passwordUpdateTime;
+    private final Boolean isBaseTimezone;
 
     public static UserSettingDto fromEntity(UserDomain user) {
         if (user == null) {
@@ -42,6 +43,7 @@ public class UserSettingDto {
                     .registerTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
                     .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
                     .emailAuthTime(BlogUtil.formatLocalDateTimeToStr(LocalDateTime.now()))
+                    .isBaseTimezone(false)
                     .build();
         } else {
             return UserSettingDto.builder()
@@ -58,6 +60,7 @@ public class UserSettingDto {
                     .registerTime(BlogUtil.formatLocalDateTimeToStr(user.getRegisterTime()))
                     .passwordUpdateTime(BlogUtil.formatLocalDateTimeToStr(user.getPasswordUpdateTime()))
                     .emailAuthTime(BlogUtil.formatLocalDateTimeToStr(user.getEmailAuthTime()))
+                    .isBaseTimezone(user.getIsBaseTimezone())
                     .build();
         }
     }

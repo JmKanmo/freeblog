@@ -13,9 +13,37 @@ class UtilController {
 
         // intro
         this.MAX_INTRO_CONTENT_SIZE = 5 * 1024 * 1024; // 압축사이즈: 5MB
+
+        this.MAX_IMAGE_UPLOAD_SIZE = 5 * 1024 * 1024; // 이미지 최대 업로드 사이즈: 5MB
     }
 
     initHandlerbars() {
+        /**
+         * 브라우저 타임존 기반 시간 변환 함수
+         */
+        Handlebars.registerHelper('convertTimeByBrowserTimezone', function (serverTime, pattern, isBaseTimezone) {
+            if (!isBaseTimezone || isBaseTimezone === false) {
+                return serverTime;
+            }
+            const offsetMinutes = new Date().getTimezoneOffset();
+            const offsetHours = offsetMinutes / 60;
+
+            // 시간대를 시와 분으로 분리합니다.
+            const offsetHoursPart = Math.floor(Math.abs(offsetHours));
+            const offsetMinutesPart = Math.abs(offsetMinutes % 60);
+
+            // 시간대의 부호를 판단합니다.
+            const offsetSign = offsetHours > 0 ? '-' : '+';
+
+            // 양수 또는 음수인 시간대를 2자리 숫자로 포맷합니다.
+            const formattedOffsetHours = offsetHoursPart.toString().padStart(2, '0');
+            const formattedOffsetMinutes = offsetMinutesPart.toString().padStart(2, '0');
+            const browserTimezoneOffset = `${offsetSign}${formattedOffsetHours}:${formattedOffsetMinutes}`;
+
+            const convertedTime = moment.utc(serverTime).utcOffset(browserTimezoneOffset).format(pattern);
+            return convertedTime;
+        });
+
         Handlebars.registerHelper('ternaryOperator', function (object, target, valueIfTrue, valueIfFalse) {
             return (object === target) ? valueIfTrue : valueIfFalse;
         });
@@ -70,6 +98,41 @@ class UtilController {
                 return name;
             }
         });
+    }
+
+    /**
+     * 브라우저 GMT(Greenwich Mean Time) 타임존 오프셋 - ex) -12:00 ~ 00:00 ~ +12:00
+     */
+    createBrowserTimezoneOffset() {
+        const offsetMinutes = new Date().getTimezoneOffset();
+        const offsetHours = offsetMinutes / 60;
+
+        // 시간대를 시와 분으로 분리합니다.
+        const offsetHoursPart = Math.floor(Math.abs(offsetHours));
+        const offsetMinutesPart = Math.abs(offsetMinutes % 60);
+
+        // 시간대의 부호를 판단합니다.
+        const offsetSign = offsetHours > 0 ? '-' : '+';
+
+        // 양수 또는 음수인 시간대를 2자리 숫자로 포맷합니다.
+        const formattedOffsetHours = offsetHoursPart.toString().padStart(2, '0');
+        const formattedOffsetMinutes = offsetMinutesPart.toString().padStart(2, '0');
+
+        return `${offsetSign}${formattedOffsetHours}:${formattedOffsetMinutes}`;
+    }
+
+    /**
+     * 브라우저 타임존 기반 시간 변환 함수
+     * @param serverTime: 서버에서 반환 된 시간 (UTC,GMT)
+     * @param pattern: 반환 시간 패턴 ex) 'YYYY-MM-DD HH:mm' , 'YYYY-MM-DD HH:mm:ss'
+     */
+    convertTimeByBrowserTimezone(serverTime, pattern, isBaseTimezone) {
+        if (!isBaseTimezone || isBaseTimezone === false) {
+            return serverTime;
+        }
+        const browserTimezoneOffset = this.createBrowserTimezoneOffset(); // 브라우저 타임존 오프셋
+        const convertedTime = moment.utc(serverTime).utcOffset(browserTimezoneOffset).format(pattern);
+        return convertedTime;
     }
 
     checkPostContentSize(content, size) {
@@ -329,7 +392,7 @@ class UtilController {
                 const imgFile = input.files[0];
                 try {
                     if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
-                        if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 5 * 1024 * 1024)) {
+                        if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
                             // if file extension is gif | GIF, 5MB가 넘지 않는 경우, 압축 진행 X
                             const fileReader = new FileReader();
 
@@ -498,7 +561,7 @@ class UtilController {
             imgFile,
             // you should provide one of maxSizeMB, maxWidthOrHeight in the options
             {
-                maxSizeMB: 5 * 1024 * 1024,          // 5MB
+                maxSizeMB: this.MAX_IMAGE_UPLOAD_SIZE,          // 5MB
                 onProgress: Function,       // optional, a function takes one progress argument (percentage from 0 to 100)
                 useWebWorker: true,      // optional, use multi-thread web worker, fallback to run in main-thread (default: true)
             });
@@ -515,7 +578,7 @@ class UtilController {
             if (!this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
                 this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
                 return false;
-            } else if (!this.checkImageFileBySize(imgFile, 5 * 1024 * 1024)) {
+            } else if (!this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
                 this.showToastMessage('최대 업로드 파일 크기는 5MB 입니다.');
                 return false;
             }

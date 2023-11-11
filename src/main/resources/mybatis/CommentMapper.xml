@@ -10,7 +10,7 @@
                c.comment,
                c.comment_image,
                c.parent_id,
-               date_format(c.register_time, '%y.%m.%d %H:%i') as register_time,
+               date_format(c.register_time, '%x.%m.%d %H:%i') as register_time,
                c.href,
                c.user_id,
                c.user_password,
@@ -21,7 +21,11 @@
                c.is_owner,
                c.is_delete,
                c.secret,
-               c.anonymous
+               c.anonymous,
+               CASE
+                   WHEN(c.is_base_timezone is null) THEN false
+                   ELSE c.is_base_timezone
+                   END as isBaseTimezone
         from comment c,
              post p
         where c.post_id = #{postId}

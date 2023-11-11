@@ -106,7 +106,7 @@
             <a th:href="'/blog/' + ${user_profile.id}" th:text="${user_profile.nickname}"
                class="post_writer_profile_nickname_link">게시글 작성자 닉네임</a>
 
-            <span class="post_register_date_text" th:text="${postDetail.registerTime}">게시글 작성 날짜</span>
+            <span class="post_register_date_text" id="postRegisterDataText">게시글 작성 날짜</span>
 
             <th:block th:if="${#bools.isTrue(isEqualPostByLogin)}">
                 <span class="post_view_text" th:text="${post_view} + ' views'">조회수</span>
@@ -267,8 +267,13 @@
     <input type="hidden" id="hidden_post_content" readonly>
 
     <script th:inline="javascript">
+        const utilController = new UtilController();
         const postContent = [[${postDetail.contents}]];
+        const postRegisterTime = [[${postDetail.registerTime}]];
+        const isBaseTimezone = [[${postDetail.isBaseTimezone}]];
+
         document.getElementById("hidden_post_content").value = postContent;
+        document.getElementById("postRegisterDataText").innerText = utilController.convertTimeByBrowserTimezone(postRegisterTime, `YYYY-MM-DD HH:mm:ss`, isBaseTimezone);
     </script>
 </div>
 </div>

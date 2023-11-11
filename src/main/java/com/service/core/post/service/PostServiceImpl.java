@@ -134,13 +134,11 @@ public class PostServiceImpl implements PostService {
     @CachePut(value = CacheKey.POST_DETAIL_DTO, key = "#blogPostUpdateInput.blogId.toString() + '&' + #blogPostUpdateInput.postId.toString()")
     public PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
         Post post = findPostById(blogPostUpdateInput.getPostId());
+        Category category = categoryService.findCategoryById(blogPostUpdateInput.getCategory());
         post.setTitle(blogPostUpdateInput.getTitle());
         post.setContents(blogPostUpdateInput.getContents());
         post.setSummary(blogPostUpdateInput.getSummary());
-        post.setCategory(
-                Category.builder()
-                        .id(categoryService.findCategoryBasicMapperDtoByCategoryId(blogPostUpdateInput.getCategory()).getId())
-                        .build());
+        post.setCategory(category);
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));

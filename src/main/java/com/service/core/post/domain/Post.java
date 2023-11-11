@@ -9,6 +9,7 @@ import com.service.util.ConstUtil;
 import com.service.util.domain.BaseTimeEntity;
 import io.netty.util.internal.StringUtil;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = {"category", "blog"})
@@ -74,6 +75,7 @@ public class Post extends BaseTimeEntity {
                 .contents(blogPostInput.getContents())
                 .summary(blogPostInput.getSummary())
                 .metaKey(blogPostInput.getMetaKey())
+                .isBaseTimezone(true)
                 .build();
     }
 }

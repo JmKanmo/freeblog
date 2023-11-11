@@ -47,7 +47,7 @@
                     </div>
 
                     <p class="post_comment_date_text">
-                        {{commentParentDto.registerTime}}
+                        {{convertTimeByBrowserTimezone commentParentDto.registerTime 'YYYY-MM-DD HH:mm' commentParentDto.isBaseTimezone}}
                     </p>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                             </div>
 
                             <p class="post_comment_date_text">
-                                {{registerTime}}
+                                {{convertTimeByBrowserTimezone registerTime 'YYYY-MM-DD HH:mm' isBaseTimezone}}
                             </p>
                         </div>
                     </div>

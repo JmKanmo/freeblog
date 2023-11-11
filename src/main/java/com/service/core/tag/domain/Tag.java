@@ -4,6 +4,7 @@ import com.service.core.blog.domain.Blog;
 import com.service.core.post.domain.Post;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "post")
@@ -32,6 +33,7 @@ public class Tag extends BaseTimeEntity {
         return Tag.builder()
                 .name(tagName)
                 .post(post)
+                .isBaseTimezone(true)
                 .build();
     }
 }

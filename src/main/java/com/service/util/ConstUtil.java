@@ -21,6 +21,8 @@ public class ConstUtil {
     public static final int SFTP_COMMENT_IMAGE_HASH = "comment-image".hashCode();
     public static final String AWS_S3_IMAGE_URL = "https://freelog-s3-bucket.s3.amazonaws.com/image/%s";
 
+    public static final String DEFAULT_SERVER_TIMEZONE = "UTC";
+
     public static final String[] SIGNUP_MAIL_TEXT = {
             "[freeblog] 가입을 축하드립니다.",
             "<p>[freeblog] 사이트 가입을 축하드립니다.<p><p>아래 링크를 클릭하고 인증키를 비롯한 정보를 입력하고 이메일 인증을 완료 하세요.</p>"

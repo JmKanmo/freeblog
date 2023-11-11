@@ -34,7 +34,11 @@
         hash_code,
         music_category_id as category_id,
         register_time,
-        update_time
+        update_time,
+        CASE
+        WHEN(is_base_timezone is null) THEN false
+        ELSE is_base_timezone
+        END as isBaseTimezone
         from user_music
         where is_delete = false
         <choose>
@@ -70,7 +74,11 @@
         hash_code,
         music_category_id as category_id,
         register_time,
-        update_time
+        update_time,
+        CASE
+        WHEN(is_base_timezone is null) THEN false
+        ELSE is_base_timezone
+        END as isBaseTimezone
         from user_music
         where is_delete = false
         <include refid="musicKeywordSearchQuery"/>

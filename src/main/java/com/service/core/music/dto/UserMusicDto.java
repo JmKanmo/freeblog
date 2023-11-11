@@ -19,4 +19,5 @@ public class UserMusicDto {
     private final long categoryId;
     private final LocalDateTime registerTime;
     private final LocalDateTime updateTime;
+    private final Boolean isBaseTimezone;
 }

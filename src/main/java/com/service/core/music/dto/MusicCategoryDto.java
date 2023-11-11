@@ -13,6 +13,7 @@ public class MusicCategoryDto {
     private final String name;
     private final LocalDateTime registerTime;
     private final LocalDateTime updateTime;
+    private final Boolean isBaseTimezone;
 
     public static MusicCategoryDto from(MusicCategory musicCategory) {
         return MusicCategoryDto.builder()
@@ -20,6 +21,7 @@ public class MusicCategoryDto {
                 .name(musicCategory.getName())
                 .registerTime(musicCategory.getRegisterTime())
                 .updateTime(musicCategory.getUpdateTime())
+                .isBaseTimezone(musicCategory.getIsBaseTimezone())
                 .build();
     }
 }

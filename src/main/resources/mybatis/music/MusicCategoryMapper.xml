@@ -5,7 +5,14 @@
 <mapper namespace="com.service.core.music.repository.mapper.MusicCategoryMapper">
     <select id="searchMusicCategoryDto"
             resultType="com.service.core.music.dto.MusicCategoryDto">
-        select music_category_id, name, register_time, update_time
+        select music_category_id,
+               name,
+               register_time,
+               update_time,
+               CASE
+                   WHEN(is_base_timezone is null) THEN false
+                   ELSE is_base_timezone
+                   END as isBaseTimezone
         from music_category
         order by music_category_id, register_time
     </select>

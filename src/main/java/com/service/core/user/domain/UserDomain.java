@@ -6,6 +6,7 @@ import com.service.core.user.model.UserSignUpInput;
 import com.service.core.user.model.UserStatus;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "blog")
@@ -66,6 +67,7 @@ public class UserDomain extends BaseTimeEntity {
                         .twitter(userSignUpInput.getTwitter())
                         .instagram(userSignUpInput.getInstagram())
                         .build())
+                .isBaseTimezone(true)
                 .build();
     }
 }
