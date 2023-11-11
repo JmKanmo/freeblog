@@ -12,8 +12,8 @@ class PostSearchController extends UtilController {
         this.postSearchKeywordInput = document.getElementById("postSearchKeywordInput");
         this.postSearchButton = document.getElementById("postSearchButton");
         this.postSearchOptionSelector = document.getElementById("postSearchOptionSelector");
-        this.postRecordSize = 5;
-        this.postPageSize = 5;
+        this.postRecordSize = 15;
+        this.postPageSize = 15;
 
         this.musicHeaderController = new MusicHeaderController();
     }

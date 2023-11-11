@@ -38,7 +38,7 @@ public interface UserService extends UserDetailsService {
 
     void updatePassword(UserPasswordInput userPasswordInput);
 
-    void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal);
+    UserHeaderDto updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal);
 
     void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput);
 
@@ -56,7 +56,7 @@ public interface UserService extends UserDetailsService {
 
     String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception;
 
-    String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception;
+    UserHeaderDto uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception;
 
-    void removeProfileImageById(String id, Principal principal);
+    UserHeaderDto removeProfileImageById(String id, Principal principal);
 }

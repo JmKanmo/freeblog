@@ -208,12 +208,12 @@ class PostUpdateController extends UtilController {
 
         this.postUpdateForm.addEventListener("submit", evt => {
             if (this.isSubmitFlag === true) {
-                this.showToastMessage("게시글을 발행 중입니다.");
+                this.showToastMessage("게시글을 수정 중입니다.");
                 return;
             }
             evt.preventDefault();
 
-            if (confirm('게시글을 발행하겟습니까?')) {
+            if (confirm('게시글을 수정하겠습니까?')) {
                 if (this.checkPostUpdateInfo()) {
                     this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
                     this.isSubmitFlag = false;

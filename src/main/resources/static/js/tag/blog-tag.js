@@ -9,8 +9,8 @@ class TagController extends UtilController {
         this.searchPauseBox = document.getElementById("search_pause_box");
         this.searchResultBox = document.getElementById("search_result_box");
 
-        this.postRecordSize = 5;
-        this.postPageSize = 5;
+        this.postRecordSize = 15;
+        this.postPageSize = 15;
 
         this.musicHeaderController = new MusicHeaderController();
     }

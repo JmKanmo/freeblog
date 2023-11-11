@@ -2,6 +2,7 @@ package com.service.core.user.controller;
 
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
+import com.service.core.user.dto.UserHeaderDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -76,7 +77,8 @@ public class UserRestController {
             if (principal == null || principal.getName() == null) {
                 throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            String profileImageSrc = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
+            UserHeaderDto userHeaderDto = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
+            String profileImageSrc = userHeaderDto.getProfileImages();
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {

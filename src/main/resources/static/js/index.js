@@ -11,8 +11,8 @@ class BlogViewController extends UtilController {
         this.prevPostSearchReloadTime = 0;
         this.postSearchReloadTimeOut = 100;
 
-        this.postRecordSize = 10;
-        this.postPageSize = 10;
+        this.postRecordSize = 15;
+        this.postPageSize = 15;
 
         this.musicHeaderController = new MusicHeaderController();
     }

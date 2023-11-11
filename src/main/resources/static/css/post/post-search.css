@@ -59,3 +59,15 @@
     width: 20px;
     height: 20px;
 }
+
+/** blog post pagination style **/
+.post_search_container .post_search_page_container {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.post_search_container .post_search_page_container .page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+}

@@ -25,6 +25,7 @@ import com.service.util.redis.service.view.BlogViewRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -204,8 +205,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
-    public void updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal) {
+    @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
+    public UserHeaderDto updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal) {
         UserDomain user = userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId());
         Blog blog = user.getBlog();
         blog.setName(userBasicInfoInput.getBlogName());
@@ -215,6 +216,7 @@ public class UserServiceImpl implements UserService {
         user.setGreetings(userBasicInfoInput.getGreetings());
         user.setBlog(blog);
         userInfoService.saveUserDomain(user);
+        return UserHeaderDto.fromEntity(user);
     }
 
     @Override
@@ -293,24 +295,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
-    public String uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception {
+    @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
+    public UserHeaderDto uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception {
         try {
             String profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);
-            return profileImageSrc;
+            return UserHeaderDto.fromEntity(userDomain);
         } catch (Exception e) {
             throw e;
         }
     }
 
     @Override
-    @CacheEvict(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
-    public void removeProfileImageById(String id, Principal principal) {
+    @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
+    public UserHeaderDto removeProfileImageById(String id, Principal principal) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
         userDomain.setProfileImage(null);
         userInfoService.saveUserDomain(userDomain);
+        return UserHeaderDto.fromEntity(userDomain);
     }
 }

@@ -28,6 +28,7 @@ import com.service.util.redis.service.like.PostLikeRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,8 +131,8 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    @CacheEvict(value = CacheKey.POST_DETAIL_DTO, key = "#blogPostUpdateInput.blogId.toString() + '&' + #blogPostUpdateInput.postId.toString()")
-    public void update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
+    @CachePut(value = CacheKey.POST_DETAIL_DTO, key = "#blogPostUpdateInput.blogId.toString() + '&' + #blogPostUpdateInput.postId.toString()")
+    public PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService) {
         Post post = findPostById(blogPostUpdateInput.getPostId());
         post.setTitle(blogPostUpdateInput.getTitle());
         post.setContents(blogPostUpdateInput.getContents());
@@ -143,6 +144,7 @@ public class PostServiceImpl implements PostService {
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
+        return PostDetailDto.from(post);
     }
 
     @Cacheable(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")

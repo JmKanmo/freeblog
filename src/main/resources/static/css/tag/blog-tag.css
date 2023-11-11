@@ -11,3 +11,15 @@
     text-align: center;
     padding-bottom: 40px;
 }
+
+/** blog post pagination style **/
+.tag_container .post_search_page_container {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.tag_container .post_search_page_container .page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+}

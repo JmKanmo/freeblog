@@ -36,7 +36,7 @@ public interface PostService {
 
     void register(Post post, BlogPostInput blogPostInput);
 
-    void update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService);
+    PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService);
 
     PostDetailDto findPostDetailInfo(Long blogId, Long postId);
 
