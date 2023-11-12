@@ -75,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         // tag
                         "/tag/{tagName}",
                         // comment
-                        "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}",
+                        "/comment/upload/comment-thumbnail-image", "/comment/register", "/comment/{postId}/{blogId}", "/comment/exist/{commentId}",
                         "/comment/update/**", "/comment/authority/{commentId}", "/comment/delete/{commentId}", "/comment/reply/**",
                         // like
                         "/like/**",

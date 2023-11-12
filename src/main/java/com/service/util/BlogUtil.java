@@ -219,7 +219,7 @@ public class BlogUtil {
     }
 
     public static boolean checkFieldValidation(String field, int len) {
-        if (field == null || field.isEmpty() || field.isBlank() || StringUtils.containsWhitespace(field) || field.length() > len) {
+        if (field == null || field.isEmpty() || field.isBlank() || /* StringUtils.containsWhitespace(field) || */ field.length() > len) {
             return false;
         }
         return true;

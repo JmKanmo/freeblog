@@ -15,6 +15,8 @@ class UtilController {
         this.MAX_INTRO_CONTENT_SIZE = 5 * 1024 * 1024; // 압축사이즈: 5MB
 
         this.MAX_IMAGE_UPLOAD_SIZE = 5 * 1024 * 1024; // 이미지 최대 업로드 사이즈: 5MB
+
+        this.RETRY_MAX_COUNT = 10; // API 요청 재시도 횟수
     }
 
     initHandlerbars() {

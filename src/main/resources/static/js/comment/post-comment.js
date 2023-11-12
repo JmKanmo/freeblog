@@ -44,7 +44,8 @@ class PostCommentController extends PostCommentCommonController {
                 } else {
                     this.resetCommentForm();
                     const commentCount = responseValue["commentCount"];
-                    this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`, Math.ceil((commentCount / this.commentRecordSize)));
+                    const commentId = responseValue["commentId"];
+                    this.#checkComment(commentId, commentCount);
                 }
                 this.isClickedPostCommentSubmuitButton = false;
             });
@@ -81,7 +82,18 @@ class PostCommentController extends PostCommentCommonController {
 
             if (commentUpdateButton != null) {
                 const commentId = commentUpdateButton.closest(".post_comment_util_block").getAttribute("commentId");
-                this.openPopUp(1070, 360, `/comment/update/${commentId}`, 'popup');
+                const subPostList = commentUpdateButton.closest(".sub_post_list");
+                let href = null;
+
+                if (subPostList == null) {
+                    const postCommentBlockList = commentUpdateButton.closest(".post_comment_block");
+                    if (postCommentBlockList != null) {
+                        href = postCommentBlockList.getAttribute("id");
+                    }
+                } else {
+                    href = subPostList.getAttribute("id");
+                }
+                this.openPopUp(1070, 360, `/comment/update/${commentId}/${href}`, 'popup');
             } else if (commentDeleteButton != null) {
                 const commentId = commentDeleteButton.closest(".post_comment_util_block").getAttribute("commentId");
                 if (confirm('댓글을 삭제하시겠습니까?')) {
@@ -89,7 +101,18 @@ class PostCommentController extends PostCommentCommonController {
                 }
             } else if (commentReplyButton != null) {
                 const commentId = commentReplyButton.closest(".post_comment_util_block").getAttribute("commentId");
-                this.openPopUp(1070, 360, `/comment/reply/${commentId}`, 'popup');
+                const subPostList = commentReplyButton.closest(".sub_post_list");
+                let href = null;
+
+                if (subPostList == null) {
+                    const postCommentBlockList = commentReplyButton.closest(".post_comment_block");
+                    if (postCommentBlockList != null) {
+                        href = postCommentBlockList.getAttribute("id");
+                    }
+                } else {
+                    href = subPostList.getAttribute("id");
+                }
+                this.openPopUp(1070, 360, `/comment/reply/${commentId}/${href}`, 'popup');
             }
         });
 
@@ -234,6 +257,35 @@ class PostCommentController extends PostCommentCommonController {
             return;
         }
         this.commentPagination.innerHTML = this.drawBasicPagination(pagination, queryParam, url);
+    }
+
+    #checkComment(commentId, commentCount) {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `/comment/exist/${commentId}`, true);
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = event.target.responseText;
+
+            if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
+                this.showToastMessage(responseValue);
+                location.reload();
+            } else {
+                if (responseValue === "true") {
+                    this.#requestComment(`/comment/${this.postCommentPostId.value}/${this.postCommentBlogId.value}`, Math.ceil((commentCount / this.commentRecordSize)));
+                } else {
+                    location.reload();
+                }
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            this.showToastMessage("댓글 등록 여부 확인에 실패하였습니다.");
+            location.reload();
+        });
+
+        xhr.send();
     }
 
     #requestComment(url, page) {

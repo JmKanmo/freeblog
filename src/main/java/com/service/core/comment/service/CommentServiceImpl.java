@@ -4,6 +4,7 @@ import com.service.core.comment.domain.Comment;
 import com.service.core.comment.domain.CommentUser;
 import com.service.core.comment.dto.CommentDto;
 import com.service.core.comment.dto.CommentLinkDto;
+import com.service.core.comment.dto.CommentRegisterResultDto;
 import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
@@ -49,15 +50,23 @@ public class CommentServiceImpl implements CommentService {
         return awsS3Service.uploadImageFile(multipartFile);
     }
 
+    /**
+     * 익명 일 때, 유효성 검사 진행 (닉네임 글자 수, 비어있거나, 올 공백, 비밀번호 유효성)
+     * 비로그인 상태, 익명 게시글 작성 검사
+     * 익명 상태에서 비밀글 작성 검사
+     * <p>
+     * 로그인 상태의 경우, 위에 유효성 검사 진행 X
+     */
     @Transactional
     @Override
-    public long registerComment(CommentInput commentInput, Principal principal) {
+    public CommentRegisterResultDto registerComment(CommentInput commentInput, Principal principal) {
         if (BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous())) {
             if (!BlogUtil.checkFieldValidation(commentInput.getCommentUserNickname(), 255) || !BlogUtil.checkFieldValidation(commentInput.getCommentUserPassword(), 255)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
         }
 
+        //  댓글 작성은 부모 댓글 포함 X, 잘못 된 요청의 경우에 유효성 검사 진행
         if (commentInput.getParentCommentId() != null) {
             if (!BlogUtil.checkFieldValidation(commentInput.getTargetUserId(), 255) || !BlogUtil.checkFieldValidation(commentInput.getTargetUserNickname(), 255)) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
@@ -85,10 +94,18 @@ public class CommentServiceImpl implements CommentService {
             commentUser.setOwner(postDto.getBlogId() == userCommentDto.getBlogId() ? true : false);
             comment.setCommentUser(commentUser);
         }
-        commentInfoService.saveComment(comment);
-        return commentInfoService.findCommentCount(commentInput.getCommentPostId());
+        Comment registeredComment = commentInfoService.saveComment(comment);
+        return CommentRegisterResultDto.from(commentInfoService.findCommentCount(commentInput.getCommentPostId()), registeredComment.getId());
     }
 
+    /**
+     * 익명 일 때, 유효성 검사 진행 (닉네임 글자 수, 비어있거나, 올 공백, 비밀번호 유효성)
+     * 부모 댓글 (로그인 여부에 상관 없이) 유효성 검사 진행 (닉네임 글자 수, 비어있거나, 올 공백, 비밀번호 유효성)
+     * 비로그인 상태, 익명 게시글 작성 검사
+     * 익명 상태에서 비밀글 작성 검사
+     * <p>
+     * 로그인 상태의 경우, 위에 유효성 검사 진행 X
+     **/
     @Transactional
     @Override
     public void registerReplyComment(CommentInput commentInput, Principal principal) {
@@ -156,6 +173,12 @@ public class CommentServiceImpl implements CommentService {
         return CommentDto.from(commentInfoService.findCommentById(commentId));
     }
 
+    /**
+     * 익명 여부에 상관 없이 비밀번호 일치 여부 검사 진행
+     * 익명 일 때, 유효성 검사 진행 (닉네임 글자 수, 비어있거나, 올 공백, 비밀번호 유효성)
+     * 익명 일 때, 비밀글 작성 여부 검사 진행
+     * 익명 아닐 때, 로그인 여부 검사 진행
+     **/
     @Transactional
     @Override
     public void updateComment(CommentUpdateInput commentUpdateInput, Principal principal) {
@@ -165,6 +188,15 @@ public class CommentServiceImpl implements CommentService {
             if (!BCrypt.checkpw(commentUpdateInput.getAuthCheckPassword(), comment.getCommentUser().getUserPassword())) {
                 throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
             }
+
+            if (!BlogUtil.checkFieldValidation(commentUpdateInput.getCommentUserNickname(), 255) || !BlogUtil.checkFieldValidation(commentUpdateInput.getCommentUserPassword(), 255)) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
+            }
+
+            if (BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment())) {
+                throw new CommentManageException(ServiceExceptionMessage.NOT_SECRET_WHEN_ANONYMOUS);
+            }
+
             comment.setCommentImage(commentUpdateInput.getCommentThumbnailImage() == null || commentUpdateInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentUpdateInput.getCommentThumbnailImage());
             comment.setSecret(BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment()));
             comment.setComment(commentUpdateInput.getComment());
@@ -198,6 +230,11 @@ public class CommentServiceImpl implements CommentService {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean checkExistComment(Long commentId) {
+        return commentInfoService.findCommentById(commentId) != null;
     }
 
     @Transactional

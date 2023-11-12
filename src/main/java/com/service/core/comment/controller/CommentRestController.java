@@ -3,6 +3,7 @@ package com.service.core.comment.controller;
 import com.service.core.comment.dto.CommentDelAuthDto;
 import com.service.core.comment.dto.CommentPagingResponseDto;
 import com.service.core.comment.dto.CommentRegisterDto;
+import com.service.core.comment.dto.CommentRegisterResultDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentSearchPagingDto;
@@ -32,6 +33,24 @@ import java.security.Principal;
 @Slf4j
 public class CommentRestController {
     private final CommentService commentService;
+
+    @Operation(summary = "특정 포스트 댓글 반환", description = "특정 포스트 댓글 반환 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "특정 포스트 댓글 반환 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 특정 포스트 댓글 반환 실패")
+    })
+    @GetMapping("/exist/{commentId}")
+    public ResponseEntity<Boolean> existComment(@PathVariable Long commentId) {
+        try {
+            Boolean isExist = commentService.checkExistComment(commentId);
+            return ResponseEntity.status(HttpStatus.OK).body(isExist);
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-existComment] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
 
     @Operation(summary = "특정 포스트 댓글 반환", description = "특정 포스트 댓글 반환 수행 메서드")
     @ApiResponses(value = {
@@ -84,7 +103,8 @@ public class CommentRestController {
             if (bindingResult.hasErrors()) {
                 throw new CommentManageException(ServiceExceptionMessage.NOT_VALID_FORM_INPUT);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(CommentRegisterDto.success(commentService.registerComment(commentInput, principal), "댓글 작성에 성공하였습니다."));
+            CommentRegisterResultDto commentRegisterResultDto = commentService.registerComment(commentInput, principal);
+            return ResponseEntity.status(HttpStatus.OK).body(CommentRegisterDto.success(commentRegisterResultDto.getCommentCount(), commentRegisterResultDto.getCommentId(), "댓글 작성에 성공하였습니다."));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-registerComment] exception occurred ", exception);

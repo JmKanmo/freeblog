@@ -338,8 +338,8 @@ where post_id = #{postId}
         where comment.post_id = main_post.post_id
           and comment.is_delete != true)                                as commentCount,
           CASE
-          WHEN(post.is_base_timezone is null) THEN false
-          ELSE post.is_base_timezone
+          WHEN(main_post.is_base_timezone is null) THEN false
+          ELSE main_post.is_base_timezone
           END as isBaseTimezone
 from post main_post
          inner join category c on main_post.category_id = c.category_id and c.is_delete != true

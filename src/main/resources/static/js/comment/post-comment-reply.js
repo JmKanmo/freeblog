@@ -47,8 +47,13 @@ class PostCommentReplyController extends PostCommentCommonController {
                 if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.showToastMessage(responseValue);
                 } else {
+                    const blogId = opener.document.getElementById("postSearchBlogIdInput").value;
+                    const postId = opener.document.getElementById("postIdInput").value;
+                    const href = document.getElementById("comment_href_input").value;
                     this.resetReplyCommentForm();
-                    this.showToastMessage(responseValue);
+                    // window.opener.location.href = `/post/${postId}?blogId=${blogId}#${href}`;
+                    window.opener.location.reload();
+                    // this.showToastMessage(responseValue);
                 }
                 this.isCommentSubmitFlag = false;
             });

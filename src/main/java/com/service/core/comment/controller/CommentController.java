@@ -31,13 +31,14 @@ public class CommentController {
             @ApiResponse(responseCode = "200", description = "답글 작성 페이지 반환 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 답글 작성 페이지 반환 실패")
     })
-    @GetMapping("/reply/{commentId}")
-    public String commentReplyPage(@PathVariable Long commentId, Model model) {
+    @GetMapping("/reply/{commentId}/{href}")
+    public String commentReplyPage(@PathVariable Long commentId, @PathVariable String href, Model model) {
         CommentDto commentDto = commentService.findCommentDtoById(commentId);
         model.addAttribute("parent_comment_id", commentDto.getCommentId());
         model.addAttribute("target_user_id", commentDto.getUserId());
         model.addAttribute("comment_post_id", commentDto.getPostId());
         model.addAttribute("target_user_nickname", commentDto.getUserNickname());
+        model.addAttribute("comment_href", href);
         return "comment/post-comment-reply";
     }
 
@@ -46,8 +47,8 @@ public class CommentController {
             @ApiResponse(responseCode = "200", description = "댓글 수정 페이지 반환 완료"),
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 수정 페이지 반환 실패")
     })
-    @GetMapping("/update/{commentId}")
-    public String commentUpdatePage(@PathVariable Long commentId, Model model, Principal principal) {
+    @GetMapping("/update/{commentId}/{href}")
+    public String commentUpdatePage(@PathVariable Long commentId, @PathVariable String href, Model model, Principal principal) {
         CommentDto commentDto = commentService.findCommentDtoById(commentId);
 
         if (!commentDto.isAnonymous()) {
@@ -67,6 +68,7 @@ public class CommentController {
         model.addAttribute("comment_image", commentDto.getCommentImage());
         model.addAttribute("comment_nickname", commentDto.getUserNickname());
         model.addAttribute("comment_secret", commentDto.isSecret());
+        model.addAttribute("comment_href", href);
         return "comment/post-comment-update";
     }
 }

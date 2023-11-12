@@ -2,6 +2,7 @@ package com.service.core.comment.service;
 
 import com.service.core.comment.dto.CommentDto;
 import com.service.core.comment.dto.CommentLinkDto;
+import com.service.core.comment.dto.CommentRegisterResultDto;
 import com.service.core.comment.dto.CommentSummaryDto;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
@@ -18,7 +19,7 @@ public interface CommentService {
 
     String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
 
-    long registerComment(CommentInput commentInput, Principal principal);
+    CommentRegisterResultDto registerComment(CommentInput commentInput, Principal principal);
 
     void registerReplyComment(CommentInput commentInput, Principal principal);
 
@@ -29,6 +30,8 @@ public interface CommentService {
     void updateComment(CommentUpdateInput commentUpdateInput, Principal principal);
 
     boolean checkAuthority(Long commentId, Principal principal);
+
+    boolean checkExistComment(Long commentId) throws Exception;
 
     void deleteComment(Long commentId, String password, Principal principal);
 
