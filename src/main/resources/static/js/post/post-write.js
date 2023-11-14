@@ -247,12 +247,14 @@ class PostWriteController extends UtilController {
 
         xhr.addEventListener("loadend", event => {
             let status = event.target.status;
-            const responseValue = event.target.responseText;
+            const responseValue = JSON.parse(event.target.responseText);
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
-                this.showToastMessage(responseValue);
+                this.showToastMessage(responseValue["message"]);
             } else {
-                window.location.href = `/post/write/${this.hiddenUserId.value}`;
+                const postId = responseValue["postDto"]["id"];
+                const blogId = responseValue["postDto"]["blogId"];
+                window.location.href = `/post/${postId}?blogId=${blogId}`;
             }
             this.isSubmitFlag = false;
         });

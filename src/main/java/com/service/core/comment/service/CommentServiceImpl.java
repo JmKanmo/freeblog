@@ -22,6 +22,7 @@ import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
+import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final AwsS3Service awsS3Service;
+    private final SftpService sftpService;
     private final PostService postService;
     private final CommentInfoService commentInfoService;
     private final UserService userService;
@@ -48,6 +50,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
         return awsS3Service.uploadImageFile(multipartFile);
+    }
+
+    @Override
+    public String uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception {
+        return sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_COMMENT_IMAGE_HASH, uploadKey);
     }
 
     /**

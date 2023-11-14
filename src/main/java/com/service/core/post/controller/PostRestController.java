@@ -12,6 +12,7 @@ import com.service.core.error.model.PostManageException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
 import com.service.core.post.dto.PostCardDto;
+import com.service.core.post.dto.PostDetailDto;
 import com.service.core.post.dto.PostPagingResponseDto;
 import com.service.core.post.dto.PostResponseDto;
 import com.service.core.post.model.BlogPostInput;
@@ -61,7 +62,7 @@ public class PostRestController {
             @ApiResponse(responseCode = "500", description = "DB 연결 오류, SQL 쿼리 수행 실패 등의 이유로 블로그 포스트 작성 작업 실패")
     })
     @PostMapping("/write/{userId}")
-    public ResponseEntity<String> postWrite(@Valid BlogPostInput blogPostInput, BindingResult bindingResult, Model model, Principal principal) {
+    public ResponseEntity<PostResponseDto<PostDetailDto>> postWrite(@Valid BlogPostInput blogPostInput, BindingResult bindingResult, Model model, Principal principal) {
         try {
             if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
@@ -86,13 +87,13 @@ public class PostRestController {
                             .build());
             post.setSeq((long) (postService.findPostCountByBlogId(blogDeleteDto.getId()) + 1));
             post.setMetaKey(blogPostInput.getMetaKey());
-            postService.register(post, blogPostInput);
-            return ResponseEntity.status(HttpStatus.OK).body("게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요.");
+            PostDetailDto postDetailDto = postService.register(post, blogPostInput);
+            return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postDetailDto, "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요."));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-postWrite] exception occurred ", exception);
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostResponseDto.fail(String.format("게시글 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception))));
         }
     }
 

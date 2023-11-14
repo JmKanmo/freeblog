@@ -19,6 +19,8 @@ public interface CommentService {
 
     String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
 
+    String uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception;
+
     CommentRegisterResultDto registerComment(CommentInput commentInput, Principal principal);
 
     void registerReplyComment(CommentInput commentInput, Principal principal);

@@ -23,7 +23,8 @@ public class ConstUtil {
 
     public static final String DEFAULT_SERVER_TIMEZONE = "UTC";
 
-    public static final int MAX_RETRY_COUNT = 10;
+    public static final String UPLOAD_TYPE_S3 = "S3";
+    public static final String UPLOAD_TYPE_FILE_SERVER = "FILE_SERVER";
 
     public static final String[] SIGNUP_MAIL_TEXT = {
             "[freeblog] 가입을 축하드립니다.",

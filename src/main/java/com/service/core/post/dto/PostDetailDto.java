@@ -48,7 +48,10 @@ public class PostDetailDto implements Serializable {
         postDetailDto.setRegisterTime(BlogUtil.formatLocalDateTimeToStr(post.getRegisterTime()));
         postDetailDto.setRegisterLocalDateTime(post.getRegisterTime());
         postDetailDto.setCurrentUrl(BlogUtil.currentRequestUrl());
-        postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+        // 태그가 없는 경우, Null Pointer 발생
+        if (post.getTagList() != null) {
+            postDetailDto.setTags(post.getTagList().stream().map(tag -> tag.getName()).collect(Collectors.toList()));
+        }
         postDetailDto.setMetaKey(post.getMetaKey());
         postDetailDto.setIsBaseTimezone(post.getIsBaseTimezone());
         return postDetailDto;

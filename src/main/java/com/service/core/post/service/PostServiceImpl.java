@@ -124,9 +124,10 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public void register(Post post, BlogPostInput blogPostInput) {
-        postRepository.save(post);
+    public PostDetailDto register(Post post, BlogPostInput blogPostInput) {
+        Post writedPost = postRepository.save(post);
         tagService.register(BlogUtil.convertArrayToList(blogPostInput.getTag().split(",")), post);
+        return updateCachePostDetailInfo(blogPostInput.getId(), writedPost.getId(), writedPost);
     }
 
     @Transactional
@@ -143,6 +144,13 @@ public class PostServiceImpl implements PostService {
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
+        return PostDetailDto.from(post);
+    }
+
+
+    @Override
+    @CachePut(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")
+    public PostDetailDto updateCachePostDetailInfo(Long blogId, Long postId, Post post) {
         return PostDetailDto.from(post);
     }
 

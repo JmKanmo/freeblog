@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -140,9 +141,18 @@ public class CommentRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
     })
     @PostMapping("/upload/comment-thumbnail-image")
-    public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("compressed_post_comment_image") MultipartFile multipartFile) {
+    public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("compressed_post_comment_image") MultipartFile multipartFile,
+                                                              @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
+                                                              @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(commentService.uploadAwsSCommentThumbnailImage(multipartFile));
+            String response = null;
+
+            if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
+                response = commentService.uploadAwsSCommentThumbnailImage(multipartFile);
+            } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
+                response = commentService.uploadSftpCommentThumbnailImage(multipartFile, uploadKey);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception);

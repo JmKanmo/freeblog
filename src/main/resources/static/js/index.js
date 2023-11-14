@@ -46,6 +46,10 @@ class BlogViewController extends UtilController {
                 }
             }
         });
+
+        this.blogViewSelectSortOption.addEventListener("change", evt => {
+            this.#requestSearchPost("/search-post");
+        })
     }
 
     #requestSearchPost(url, page) {
