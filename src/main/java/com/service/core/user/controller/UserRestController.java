@@ -72,12 +72,14 @@ public class UserRestController {
     })
     @PostMapping("/upload/profile-image")
     public ResponseEntity<String> uploadProfileImage(@RequestParam("compressed_user_profile_image") MultipartFile multipartFile,
+                                                     @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
+                                                     @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey,
                                                      @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
             if (principal == null || principal.getName() == null) {
                 throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            UserHeaderDto userHeaderDto = userService.uploadAwsS3ProfileImageById(multipartFile, id, principal);
+            UserHeaderDto userHeaderDto = userService.uploadThumbnailProfileImageById(multipartFile, id, uploadType, uploadKey, principal);
             String profileImageSrc = userHeaderDto.getProfileImages();
             return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
         } catch (Exception exception) {

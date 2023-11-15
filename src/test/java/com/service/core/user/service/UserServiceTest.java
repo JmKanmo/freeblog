@@ -397,7 +397,7 @@ class UserServiceTest {
         when(awsS3Service.uploadImageFile(multipartFile)).thenReturn(profileImageSrc);
         when(userInfoService.findUserDomainByIdOrThrow(id)).thenReturn(userDomain);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.uploadAwsS3ProfileImageById(multipartFile, id, mock(Principal.class)));
+        assertDoesNotThrow(() -> userService.uploadThumbnailProfileImageById(multipartFile, id, ConstUtil.UPLOAD_TYPE_S3, "", mock(Principal.class)));
         assertTrue(userDomain.getProfileImage().equals(profileImageSrc));
 
         verify(awsS3Service, times(1)).uploadImageFile(multipartFile);

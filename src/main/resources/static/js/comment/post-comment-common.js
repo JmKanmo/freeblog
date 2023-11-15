@@ -102,6 +102,8 @@ class PostCommentCommonController extends UtilController {
                     this.isImageUploadFlag = false;
                 });
                 formData.set("compressed_post_comment_image", imgFile);
+                formData.set("uploadType", this.UPLOAD_IMAGE_TYPE);
+                formData.set("uploadKey", new Date().getTime());
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);

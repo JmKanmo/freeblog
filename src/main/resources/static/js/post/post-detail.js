@@ -96,7 +96,12 @@ class PostDetailController extends UtilController {
         });
 
         this.post_share_button.addEventListener("click", evt => {
-            this.showToastMessage("post share button clicked");
+            window.navigator.share({
+                title: `${this.postTitle.value}`, // 공유될 제목
+                text: "freeblog URL", // 공유될 설명
+                url: window.document.location.href, // 공유될 URL
+                files: [], // 공유할 파일 배열
+            });
         });
 
         this.postUrlButton.addEventListener("click", evt => {

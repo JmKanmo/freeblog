@@ -296,9 +296,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
-    public UserHeaderDto uploadAwsS3ProfileImageById(MultipartFile multipartFile, String id, Principal principal) throws Exception {
+    public UserHeaderDto uploadThumbnailProfileImageById(MultipartFile multipartFile, String id, String uploadType, String uploadKey, Principal principal) throws Exception {
         try {
-            String profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
+            String profileImageSrc = null;
+            if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
+                profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
+            } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
+                profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, uploadKey);
+            }
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);

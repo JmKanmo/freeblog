@@ -225,6 +225,8 @@ class SettingsController extends HeaderController {
                     this.isImageUploadFlag = false;
                 });
                 formData.set("compressed_user_profile_image", imgFile);
+                formData.set("uploadType", this.UPLOAD_IMAGE_TYPE);
+                formData.set("uploadKey", new Date().getTime());
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
