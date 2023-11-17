@@ -37,6 +37,8 @@ public class Comment extends BaseTimeEntity {
 
     private boolean anonymous;
 
+    private String metaKey;
+
     @Embedded
     private CommentUser commentUser;
 
@@ -52,6 +54,7 @@ public class Comment extends BaseTimeEntity {
                 .commentImage(commentInput.getCommentThumbnailImage() == null || commentInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentInput.getCommentThumbnailImage())
                 .secret(BlogUtil.parseAndGetCheckBox(commentInput.getSecretComment()))
                 .anonymous(BlogUtil.parseAndGetCheckBox(commentInput.getCommentIsAnonymous()))
+                .metaKey(commentInput.getMetaKey())
                 .commentUser(CommentUser.from(commentInput))
                 .post(post)
                 .isBaseTimezone(true)

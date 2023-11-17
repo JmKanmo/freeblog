@@ -2,10 +2,7 @@ package com.service.core.comment.service;
 
 import com.service.core.comment.domain.Comment;
 import com.service.core.comment.domain.CommentUser;
-import com.service.core.comment.dto.CommentDto;
-import com.service.core.comment.dto.CommentLinkDto;
-import com.service.core.comment.dto.CommentRegisterResultDto;
-import com.service.core.comment.dto.CommentSummaryDto;
+import com.service.core.comment.dto.*;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentPagination;
@@ -24,6 +21,7 @@ import com.service.util.ConstUtil;
 import com.service.util.aws.s3.AwsS3Service;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +33,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class CommentServiceImpl implements CommentService {
     private final AwsS3Service awsS3Service;
     private final SftpService sftpService;
@@ -48,13 +47,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
-        return awsS3Service.uploadImageFile(multipartFile);
+    public CommentImageResultDto uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception {
+        return CommentImageResultDto.from(awsS3Service.uploadImageFile(multipartFile), null);
     }
 
     @Override
-    public String uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception {
-        return sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_COMMENT_IMAGE_HASH, uploadKey);
+    public CommentImageResultDto uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception {
+        return CommentImageResultDto.from(sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_COMMENT_IMAGE_HASH, uploadKey), uploadKey);
     }
 
     /**
@@ -191,6 +190,20 @@ public class CommentServiceImpl implements CommentService {
     public void updateComment(CommentUpdateInput commentUpdateInput, Principal principal) {
         Comment comment = commentInfoService.findCommentById(commentUpdateInput.getCommentId());
 
+        // File Server 이미지의 경우에 경로가 다르면 기존에 이미지 삭제
+        if (comment.getMetaKey() != null && !comment.getMetaKey().isEmpty()) {
+            String commentImage = comment.getCommentImage();
+            String updateCommentImage = commentUpdateInput.getCommentThumbnailImage();
+
+            if ((updateCommentImage != null && !updateCommentImage.isEmpty() && !updateCommentImage.equals(ConstUtil.UNDEFINED)) && (commentImage != null && !commentImage.isEmpty() && !commentImage.equals(ConstUtil.UNDEFINED))) {
+                if (!updateCommentImage.equals(commentImage)) {
+                    deleteCommentThumbnailImage(commentImage);
+                }
+            } else if ((updateCommentImage == null || updateCommentImage.isEmpty() || updateCommentImage.equals(ConstUtil.UNDEFINED)) && (commentImage != null && !commentImage.isEmpty() && !commentImage.equals(ConstUtil.UNDEFINED))) {
+                deleteCommentThumbnailImage(commentImage);
+            }
+        }
+
         if (comment.isAnonymous()) {
             if (!BCrypt.checkpw(commentUpdateInput.getAuthCheckPassword(), comment.getCommentUser().getUserPassword())) {
                 throw new CommentManageException(ServiceExceptionMessage.MISMATCH_COMMENT_PASSWORD);
@@ -206,6 +219,7 @@ public class CommentServiceImpl implements CommentService {
 
             comment.setCommentImage(commentUpdateInput.getCommentThumbnailImage() == null || commentUpdateInput.getCommentThumbnailImage().isEmpty() ? ConstUtil.UNDEFINED : commentUpdateInput.getCommentThumbnailImage());
             comment.setSecret(BlogUtil.parseAndGetCheckBox(commentUpdateInput.getSecretComment()));
+            comment.setMetaKey(commentUpdateInput.getMetaKey());
             comment.setComment(commentUpdateInput.getComment());
             CommentUser commentUser = comment.getCommentUser();
             commentUser.setUserNickname(commentUpdateInput.getCommentUserNickname());
@@ -274,13 +288,18 @@ public class CommentServiceImpl implements CommentService {
                 }
             }
             commentInfoService.deleteCommentById(commentId);
+            // TODO comment metakey에 해당하는 image 삭제 로직 추가
         } else {
             comment.setDelete(true);
         }
     }
 
     @Override
-    public List<PostLinkDto> findPostListDto(String userId) {
-        return null;
+    public void deleteCommentThumbnailImage(String imageSrc) {
+        try {
+            sftpService.sftpImageFileDelete(imageSrc);
+        } catch (Exception e) {
+            log.error("CommentServiceImpl[deleteCommentThumbnailImage] exception:", e);
+        }
     }
 }

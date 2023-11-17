@@ -18,7 +18,7 @@ class UtilController {
 
         this.RETRY_MAX_COUNT = 10; // API 요청 재시도 횟수
 
-        this.UPLOAD_IMAGE_TYPE = "S3" // 이미지 업로드 방식: S3 | FILE_SERVER
+        this.UPLOAD_IMAGE_TYPE = "FILE_SERVER" // 이미지 업로드 방식: S3 | FILE_SERVER
     }
 
     initHandlerbars() {
@@ -50,6 +50,10 @@ class UtilController {
 
         Handlebars.registerHelper('ternaryOperator', function (object, target, valueIfTrue, valueIfFalse) {
             return (object === target) ? valueIfTrue : valueIfFalse;
+        });
+
+        Handlebars.registerHelper('ternarySelfOperator', function (object, target, valueIfTrue) {
+            return (object === target) ? valueIfTrue : object;
         });
 
         Handlebars.registerHelper('nullCheck', param => {

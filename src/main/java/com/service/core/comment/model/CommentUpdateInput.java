@@ -25,6 +25,8 @@ public class CommentUpdateInput {
 
     private final Boolean isAnonymous;
 
+    private final String metaKey;
+
     @NotEmpty(message = "댓글 내용이 비어있습니다.")
     @NotBlank(message = "댓글 내용은 공백만 올 수 없습니다.")
     @Size(max = 2000, message = "댓글 내용은 최대 2000글자 까지 작성 가능합니다.")

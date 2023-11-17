@@ -33,4 +33,6 @@ public class CommentInput {
     @NotBlank(message = "댓글 내용은 공백만 올 수 없습니다.")
     @Size(max = 2000, message = "댓글 내용은 최대 2000글자 까지 작성 가능합니다.")
     private final String comment;
+
+    private final String metaKey;
 }

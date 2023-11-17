@@ -18,6 +18,7 @@ class PostCommentCommonController extends UtilController {
         this.postCommentTextInput = document.getElementById("post_comment_text_input");
         this.commentUserNickname = document.getElementById("commentUserNickname");
         this.commentUserPassword = document.getElementById("commentUserPassword");
+        this.postCommentMetaKey = document.getElementById("post_comment_metaKey");
 
         this.currentTextCount = document.getElementById("current_text_count");
         this.isImageUploadFlag = false;
@@ -83,15 +84,16 @@ class PostCommentCommonController extends UtilController {
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
-                    const responseValue = event.target.responseText;
+                    const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showToastMessage(responseValue["message"]);
                         this.removeCommentImage();
                     } else {
                         this.postCommentThumbnailImageBox.style.display = "block";
-                        this.postCommentThumbnailImage.src = responseValue;
-                        this.postCommentThumbnailImageValueInput.value = responseValue;
+                        this.postCommentThumbnailImage.src = responseValue["imageSrc"];
+                        this.postCommentThumbnailImageValueInput.value = responseValue["imageSrc"];
+                        this.postCommentMetaKey.value = responseValue["metaKey"];
                     }
                     this.isImageUploadFlag = false;
                 });
@@ -103,7 +105,7 @@ class PostCommentCommonController extends UtilController {
                 });
                 formData.set("compressed_post_comment_image", imgFile);
                 formData.set("uploadType", this.UPLOAD_IMAGE_TYPE);
-                formData.set("uploadKey", new Date().getTime());
+                formData.set("uploadKey", !this.postCommentMetaKey.value ? new Date().getTime() : this.postCommentMetaKey.value);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
@@ -125,5 +127,6 @@ class PostCommentCommonController extends UtilController {
         this.postCommentThumbnailImage.src = "";
         this.postCommentThumbnailImageBox.style.display = "none";
         this.postCommentThumbnailImageValueInput.value = null;
+        this.postCommentMetaKey.value = null;
     }
 }

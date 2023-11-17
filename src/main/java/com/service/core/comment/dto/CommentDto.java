@@ -21,6 +21,7 @@ public class CommentDto {
     private final String userNickname;
     private final String targetUserId;
     private final String targetUserNickname;
+    private final String metaKey;
     private final boolean isOwner;
     private final boolean isDelete;
     private final boolean secret;
@@ -42,6 +43,7 @@ public class CommentDto {
                 .userNickname(comment.getCommentUser().getUserNickname())
                 .targetUserId(comment.getCommentUser().getTargetUserId())
                 .targetUserNickname(comment.getCommentUser().getTargetUserNickname())
+                .metaKey(comment.getMetaKey())
                 .isOwner(comment.getCommentUser().isOwner())
                 .isDelete(comment.isDelete())
                 .secret(comment.isSecret())

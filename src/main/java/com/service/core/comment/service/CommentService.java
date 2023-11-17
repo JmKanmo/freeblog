@@ -1,9 +1,6 @@
 package com.service.core.comment.service;
 
-import com.service.core.comment.dto.CommentDto;
-import com.service.core.comment.dto.CommentLinkDto;
-import com.service.core.comment.dto.CommentRegisterResultDto;
-import com.service.core.comment.dto.CommentSummaryDto;
+import com.service.core.comment.dto.*;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentPaginationResponse;
@@ -17,9 +14,9 @@ import java.util.List;
 public interface CommentService {
     List<CommentLinkDto> findCommentLinkDto(Long blogId);
 
-    String uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
+    CommentImageResultDto uploadAwsSCommentThumbnailImage(MultipartFile multipartFile) throws Exception;
 
-    String uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception;
+    CommentImageResultDto uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception;
 
     CommentRegisterResultDto registerComment(CommentInput commentInput, Principal principal);
 
@@ -37,5 +34,5 @@ public interface CommentService {
 
     void deleteComment(Long commentId, String password, Principal principal);
 
-    List<PostLinkDto> findPostListDto(String userId);
+    void deleteCommentThumbnailImage(String imageSrc);
 }

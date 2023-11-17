@@ -69,6 +69,7 @@ public class CommentController {
         model.addAttribute("comment_nickname", commentDto.getUserNickname());
         model.addAttribute("comment_secret", commentDto.isSecret());
         model.addAttribute("comment_href", href);
+        model.addAttribute("comment_metakey", commentDto.getMetaKey());
         return "comment/post-comment-update";
     }
 }

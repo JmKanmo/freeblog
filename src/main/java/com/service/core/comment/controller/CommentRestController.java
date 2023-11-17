@@ -1,9 +1,6 @@
 package com.service.core.comment.controller;
 
-import com.service.core.comment.dto.CommentDelAuthDto;
-import com.service.core.comment.dto.CommentPagingResponseDto;
-import com.service.core.comment.dto.CommentRegisterDto;
-import com.service.core.comment.dto.CommentRegisterResultDto;
+import com.service.core.comment.dto.*;
 import com.service.core.comment.model.CommentInput;
 import com.service.core.comment.model.CommentUpdateInput;
 import com.service.core.comment.paging.CommentSearchPagingDto;
@@ -141,23 +138,23 @@ public class CommentRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 업로드 실패")
     })
     @PostMapping("/upload/comment-thumbnail-image")
-    public ResponseEntity<String> uploadCommentThumbnailImage(@RequestParam("compressed_post_comment_image") MultipartFile multipartFile,
-                                                              @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
-                                                              @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey) {
+    public ResponseEntity<CommentImageResultDto> uploadCommentThumbnailImage(@RequestParam("compressed_post_comment_image") MultipartFile multipartFile,
+                                                                             @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
+                                                                             @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey) {
         try {
-            String response = null;
+            CommentImageResultDto commentImageResultDto = null;
 
             if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
-                response = commentService.uploadAwsSCommentThumbnailImage(multipartFile);
+                commentImageResultDto = commentService.uploadAwsSCommentThumbnailImage(multipartFile);
             } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
-                response = commentService.uploadSftpCommentThumbnailImage(multipartFile, uploadKey);
+                commentImageResultDto = commentService.uploadSftpCommentThumbnailImage(multipartFile, uploadKey);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(commentImageResultDto);
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-uploadCommentThumbnailImage] exception occurred ", exception);
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(CommentImageResultDto.from(null, null, String.format("댓글 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception))));
         }
     }
 

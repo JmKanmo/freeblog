@@ -18,6 +18,7 @@
                c.user_nickname,
                c.target_user_id,
                c.target_user_nickname,
+               c.meta_key,
                c.is_owner,
                c.is_delete,
                c.secret,

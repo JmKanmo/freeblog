@@ -90,6 +90,7 @@
                     </button>
                 </div>
                 {{/unless}}
+                <input type="hidden" id="commentMetaKeyInput&{{commentParentDto.id}}" readonly value={{ternarySelfOperator commentParentDto.metaKey null 'null'}}>
             </div>
             {{/if}}
             {{/unless}}
@@ -169,6 +170,7 @@
                             </div>
                         </div>
                         {{/unless}}
+                        <input type="hidden" id="commentMetaKeyInput&{{id}}" readonly value={{ternarySelfOperator metaKey null 'null'}}>
                     </div>
                 </li>
                 {{/each}}
