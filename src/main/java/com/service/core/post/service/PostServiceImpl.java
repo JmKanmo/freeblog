@@ -116,10 +116,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public String uploadSftpPostThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception {
+        return sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_POST_THUMBNAIL_HASH, uploadKey);
+    }
+
+    @Override
     public void deleteSftpPostImage(List<String> imgSrcList) throws Exception {
         for (String imgSrc : imgSrcList) {
             sftpService.sftpImageFileDelete(imgSrc);
         }
+    }
+
+    @Override
+    public void deleteSftpPostImage(String imgSrc) throws Exception {
+        sftpService.sftpImageFileDelete(imgSrc);
     }
 
     @Transactional

@@ -32,7 +32,11 @@ public interface PostService {
 
     String uploadSftpPostImage(MultipartFile multipartFile, String uploadKey) throws Exception;
 
+    String uploadSftpPostThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception;
+
     void deleteSftpPostImage(List<String> imgSrc) throws Exception;
+
+    void deleteSftpPostImage(String imgSrc) throws Exception;
 
     PostDetailDto register(Post post, BlogPostInput blogPostInput);
 

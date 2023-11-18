@@ -204,6 +204,7 @@ class PostWriteController extends UtilController {
 
         this.postThumbnailImageDeleteButton.addEventListener("click", evt => {
             if (confirm("썸네일 이미지를 삭제하겠습니까?")) {
+                this.#deleteImage();
                 this.removePostThumbnailImage();
             }
         });
@@ -278,14 +279,15 @@ class PostWriteController extends UtilController {
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
-                    const responseValue = event.target.responseText;
+                    const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showToastMessage(responseValue["message"]);
                     } else {
-                        this.showToastMessage('게시글 썸네일 이미지가 지정되었습니다.');
+                        // this.showToastMessage('게시글 썸네일 이미지가 지정되었습니다.');
                         this.postThumbnailImageBox.style.display = 'block';
-                        this.postThumbnailImage.src = responseValue;
+                        this.postThumbnailImage.src = responseValue["imageSrc"];
+                        document.getElementById("upload_key").value = responseValue["metaKey"];
                         this.postThumbnailImageURL = this.postThumbnailImage.src;
                     }
                     this.imageUploadFlag = false;
@@ -296,6 +298,8 @@ class PostWriteController extends UtilController {
                     this.imageUploadFlag = false;
                 });
                 formData.set("compressed_post_image", imgFile);
+                formData.set("uploadType", this.UPLOAD_IMAGE_TYPE);
+                formData.set("uploadKey", !document.getElementById("upload_key").value ? new Date().getTime() : document.getElementById("upload_key").value);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
@@ -304,6 +308,29 @@ class PostWriteController extends UtilController {
             this.imageUploadFlag = false;
             this.removePostThumbnailImage();
         }
+    }
+
+    #deleteImage() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", `/post/delete/post-thumbnail-image?imgSrc=${this.postThumbnailImageURL}`, true);
+        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+        xhr.addEventListener("loadend", event => {
+            let status = event.target.status;
+            const responseValue = event.target.responseText;
+
+            if ((status >= 400 && status <= 500) || (status > 500)) {
+                // 출력 X
+            } else {
+                // 출력 X
+            }
+        });
+
+        xhr.addEventListener("error", event => {
+            // 출력 X
+        });
+        xhr.send();
     }
 
     #initIntervalAndAutoSave() {

@@ -11,10 +11,7 @@ import com.service.core.error.model.BlogManageException;
 import com.service.core.error.model.PostManageException;
 import com.service.core.error.model.UserManageException;
 import com.service.core.post.domain.Post;
-import com.service.core.post.dto.PostCardDto;
-import com.service.core.post.dto.PostDetailDto;
-import com.service.core.post.dto.PostPagingResponseDto;
-import com.service.core.post.dto.PostResponseDto;
+import com.service.core.post.dto.*;
 import com.service.core.post.model.BlogPostInput;
 import com.service.core.post.model.BlogPostSearchInput;
 import com.service.core.post.paging.PostSearchPagingDto;
@@ -213,17 +210,51 @@ public class PostRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 포스트 썸네일 이미지 업로드 실패")
     })
     @PostMapping("/upload/post-thumbnail-image")
-    public ResponseEntity<String> uploadPostThumbnailImage(@RequestParam("compressed_post_image") MultipartFile multipartFile, Principal principal) {
+    public ResponseEntity<PostImageResultDto> uploadPostThumbnailImage(@RequestParam("compressed_post_image") MultipartFile multipartFile,
+                                                                       @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
+                                                                       @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey,
+                                                                       Principal principal) {
         try {
             if ((principal == null || principal.getName() == null)) {
                 throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(postService.uploadAwsS3PostThumbnailImage(multipartFile));
+            PostImageResultDto postImageResultDto = null;
+
+            if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
+                postImageResultDto = PostImageResultDto.from(postService.uploadAwsS3PostThumbnailImage(multipartFile), null);
+            } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
+                postImageResultDto = PostImageResultDto.from(postService.uploadSftpPostThumbnailImage(multipartFile, uploadKey), uploadKey);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(postImageResultDto);
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-uploadPostThumbnailImage] exception occurred ", exception);
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(PostImageResultDto.from(null, null, String.format("포스트 썸네일 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception))));
+        }
+    }
+
+    @Operation(summary = "게시글 이미지 삭제", description = "게시글 이미지 삭제 수행 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "게시글 이미지 삭제 완료"),
+            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 이미지 삭제 실패")
+    })
+    @PostMapping("/delete/post-thumbnail-image")
+    public ResponseEntity<String> deletePostThumbnailImage(@RequestParam("imgSrc") String imgSrc, Principal principal) {
+        try {
+            if ((principal == null || principal.getName() == null)) {
+                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+            }
+
+            if (imgSrc != null && !imgSrc.isEmpty() && !imgSrc.equals(ConstUtil.UNDEFINED)) {
+                postService.deleteSftpPostImage(imgSrc);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("게시글 썸네일 이미지를 삭제하였습니다.");
+        } catch (Exception exception) {
+            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+                log.error("[freeblog-deletePostImage] exception occurred ", exception);
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
         }
     }
 }
