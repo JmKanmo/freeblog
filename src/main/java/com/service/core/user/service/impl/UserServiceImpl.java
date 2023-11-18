@@ -300,14 +300,19 @@ public class UserServiceImpl implements UserService {
     @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
     public UserHeaderDto uploadThumbnailProfileImageById(MultipartFile multipartFile, String id, String uploadType, String uploadKey, Principal principal) throws Exception {
         try {
+            UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             String profileImageSrc = null;
+
+            if (!userDomain.getEmail().equals(principal.getName())) {
+                throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+            }
 
             if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
                 profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
                 profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, uploadKey);
             }
-            UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+
             String userUploadKey = userDomain.getMetaKey();
             String userProfileImageSrc = userDomain.getProfileImage();
 
@@ -336,6 +341,9 @@ public class UserServiceImpl implements UserService {
         String userMetaKey = userDomain.getMetaKey();
         String userProfileImageSrc = userDomain.getProfileImage();
 
+        if (!userDomain.getEmail().equals(principal.getName())) {
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+        }
         // File Server 이미지의 경우에 기존에 이미지 삭제
         if (userMetaKey != null && !userMetaKey.isEmpty() && !userMetaKey.equals(ConstUtil.UNDEFINED)) {
             if (userProfileImageSrc != null && !userProfileImageSrc.isEmpty() && !userProfileImageSrc.equals(ConstUtil.UNDEFINED)) {

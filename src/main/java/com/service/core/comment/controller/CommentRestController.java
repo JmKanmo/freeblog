@@ -158,6 +158,26 @@ public class CommentRestController {
         }
     }
 
+//    @Operation(summary = "댓글 썸네일 이미지 삭제", description = "댓글 썸네일 이미지 업로드 삭제 메서드")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "댓글 썸네일 이미지 삭제 완료"),
+//            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 댓글 썸네일 이미지 삭제 실패")
+//    })
+//    @PostMapping("/delete/comment-thumbnail-image")
+//    public ResponseEntity<String> deleteCommentThumbnailImage(@RequestParam(value = "imageSrc", defaultValue = ConstUtil.UNDEFINED) String imageSrc) {
+//        try {
+//            if (imageSrc != null && !imageSrc.isEmpty() && !imageSrc.equals(ConstUtil.UNDEFINED)) {
+//                commentService.deleteCommentThumbnailImage(imageSrc);
+//            }
+//            return ResponseEntity.status(HttpStatus.OK).body("댓글 썸네일 이미지 삭제에 성공하였습니다.");
+//        } catch (Exception exception) {
+//            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+//                log.error("[freeblog-deleteCommentThumbnailImage] exception occurred ", exception);
+//            }
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("댓글 썸네일 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+//        }
+//    }
+
     @Operation(summary = "댓글 삭제 권한 확인", description = "댓글 삭제 권한 확인 수행 메서드")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "댓글 삭제 권한 확인 완료"),

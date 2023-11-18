@@ -202,7 +202,6 @@ class PostUpdateController extends UtilController {
 
         this.postThumbnailImageDeleteButton.addEventListener("click", evt => {
             if (confirm("썸네일 이미지를 삭제하겠습니까?")) {
-                this.#deleteImage();
                 this.removePostThumbnailImage();
             }
         });
@@ -296,29 +295,6 @@ class PostUpdateController extends UtilController {
             this.isImageUploadFlag = false;
             this.removePostThumbnailImage();
         }
-    }
-
-    #deleteImage() {
-        const xhr = new XMLHttpRequest();
-
-        xhr.open("POST", `/post/delete/post-thumbnail-image?imgSrc=${this.postThumbnailImageURL}`, true);
-        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-
-        xhr.addEventListener("loadend", event => {
-            let status = event.target.status;
-            const responseValue = event.target.responseText;
-
-            if ((status >= 400 && status <= 500) || (status > 500)) {
-                // 출력 X
-            } else {
-                // 출력 X
-            }
-        });
-
-        xhr.addEventListener("error", event => {
-            // 출력 X
-        });
-        xhr.send();
     }
 
     removePostThumbnailImage() {

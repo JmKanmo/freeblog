@@ -183,26 +183,26 @@ public class PostRestController {
         }
     }
 
-    @Operation(summary = "게시글 이미지 삭제", description = "게시글 이미지 삭제 수행 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "게시글 이미지 삭제 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 이미지 삭제 실패")
-    })
-    @PostMapping("/delete/post-image")
-    public ResponseEntity<String> deletePostImage(@RequestParam("imgSrcList") List<String> imgSrcList, Principal principal) {
-        try {
-            if ((principal == null || principal.getName() == null)) {
-                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
-            }
-            postService.deleteSftpPostImage(imgSrcList);
-            return ResponseEntity.status(HttpStatus.OK).body("게시글 이미지를 삭제하였습니다.");
-        } catch (Exception exception) {
-            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
-                log.error("[freeblog-deletePostImage] exception occurred ", exception);
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
-        }
-    }
+//    @Operation(summary = "게시글 이미지 삭제", description = "게시글 이미지 삭제 수행 메서드")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "게시글 이미지 삭제 완료"),
+//            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 이미지 삭제 실패")
+//    })
+//    @PostMapping("/delete/post-image")
+//    public ResponseEntity<String> deletePostImage(@RequestParam("imgSrcList") List<String> imgSrcList, Principal principal) {
+//        try {
+//            if ((principal == null || principal.getName() == null)) {
+//                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+//            }
+//            postService.deleteSftpPostImage(imgSrcList);
+//            return ResponseEntity.status(HttpStatus.OK).body("게시글 이미지를 삭제하였습니다.");
+//        } catch (Exception exception) {
+//            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+//                log.error("[freeblog-deletePostImage] exception occurred ", exception);
+//            }
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+//        }
+//    }
 
     @Operation(summary = "포스트 썸네일 이미지 업로드", description = "포스트 썸네일 이미지 업로드 수행 메서드")
     @ApiResponses(value = {
@@ -234,27 +234,27 @@ public class PostRestController {
         }
     }
 
-    @Operation(summary = "게시글 이미지 삭제", description = "게시글 이미지 삭제 수행 메서드")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "게시글 이미지 삭제 완료"),
-            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 이미지 삭제 실패")
-    })
-    @PostMapping("/delete/post-thumbnail-image")
-    public ResponseEntity<String> deletePostThumbnailImage(@RequestParam("imgSrc") String imgSrc, Principal principal) {
-        try {
-            if ((principal == null || principal.getName() == null)) {
-                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
-            }
-
-            if (imgSrc != null && !imgSrc.isEmpty() && !imgSrc.equals(ConstUtil.UNDEFINED)) {
-                postService.deleteSftpPostImage(imgSrc);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body("게시글 썸네일 이미지를 삭제하였습니다.");
-        } catch (Exception exception) {
-            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
-                log.error("[freeblog-deletePostImage] exception occurred ", exception);
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
-        }
-    }
+//    @Operation(summary = "게시글 썸네일 이미지 삭제", description = "게시글 썸네일 이미지 삭제 수행 메서드")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "게시글 썸네일 이미지 삭제 완료"),
+//            @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 게시글 썸네일 이미지 삭제 실패")
+//    })
+//    @PostMapping("/delete/post-thumbnail-image")
+//    public ResponseEntity<String> deletePostThumbnailImage(@RequestParam(value = "imgSrc", defaultValue = ConstUtil.UNDEFINED) String imgSrc, Principal principal) {
+//        try {
+//            if ((principal == null || principal.getName() == null)) {
+//                throw new UserManageException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+//            }
+//
+//            if (imgSrc != null && !imgSrc.isEmpty() && !imgSrc.equals(ConstUtil.UNDEFINED)) {
+//                postService.deleteSftpPostImage(imgSrc);
+//            }
+//            return ResponseEntity.status(HttpStatus.OK).body("게시글 썸네일 이미지를 삭제하였습니다.");
+//        } catch (Exception exception) {
+//            if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
+//                log.error("[freeblog-deletePostImage] exception occurred ", exception);
+//            }
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("게시글 이미지 삭제에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+//        }
+//    }
 }
