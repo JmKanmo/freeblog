@@ -10,6 +10,7 @@ class SettingsController extends HeaderController {
         this.userProfileRegisterButton = document.getElementById("profile_image_register_button");
         this.userProfileRemoveButton = document.getElementById("profile_image_remove_button");
         this.userProfileImageInput = document.getElementById("profile_image_file_input");
+        this.userMetakeyInput = document.getElementById("user_metakey_input");
 
         this.greetingShowButton = document.getElementById("greeting_show_button");
         this.greetingsHiddenBlock = document.getElementById("greetings_hidden_block");
@@ -114,7 +115,7 @@ class SettingsController extends HeaderController {
             const imgFile = evt.target.files[0];
 
             if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
-                if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
+                if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_THUMBNAIL_IMAGE_UPLOAD_SIZE)) {
                     // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
                     this.#uploadImage(imgFile);
                 } else {
@@ -206,15 +207,16 @@ class SettingsController extends HeaderController {
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
-                    const responseValue = event.target.responseText;
+                    const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showToastMessage(responseValue["message"]);
                         this.removeUserProfileImage();
                     } else {
                         this.showToastMessage('프로필 썸네일 이미지 저장에 성공하였습니다.');
-                        this.defaultUserProfileImage.src = responseValue;
-                        this.setHeaderUserProfileImage(responseValue);
+                        this.defaultUserProfileImage.src = responseValue["imageSrc"];
+                        this.setHeaderUserProfileImage(responseValue["imageSrc"]);
+                        this.userMetakeyInput.value = responseValue["metaKey"];
                     }
                     this.isImageUploadFlag = false;
                 });
@@ -226,7 +228,7 @@ class SettingsController extends HeaderController {
                 });
                 formData.set("compressed_user_profile_image", imgFile);
                 formData.set("uploadType", this.UPLOAD_IMAGE_TYPE);
-                formData.set("uploadKey", new Date().getTime());
+                formData.set("uploadKey", !this.userMetakeyInput.value ? new Date().getTime() : this.userMetakeyInput.value);
                 xhr.send(formData);
             }
             fileReader.readAsDataURL(imgFile);
@@ -241,6 +243,7 @@ class SettingsController extends HeaderController {
         let fileBuffer = new DataTransfer();
         this.userProfileImageInput.files = fileBuffer.files; // <-- according to your file input reference
         this.defaultUserProfileImage.src = this.getDefaultUserProfileThumbnail();
+        this.userMetakeyInput.value = null;
     }
 
     #removeRemoteUserProfileImage() {

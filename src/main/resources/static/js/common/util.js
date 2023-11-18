@@ -16,6 +16,8 @@ class UtilController {
 
         this.MAX_IMAGE_UPLOAD_SIZE = 5 * 1024 * 1024; // 이미지 최대 업로드 사이즈: 5MB
 
+        this.MAX_THUMBNAIL_IMAGE_UPLOAD_SIZE = 5 * 1024 * 1024; // 썸네일 이미지 최대 업로드 사이즈: 5MB
+
         this.RETRY_MAX_COUNT = 10; // API 요청 재시도 횟수
 
         this.UPLOAD_IMAGE_TYPE = "FILE_SERVER" // 이미지 업로드 방식: S3 | FILE_SERVER

@@ -3,6 +3,7 @@ package com.service.core.user.controller;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.dto.UserHeaderDto;
+import com.service.core.user.dto.UserImageResultDto;
 import com.service.core.user.service.UserService;
 import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
@@ -71,22 +72,22 @@ public class UserRestController {
             @ApiResponse(responseCode = "500", description = "네트워크, 데이터베이스 저장 실패 등의 이유로 사용자 프로필 이미지 업로드 실패")
     })
     @PostMapping("/upload/profile-image")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam("compressed_user_profile_image") MultipartFile multipartFile,
-                                                     @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
-                                                     @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey,
-                                                     @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
+    public ResponseEntity<UserImageResultDto> uploadProfileImage(@RequestParam("compressed_user_profile_image") MultipartFile multipartFile,
+                                                                 @RequestParam(value = "uploadType", required = false, defaultValue = ConstUtil.UPLOAD_TYPE_S3) String uploadType,
+                                                                 @RequestParam(value = "uploadKey", required = false, defaultValue = ConstUtil.UNDEFINED) String uploadKey,
+                                                                 @RequestParam(value = "id", required = false, defaultValue = ConstUtil.UNDEFINED) String id, Principal principal) {
         try {
             if (principal == null || principal.getName() == null) {
                 throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
             UserHeaderDto userHeaderDto = userService.uploadThumbnailProfileImageById(multipartFile, id, uploadType, uploadKey, principal);
             String profileImageSrc = userHeaderDto.getProfileImages();
-            return ResponseEntity.status(HttpStatus.OK).body(profileImageSrc);
+            return ResponseEntity.status(HttpStatus.OK).body(UserImageResultDto.from(profileImageSrc, uploadKey));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {
                 log.error("[freeblog-uploadProfileImage] exception occurred ", exception);
             }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception)));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(UserImageResultDto.from(null, null, String.format("사용자 프로필 이미지 업로드에 실패하였습니다. %s", BlogUtil.getErrorMessage(exception))));
         }
     }
 

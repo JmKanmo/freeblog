@@ -24,6 +24,7 @@ import com.service.util.redis.service.like.PostLikeRedisTemplateService;
 import com.service.util.redis.service.view.BlogViewRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -43,6 +44,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final BlogService blogService;
@@ -299,13 +301,27 @@ public class UserServiceImpl implements UserService {
     public UserHeaderDto uploadThumbnailProfileImageById(MultipartFile multipartFile, String id, String uploadType, String uploadKey, Principal principal) throws Exception {
         try {
             String profileImageSrc = null;
+
             if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
                 profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
                 profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, uploadKey);
             }
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+            String userUploadKey = userDomain.getMetaKey();
+            String userProfileImageSrc = userDomain.getProfileImage();
+
+            // File Server 이미지의 경우에 경로가 다르면 기존에 이미지 삭제
+            if (userUploadKey != null && !userUploadKey.isEmpty() && !userUploadKey.equals(ConstUtil.UNDEFINED)) {
+                if ((profileImageSrc != null && !profileImageSrc.isEmpty() && !profileImageSrc.equals(ConstUtil.UNDEFINED)) && (userProfileImageSrc != null && !userProfileImageSrc.isEmpty() && !userProfileImageSrc.equals(ConstUtil.UNDEFINED))) {
+                    deleteUserProfileImageSrc(userProfileImageSrc);
+                } else if ((profileImageSrc == null || profileImageSrc.isEmpty() || profileImageSrc.equals(ConstUtil.UNDEFINED)) && (userProfileImageSrc != null && !userProfileImageSrc.isEmpty() && !userProfileImageSrc.equals(ConstUtil.UNDEFINED))) {
+                    deleteUserProfileImageSrc(userProfileImageSrc);
+                }
+            }
+
             userDomain.setProfileImage(profileImageSrc);
+            userDomain.setMetaKey(uploadKey);
             userInfoService.saveUserDomain(userDomain);
             return UserHeaderDto.fromEntity(userDomain);
         } catch (Exception e) {
@@ -317,8 +333,26 @@ public class UserServiceImpl implements UserService {
     @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
     public UserHeaderDto removeProfileImageById(String id, Principal principal) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
+        String userMetaKey = userDomain.getMetaKey();
+        String userProfileImageSrc = userDomain.getProfileImage();
+
+        // File Server 이미지의 경우에 기존에 이미지 삭제
+        if (userMetaKey != null && !userMetaKey.isEmpty() && !userMetaKey.equals(ConstUtil.UNDEFINED)) {
+            if (userProfileImageSrc != null && !userProfileImageSrc.isEmpty() && !userProfileImageSrc.equals(ConstUtil.UNDEFINED)) {
+                deleteUserProfileImageSrc(userProfileImageSrc);
+            }
+        }
         userDomain.setProfileImage(null);
+        userDomain.setMetaKey(null);
         userInfoService.saveUserDomain(userDomain);
         return UserHeaderDto.fromEntity(userDomain);
+    }
+
+    private void deleteUserProfileImageSrc(String imgSrc) {
+        try {
+            sftpService.sftpImageFileDelete(imgSrc);
+        } catch (Exception e) {
+            log.error("UserService[deleteUserProfileImageSrc] error:", e);
+        }
     }
 }

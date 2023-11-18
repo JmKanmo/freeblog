@@ -191,7 +191,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentInfoService.findCommentById(commentUpdateInput.getCommentId());
 
         // File Server 이미지의 경우에 경로가 다르면 기존에 이미지 삭제
-        if (comment.getMetaKey() != null && !comment.getMetaKey().isEmpty()) {
+        if (comment.getMetaKey() != null && !comment.getMetaKey().isEmpty() && !comment.getMetaKey().equals(ConstUtil.UNDEFINED)) {
             String commentImage = comment.getCommentImage();
             String updateCommentImage = commentUpdateInput.getCommentThumbnailImage();
 
@@ -285,10 +285,29 @@ public class CommentServiceImpl implements CommentService {
                 Comment parentComment = commentInfoService.findCommentUnlessDeleteById(comment.getParentId());
                 if (parentComment.isDelete()) {
                     commentInfoService.deleteCommentById(parentComment.getId());
+
+                    // File Server 이미지의 경우에 기존에 이미지 삭제
+                    String parentCommentMetaKey = parentComment.getMetaKey();
+                    if (parentCommentMetaKey != null && !parentCommentMetaKey.isEmpty() && !parentCommentMetaKey.equals(ConstUtil.UNDEFINED)) {
+                        String parentCommentImage = parentComment.getCommentImage();
+
+                        if (parentCommentImage != null && !parentCommentImage.isEmpty() && !parentCommentImage.equals(ConstUtil.UNDEFINED)) {
+                            deleteCommentThumbnailImage(parentCommentImage);
+                        }
+                    }
                 }
             }
             commentInfoService.deleteCommentById(commentId);
-            // TODO comment metakey에 해당하는 image 삭제 로직 추가
+
+            // File Server 이미지의 경우에 기존에 이미지 삭제
+            String commentMetaKey = comment.getMetaKey();
+            if (commentMetaKey != null && !commentMetaKey.isEmpty() && !commentMetaKey.equals(ConstUtil.UNDEFINED)) {
+                String commentImage = comment.getCommentImage();
+
+                if (commentImage != null && !commentImage.isEmpty() && !commentImage.equals(ConstUtil.UNDEFINED)) {
+                    deleteCommentThumbnailImage(commentImage);
+                }
+            }
         } else {
             comment.setDelete(true);
         }

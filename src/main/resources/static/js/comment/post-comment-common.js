@@ -41,7 +41,7 @@ class PostCommentCommonController extends UtilController {
                 const imgFile = evt.target.files[0];
 
                 if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
-                    if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, 300 * 1024)) {
+                    if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_THUMBNAIL_IMAGE_UPLOAD_SIZE)) {
                         // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
                         this.#uploadImage(imgFile);
                     } else {
