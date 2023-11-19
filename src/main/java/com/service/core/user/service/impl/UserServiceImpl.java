@@ -195,8 +195,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(UserPasswordInput userPasswordInput) {
+    public void updatePassword(UserPasswordInput userPasswordInput, Principal principal) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(userPasswordInput.getEmail());
+
+        if (!principal.getName().equals(userPasswordInput.getEmail())) {
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+        }
 
         if (userAuthService.checkUserPasswordAuth(user, userPasswordInput)) {
             user.setPassword(BCrypt.hashpw(userPasswordInput.getPassword(), BCrypt.gensalt()));
@@ -210,6 +214,10 @@ public class UserServiceImpl implements UserService {
     @CachePut(key = "#principal.getName()", value = CacheKey.USER_HEADER_DTO)
     public UserHeaderDto updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal) {
         UserDomain user = userInfoService.findUserDomainByIdOrThrow(userBasicInfoInput.getId());
+
+        if (!principal.getName().equals(user.getEmail())) {
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+        }
         Blog blog = user.getBlog();
         blog.setName(userBasicInfoInput.getBlogName());
         blog.setIntro(userBasicInfoInput.getIntro());
@@ -222,8 +230,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput) {
+    public void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput, Principal principal) {
         UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(userSocialAddressInput.getId());
+
+        if (!principal.getName().equals(userDomain.getEmail())) {
+            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+        }
         SocialAddress socialAddress = userDomain.getSocialAddress();
 
         socialAddress.setAddress(userSocialAddressInput.getAddress());

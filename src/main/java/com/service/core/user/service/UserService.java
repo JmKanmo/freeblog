@@ -36,11 +36,11 @@ public interface UserService extends UserDetailsService {
 
     String updatePasswordAuthCondition(String email);
 
-    void updatePassword(UserPasswordInput userPasswordInput);
+    void updatePassword(UserPasswordInput userPasswordInput, Principal principal);
 
     UserHeaderDto updateUserBasicInfo(UserBasicInfoInput userBasicInfoInput, Principal principal);
 
-    void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput);
+    void updateUserSocialAddress(UserSocialAddressInput userSocialAddressInput, Principal principal);
 
     List<UserEmailFindDto> findUserEmailFindDtoListByNickname(String nickname);
 

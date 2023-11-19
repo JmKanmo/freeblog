@@ -134,7 +134,7 @@ public class UserController {
             } else if (principal == null || principal.getName() == null) {
                 throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            userService.updateUserSocialAddress(userSocialAddressInput);
+            userService.updateUserSocialAddress(userSocialAddressInput, principal);
             model.addAttribute("result", "소셜 정보 변경 작업 완료. 페이지를 새로고침 후, 변경 사항 확인 가능합니다.");
         } catch (UsernameNotFoundException | UserAuthException exception) {
             model.addAttribute("result", "소셜 정보 변경 작업 실패");
@@ -307,7 +307,7 @@ public class UserController {
             } else if (principal == null || principal.getName() == null) {
                 throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
-            userService.updatePassword(userPasswordInput);
+            userService.updatePassword(userPasswordInput, principal);
             model.addAttribute("result", "비밀번호 변경 작업 완료");
             httpServletRequest.logout();
         } catch (UsernameNotFoundException | UserAuthException exception) {

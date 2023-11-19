@@ -263,7 +263,7 @@ class UserServiceTest {
         when(userInfoService.findUserDomainByEmailOrThrow(userPasswordInput.getEmail())).thenReturn(userDomain);
         when(userAuthService.checkUserPasswordAuth(userDomain, userPasswordInput)).thenReturn(true);
         doNothing().when(userInfoService).saveUserDomain(userDomain);
-        assertDoesNotThrow(() -> userService.updatePassword(userPasswordInput));
+        assertDoesNotThrow(() -> userService.updatePassword(userPasswordInput, null));
         verify(userInfoService, times(1)).saveUserDomain(userDomain);
     }
 
@@ -359,7 +359,7 @@ class UserServiceTest {
                 .socialAddress(socialAddress)
                 .build();
         when(userInfoService.findUserDomainByIdOrThrow(userSocialAddressInput.getId())).thenReturn(userDomain);
-        assertDoesNotThrow(() -> userService.updateUserSocialAddress(userSocialAddressInput));
+        assertDoesNotThrow(() -> userService.updateUserSocialAddress(userSocialAddressInput, null));
         assertTrue(socialAddress.getAddress().equals(userSocialAddressInput.getAddress()));
         assertTrue(socialAddress.getGithub().equals(userSocialAddressInput.getGithub()));
         assertTrue(socialAddress.getTwitter().equals(userSocialAddressInput.getTwitter()));
