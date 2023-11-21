@@ -77,6 +77,12 @@ class PostCommentCommonController extends UtilController {
 
             fileReader.onload = (event) => {
                 const xhr = new XMLHttpRequest();
+                const spinner = this.loadingSpin({
+                    lines: 15, length: 5, width: 5, radius: 8, scale: 1,
+                    corners: 1, color: '#000', opacity: 0.25, rotate: 0, direction: 1, speed: 1,
+                    trail: 60, fps: 20, zIndex: 2e9, className: 'spinner', top: '50%', left: '50%',
+                    shadow: false, hwaccel: false, position: 'absolute'
+                }, "commentImageLoading");
                 const formData = new FormData(this.postCommentImageForm);
 
                 xhr.open("POST", `/comment/upload/comment-thumbnail-image`, true);
@@ -87,9 +93,11 @@ class PostCommentCommonController extends UtilController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
+                        this.loadingStop(spinner);
                         this.showToastMessage(responseValue["message"]);
                         this.removeCommentImage();
                     } else {
+                        this.loadingStop(spinner);
                         this.postCommentThumbnailImageBox.style.display = "block";
                         this.postCommentThumbnailImage.src = responseValue["imageSrc"];
                         this.postCommentThumbnailImageValueInput.value = responseValue["imageSrc"];
@@ -100,6 +108,7 @@ class PostCommentCommonController extends UtilController {
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
+                    this.loadingStop(spinner);
                     this.removeCommentImage();
                     this.isImageUploadFlag = false;
                 });

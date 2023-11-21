@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="post-comment-form-container" class="post_comment_form_container">
+    <div style="position:relative;" id="commentRegisterLoading"></div>
+    <div style="position:relative;" id="commentImageLoading"></div>
+    <div style="position:relative;" id="commentDeleteLoading"></div>
     <form method="post" action="/comment/register" class="post_comment_form" id="post_comment_form"
           name="post_comment_form">
         <div class="post_comment_text_area_block">

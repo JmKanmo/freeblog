@@ -175,46 +175,23 @@ class UtilController {
         document.getElementById(id).scrollIntoView();
     }
 
-    /**
-     * 오픈소스 참조 (로딩 중 화면 만들기)
-     * 추후 다른 라이브러리 대체
-     * **/
-    loadingWithMask(width, height) {
-        //화면의 높이와 너비를 구합니다.
-        const maskHeight = height;
-        const maskWidth = width;
+    /** Loading Spinner **/
+    loadingSpin(option, tagId) {
+        const loadingTag = document.getElementById(tagId);
 
-        //화면에 출력할 마스크를 설정해줍니다.
-        const mask = `<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>`;
-        let loadingImg = ``;
-
-        loadingImg += "<div id='loadingImg' style='position:absolute; top: calc(50% - (200px / 2)); width:100%; z-index:99999999;'>";
-        loadingImg += `<img src='../images/loading_img.gif' style='position: relative; display: block; margin: 0px auto;'/>`;
-        loadingImg += `</div>`;
-
-        //화면에 레이어 추가
-        $('body')
-            .append(mask)
-            .append(loadingImg)
-
-        //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
-        $('#mask').css({
-            'width': maskWidth
-            , 'height': maskHeight
-            , 'opacity': '0.3'
-        });
-
-        //마스크 표시
-        $('#mask').show();
-
-        //로딩중 이미지 표시
-        $('#loadingImg').show();
+        if (loadingTag) {
+            const spinner = new Spinner(option).spin(loadingTag);
+            return spinner;
+        } else {
+            return null;
+        }
     }
 
-    /** 오픈소스 참조 (로딩 중 화면 닫기) **/
-    closeLoadingWithMask() {
-        $('#mask, #loadingImg').hide();
-        $('#mask, #loadingImg').empty();
+    /** Loading Spinner Stop **/
+    loadingStop(spinner) {
+        if (spinner) {
+            spinner.stop();
+        }
     }
 
     sleep(ms) {
