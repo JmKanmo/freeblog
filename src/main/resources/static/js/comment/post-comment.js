@@ -35,7 +35,7 @@ class PostCommentController extends PostCommentCommonController {
 
             if (this.checkCommentForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
-                this.loadingStop(spinner);
+                this.loadingStop(spinner, "commentRegisterLoading");
                 return;
             }
 
@@ -47,10 +47,10 @@ class PostCommentController extends PostCommentCommonController {
                 const responseValue = JSON.parse(evt.target.responseText);
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.loadingStop(spinner);
+                    this.loadingStop(spinner, "commentRegisterLoading");
                     this.showToastMessage(responseValue["message"]);
                 } else {
-                    this.loadingStop(spinner);
+                    this.loadingStop(spinner, "commentRegisterLoading");
                     this.resetCommentForm();
                     const commentCount = responseValue["commentCount"];
                     const commentId = responseValue["commentId"];
@@ -61,7 +61,7 @@ class PostCommentController extends PostCommentCommonController {
 
             xhr.addEventListener("error", event => {
                 this.showToastMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
-                this.loadingStop(spinner);
+                this.loadingStop(spinner, "commentRegisterLoading");
                 this.isClickedPostCommentSubmuitButton = false;
             });
 
@@ -148,28 +148,6 @@ class PostCommentController extends PostCommentCommonController {
         }
 
         const xhr = new XMLHttpRequest();
-        const spinner = this.loadingSpin({
-            lines: 15,
-            length: 5,
-            width: 5,
-            radius: 8,
-            scale: 1,
-            corners: 1,
-            color: '#000',
-            opacity: 0.25,
-            rotate: 0,
-            direction: 1,
-            speed: 1,
-            trail: 60,
-            fps: 20,
-            zIndex: 2e9,
-            className: 'spinner',
-            top: '50%',
-            left: '50%',
-            shadow: false,
-            hwaccel: false,
-            position: 'fixed'
-        }, "commentDeleteLoading");
         xhr.open("GET", `/comment/authority/${commentId}`, true);
 
         xhr.addEventListener("loadend", event => {
@@ -178,11 +156,8 @@ class PostCommentController extends PostCommentCommonController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
-                this.loadingStop(spinner);
                 this.isClickedPostCommentDeleteButton = false;
             } else {
-                this.loadingStop(spinner);
-
                 if (responseValue["auth"] === false) {
                     this.showToastMessage("댓글을 삭제할 권한이 없습니다. 로그인 후 시도해 주세요.");
                     this.isClickedPostCommentDeleteButton = false;
@@ -228,18 +203,18 @@ class PostCommentController extends PostCommentCommonController {
                         this.showToastMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
-                            this.loadingStop(spinner2);
+                            this.loadingStop(spinner2, "commentDeleteLoading");
                             this.isClickedPostCommentDeleteButton = false;
                             return;
                         }
-                        this.loadingStop(spinner2);
+                        this.loadingStop(spinner2, "commentDeleteLoading");
                         this.requestComment();
                         this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.addEventListener("error", event => {
                         this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
-                        this.loadingStop(spinner2);
+                        this.loadingStop(spinner2, "commentDeleteLoading");
                         this.isClickedPostCommentDeleteButton = false;
                     });
 
@@ -277,18 +252,18 @@ class PostCommentController extends PostCommentCommonController {
                         this.showToastMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
-                            this.loadingStop(spinner2);
+                            this.loadingStop(spinner2, "commentDeleteLoading");
                             this.isClickedPostCommentDeleteButton = false;
                             return;
                         }
-                        this.loadingStop(spinner2);
+                        this.loadingStop(spinner2, "commentDeleteLoading");
                         this.requestComment();
                         this.isClickedPostCommentDeleteButton = false;
                     });
 
                     subXhr.addEventListener("error", event => {
                         this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
-                        this.loadingStop(spinner2);
+                        this.loadingStop(spinner2, "commentDeleteLoading");
                         this.isClickedPostCommentDeleteButton = false;
                     });
 
@@ -299,7 +274,6 @@ class PostCommentController extends PostCommentCommonController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
-            this.loadingStop(spinner);
             this.isClickedPostCommentDeleteButton = false;
         });
 
@@ -392,9 +366,9 @@ class PostCommentController extends PostCommentCommonController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
-                this.loadingStop(spinner);
+                this.loadingStop(spinner, "commentSearchLoading");
             } else {
-                this.loadingStop(spinner);
+                this.loadingStop(spinner, "commentSearchLoading");
                 this.#handleTemplateList(responseValue);
                 this.#clearPagination();
                 this.#handlePagination(responseValue["commentPaginationResponse"]["commentPagination"], queryParam, url);
@@ -406,7 +380,7 @@ class PostCommentController extends PostCommentCommonController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("댓글 정보를 불러오는데 실패하였습니다.");
-            this.loadingStop(spinner);
+            this.loadingStop(spinner, "commentSearchLoading");
         });
 
         xhr.send();

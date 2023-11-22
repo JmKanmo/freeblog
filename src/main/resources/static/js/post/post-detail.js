@@ -55,8 +55,15 @@ class PostDetailController extends UtilController {
     }
 
     initPostContent() {
+        const spinner = this.loadingSpin({
+            lines: 15, length: 5, width: 5, radius: 10, scale: 1,
+            corners: 1, color: '#000', opacity: 0.25, rotate: 0, direction: 1, speed: 1,
+            trail: 60, fps: 20, zIndex: 2e9, className: 'spinner', top: '28%', left: '50%',
+            shadow: false, hwaccel: false, position: 'absolute'
+        }, "postContentLoading");
         const decompressedContent = this.compressContent(document.getElementById("hidden_post_content").value, false);
         document.getElementById("post_contents").innerHTML = this.getQuillHTML(decompressedContent, false, false);
+        this.loadingStop(spinner, "postContentLoading");
     }
 
     initEventController() {

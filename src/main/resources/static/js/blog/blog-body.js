@@ -17,6 +17,13 @@ class BlogBodyController extends UtilController {
 
     requestAllBlogPost(url, page) {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15, length: 5, width: 5,
+            radius: 10, scale: 1, corners: 1, color: '#000', opacity: 0.25,
+            rotate: 0, direction: 1, speed: 1, trail: 60, fps: 20, zIndex: 2e9,
+            className: 'spinner', top: '25%', left: '10%',
+            shadow: false, hwaccel: false, position: 'absolute'
+        }, "blogMainPostLoading");
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
 
         xhr.open("GET", url + '?' + queryParam.toString(), true);
@@ -27,7 +34,10 @@ class BlogBodyController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "blogMainPostLoading");
             } else {
+                this.loadingStop(spinner, "blogMainPostLoading");
+
                 if (responseValue["postPaginationResponse"]["postDto"]["postSummaryDto"]["count"] <= 0) {
                     this.#handleTemplateList(responseValue, true);
                     this.#clearPagination();
@@ -44,6 +54,7 @@ class BlogBodyController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("블로그 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "blogMainPostLoading");
         });
         xhr.send();
     }

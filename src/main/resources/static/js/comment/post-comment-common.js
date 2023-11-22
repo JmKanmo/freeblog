@@ -93,11 +93,11 @@ class PostCommentCommonController extends UtilController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.loadingStop(spinner);
+                        this.loadingStop(spinner, "commentImageLoading");
                         this.showToastMessage(responseValue["message"]);
                         this.removeCommentImage();
                     } else {
-                        this.loadingStop(spinner);
+                        this.loadingStop(spinner, "commentImageLoading");
                         this.postCommentThumbnailImageBox.style.display = "block";
                         this.postCommentThumbnailImage.src = responseValue["imageSrc"];
                         this.postCommentThumbnailImageValueInput.value = responseValue["imageSrc"];
@@ -108,7 +108,7 @@ class PostCommentCommonController extends UtilController {
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
-                    this.loadingStop(spinner);
+                    this.loadingStop(spinner, "commentImageLoading");
                     this.removeCommentImage();
                     this.isImageUploadFlag = false;
                 });

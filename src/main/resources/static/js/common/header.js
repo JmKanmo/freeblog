@@ -341,6 +341,12 @@ class HeaderController extends UtilController {
 
     #requestNoticeList(url, page) {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15, length: 2, width: 2, radius: 4, scale: 1,
+            corners: 1, color: '#000', opacity: 0.25, rotate: 0, direction: 1, speed: 1,
+            trail: 60, fps: 20, zIndex: 2e9, className: 'spinner', top: '30%', left: '50%',
+            shadow: false, hwaccel: false, position: 'absolute'
+        }, "noticeListLoading");
         const queryParam = this.getQueryParam(page, this.noticeRecordSize, this.noticePageSize);
 
         xhr.open("GET", url + '?' + queryParam.toString(), true);
@@ -352,16 +358,19 @@ class HeaderController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "noticeListLoading");
             } else {
                 this.#handleNoticeTemplateList(responseValue);
                 this.#clearNoticePagination();
                 this.#handleNoticePagination(responseValue["noticePaginationResponse"]["noticePagination"], queryParam, url);
+                this.loadingStop(spinner, "noticeListLoading");
                 this.noticeTemplateFlag = true;
             }
         });
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 공지사항 리스트 정보를 불러오지 못했습니다.');
+            this.loadingStop(spinner, "noticeListLoading");
         });
 
         xhr.send();

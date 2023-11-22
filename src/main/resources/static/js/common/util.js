@@ -180,6 +180,7 @@ class UtilController {
         const loadingTag = document.getElementById(tagId);
 
         if (loadingTag) {
+            loadingTag.style.display = 'block';
             const spinner = new Spinner(option).spin(loadingTag);
             return spinner;
         } else {
@@ -188,9 +189,13 @@ class UtilController {
     }
 
     /** Loading Spinner Stop **/
-    loadingStop(spinner) {
+    loadingStop(spinner, tagId) {
         if (spinner) {
             spinner.stop();
+            const loadingTag = document.getElementById(tagId);
+            if (loadingTag) {
+                loadingTag.style.display = 'none';
+            }
         }
     }
 

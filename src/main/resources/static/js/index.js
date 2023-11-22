@@ -65,6 +65,28 @@ class BlogViewController extends UtilController {
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
         const totalUrl = `${url}?searchOption=${searchOption}&sortOption=${sortOption}&keyword=${keyword}&${queryParam.toString()}`;
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 5,
+            width: 5,
+            radius: 10,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '25%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'fixed'
+        }, "mainPostLoading");
 
         xhr.open("GET", totalUrl, true);
 
@@ -74,7 +96,9 @@ class BlogViewController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "mainPostLoading");
             } else {
+                this.loadingStop(spinner, "mainPostLoading");
                 const totalCount = responseValue["postPaginationResponse"]["postPagination"]["totalRecordCount"];
 
                 if (totalCount > 0) {
@@ -90,6 +114,7 @@ class BlogViewController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "mainPostLoading");
         });
         xhr.send();
         this.prevPostSearchReloadTime = current;
