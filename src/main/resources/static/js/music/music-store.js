@@ -59,6 +59,28 @@ class MusicPlayController extends UtilController {
 
     #requestMusicPlayCategoryList() {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "musicStoreLoading");
 
         xhr.open("GET", `/music-category/list`, true);
 
@@ -68,7 +90,9 @@ class MusicPlayController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "musicStoreLoading");
             } else {
+                this.loadingStop(spinner, "musicStoreLoading");
                 this.#handleMusicCategoryTemplate(responseValue);
                 this.#requestMusicStoreList("/music/play-list");
             }
@@ -76,12 +100,35 @@ class MusicPlayController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
     }
 
     #requestMusicDownloadCategoryList() {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "musicStoreLoading");
 
         xhr.open("GET", `/music-category/user-list`, true);
 
@@ -91,7 +138,9 @@ class MusicPlayController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "musicStoreLoading");
             } else {
+                this.loadingStop(spinner, "musicStoreLoading");
                 this.#handleMusicDownloadCategoryTemplate(responseValue);
                 this.#requestMusicDownloadList("/music/download-list");
             }
@@ -99,6 +148,7 @@ class MusicPlayController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
     }
@@ -114,6 +164,28 @@ class MusicPlayController extends UtilController {
         const musicStoreSearchTypeValue = `LIKE`;  // TODO 실제 서비스 시에는 FULL-TEXT 방식 고려
 
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "musicStoreLoading");
         const queryParam = this.getQueryParam(page, this.musicStoreRecordSize, this.musicStorePageSize);
 
         xhr.open("GET"
@@ -126,7 +198,10 @@ class MusicPlayController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "musicStoreLoading");
             } else {
+                this.loadingStop(spinner, "musicStoreLoading");
+
                 if (responseValue["musicPaginationResponse"]["musicDto"].length <= 0) {
                     // this.showToastMessage("해당 카테고리 내 뮤직 플레이 리스트가 비었습니다.", 100);
                     this.#handleMusicPlayTemplate(responseValue);
@@ -142,6 +217,7 @@ class MusicPlayController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("뮤직 목록 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
     }
@@ -159,6 +235,28 @@ class MusicPlayController extends UtilController {
         const musicDownloadSearchTypeValue = `LIKE`;  // TODO 실제 서비스 시에는 FULL-TEXT 방식 고려
 
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "musicStoreLoading");
         const queryParam = this.getQueryParam(page, this.musicStoreRecordSize, this.musicStorePageSize);
 
         xhr.open("GET"
@@ -171,7 +269,10 @@ class MusicPlayController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "musicStoreLoading");
             } else {
+                this.loadingStop(spinner, "musicStoreLoading");
+
                 if (responseValue["musicPaginationResponse"]["musicDto"].length <= 0) {
                     // this.showToastMessage("해당 카테고리 내 뮤직 다운로드 리스트가 비었습니다.", 100);
                     this.#handleMusicDownloadTemplate(responseValue);
@@ -187,6 +288,7 @@ class MusicPlayController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("뮤직 다운로드 목록 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
     }
@@ -660,6 +762,28 @@ class MusicPlayController extends UtilController {
                 }
 
                 const xhr = new XMLHttpRequest();
+                const spinner = this.loadingSpin({
+                    lines: 15,
+                    length: 4,
+                    width: 4,
+                    radius: 4,
+                    scale: 1,
+                    corners: 1,
+                    color: '#000',
+                    opacity: 0.25,
+                    rotate: 0,
+                    direction: 1,
+                    speed: 1,
+                    trail: 60,
+                    fps: 20,
+                    zIndex: 2e9,
+                    className: 'spinner',
+                    top: '50%',
+                    left: '50%',
+                    shadow: false,
+                    hwaccel: false,
+                    position: 'absolute'
+                }, "musicStoreLoading");
                 xhr.open("DELETE", `/music/delete`, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -669,13 +793,16 @@ class MusicPlayController extends UtilController {
 
                     if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                         this.showToastMessage(responseValue["message"]);
+                        this.loadingStop(spinner, "musicStoreLoading");
                     } else {
+                        this.loadingStop(spinner, "musicStoreLoading");
                         this.#requestMusicDownloadList("/music/download-list");
                     }
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage("뮤직 삭제에 실패했습니다.");
+                    this.loadingStop(spinner, "musicStoreLoading");
                 });
                 xhr.send(JSON.stringify(musicList));
             }
@@ -702,6 +829,28 @@ class MusicPlayController extends UtilController {
         }
 
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "musicStoreLoading");
 
         xhr.open("POST", `/music/download`, true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -712,7 +861,9 @@ class MusicPlayController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "musicStoreLoading");
             } else {
+                this.loadingStop(spinner, "musicStoreLoading");
                 this.showToastMessage("뮤직 플레이 리스트를 담았습니다.");
                 this.#requestMusicDownloadCategoryList();
                 this.#requestMusicDownloadList("/music/download-list");
@@ -722,6 +873,7 @@ class MusicPlayController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("뮤직 플레이 리스트를 담기에 실패했습니다.");
+            this.loadingStop(spinner, "musicStoreLoading");
             this.isMusicDownloadFlag = false;
         });
         xhr.send(JSON.stringify(musicList));

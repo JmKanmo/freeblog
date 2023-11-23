@@ -215,6 +215,28 @@ class PostDetailController extends UtilController {
 
     #requestPostUserLike(url, page) {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 2,
+            width: 2,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '30%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "userLikeListLoading");
         const queryParam = this.getQueryParam(page, this.likeRecordSize, this.likePageSize);
         xhr.open("GET", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -225,21 +247,26 @@ class PostDetailController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "userLikeListLoading");
             } else {
+                this.postLikeUserListContainer.style.display = 'block';
+
                 if (responseValue["likePaginationResponse"]["likeDto"].length <= 0) {
                     this.showToastMessage("공감을 누른 사용자가 없습니다.");
+                    this.loadingStop(spinner, "userLikeListLoading");
                     return;
                 }
+                this.loadingStop(spinner, "userLikeListLoading");
                 this.#handlePostLikeTemplateList(responseValue);
                 this.#clearPostLikePagination();
                 this.#handlePostLikePagination(responseValue["likePaginationResponse"]["likePagination"], queryParam, url);
-                this.postLikeUserListContainer.style.display = 'block';
                 this.userLikePostBlock = true;
             }
         });
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 공감을 누른 사용자 정보를 불러오지 못했습니다.');
+            this.loadingStop(spinner, "userLikeListLoading");
         });
 
         xhr.send();
@@ -247,6 +274,28 @@ class PostDetailController extends UtilController {
 
     #requestCategoryPost(url, page) {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 2,
+            width: 2,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '30%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "categoryPostLoading");
         const queryParam = this.getQueryParam(page, this.postRecordSize, this.postPageSize);
 
         xhr.open("GET", url + '?' + queryParam.toString(), true);
@@ -257,7 +306,10 @@ class PostDetailController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "categoryPostLoading");
             } else {
+                this.loadingStop(spinner, "categoryPostLoading");
+
                 if (responseValue["postPaginationResponse"]["postDto"].length <= 0) {
                     this.showToastMessage("게시글 정보가 존재하지 않습니다.");
                     return;
@@ -270,6 +322,7 @@ class PostDetailController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 게시글 정보를 불러오지 못했습니다.');
+            this.loadingStop(spinner, "categoryPostLoading");
         });
 
         xhr.send();

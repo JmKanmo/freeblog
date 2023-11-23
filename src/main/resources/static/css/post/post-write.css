@@ -137,6 +137,7 @@ body {
 
 /* 포스트 썸네일 이미지 폼 정의 */
 .post_thumbnail_image_form {
+    position: relative;
     padding: 10px 30px 0px 30px;
 }
 

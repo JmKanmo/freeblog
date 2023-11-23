@@ -32,14 +32,13 @@ class PostCommentUpdateController extends PostCommentCommonController {
                 return;
             }
 
-            const xhr = new XMLHttpRequest();
-
             if (this.checkCommentUpdateForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
                 this.isCommentSubmitFlag = false;
                 return;
             }
 
+            const xhr = new XMLHttpRequest();
             const isAnonymous = this.isAnonymous.value;
 
             if (isAnonymous === "true") {
@@ -53,6 +52,28 @@ class PostCommentUpdateController extends PostCommentCommonController {
                 this.authCheckPasswordInput.value = authPassword;
             }
 
+            const spinner = this.loadingSpin({
+                lines: 15,
+                length: 3,
+                width: 3,
+                radius: 3,
+                scale: 1,
+                corners: 1,
+                color: '#000',
+                opacity: 0.25,
+                rotate: 0,
+                direction: 1,
+                speed: 1,
+                trail: 60,
+                fps: 20,
+                zIndex: 2e9,
+                className: 'spinner',
+                top: '50%',
+                left: '50%',
+                shadow: false,
+                hwaccel: false,
+                position: 'absolute'
+            }, "commentUpdateLoading");
             xhr.open("PUT", `/comment/update`, true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
@@ -62,7 +83,9 @@ class PostCommentUpdateController extends PostCommentCommonController {
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.showToastMessage(responseValue);
+                    this.loadingStop(spinner, "commentUpdateLoading");
                 } else {
+                    this.loadingStop(spinner, "commentUpdateLoading");
                     const blogId = opener.document.getElementById("postSearchBlogIdInput").value;
                     const postId = opener.document.getElementById("postIdInput").value;
                     const href = document.getElementById("comment_href_input").value;
@@ -76,6 +99,7 @@ class PostCommentUpdateController extends PostCommentCommonController {
 
             xhr.addEventListener("error", event => {
                 this.showToastMessage('오류가 발생하여 댓글 수정에 실패하였습니다.');
+                this.loadingStop(spinner, "commentUpdateLoading");
             });
             xhr.send(new FormData(this.postCommentUpdateForm));
             this.isCommentSubmitFlag = true;

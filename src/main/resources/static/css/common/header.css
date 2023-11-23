@@ -260,6 +260,7 @@
     -webkit-box-orient: vertical;
     line-height: 20px;
     width: 70%;
+    color: #000000;
 }
 
 .header_box .user_util_box .user_util_item .user_like_post_container .user_like_post_list .user_like_post .user_like_post_like_block .user_like_post_writer {

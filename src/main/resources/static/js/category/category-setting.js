@@ -136,6 +136,28 @@ class CategorySettingController extends UtilController {
 
                 const registeredCategory = this.getRegisteredCategoryList();
                 const xhr = new XMLHttpRequest();
+                const spinner = this.loadingSpin({
+                    lines: 15,
+                    length: 2,
+                    width: 2,
+                    radius: 4,
+                    scale: 1,
+                    corners: 1,
+                    color: '#000',
+                    opacity: 0.25,
+                    rotate: 0,
+                    direction: 1,
+                    speed: 1,
+                    trail: 60,
+                    fps: 20,
+                    zIndex: 2e9,
+                    className: 'spinner',
+                    top: '50%',
+                    left: '50%',
+                    shadow: false,
+                    hwaccel: false,
+                    position: 'absolute'
+                }, "categorySettingLoading");
 
                 xhr.open("POST", `/category/register/${this.blogId}`, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
@@ -146,14 +168,17 @@ class CategorySettingController extends UtilController {
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.showToastMessage(responseValue["message"]);
+                        this.loadingStop(spinner, "categorySettingLoading");
                     } else {
                         this.showToastMessage("카테고리가 등록되었습니다. 페이지를 새로고침해주세요.");
+                        this.loadingStop(spinner, "categorySettingLoading");
                     }
                     this.isSubmitFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage("카테고리 정보를 등록하는데 실패하였습니다.");
+                    this.loadingStop(spinner, "categorySettingLoading");
                     this.isSubmitFlag = false;
                 });
 

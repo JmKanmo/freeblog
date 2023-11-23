@@ -54,7 +54,7 @@ class BlogHeaderController extends BlogBodyController {
 
         // category button event listener
         this.blogHeaderCategoryList.addEventListener("click", evt => {
-            const clickedCategoryButton = evt.target.closest(".common_button_text");
+            const clickedCategoryButton = evt.target.closest(".category_search_target");
 
             if (clickedCategoryButton != null) {
                 if (localStorage.getItem("prevClickedValue") != clickedCategoryButton.value) {

@@ -14,6 +14,8 @@
 <body>
 <div th:replace="fragments/header::header"></div>
 <div class="post_update_container">
+    <div style="position: relative;" id="postUpdateLoading"></div>
+
     <form method="post" action="/post/update" class="post_update_form" id="post_update_form"
           enctype="multipart/form-data"
           name="post_update_form"
@@ -107,6 +109,8 @@
     <form action="/post/upload/post-thumbnail-image" method="post" enctype="multipart/form-data"
           id="post_thumbnail_image_form"
           name="post_thumbnail_image_form" class="common_input_div post_thumbnail_image_form clear_fix">
+        <div style="position: absolute; left: 27%;" id="postUploadImageLoading"></div>
+
         <div class="common_input_label common_post_thumbnail_label"
              title="포스트 썸네일 이미지">
             <span class="blind">포스트 썸네일 이미지</span>

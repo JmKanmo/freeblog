@@ -5,6 +5,7 @@
     <title>공지사항 목록</title>
     <th:block th:replace="fragments/config :: config"></th:block>
     <th:block th:replace="fragments/template/notice-template :: notice-template"></th:block>
+    <th:block th:replace="fragments/template/like-template :: like-template"></th:block>
     <link th:href="@{/css/notice/notice-list.css}" type="text/css" rel="stylesheet">
     <script type="text/javascript" th:src="@{/js/notice/notice-list.js}"></script>
 </head>
@@ -15,7 +16,9 @@
     공지사항
 </h3>
 
-<div class="notice_list_container">
+<div class="notice_list_box">
+    <div style="position: relative; height: 50px;" id="noticeLoading"></div>
+
     <ul class="notice_list" id="notice_list">
         <!-- 공지사항 목록 템플릿 -->
     </ul>

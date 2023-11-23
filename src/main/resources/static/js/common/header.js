@@ -165,6 +165,28 @@ class HeaderController extends UtilController {
                     const userLikePostList = document.getElementById("user_like_post_list");
                     const userId = this.userLikePostBlockDeleteAllButton.value;
                     const xhr = new XMLHttpRequest();
+                    const spinner = this.loadingSpin({
+                        lines: 15,
+                        length: 2,
+                        width: 2,
+                        radius: 4,
+                        scale: 1,
+                        corners: 1,
+                        color: '#000',
+                        opacity: 0.25,
+                        rotate: 0,
+                        direction: 1,
+                        speed: 1,
+                        trail: 60,
+                        fps: 20,
+                        zIndex: 2e9,
+                        className: 'spinner',
+                        top: '30%',
+                        left: '50%',
+                        shadow: false,
+                        hwaccel: false,
+                        position: 'absolute'
+                    }, "likeListLoading");
 
                     // /post/all-user-list
                     xhr.open('DELETE', `/like/post/all-user-list?userId=${userId}`, true);
@@ -175,15 +197,18 @@ class HeaderController extends UtilController {
 
                         if ((status >= 400 && status <= 500) || (status > 500)) {
                             this.showToastMessage(responseValue);
+                            this.loadingStop(spinner, "likeListLoading");
                         } else if (status == 200) {
                             if (userLikePostList != null) {
                                 userLikePostList.innerHTML = ``;
                             }
+                            this.loadingStop(spinner, "likeListLoading");
                         }
                     });
 
                     xhr.addEventListener("error", event => {
                         this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                        this.loadingStop(spinner, "likeListLoading");
                     });
 
                     xhr.send();
@@ -378,6 +403,28 @@ class HeaderController extends UtilController {
 
     #requestUserLikePostInfo() {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 2,
+            width: 2,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '30%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "likeListLoading");
         xhr.open("GET", "/like/post/user-list", true);
         xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -387,7 +434,9 @@ class HeaderController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "likeListLoading");
             } else {
+                this.loadingStop(spinner, "likeListLoading");
                 this.userLikePostContainer.style.display = "block";
                 this.userLikePostBlockCloseButton.style.visibility = "visible";
                 this.userLikePostBlockReloadButton.style.visibility = "visible";
@@ -400,6 +449,7 @@ class HeaderController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
+            this.loadingStop(spinner, "likeListLoading");
         });
 
         xhr.send();
@@ -453,6 +503,28 @@ class HeaderController extends UtilController {
                     const userId = values[0].split("=")[1];
                     const postId = values[1].split("=")[1];
                     const xhr = new XMLHttpRequest();
+                    const spinner = this.loadingSpin({
+                        lines: 15,
+                        length: 2,
+                        width: 2,
+                        radius: 4,
+                        scale: 1,
+                        corners: 1,
+                        color: '#000',
+                        opacity: 0.25,
+                        rotate: 0,
+                        direction: 1,
+                        speed: 1,
+                        trail: 60,
+                        fps: 20,
+                        zIndex: 2e9,
+                        className: 'spinner',
+                        top: '30%',
+                        left: '50%',
+                        shadow: false,
+                        hwaccel: false,
+                        position: 'absolute'
+                    }, "likeListLoading");
 
                     xhr.open('DELETE', `/like/post/user-list?userId=${userId}&postId=${postId}`, true);
 
@@ -462,13 +534,16 @@ class HeaderController extends UtilController {
 
                         if ((status >= 400 && status <= 500) || (status > 500)) {
                             this.showToastMessage(responseValue);
+                            this.loadingStop(spinner, "likeListLoading");
                         } else if (status == 200) {
                             list.remove();
+                            this.loadingStop(spinner, "likeListLoading");
                         }
                     });
 
                     xhr.addEventListener("error", event => {
                         this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                        this.loadingStop(spinner, "likeListLoading");
                     });
 
                     xhr.send();

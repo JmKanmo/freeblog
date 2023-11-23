@@ -37,6 +37,28 @@ class PostWriteController extends UtilController {
 
     #initTemplate() {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 5,
+            width: 5,
+            radius: 5,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '30%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "postWriteLoading");
         const blogId = document.getElementById("hidden_blog_id").value;
 
         xhr.open("GET", `/category/all/${blogId}`, true);
@@ -47,16 +69,19 @@ class PostWriteController extends UtilController {
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "postWriteLoading");
             } else {
                 const categorySelectorOptionTemplate = document.getElementById("category-selector-option-template").innerHTML;
                 const categorySelectorOptionTemplateObject = Handlebars.compile(categorySelectorOptionTemplate);
                 const categorySelectorOptionTemplateHTML = categorySelectorOptionTemplateObject(responseValue["categoryDto"]);
                 this.postCategory.innerHTML = categorySelectorOptionTemplateHTML;
+                this.loadingStop(spinner, "postWriteLoading");
             }
         });
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 카테고리 데이터 수집에 실패하였습니다.');
+            this.loadingStop(spinner, "postWriteLoading");
         });
         xhr.send();
     }
@@ -240,6 +265,28 @@ class PostWriteController extends UtilController {
 
     #uploadPost() {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 5,
+            width: 5,
+            radius: 5,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '30%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "postWriteLoading");
         const formData = new FormData(this.postWriteForm);
 
         xhr.open("POST", `/post/write/${this.hiddenUserId.value}`, true);
@@ -251,16 +298,19 @@ class PostWriteController extends UtilController {
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "postWriteLoading");
             } else {
                 const postId = responseValue["postDto"]["id"];
                 const blogId = responseValue["postDto"]["blogId"];
                 window.location.href = `/post/${postId}?blogId=${blogId}`;
+                this.loadingStop(spinner, "postWriteLoading");
             }
             this.isSubmitFlag = false;
         });
 
         xhr.addEventListener("error", event => {
             this.showToastMessage('오류가 발생하여 게시글 업로드에 실패하였습니다.');
+            this.loadingStop(spinner, "postWriteLoading");
         });
         xhr.send(formData);
     }
@@ -271,6 +321,28 @@ class PostWriteController extends UtilController {
 
             fileReader.onload = (event) => {
                 const xhr = new XMLHttpRequest();
+                const spinner = this.loadingSpin({
+                    lines: 15,
+                    length: 3,
+                    width: 3,
+                    radius: 3,
+                    scale: 1,
+                    corners: 1,
+                    color: '#000',
+                    opacity: 0.25,
+                    rotate: 0,
+                    direction: 1,
+                    speed: 1,
+                    trail: 60,
+                    fps: 20,
+                    zIndex: 2e9,
+                    className: 'spinner',
+                    top: '30%',
+                    left: '50%',
+                    shadow: false,
+                    hwaccel: false,
+                    position: 'absolute'
+                }, "postUploadImageLoading");
                 const formData = new FormData(this.postThumbnailImageForm);
 
                 xhr.open("POST", `/post/upload/post-thumbnail-image`, true);
@@ -282,18 +354,21 @@ class PostWriteController extends UtilController {
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.showToastMessage(responseValue["message"]);
+                        this.loadingStop(spinner, "postUploadImageLoading");
                     } else {
                         // this.showToastMessage('게시글 썸네일 이미지가 지정되었습니다.');
                         this.postThumbnailImageBox.style.display = 'block';
                         this.postThumbnailImage.src = responseValue["imageSrc"];
                         document.getElementById("upload_key").value = responseValue["metaKey"];
                         this.postThumbnailImageURL = this.postThumbnailImage.src;
+                        this.loadingStop(spinner, "postUploadImageLoading");
                     }
                     this.imageUploadFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                    this.loadingStop(spinner, "postUploadImageLoading");
                     this.imageUploadFlag = false;
                 });
                 formData.set("compressed_post_image", imgFile);

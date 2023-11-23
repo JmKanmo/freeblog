@@ -29,14 +29,35 @@ class PostCommentReplyController extends PostCommentCommonController {
                 return;
             }
 
-            const xhr = new XMLHttpRequest();
-
             if (this.checkReplyCommentForm() === false) {
                 this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
                 this.isCommentSubmitFlag = false;
                 return;
             }
 
+            const xhr = new XMLHttpRequest();
+            const spinner = this.loadingSpin({
+                lines: 15,
+                length: 3,
+                width: 3,
+                radius: 3,
+                scale: 1,
+                corners: 1,
+                color: '#000',
+                opacity: 0.25,
+                rotate: 0,
+                direction: 1,
+                speed: 1,
+                trail: 60,
+                fps: 20,
+                zIndex: 2e9,
+                className: 'spinner',
+                top: '50%',
+                left: '50%',
+                shadow: false,
+                hwaccel: false,
+                position: 'absolute'
+            }, "commentReplyLoading");
             xhr.open("POST", `/comment/reply`, true);
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
 
@@ -46,7 +67,9 @@ class PostCommentReplyController extends PostCommentCommonController {
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.showToastMessage(responseValue);
+                    this.loadingStop(spinner, "commentReplyLoading");
                 } else {
+                    this.loadingStop(spinner, "commentReplyLoading");
                     const blogId = opener.document.getElementById("postSearchBlogIdInput").value;
                     const postId = opener.document.getElementById("postIdInput").value;
                     const href = document.getElementById("comment_href_input").value;
@@ -60,6 +83,7 @@ class PostCommentReplyController extends PostCommentCommonController {
 
             xhr.addEventListener("error", event => {
                 this.showToastMessage('오류가 발생하여 답글 등록에 실패하였습니다.');
+                this.loadingStop(spinner, "commentReplyLoading");
                 this.isCommentSubmitFlag = false;
             });
             xhr.send(new FormData(this.postCommentReplyForm));

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="post-comment-reply-form-container" class="post_comment_form_container">
+    <div style="position:relative;" id="commentReplyLoading"></div>
     <form method="post" action="/comment/reply" class="post_comment_form" id="post_comment_reply_form"
           name="post_comment_form">
         <div class="post_comment_text_area_block">

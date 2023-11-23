@@ -30,6 +30,28 @@ class NoticeListController extends UtilController {
 
     requestNoticeList(url, page) {
         const xhr = new XMLHttpRequest();
+        const spinner = this.loadingSpin({
+            lines: 15,
+            length: 4,
+            width: 4,
+            radius: 4,
+            scale: 1,
+            corners: 1,
+            color: '#000',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 1,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            className: 'spinner',
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: false,
+            position: 'absolute'
+        }, "noticeLoading");
         const queryParam = this.getQueryParam(page, this.noticeRecordSize, this.noticePageSize);
 
         xhr.open("GET", url + '?' + queryParam.toString(), true);
@@ -40,7 +62,10 @@ class NoticeListController extends UtilController {
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                 this.showToastMessage(responseValue["message"]);
+                this.loadingStop(spinner, "noticeLoading");
             } else {
+                this.loadingStop(spinner, "noticeLoading");
+
                 if (responseValue["noticePaginationResponse"]["noticeDto"].length <= 0) {
                     this.#handleTemplateList(responseValue);
                     this.#clearPagination();
@@ -55,6 +80,7 @@ class NoticeListController extends UtilController {
 
         xhr.addEventListener("error", event => {
             this.showToastMessage("공지사항 목록 정보를 불러오는데 실패하였습니다.");
+            this.loadingStop(spinner, "noticeLoading");
         });
         xhr.send();
     }

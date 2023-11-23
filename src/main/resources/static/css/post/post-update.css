@@ -129,6 +129,7 @@
 
 /* 썸네일 이미지 폼 정의 */
 .post_thumbnail_image_form {
+    position: relative;
     padding-top: 20px;
 }
 

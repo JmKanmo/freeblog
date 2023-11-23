@@ -13,6 +13,8 @@
 </head>
 <body>
 <div class="post_write_container">
+    <div style="position: relative; left: 25%;" id="postWriteLoading"></div>
+
     <form method="post" class="post_write_form" id="post_write_form" name="post_write_form"
           enctype="multipart/form-data"
           th:object="${blogPostInput}">
@@ -94,6 +96,8 @@
     <form action="/post/upload/post-thumbnail-image" method="post" enctype="multipart/form-data"
           id="post_thumbnail_image_form"
           name="post_thumbnail_image_form" class="common_input_div post_thumbnail_image_form clear_fix">
+        <div style="position: absolute; left: 27%;" id="postUploadImageLoading"></div>
+
         <div class="common_input_label common_post_thumbnail_label"
              title="포스트 썸네일 이미지">
             <span class="blind">포스트 썸네일 이미지</span>
