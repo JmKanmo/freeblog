@@ -323,9 +323,9 @@ class PostWriteController extends UtilController {
                 const xhr = new XMLHttpRequest();
                 const spinner = this.loadingSpin({
                     lines: 15,
-                    length: 3,
-                    width: 3,
-                    radius: 3,
+                    length: 5,
+                    width: 5,
+                    radius: 7,
                     scale: 1,
                     corners: 1,
                     color: '#000',
@@ -337,8 +337,8 @@ class PostWriteController extends UtilController {
                     fps: 20,
                     zIndex: 2e9,
                     className: 'spinner',
-                    top: '30%',
-                    left: '50%',
+                    top: '25%',
+                    left: '10%',
                     shadow: false,
                     hwaccel: false,
                     position: 'absolute'
