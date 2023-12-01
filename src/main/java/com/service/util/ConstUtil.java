@@ -15,7 +15,7 @@ public class ConstUtil {
     public static final String TOTAL_CATEGORY = "전체 카테고리";
     public static final String TOTAL = "전체";
     public static final String TOTAL_POST = "전체글";
-    public static final String SFTP_IMAGE_URL = "http://%s/%s"; // 추후에 https 설정 및 변경
+    public static final String SFTP_IMAGE_URL = "%s://%s/%s"; // 추후에 https 설정 및 변경
     public static final int SFTP_PROFILE_THUMBNAIL_HASH = "profile-thumbnail".hashCode();
     public static final int SFTP_POST_IMAGE_HASH = "post-image".hashCode();
     public static final int SFTP_POST_THUMBNAIL_HASH = "post-thumbnail".hashCode();

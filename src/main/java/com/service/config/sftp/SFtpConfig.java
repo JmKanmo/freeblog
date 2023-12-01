@@ -12,6 +12,9 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:application-util.yml", factory = YamlPropertySourceFactory.class)
 @Data
 public class SFtpConfig {
+    @Value("${util-config.aws_ec2_sftp.protocol}")
+    private String protocol;
+
     @Value("${util-config.aws_ec2_sftp.ip}")
     private String ip;
 

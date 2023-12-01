@@ -6,12 +6,12 @@ server:
   compression:
     enabled: true
 
-  port: 8400
+  port: ${SERVER_PORT}
 
   tomcat:
     threads:
-      max: 5000
-      min-spare: 500
+      max: 500
+      min-spare: 50
     max-connections: 10000
     accept-count: 1000
     max-http-form-post-size: 50MB
@@ -63,13 +63,13 @@ spring:
       format_sql: true
       show_sql: true
       use_sql_comments: true
-      ddl-auto: update
+      ddl-auto: ${DDL_AUTO}
       use-new-id-generator-mappings: true
     open-in-view: false
     properties:
       hibernate:
         jdbc:
-          batch_size: 10000
+          batch_size: ${BATCH_SIZE}
           batch_versioned_data: true
         order_inserts: true
         order_updates: true

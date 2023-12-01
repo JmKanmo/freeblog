@@ -1,5 +1,6 @@
 package com.service.core.email.controller;
 
+import com.service.config.app.AppConfig;
 import com.service.core.email.service.EmailService;
 import com.service.core.error.model.UserAuthException;
 import com.service.core.user.service.UserService;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailController {
+    private final AppConfig appConfig;
     private final EmailService emailService;
     private final UserService userService;
 
@@ -39,7 +41,7 @@ public class EmailController {
         try {
             if (userService.checkIsAuthenticated(email)) {
                 String key = userService.updateEmailAuthCondition(email);
-                emailService.sendSignUpMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
+                emailService.sendSignUpMail(email, key, appConfig.getAuthEmailAddrProtocol(), BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
@@ -61,7 +63,7 @@ public class EmailController {
         try {
             if (userService.checkIsAuthenticated(email)) {
                 String key = userService.updateEmailAuthCondition(email);
-                emailService.sendAuthMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
+                emailService.sendAuthMail(email, key, appConfig.getAuthEmailAddrProtocol(), BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
@@ -83,7 +85,7 @@ public class EmailController {
         try {
             if (userService.checkIsActive(email)) {
                 String key = userService.updatePasswordAuthCondition(email);
-                emailService.sendFindPasswordMail(email, key, "https", BlogUtil.getCurrentIp(), 8400);
+                emailService.sendFindPasswordMail(email, key, appConfig.getAuthEmailAddrProtocol(), BlogUtil.getCurrentIp(), 8400);
             }
             return ResponseEntity.status(HttpStatus.OK).body("이메일 전송에 성공했습니다.");
         } catch (Exception exception) {
