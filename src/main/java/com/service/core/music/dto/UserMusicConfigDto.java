@@ -14,6 +14,7 @@ public class UserMusicConfigDto {
     private final boolean duplicatePlay;
     private final String playOrder;
     private final String playMode;
+    private final String loopMode;
 
     public static UserMusicConfigDto getDefaultUserMusicConifgDto() {
         return UserMusicConfigDto.builder()
@@ -22,8 +23,9 @@ public class UserMusicConfigDto {
                 .listMaxHeight(300)
                 .lrcType(0)
                 .duplicatePlay(false)
-                .playOrder("FIXED")
+                .playOrder("LIST")
                 .playMode("FIXED")
+                .loopMode("ALL")
                 .build();
     }
 }

@@ -20,6 +20,7 @@ class MusicUtilController {
                         autoplay: musicConfig["autoplay"],
                         mutex: musicConfig["mutex"],
                         order: musicConfig["order"],
+                        loop: musicConfig["loop"],
                         mini: musicConfig["mode"]["mini"],
                         audio: []
                     }));
@@ -32,6 +33,7 @@ class MusicUtilController {
                         autoplay: musicConfig["autoplay"],
                         mutex: musicConfig["mutex"],
                         order: musicConfig["order"],
+                        loop: musicConfig["loop"],
                         fixed: null, // fixed:true로 햇더니, UI가 바닥에 고꾸라짐...
                         audio: []
                     }));
@@ -51,6 +53,7 @@ class MusicUtilController {
                             mutex: musicConfig["mutex"],
                             order: musicConfig["order"],
                             mini: musicConfig["mode"]["mini"],
+                            loop: musicConfig["loop"],
                             audio: audios
                         }));
                     } else if (musicConfig["mode"]["fixed"] === true) {
@@ -63,6 +66,7 @@ class MusicUtilController {
                             mutex: musicConfig["mutex"],
                             order: musicConfig["order"],
                             fixed: null, // fixed:true로 햇더니, UI가 바닥에 고꾸라짐...
+                            loop: musicConfig["loop"],
                             audio: audios
                         }));
                     }
@@ -85,6 +89,7 @@ class MusicUtilController {
             autoplay: false,
             mutex: true,
             order: 'list', // list | random
+            loop: 'one', // one | all | none
             mode: {
                 fixed: true,
                 mini: false

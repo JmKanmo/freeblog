@@ -290,6 +290,7 @@ class HeaderController extends UtilController {
                 document.getElementById("duplicatePlayHiddenInput").value = document.getElementById("duplicatePlayInput").checked;
                 document.getElementById("playOrderHiddenInput").value = document.getElementById("playOrderInput").value;
                 document.getElementById("playModeHiddenInput").value = document.getElementById("playModeInput").value;
+                document.getElementById("loopModeHiddenInput").value = document.getElementById("loopModeInput").value;
                 xhr.send(new FormData(this.musicPlayerConfigForm));
             });
         }

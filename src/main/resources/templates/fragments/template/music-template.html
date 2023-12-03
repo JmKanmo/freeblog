@@ -115,6 +115,15 @@
                 <option {{ternaryOperator playMode 'MINI' 'selected' null}} value="MINI">Mini</option>
             </select>
         </div>
+
+        <div class="music_player_config_box">
+            <label class="music_config_label_style" for="loopModeInput">반복모드</label>
+            <select class="music_config_select_style" id="loopModeInput">
+                <option {{ternaryOperator loopMode 'ALL' 'selected' null}} value="ALL">전체</option>
+                <option {{ternaryOperator loopMode 'ONE' 'selected' null}} value="ONE">고정</option>
+                <option {{ternaryOperator loopMode 'NONE' 'selected' null}} value="NONE">없음</option>
+            </select>
+        </div>
     </script>
 </th:block>
 </html>

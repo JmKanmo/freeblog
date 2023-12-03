@@ -38,6 +38,9 @@ public class UserMusicConfig {
     @Enumerated(EnumType.STRING)
     private PlayMode playMode;
 
+    @Enumerated(EnumType.STRING)
+    private LoopMode loopMode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blog_id")
     private Blog blog;
@@ -51,6 +54,7 @@ public class UserMusicConfig {
                 .duplicatePlay(userMusicConfigInput.isDuplicatePlay())
                 .playOrder(PlayOrder.of(userMusicConfigInput.getPlayOrder()))
                 .playMode(PlayMode.of(userMusicConfigInput.getPlayMode()))
+                .loopMode(LoopMode.of(userMusicConfigInput.getLoopMode()))
                 .blog(blog)
                 .build();
     }
@@ -62,6 +66,7 @@ public class UserMusicConfig {
         setDuplicatePlay(userMusicConfigInput.isDuplicatePlay());
         setPlayOrder(PlayOrder.of(userMusicConfigInput.getPlayOrder()));
         setPlayMode(PlayMode.of(userMusicConfigInput.getPlayMode()));
+        setLoopMode(LoopMode.of(userMusicConfigInput.getLoopMode()));
     }
 
     enum PlayOrder {
@@ -98,6 +103,26 @@ public class UserMusicConfig {
         static PlayMode of(String playMode) {
             try {
                 return PlayMode.valueOf(playMode.toUpperCase());
+            } catch (Exception e) {
+                return NONE;
+            }
+        }
+    }
+
+    enum LoopMode {
+        ALL("ALL"),
+        ONE("ONE"),
+        NONE("NONE");
+
+        private final String loopMode;
+
+        LoopMode(String loopMode) {
+            this.loopMode = loopMode;
+        }
+
+        static LoopMode of(String loopMode) {
+            try {
+                return LoopMode.valueOf(loopMode.toUpperCase());
             } catch (Exception e) {
                 return NONE;
             }

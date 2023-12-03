@@ -20,6 +20,7 @@
                lrc_type,
                play_mode,
                play_order,
+               loop_mode,
                blog_id
         from user_music_config
         where blog_id = #{blogId};

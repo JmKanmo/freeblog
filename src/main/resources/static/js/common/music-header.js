@@ -99,11 +99,13 @@ class MusicHeaderController extends UtilController {
             lrcType: 0,
             autoplay: musicConfigResponse["autoPlay"],
             mutex: musicConfigResponse["duplicatePlay"],
-            order: musicConfigResponse["playOrder"].toLowerCase(),
-            mode: {
-                fixed: musicConfigResponse["playMode"].toLowerCase() === 'fixed' ? true : false,
-                mini: musicConfigResponse["playMode"].toLowerCase() === 'mini' ? true : false
-            },
+            order: musicConfigResponse["playOrder"] ? musicConfigResponse["playOrder"].toLowerCase() : "list",
+            mode: musicConfigResponse["playMode"] ? {
+                fixed: musicConfigResponse["playMode"] && musicConfigResponse["playMode"].toLowerCase() === 'fixed' ? true : false,
+                mini: musicConfigResponse["playMode"] && musicConfigResponse["playMode"].toLowerCase() === 'mini' ? true : false
+            } : "fixed"
+            ,
+            loop: musicConfigResponse["loopMode"] ? musicConfigResponse["loopMode"].toLowerCase() : 'all',
             immediatelyStart: true // 페이지 로드 시에 바로 재생
         });
 
