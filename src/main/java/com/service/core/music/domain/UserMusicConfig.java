@@ -70,7 +70,7 @@ public class UserMusicConfig {
     }
 
     enum PlayOrder {
-        FIXED("FIXED"),
+        RANDOM("RANDOM"),
         LIST("LIST"),
         NONE("NONE");
 
