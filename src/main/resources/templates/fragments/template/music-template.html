@@ -103,7 +103,7 @@
         <div class="music_player_config_box">
             <label class="music_config_label_style" for="playOrderInput">재생순서</label>
             <select class="music_config_select_style" id="playOrderInput">
-                <option {{ternaryOperator playOrder 'FIXED' 'selected' null}} value="FIXED">고정</option>
+                <option {{ternaryOperator playOrder 'LIST' 'selected' null}} value="LIST">정주행</option>
                 <option {{ternaryOperator playOrder 'RANDOM' 'selected' null}} value="RANDOM">랜덤</option>
             </select>
         </div>

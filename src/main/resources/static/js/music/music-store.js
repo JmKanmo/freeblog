@@ -898,7 +898,7 @@ class MusicPlayController extends UtilController {
             lrcType: 0,
             autoplay: false,
             mutex: true,
-            order: 'random',
+            order: 'list',
             mode: {
                 fixed: true,
                 mini: false

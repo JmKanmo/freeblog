@@ -84,7 +84,7 @@ class MusicUtilController {
             lrcType: 0,
             autoplay: false,
             mutex: true,
-            order: 'random',
+            order: 'list', // list | random
             mode: {
                 fixed: true,
                 mini: false
