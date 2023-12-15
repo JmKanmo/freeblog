@@ -33,6 +33,9 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     private int port;
 
+    @Value("${spring.redis.password}")
+    private String password;
+
     @Bean(name = "cacheManager")
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig(Thread.currentThread().getContextClassLoader())
@@ -61,6 +64,7 @@ public class RedisConfig {
         RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration();
         conf.setHostName(this.host);
         conf.setPort(this.port);
+        conf.setPassword(password);
         return new LettuceConnectionFactory(conf);
     }
 

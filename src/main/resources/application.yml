@@ -93,20 +93,21 @@ spring:
   redis:
     lettuce:
       pool:
-        max-active: 5
-        max-idle: 5
-        min-idle: 2
-        max-wait: 500
+        max-active: 10
+        max-idle: 10
+        min-idle: 5
+        max-wait: 1000
     port: ${REDIS_PORT}
     host: ${REDIS_HOST}
-    connect-timeout: 5000
-    timeout: 1500
+    connect-timeout: 100000
+    timeout: 180000
 
     session:
       timeout: 3600  # 1시간
       store-type: redis
       redis:
         flush-mode: on_save
+    password: ${REDIS_PASSWORD}
 
 
 springdoc:
