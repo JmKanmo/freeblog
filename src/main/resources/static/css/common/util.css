@@ -535,34 +535,33 @@ input:focus {
 
 /* calendar style */
 .fc-scroller {
-    margin-bottom: 0px !important;
+    height: auto !important;
 }
 
-/* SCROLLBAR - START - */
-/* width */
-.fc-scroller::-webkit-scrollbar {
-    width: 15px;
+.fc-head .fc-widget-header {
+    margin-right: 0 !important;
 }
 
-/* Track */
-.fc-scroller::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #afaaaa;
-    border-radius: 0px;
-}
-
-/* Handle */
-.fc-scroller::-webkit-scrollbar-thumb {
-    background: linear-gradient(#ffffff, #164e79);
-}
-
-/* Handle on hover */
-.fc-scroller::-webkit-scrollbar-thumb:hover {
-    background: #103E62;
-}
-
-/* Full Calendar Custom Style */
 .fc-scroller {
-    scrollbar-color: #103E62 #fff;
+    overflow: visible !important;
+}
+
+.fc .fc-scrollgrid, .fc .fc-scrollgrid table {
+    width: 193px;
+    table-layout: fixed;
+}
+
+.fc .fc-scrollgrid-section table {
+    height: 1px;
+    width: 195px !important;
+}
+
+/* emoji style */
+#tab-panel {
+    position: absolute;
+    top: -5px;
+    background-color: #ffffff;
+    cursor: pointer;
 }
 
 /* SCROLLBAR - END - */

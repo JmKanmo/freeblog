@@ -145,6 +145,10 @@ class UtilController {
         return convertedTime;
     }
 
+    getBrowserLanguage() {
+        return navigator.language || navigator.userLanguage;
+    }
+
     checkPostContentSize(content, size) {
         return content > size;
     }
@@ -532,14 +536,15 @@ class UtilController {
             titleFormat: function (date) {
                 const year = date.date.year;
                 const month = (parseInt(date.date.month) + 1);
-                return year + '년 ' + month + '월 ';
+                return `${year}.${month}`;
             },
             //initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
             selectable: true, // 달력 일자 드래그 설정가능
             droppable: true,
             editable: true,
+            scrollTime: '00:00:00',
             nowIndicator: true, // 현재 시간 마크
-            locale: 'ko' // 한국어 설정
+            locale: this.getBrowserLanguage() // 한국어 설정
         });
         calendar.render();
     }

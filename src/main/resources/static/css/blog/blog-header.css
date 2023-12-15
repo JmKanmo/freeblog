@@ -159,7 +159,7 @@
 
 /* calendar style */
 #calendar {
-    width: 200px;
+    width: 195px;
     margin: 0 auto;
     font-size: 10px;
 }
@@ -397,6 +397,7 @@
     border-top: none;
     border-left: none;
     border-right: #ffffff;
+    width: 135px;
 }
 
 .search_container .search_blog_button {
