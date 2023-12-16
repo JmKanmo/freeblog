@@ -47,3 +47,6 @@ application-util.yml
 
 ### application-env.yml ###
 application-env.yml
+
+### application-env.yml ###
+application-local_env.yml

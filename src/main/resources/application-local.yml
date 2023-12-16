@@ -6,7 +6,7 @@ server:
   compression:
     enabled: true
 
-  port: ${SERVER_PORT}
+  port: ${LOCAL_SERVER_PORT}
 
   tomcat:
     threads:
@@ -21,7 +21,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-  profiles:
+  config:
+    activate:
+      on-profile: local
     include: env
 
   thymeleaf:
@@ -43,19 +45,19 @@ spring:
   datasource:
     master:
       hikari:
-        username: ${DB_MASTER_USERNAME}
-        password: ${DB_MASTER_PASSWORD}
+        username: ${LOCAL_DB_MASTER_USERNAME}
+        password: ${LOCAL_DB_MASTER_PASSWORD}
         driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_MASTER_IP}:${DB_MASTER_PORT}/${DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
-        pool-name: ${DB_MASTER_POOL}
+        jdbc-url: jdbc:mariadb://${LOCAL_DB_MASTER_IP}:${LOCAL_DB_MASTER_PORT}/${LOCAL_DB_MASTER_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
+        pool-name: ${LOCAL_DB_MASTER_POOL}
 
     slave:
       hikari:
-        username: ${DB_SLAVE_USERNAME}
-        password: ${DB_SLAVE_PASSWORD}
+        username: ${LOCAL_DB_SLAVE_USERNAME}
+        password: ${LOCAL_DB_SLAVE_PASSWORD}
         driver-class-name: org.mariadb.jdbc.Driver
-        jdbc-url: jdbc:mariadb://${DB_SLAVE_IP}:${DB_SLAVE_PORT}/${DB_SLAVE_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
-        pool-name: ${DB_SLAVE_POOL}
+        jdbc-url: jdbc:mariadb://${LOCAL_DB_SLAVE_IP}:${LOCAL_DB_SLAVE_PORT}/${LOCAL_DB_SLAVE_SCHEMA}?useUnicode=yes&characterEncoding=UTF-8
+        pool-name: ${LOCAL_DB_SLAVE_POOL}
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
@@ -63,22 +65,22 @@ spring:
       format_sql: true
       show_sql: true
       use_sql_comments: true
-      ddl-auto: ${DDL_AUTO}
+      ddl-auto: ${LOCAL_DDL_AUTO}
       use-new-id-generator-mappings: true
     open-in-view: false
     properties:
       hibernate:
         jdbc:
-          batch_size: ${BATCH_SIZE}
+          batch_size: ${LOCAL_BATCH_SIZE}
           batch_versioned_data: true
         order_inserts: true
         order_updates: true
 
   mail:
-    host: ${EMAIL_HOST}
-    port: ${EMAIL_PORT}
-    username: ${EMAIL_USERNAME}
-    password: ${EMAIL_PASSWORD}
+    host: ${LOCAL_EMAIL_HOST}
+    port: ${LOCAL_EMAIL_PORT}
+    username: ${LOCAL_EMAIL_USERNAME}
+    password: ${LOCAL_EMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -97,8 +99,8 @@ spring:
         max-idle: 10
         min-idle: 5
         max-wait: 1000
-    port: ${REDIS_PORT}
-    host: ${REDIS_HOST}
+    port: ${LOCAL_REDIS_PORT}
+    host: ${LOCAL_REDIS_HOST}
     connect-timeout: 100000
     timeout: 180000
 
@@ -107,7 +109,6 @@ spring:
       store-type: redis
       redis:
         flush-mode: on_save
-    password: ${REDIS_PASSWORD}
 
 
 springdoc:
@@ -148,19 +149,19 @@ util-config:
   # SFTP VM CONFIG
   # 저장 타입: images | videos
   aws_ec2_sftp:
-    protocol: ${AWS_EC2_SFTP_PROTOCOL}
-    ip: ${AWS_EC2_SFTP_ID}
-    port: ${AWS_EC2_SFTP_PASSWORD}
-    id: ${AWS_EC2_SFTP_ID}
-    password: ${AWS_EC2_SFTP_PASSWORD}
-    directory: ${AWS_EC2_SFTP_DIRECTORY}
-    timeout: ${AWS_EC2_SFTP_TIMEOUT}
+    protocol: ${LOCAL_AWS_EC2_SFTP_PROTOCOL}
+    ip: ${LOCAL_AWS_EC2_SFTP_IP}
+    port: ${LOCAL_AWS_EC2_SFTP_PORT}
+    id: ${LOCAL_AWS_EC2_SFTP_ID}
+    password: ${LOCAL_AWS_EC2_SFTP_PASSWORD}
+    directory: ${LOCAL_AWS_EC2_SFTP_DIRECTORY}
+    timeout: ${LOCAL_AWS_EC2_SFTP_TIMEOUT}
 
   # AWS CONFIG
   aws_s3-bucket:
-    access_key_id: ${AWS_S3_BUCKET_ACCESS_KEY_ID}
-    secret_access_key_id: ${AWS_S3_BUCKET_SECRET_ACCESS_KEY_ID}
-    bucket_name: ${AWS_S3_BUCKET_NAME}
+    access_key_id: ${LOCAL_AWS_S3_BUCKET_ACCESS_KEY_ID}
+    secret_access_key_id: ${LOCAL_AWS_S3_BUCKET_SECRET_ACCESS_KEY_ID}
+    bucket_name: ${LOCAL_AWS_S3_BUCKET_NAME}
 
   # SQL CONFIG
   sql_config:

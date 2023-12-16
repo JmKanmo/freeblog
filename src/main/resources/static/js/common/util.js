@@ -369,7 +369,7 @@ class UtilController {
                     [{'font': []}],
                     [{'align': []}],
                     ['clean'],                                        // remove formatting button
-                    ['emoji']
+                    ['emoji'],
                 ]
             },
             'image-tooltip': true,
@@ -522,6 +522,13 @@ class UtilController {
         //     }
         // });
 
+        /**
+         * TODO custom button implement
+         * link: https://github.com/T-vK/DynamicQuillTools
+         * 게시글 크기 조절 사이드바
+         * 단어 코드 표시(노션 참고)
+         * 기타 등등 필요 시에 커스텀 추가
+         * */
         return quill;
     }
 
