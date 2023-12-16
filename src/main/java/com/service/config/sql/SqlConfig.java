@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ConfigurationProperties(prefix = "yaml")
-@PropertySource(value = "classpath:application-util.yml", factory = YamlPropertySourceFactory.class)
 @Data
 public class SqlConfig {
     @Value("${util-config.sql_config.sql_search_pattern}")

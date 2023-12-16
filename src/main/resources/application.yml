@@ -149,8 +149,8 @@ util-config:
   # 저장 타입: images | videos
   aws_ec2_sftp:
     protocol: ${AWS_EC2_SFTP_PROTOCOL}
-    ip: ${AWS_EC2_SFTP_ID}
-    port: ${AWS_EC2_SFTP_PASSWORD}
+    ip: ${AWS_EC2_SFTP_IP}
+    port: ${AWS_EC2_SFTP_PORT}
     id: ${AWS_EC2_SFTP_ID}
     password: ${AWS_EC2_SFTP_PASSWORD}
     directory: ${AWS_EC2_SFTP_DIRECTORY}

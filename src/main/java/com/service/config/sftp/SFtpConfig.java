@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConfigurationProperties(prefix = "yaml")
-@PropertySource(value = "classpath:application-util.yml", factory = YamlPropertySourceFactory.class)
+@ConfigurationProperties(prefix = "yml")
 @Data
 public class SFtpConfig {
     @Value("${util-config.aws_ec2_sftp.protocol}")

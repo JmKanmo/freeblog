@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ConfigurationProperties(prefix = "yml")
-//@PropertySource(value = "classpath:application-util.yml", factory = YamlPropertySourceFactory.class)
 @Data
 public class AppConfig {
     @Value("${util-config.app_config.auth_email_addr_protocol}")
