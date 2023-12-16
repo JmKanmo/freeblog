@@ -14,6 +14,12 @@ public class AppConfig {
     @Value("${util-config.app_config.auth_email_addr_protocol}")
     private String authEmailAddrProtocol;
 
+    @Value("${util-config.app_config.auth_email_addr_url}")
+    private String authEmailAddrUrl;
+
+    @Value("${util-config.app_config.auth_email_addr_port}")
+    private int authEmailAddrPort;
+
     @Value("${util-config.app_config.recent_popular_post_count}")
     private int recentAndPopular_post_count;
 

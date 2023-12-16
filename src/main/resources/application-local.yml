@@ -171,7 +171,9 @@ util-config:
   # APP CONFIG
   app_config:
     # 인증 이메일 주소 프로토콜
-    auth_email_addr_protocol: http
+    auth_email_addr_protocol: ${LOCAL_AUTH_EMAIL_ADDR_PROTOCOL}
+    auth_email_addr_url: ${LOCAL_AUTH_EMAIL_ADDR_URL}
+    auth_email_addr_port: ${LOCAL_AUTH_EMAIL_ADDR_PORT}
     # 최신,인기 게시글 조회 개수
     recent_popular_post_count: 5
     # 최신 댓글 조회 개수
