@@ -153,6 +153,7 @@ util-config:
     port: ${AWS_EC2_SFTP_PORT}
     id: ${AWS_EC2_SFTP_ID}
     password: ${AWS_EC2_SFTP_PASSWORD}
+    url: ${AWS_EC2_SFTP_URL}
     directory: ${AWS_EC2_SFTP_DIRECTORY}
     timeout: ${AWS_EC2_SFTP_TIMEOUT}
 

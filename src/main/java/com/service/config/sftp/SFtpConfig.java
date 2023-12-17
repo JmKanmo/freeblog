@@ -26,6 +26,9 @@ public class SFtpConfig {
     @Value("${util-config.aws_ec2_sftp.password}")
     private String password;
 
+    @Value("${util-config.aws_ec2_sftp.url}")
+    private String url;
+
     @Value("${util-config.aws_ec2_sftp.directory}")
     private String directory;
 
