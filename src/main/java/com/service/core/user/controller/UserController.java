@@ -284,9 +284,11 @@ public class UserController {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/auth/email-auth";
-            } else if (principal == null || principal.getName() == null) {
-                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
+            // 비로그인 상태에서도 수행 되도록 (이미, 해당 이메일 로그인 상태에서 이메일 통해 확인)
+//            if (principal == null || principal.getName() == null) {
+//                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+//            }
             userService.emailAuth(userAuthInput);
         } catch (UserAuthException | UsernameNotFoundException exception) {
             model.addAttribute("error", String.format("이메일 인증에 실패하였습니다. %s", exception.getMessage()));
@@ -304,9 +306,11 @@ public class UserController {
         try {
             if (bindingResult.hasErrors()) {
                 return "user/update/password";
-            } else if (principal == null || principal.getName() == null) {
-                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
             }
+            // 비로그인 상태에서도 수행 되도록 (이미, 해당 이메일 로그인 상태에서 이메일 통해 확인)
+//            if (principal == null || principal.getName() == null) {
+//                throw new UserAuthException(ServiceExceptionMessage.NOT_LOGIN_STATUS_ACCESS);
+//            }
             userService.updatePassword(userPasswordInput, principal);
             model.addAttribute("result", "비밀번호 변경 작업 완료");
             httpServletRequest.logout();

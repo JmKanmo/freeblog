@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>이메일 인증</title>
+    <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <th:block th:replace="fragments/config :: config"></th:block>
     <link th:href="@{/css/user/auth/email-auth.css}" type="text/css" rel="stylesheet">
 </head>

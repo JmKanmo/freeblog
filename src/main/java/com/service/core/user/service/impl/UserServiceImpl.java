@@ -198,9 +198,10 @@ public class UserServiceImpl implements UserService {
     public void updatePassword(UserPasswordInput userPasswordInput, Principal principal) {
         UserDomain user = userInfoService.findUserDomainByEmailOrThrow(userPasswordInput.getEmail());
 
-        if (!principal.getName().equals(userPasswordInput.getEmail())) {
-            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
-        }
+        // 비로그인 상태에서도 수행 되도록 (이미, 해당 이메일 로그인 상태에서 이메일 통해 확인)
+//        if (!principal.getName().equals(userPasswordInput.getEmail())) {
+//            throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
+//        }
 
         if (userAuthService.checkUserPasswordAuth(user, userPasswordInput)) {
             user.setPassword(BCrypt.hashpw(userPasswordInput.getPassword(), BCrypt.gensalt()));
