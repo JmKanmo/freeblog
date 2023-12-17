@@ -84,7 +84,8 @@ public class PostRestController {
                             .build());
             post.setSeq((long) (postService.findPostCountByBlogId(blogDeleteDto.getId()) + 1));
             post.setMetaKey(blogPostInput.getMetaKey());
-            PostDetailDto postDetailDto = postService.register(post, blogPostInput);
+            Post writedPost = postService.register(post, blogPostInput);
+            PostDetailDto postDetailDto = postService.updateCachePostDetailInfo(blogPostInput.getId(), writedPost.getId(), writedPost);
             return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postDetailDto, "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요."));
         } catch (Exception exception) {
             if (BlogUtil.getErrorMessage(exception) == ConstUtil.UNDEFINED_ERROR) {

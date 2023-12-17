@@ -38,7 +38,7 @@ public interface PostService {
 
     void deleteSftpPostImage(String imgSrc) throws Exception;
 
-    PostDetailDto register(Post post, BlogPostInput blogPostInput);
+    Post register(Post post, BlogPostInput blogPostInput);
 
     PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService);
 
@@ -75,4 +75,6 @@ public interface PostService {
     String viewPost(PostDetailDto postDetailDto) throws Exception;
 
     boolean isDeletedPost(long postId);
+
+    void postCheckRetrySleep(PostDetailDto postDetailDto);
 }

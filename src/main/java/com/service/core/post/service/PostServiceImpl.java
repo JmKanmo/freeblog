@@ -27,6 +27,7 @@ import com.service.util.redis.key.CacheKey;
 import com.service.util.redis.service.like.PostLikeRedisTemplateService;
 import com.service.util.sftp.SftpService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -39,6 +40,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final AwsS3Service awsS3Service;
@@ -134,10 +136,10 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public PostDetailDto register(Post post, BlogPostInput blogPostInput) {
+    public Post register(Post post, BlogPostInput blogPostInput) {
         Post writedPost = postRepository.save(post);
         tagService.register(BlogUtil.convertArrayToList(blogPostInput.getTag().split(",")), post);
-        return updateCachePostDetailInfo(blogPostInput.getId(), writedPost.getId(), writedPost);
+        return writedPost;
     }
 
     @Transactional
@@ -289,6 +291,25 @@ public class PostServiceImpl implements PostService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void postCheckRetrySleep(PostDetailDto postDetailDto) {
+        for (int i = 1; i <= appConfig.getPostCheckRetryMaxCount(); i++) {
+            try {
+                if (findPostDetailInfo(postDetailDto.getBlogId(), postDetailDto.getId()) != null) {
+                    return;
+                }
+            } catch (Exception e) {
+                log.error("PostServiceImpl[postCheckRetrySleep] PostDetailDto Object not yet saved!!!, retry Count: " + i);
+            }
+
+            try {
+                Thread.sleep(appConfig.getPostCheckRetrySleepTime());
+            } catch (InterruptedException e) {
+                log.error("PostServiceImpl[postCheckRetrySleep] sleep error!!!, retry Count: " + i);
+            }
+        }
     }
 
     private boolean checkPostId(Long blogId, Long postId) {

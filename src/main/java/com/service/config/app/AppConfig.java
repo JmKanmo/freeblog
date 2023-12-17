@@ -34,4 +34,10 @@ public class AppConfig {
 
     @Value("${util-config.app_config.max_post_content_size}")
     private int maxPostContentSize;
+
+    @Value("${util-config.app_config.post_check_retry_max_count}")
+    private int postCheckRetryMaxCount;
+
+    @Value("${util-config.app_config.post_check_retry_sleep_time}")
+    private int postCheckRetrySleepTime;
 }

@@ -1,5 +1,6 @@
 package com.service.core.user.service.impl;
 
+import com.service.config.app.AppConfig;
 import com.service.core.blog.domain.Blog;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.service.CategoryService;
@@ -61,12 +62,14 @@ public class UserServiceImpl implements UserService {
     private final PostViewService postViewService;
     private final BlogViewRedisTemplateService blogViewRedisTemplateService;
 
+    private final AppConfig appConfig;
+
     @Override
     public void processSignUp(UserSignUpInput signupForm, UserDomain userDomain) {
         if (checkSameUser(userDomain)) {
             register(signupForm, userDomain);
             userAuthService.saveUserEmailAuth(BlogUtil.createUserAuthId(userDomain));
-            emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)), "https", BlogUtil.getCurrentIp(), 8400);
+            emailService.sendSignUpMail(signupForm.getEmail(), userAuthService.findUserEmailAuthKey(BlogUtil.createUserAuthId(userDomain)), appConfig.getAuthEmailAddrProtocol(), appConfig.getAuthEmailAddrUrl(), appConfig.getAuthEmailAddrPort());
         }
     }
 

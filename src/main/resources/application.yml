@@ -184,3 +184,7 @@ util-config:
     user_like_post_max_count: 100
     # 게시글 최대 사이즈
     max_post_content_size: 100000000
+    # 게시글 체크 재시도 최대 횟수 (300 * 2 * 300) = 3분
+    post_check_retry_max_count: 600
+    # 게시글 체크 확인 재시도 대기 시간 (300ms)
+    post_check_retry_sleep_time: 300
