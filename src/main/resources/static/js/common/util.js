@@ -370,6 +370,8 @@ class UtilController {
                     [{'align': []}],
                     ['clean'],                                        // remove formatting button
                     ['emoji'],
+                    ['codeBlock'],
+                    ['trash']
                 ]
             },
             'image-tooltip': true,
@@ -451,6 +453,7 @@ class UtilController {
                                             this.showToastMessage(responseValue);
                                         } else {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
+                                            quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
                                         }
                                     });
 
@@ -529,6 +532,43 @@ class UtilController {
          * 단어 코드 표시(노션 참고)
          * 기타 등등 필요 시에 커스텀 추가
          * */
+        const codeBlockButton = document.querySelector('.ql-codeBlock');
+        codeBlockButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
+        <path d="M315 315l158.4-215L444.1 70.6 229 229 315 315zm-187 5l0 0V248.3c0-15.3 7.2-29.6 19.5-38.6L420.6 8.4C428 2.9 437 0 446.2 0c11.4 0 22.4 4.5 30.5 12.6l54.8 54.8c8.1 8.1 12.6 19 12.6 30.5c0 9.2-2.9 18.2-8.4 25.6L334.4 396.5c-9 12.3-23.4 19.5-38.6 19.5H224l-25.4 25.4c-12.5 12.5-32.8 12.5-45.3 0l-50.7-50.7c-12.5-12.5-12.5-32.8 0-45.3L128 320zM7 466.3l63-63 70.6 70.6-31 31c-4.5 4.5-10.6 7-17 7H24c-13.3 0-24-10.7-24-24v-4.7c0-6.4 2.5-12.5 7-17z"/>
+    </svg>`;
+        codeBlockButton.addEventListener('click', function (evt) {
+            // Get the current selection
+            const selection = quill.getSelection();
+
+            if (selection && selection.length > 0) {
+                const selectionIndex = selection.index;
+                const selectionLength = selection.length;
+                quill.insertText(selection.index + selectionLength, ' ');
+                // Apply the desired style to the selected text
+                quill.formatText(selection, 'code', {
+                    'background-color': 'rgb(249, 242, 244)',
+                    'color': 'rgb(199, 37, 78)',
+                });
+            }
+        });
+
+        const trashButton = document.querySelector('.ql-trash');
+        trashButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/> </svg>`;
+        trashButton.addEventListener('click', evt => {
+            const selection = quill.getSelection();
+            if (selection) {
+                // Check if there is a range selected
+                if (selection.length > 0) {
+                    quill.deleteText(selection.index, selection.length);
+                } else {
+                    // No text is selected, but check if there's an image selected
+                    const [blot] = quill.scroll.descendant(Image, selection.index);
+                    if (blot) {
+                        quill.deleteText(selection.index, blot.length());
+                    }
+                }
+            }
+        });
         return quill;
     }
 
