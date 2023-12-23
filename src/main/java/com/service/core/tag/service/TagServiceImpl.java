@@ -24,6 +24,11 @@ public class TagServiceImpl implements TagService {
         return tagMapper.findTagDtoList(blogId);
     }
 
+    @Override
+    public List<Tag> findTagListByPostId(Long postId) {
+        return tagRepository.findTagByPostId(postId);
+    }
+
     @Transactional
     @Override
     public void register(List<String> tagStrList, Post post) {

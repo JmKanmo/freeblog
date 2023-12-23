@@ -5,6 +5,7 @@ import com.service.core.blog.dto.BlogDeleteDto;
 import com.service.core.blog.dto.BlogInfoDto;
 import com.service.core.blog.service.BlogService;
 import com.service.core.category.domain.Category;
+import com.service.core.category.dto.CategoryBasicMapperDto;
 import com.service.core.category.service.CategoryService;
 import com.service.core.error.constants.ServiceExceptionMessage;
 import com.service.core.error.model.BlogManageException;
@@ -72,6 +73,7 @@ public class PostRestController {
             Post post = Post.from(blogPostInput);
             UserHeaderDto userHeaderDto = userService.findUserHeaderDtoByEmail(principal.getName());
             BlogDeleteDto blogDeleteDto = blogService.findBlogDeleteDtoByEmail(principal.getName());
+            CategoryBasicMapperDto categoryBasicMapperDto = categoryService.findCategoryBasicMapperDtoByCategoryIdAndEmail(blogPostInput.getCategory(), principal.getName());
 
             if (blogDeleteDto.getId() != blogPostInput.getId()) {
                 throw new BlogManageException(ServiceExceptionMessage.MISMATCH_BLOG_INFO);
@@ -80,11 +82,12 @@ public class PostRestController {
             post.setBlog(Blog.builder().id(blogDeleteDto.getId()).build());
             post.setCategory(
                     Category.builder()
-                            .id(categoryService.findCategoryBasicMapperDtoByCategoryIdAndEmail(blogPostInput.getCategory(), principal.getName()).getId())
+                            .id(categoryBasicMapperDto.getId())
+                            .name(categoryBasicMapperDto.getName())
                             .build());
             post.setSeq((long) (postService.findPostCountByBlogId(blogDeleteDto.getId()) + 1));
             post.setMetaKey(blogPostInput.getMetaKey());
-            Post writedPost = postService.register(post, blogPostInput);
+            PostDetailDto writedPost = postService.register(post, blogPostInput);
             PostDetailDto postDetailDto = postService.updateCachePostDetailInfo(blogPostInput.getId(), writedPost.getId(), writedPost);
             return ResponseEntity.status(HttpStatus.OK).body(PostResponseDto.success(postDetailDto, "게시글 작성이 완료되었습니다. 작성 된 게시글을 확인하려면 페이지를 새로고침 해주세요."));
         } catch (Exception exception) {

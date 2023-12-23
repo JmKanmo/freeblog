@@ -16,4 +16,6 @@ public interface TagService {
     void delete(List<Tag> tagList);
 
     List<TagDto> findTagDtoList(Long blogId);
+
+    List<Tag> findTagListByPostId(Long postId);
 }

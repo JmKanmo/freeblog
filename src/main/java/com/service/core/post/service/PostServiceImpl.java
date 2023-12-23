@@ -15,6 +15,7 @@ import com.service.core.post.model.BlogPostTagInput;
 import com.service.core.post.model.BlogPostUpdateInput;
 import com.service.core.post.repository.PostRepository;
 import com.service.core.post.repository.mapper.PostMapper;
+import com.service.core.tag.domain.Tag;
 import com.service.core.tag.service.TagService;
 import com.service.core.views.service.PostViewService;
 import com.service.util.BlogUtil;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -136,10 +138,13 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public Post register(Post post, BlogPostInput blogPostInput) {
+    public PostDetailDto register(Post post, BlogPostInput blogPostInput) {
         Post writedPost = postRepository.save(post);
-        tagService.register(BlogUtil.convertArrayToList(blogPostInput.getTag().split(",")), post);
-        return writedPost;
+        PostDetailDto postDetailDto = PostDetailDto.from(writedPost);
+        List<String> tagStrList = BlogUtil.convertArrayToList(blogPostInput.getTag().split(","));
+        postDetailDto.setTags(tagStrList);
+        tagService.register(tagStrList, post);
+        return postDetailDto;
     }
 
     @Transactional
@@ -156,14 +161,17 @@ public class PostServiceImpl implements PostService {
         post.setThumbnailImage(BlogUtil.checkEmptyOrUndefinedStr(blogPostUpdateInput.getPostThumbnailImage()) ? ConstUtil.UNDEFINED : blogPostUpdateInput.getPostThumbnailImage());
         post.setMetaKey(blogPostUpdateInput.getMetaKey());
         tagService.update(post, post.getTagList(), BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
-        return PostDetailDto.from(post);
+
+        PostDetailDto updatedPostDetailDto = PostDetailDto.from(post);
+        updatedPostDetailDto.setTags(BlogUtil.convertArrayToList(blogPostUpdateInput.getTag().split(",")));
+        return updatedPostDetailDto;
     }
 
 
     @Override
     @CachePut(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")
-    public PostDetailDto updateCachePostDetailInfo(Long blogId, Long postId, Post post) {
-        return PostDetailDto.from(post);
+    public PostDetailDto updateCachePostDetailInfo(Long blogId, Long postId, PostDetailDto postDetailDto) {
+        return postDetailDto;
     }
 
     @Cacheable(value = CacheKey.POST_DETAIL_DTO, key = "#blogId.toString() + '&' + #postId.toString()")

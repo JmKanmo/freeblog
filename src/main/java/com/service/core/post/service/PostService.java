@@ -38,11 +38,11 @@ public interface PostService {
 
     void deleteSftpPostImage(String imgSrc) throws Exception;
 
-    Post register(Post post, BlogPostInput blogPostInput);
+    PostDetailDto register(Post post, BlogPostInput blogPostInput);
 
     PostDetailDto update(BlogPostUpdateInput blogPostUpdateInput, CategoryService categoryService);
 
-    PostDetailDto updateCachePostDetailInfo(Long blogId, Long postId, Post post);
+    PostDetailDto updateCachePostDetailInfo(Long blogId, Long postId, PostDetailDto postDetailDto);
 
     PostDetailDto findPostDetailInfo(Long blogId, Long postId);
 
