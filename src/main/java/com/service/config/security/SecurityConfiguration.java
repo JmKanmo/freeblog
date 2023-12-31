@@ -59,7 +59,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests().antMatchers(
-                        "/", "/search-post",
+                        // main
+                        "/", "/search-post", "/health-check",
                         // user
                         "/user/intro", "/user/login",
                         "/user/signup", "/user/signup-complete",

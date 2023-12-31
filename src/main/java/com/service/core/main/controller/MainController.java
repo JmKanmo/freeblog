@@ -68,4 +68,13 @@ public class MainController {
         model.addAttribute("blog_owner", blog_owner);
         return "settings";
     }
+
+    @Operation(summary = "헬스 체크 페이지", description = "헬스 체크 페이지 반환 메서드")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "설정 페이지")
+    })
+    @GetMapping("/health-check")
+    public String healthCheck(Model model, Principal principal) {
+        return "health-check";
+    }
 }
