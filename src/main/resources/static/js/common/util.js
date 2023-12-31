@@ -314,6 +314,12 @@ class UtilController {
 
     /**
      * Quill Editor Utils
+     * TODO: ImageBB(CDN) 도입 고려 (장점: 최대 64MB 이내 이미지 업로드 제한 X, 배치 관리 필요 X)
+     * 링크: https://api.imgbb.com/
+     * 이미지 여러개 첨부 시에, Java>SFTP 세션 및 연결 끊김 오류 발생 관련
+     *
+     * TODO: 링크 관련 개선 사항 진행 (ex: 네이버 블로그)
+     * 링크 툴바 이벤트 핸들러 커스터마이징 + curl + 데이터 크롤링(Image, title, desc) + 템플릿 카드 정의 및 표시
      * **/
     getQuillHTML(htmlTag, data_gramm, contentEditable) {
         return (
@@ -343,7 +349,7 @@ class UtilController {
                 "emoji-toolbar": true,
                 "emoji-shortname": true,
                 "emoji-textarea": true,
-                imageDrop: true,
+                imageDrop: false,
                 imageResize: {
                     modules: ['Resize', 'DisplaySize', 'Toolbar']
                 },
