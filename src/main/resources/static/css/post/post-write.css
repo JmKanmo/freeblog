@@ -32,6 +32,19 @@ body {
     border-radius: 5px;
 }
 
+.post_write_container .post_write_reset_button {
+    width: 90px;
+    height: 40px;
+    border: 1px solid #df2739;
+    background-color: #df2739;
+    font-size: 17px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    float: right;
+    margin-right: 20px;
+}
+
 .post_write_container .post_write_form {
     padding: 20px 30px 20px 30px;
 }

@@ -372,25 +372,52 @@ class UtilController {
                 //     maxHeight: 1000, // default
                 //     ignoreImageTypes: ['image/gif']
                 // },
-                toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                    ['blockquote', 'code-block'],
-                    [{'header': 1}, {'header': 2}],               // custom button values
-                    [{'list': 'ordered'}, {'list': 'bullet'}],
-                    [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
-                    [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
-                    [{'direction': 'rtl'}],                         // text direction
-                    ['link', 'image', 'video', 'formula'],          // add image support
-                    [{'size': ['small', false, 'large', 'huge']}],  // custom dropdown
-                    [{'header': [1, 2, 3, 4, 5, 6, false]}],
-                    [{'color': []}, {'background': []}],          // dropdown with defaults from theme
-                    [{'font': []}],
-                    [{'align': []}],
-                    ['clean'],                                        // remove formatting button
-                    ['emoji'],
-                    ['codeBlock'],
-                    ['trash']
-                ]
+                toolbar: {
+                    container: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{'header': 1}, {'header': 2}],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        [{'script': 'sub'}, {'script': 'super'}],
+                        [{'indent': '-1'}, {'indent': '+1'}],
+                        [{'direction': 'rtl'}],
+                        ['link', 'image', 'video', 'formula'],
+                        [{'size': ['small', false, 'large', 'huge']}],
+                        [{'header': [1, 2, 3, 4, 5, 6, false]}],
+                        [{'color': []}, {'background': []}],
+                        [{'font': []}],
+                        [{'align': []}],
+                        ['clean'],
+                        ['emoji'],
+                        ['codeBlock'],
+                        ['trash']
+                    ],
+                    handlers: {
+                        // Custom event handler for the link button
+                        link: function (value) {
+                            // TODO 타 블로그와 같이 이미지,제목, 본문 첨부해서 템플릿 링크 박스로 표시하는 방안 고민
+                            if (value) {
+                                // If a URL is provided, perform your custom logic here
+                                const url = prompt('Enter the link URL:');
+                                const selection = quill.getSelection();
+                                const dragText = quill.getText(selection.index, selection.length);
+
+                                if (dragText && dragText !== '') {
+                                    if (url) {
+                                        this.quill.format('link', url);
+                                    }
+                                } else {
+                                    // insert a tag
+                                    const data = `<a href="${url}">${url}</a>`;
+                                    quill.clipboard.dangerouslyPasteHTML(quill.getSelection().index, data);
+                                }
+                            } else {
+                                // If value is false, remove the link
+                                this.quill.format('link', false);
+                            }
+                        },
+                    },
+                },
             },
             'image-tooltip': true,
             'link-tooltip': true,

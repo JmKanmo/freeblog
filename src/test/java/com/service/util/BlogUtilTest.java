@@ -1,8 +1,12 @@
 package com.service.util;
 
 import com.service.util.domain.SortType;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -137,6 +141,31 @@ class BlogUtilTest {
 
         for (SortType<String, Long, Long> sortType : sortTypes) {
             System.out.println(sortType + "\n");
+        }
+    }
+
+    @Test
+    public void crawlingTEST() {
+        String url = "https://github.com/JmKanmo/jwt_login_practice/blob/master/src/main/java/com/practice/exception/message/ExceptionMessage.java"; // 크롤링할 웹 페이지 URL
+
+        try {
+            Document document = Jsoup.connect(url).get();
+
+            // 페이지의 title 가져오기
+            String pageTitle = document.title();
+            System.out.println("Page Title: " + pageTitle);
+
+            // meta 태그 중에서 property가 "og:image"인 것을 찾아서 content를 가져옴
+            Elements metaTags = document.select("meta[property=og:image]");
+            if (!metaTags.isEmpty()) {
+                String imageUrl = metaTags.attr("content");
+                System.out.println("Image URL: " + imageUrl);
+            } else {
+                System.out.println("No image meta tag found");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

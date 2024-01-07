@@ -2,6 +2,7 @@ class PostUpdateController extends UtilController {
     constructor() {
         super();
         this.postUpdateForm = document.getElementById("post_update_form");
+        this.postUpdateResetButton = document.getElementById("post_update_reset_button");
         this.postTitle = document.getElementById("post_title");
         this.postWriterEditor = this.getQuillEditor('post_write_editor');
         this.viewSourceBtn = document.getElementById("view-editor-source");
@@ -262,6 +263,12 @@ class PostUpdateController extends UtilController {
                     this.isSubmitFlag = true;
                     return true;
                 }
+            }
+        });
+
+        this.postUpdateResetButton.addEventListener("click", evt => {
+            if (confirm("수정 된 정보를 초기화 하겠습니까?")) {
+                location.reload(true);
             }
         });
     }

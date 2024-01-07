@@ -23,6 +23,19 @@
     border-radius: 5px;
 }
 
+.post_update_container .post_update_button_block .post_update_reset_button {
+    width: 90px;
+    height: 40px;
+    border: 1px solid #df2739;
+    background-color: #df2739;
+    font-size: 17px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    float: right;
+    margin-right: 20px;
+}
+
 /* 포스트 제목 정의 */
 .post_update_container .post_title_input {
     border: 1px solid #c3c3c3;

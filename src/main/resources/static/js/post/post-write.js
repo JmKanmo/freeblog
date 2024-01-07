@@ -2,6 +2,7 @@ class PostWriteController extends UtilController {
     constructor() {
         super();
         this.postWriteRegisterButton = document.getElementById("post_write_register_button");
+        this.postWriteResetButton = document.getElementById("post_write_reset_button");
         this.postWriteForm = document.getElementById("post_write_form");
         this.postTitle = document.getElementById("post_title");
         this.postWriterEditor = this.getQuillEditor('post_write_editor');
@@ -259,6 +260,13 @@ class PostWriteController extends UtilController {
                     this.clearInterval(this.postInterval, "postSaveInfo");
                     this.#uploadPost();
                 }
+            }
+        });
+
+        this.postWriteResetButton.addEventListener("click", evt => {
+            if (confirm("입력 정보를 초기화 하겠습니까? 브라우저에 저장된 정보도 함께 초기화 됩니다.")) {
+                this.clearInterval(this.postInterval, "postSaveInfo");
+                location.reload(true);
             }
         });
     }
