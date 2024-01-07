@@ -312,6 +312,17 @@ class UtilController {
         return limit <= 0 ? result : result.substring(0, limit);
     }
 
+    quillScrollDownImage(quill, imageUrl) {
+        const img = new Image();
+        img.onload = function () {
+            if (img) {
+                const imageHeight = img.naturalHeight;
+                quill.container.firstChild.scrollTop += imageHeight;
+            }
+        };
+        img.src = imageUrl;
+    }
+
     /**
      * Quill Editor Utils
      * TODO: ImageBB(CDN) 도입 고려 (장점: 최대 64MB 이내 이미지 업로드 제한 X, 배치 관리 필요 X)
@@ -344,15 +355,16 @@ class UtilController {
 
     getQuillEditor(id) {
         Quill.register("modules/imageCompressor", imageCompressor);
+
         const quill = new Quill(`#${id}`, {
             modules: {
                 "emoji-toolbar": true,
                 "emoji-shortname": true,
                 "emoji-textarea": true,
                 imageDrop: false,
-                imageResize: {
-                    modules: ['Resize', 'DisplaySize', 'Toolbar']
-                },
+                // imageResize: {
+                //     modules: ['Resize', 'DisplaySize', 'Toolbar']
+                // },
                 syntax: true,
                 // imageCompressor: {
                 //     quality: 1,
@@ -422,6 +434,7 @@ class UtilController {
                                         this.showToastMessage(responseValue);
                                     } else {
                                         quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
+                                        this.quillScrollDownImage(quill, responseValue);
                                     }
                                 });
 
@@ -460,6 +473,7 @@ class UtilController {
                                         } else {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                             quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
+                                            this.quillScrollDownImage(quill, responseValue);
                                         }
                                     });
 

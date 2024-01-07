@@ -2,6 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 링크 공유 테스트 -->
+    <meta property="og:title" content="${this.blocUserNickName.value}님의 블로그">
+    <meta property="og:image"
+          content="${#strings.isEmpty(user_profile.profileImages) or #strings.equals(user_profile.profileImages,'<<<undefined>>>') ? '../images/user_default_thumbnail.png' : user_profile.profileImages}">
     <title>블로그</title>
     <th:block th:replace="fragments/config :: config"></th:block>
     <th:block th:replace="fragments/template/notice-template :: notice-template"></th:block>

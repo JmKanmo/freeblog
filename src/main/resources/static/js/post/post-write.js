@@ -241,7 +241,7 @@ class PostWriteController extends UtilController {
 
             if (confirm('게시글을 발행하겟습니까?')) {
                 if (this.checkPostSubmitInfo()) {
-                    this.showToastMessage("빈칸,공백만 포함 된 정보는 유효하지 않습니다.");
+                    this.showToastMessage(`빈칸,공백만 포함 된 정보는 유효하지 않습니다. ${this.getCheckedPostUpdateInfoMessage()}`);
                 } else {
                     const compressedContent = this.compressContent(this.postWriterEditor.root.innerHTML, true);
 
@@ -455,6 +455,25 @@ class PostWriteController extends UtilController {
         } else {
             return false;
         }
+    }
+
+    getCheckedPostUpdateInfoMessage() {
+        let msg = ``;
+
+        if (!this.postTitle.value) {
+            msg += "포스트 제목이 비어있습니다. ";
+        }
+
+        if (!this.postCategory.value) {
+            msg += "카테고리가 비어있습니다. ";
+        }
+
+        if (((this.postWriterEditor.root.innerText === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
+                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
+            (!this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
+            msg += "게시글 본문이 빈칸,공백만 포함되어있습니다.";
+        }
+        return msg;
     }
 }
 
