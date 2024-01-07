@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- 링크 공유 테스트 -->
-    <meta property="og:title" content="게시글:${postDetail.title}">
-    <meta property="og:image"
-          content="${#strings.isEmpty(postDetail.thumbnailImage) or #strings.equals(postDetail.thumbnailImage,'<<<undefined>>>') ? '/images/logo.png' : postDetail.thumbnailImage}">
+    <meta property="og:title" th:content="'게시글:' + ${postDetail.title}">
+    <!--    <meta property="og:image"-->
+    <!--          th:content="${#strings.isEmpty(postDetail.thumbnailImage) or #strings.equals(postDetail.thumbnailImage,'<<<undefined>>>') ? '/images/logo.png' : postDetail.thumbnailImage}">-->
     <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
     <title>게시글 상세 페이지</title>

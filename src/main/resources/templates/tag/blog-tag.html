@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta property="og:title" th:content="${tagName} + ' 검색 결과'">
     <title>테그 페이지</title>
     <th:block th:replace="fragments/config :: config"></th:block>
     <th:block th:replace="fragments/template/notice-template :: notice-template"></th:block>

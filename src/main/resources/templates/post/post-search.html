@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="_csrf" th:content="${_csrf?.token}" th:if="${_csrf} ne null">
     <meta name="_csrf_header" th:content="${_csrf?.headerName}" th:if="${_csrf} ne null">
+    <meta property="og:title" th:content="${keyword} + ' 검색 결과'">
     <title>게시글 검색 페이지</title>
     <th:block th:replace="fragments/config :: config"></th:block>
     <th:block th:replace="fragments/template/notice-template :: notice-template"></th:block>
