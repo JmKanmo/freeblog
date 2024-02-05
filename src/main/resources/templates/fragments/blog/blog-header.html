@@ -68,7 +68,8 @@
 
                 <li>
                     <button th:value="${category.totalCategoryDto.link}"
-                            class="common_button_text total_category_search_title category_search_target" id="total_category_search_title">
+                            class="common_button_text total_category_search_title category_search_target"
+                            id="total_category_search_title">
                         전체 카테고리
                         <span class="category_count_text" th:text="'(' + ${category.totalCategoryDto.totalCount} + ')'">전체개수</span>
                     </button>
@@ -182,19 +183,23 @@
         </div>
 
         <div class="user_sns_container clear_fix">
-            <a href="/" class="user_sns_link common_social_address_label">
+            <a th:href="${#strings.isEmpty(user_profile.address) or #strings.equals(user_profile.address,'<<<undefined>>>') ? '/blog/' + user_profile.id : user_profile.address}"
+               class="user_sns_link common_social_address_label">
                 <span class="blind">SNS 링크</span>
             </a>
 
-            <a href="/" class="user_sns_link common_github_label">
+            <a th:href="${#strings.isEmpty(user_profile.github) or #strings.equals(user_profile.github,'<<<undefined>>>') ? '/blog/' + user_profile.id : user_profile.github}"
+               class="user_sns_link common_github_label">
                 <span class="blind">깃허브 링크</span>
             </a>
 
-            <a href="/" class="user_sns_link common_twitter_label">
+            <a th:href="${#strings.isEmpty(user_profile.twitter) or #strings.equals(user_profile.twitter,'<<<undefined>>>') ? '/blog/' + user_profile.id : user_profile.twitter}"
+               class="user_sns_link common_twitter_label">
                 <span class="blind">트위터 링크</span>
             </a>
 
-            <a href="/" class="user_sns_link common_instagram_label">
+            <a th:href="${#strings.isEmpty(user_profile.instagram) or #strings.equals(user_profile.instagram,'<<<undefined>>>') ? '/blog/' + user_profile.id : user_profile.instagram}"
+               class="user_sns_link common_instagram_label">
                 <span class="blind">인스타그램 링크</span>
             </a>
         </div>

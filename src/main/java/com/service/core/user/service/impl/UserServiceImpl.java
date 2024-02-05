@@ -223,11 +223,11 @@ public class UserServiceImpl implements UserService {
             throw new UserAuthException(ServiceExceptionMessage.MISMATCH_EMAIL);
         }
         Blog blog = user.getBlog();
-        blog.setName(userBasicInfoInput.getBlogName());
-        blog.setIntro(userBasicInfoInput.getIntro());
+        blog.setName(BlogUtil.checkAndGetRepText(userBasicInfoInput.getBlogName(), ConstUtil.DEFAULT_BLOG_NAME));
+        blog.setIntro(BlogUtil.checkAndGetRepText(userBasicInfoInput.getIntro(), ConstUtil.DEFAULT_USER_INTRO));
         blogService.register(blog);
-        user.setNickname(userBasicInfoInput.getNickname());
-        user.setGreetings(userBasicInfoInput.getGreetings());
+        user.setNickname(BlogUtil.checkAndGetRepText(userBasicInfoInput.getNickname(), ConstUtil.DEFAULT_USER_NICKNAME));
+        user.setGreetings(BlogUtil.checkAndGetRepText(userBasicInfoInput.getGreetings(), ConstUtil.DEFAULT_USER_GREETINGS));
         user.setBlog(blog);
         userInfoService.saveUserDomain(user);
         return UserHeaderDto.fromEntity(user);
@@ -242,10 +242,10 @@ public class UserServiceImpl implements UserService {
         }
         SocialAddress socialAddress = userDomain.getSocialAddress();
 
-        socialAddress.setAddress(userSocialAddressInput.getAddress());
-        socialAddress.setGithub(userSocialAddressInput.getGithub());
-        socialAddress.setTwitter(userSocialAddressInput.getTwitter());
-        socialAddress.setInstagram(userSocialAddressInput.getInstagram());
+        socialAddress.setAddress(BlogUtil.checkAndGetRepText(userSocialAddressInput.getAddress(), String.format("/blog/%s", userSocialAddressInput.getId())));
+        socialAddress.setGithub(BlogUtil.checkAndGetRepText(userSocialAddressInput.getGithub(), String.format("/blog/%s", userSocialAddressInput.getId())));
+        socialAddress.setTwitter(BlogUtil.checkAndGetRepText(userSocialAddressInput.getTwitter(), String.format("/blog/%s", userSocialAddressInput.getId())));
+        socialAddress.setInstagram(BlogUtil.checkAndGetRepText(userSocialAddressInput.getInstagram(), String.format("/blog/%s", userSocialAddressInput.getId())));
 
         userInfoService.saveUserDomain(userDomain);
     }

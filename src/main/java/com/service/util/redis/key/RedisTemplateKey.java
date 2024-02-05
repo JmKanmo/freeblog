@@ -15,4 +15,7 @@ public class RedisTemplateKey {
 
     // 방문자 수 관련
     public static final String BLOG_VISITORS_COUNT = "blog-visitors-count:%d";
+
+    // video 토큰 관련
+    public static final String VIDEO_TOKEN = "video-token:%s";
 }

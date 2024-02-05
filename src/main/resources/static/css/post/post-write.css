@@ -5,6 +5,7 @@ body {
 
 /* post_write container 정의 */
 .post_write_container {
+    position: relative;
     margin: 0 auto;
     width: 988px;
     padding: 20px 20px 30px 20px;

@@ -21,7 +21,7 @@ public class BlogPostInput {
 
     /* 이미지 태그만 포함시키는 경우 고려 */
     @NotNull
-//    @NotEmpty(message = "게시글 요약이 비어있습니다.")
+    //    @NotEmpty(message = "게시글 요약이 비어있습니다.")
     //    @NotBlank(message = "게시글 요약은 공백만 올 수 없습니다.")
     private final String summary;
 

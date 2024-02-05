@@ -365,8 +365,7 @@ class PostUpdateController extends UtilController {
     checkPostUpdateInfo() {
         if (!this.postTitle.value || !this.postCategory.value ||
             ((this.postWriterEditor.root.innerText === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
-                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
-            (!this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
+                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>"))) {
             return true;
         } else {
             return false;
@@ -385,8 +384,7 @@ class PostUpdateController extends UtilController {
         }
 
         if (((this.postWriterEditor.root.innerText === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
-                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
-            (!this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
+            (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>"))) {
             msg += "게시글 본문이 빈칸,공백만 포함되어있습니다.";
         }
         return msg;

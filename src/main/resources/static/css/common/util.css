@@ -649,6 +649,51 @@ input:focus {
     /* TODO */
 }
 
-.ql-trash {
+.ql-addVideo {
     /* TODO */
+}
+
+.ql-addVideo {
+    /* TODO */
+}
+
+/* video upload progress style */
+.video_upload_progress_box {
+    display: none;
+    position: absolute;
+    top: 18%;
+    right: 5%;
+    border: 1px solid #dddddd;
+    width: 445px;
+    height: 135px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.video_upload_progress_box .video_upload_process_title {
+    text-align: center;
+    font-size: 14px;
+    color: #0a3d73;
+}
+
+.video_upload_progress_box .video_upload_progress_text {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.video_upload_progress_box_close_button {
+    border: none;
+    outline: none;
+    background-color: #ffffff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    cursor: pointer;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }

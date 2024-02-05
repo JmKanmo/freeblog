@@ -4,6 +4,8 @@ package com.service.core.user.domain;
 import com.service.core.blog.domain.Blog;
 import com.service.core.user.model.UserSignUpInput;
 import com.service.core.user.model.UserStatus;
+import com.service.util.BlogUtil;
+import com.service.util.ConstUtil;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -59,15 +61,15 @@ public class UserDomain extends BaseTimeEntity {
                 .userId(userSignUpInput.getId())
                 .email(userSignUpInput.getEmail())
                 .password(BCrypt.hashpw(userSignUpInput.getPassword(), BCrypt.gensalt()))
-                .nickname(userSignUpInput.getNickname())
-                .greetings(userSignUpInput.getGreetings())
+                .nickname(BlogUtil.checkAndGetRepText(userSignUpInput.getNickname(), ConstUtil.DEFAULT_USER_NICKNAME))
+                .greetings(BlogUtil.checkAndGetRepText(userSignUpInput.getGreetings(), ConstUtil.DEFAULT_USER_GREETINGS))
                 .isAuth(false)
                 .status(UserStatus.NOT_AUTH)
                 .socialAddress(SocialAddress.builder()
-                        .address(userSignUpInput.getAddress())
-                        .github(userSignUpInput.getGithub())
-                        .twitter(userSignUpInput.getTwitter())
-                        .instagram(userSignUpInput.getInstagram())
+                        .address(BlogUtil.checkAndGetRepText(userSignUpInput.getAddress(), String.format("/blog/%s", userSignUpInput.getId())))
+                        .github(BlogUtil.checkAndGetRepText(userSignUpInput.getGithub(), String.format("/blog/%s", userSignUpInput.getId())))
+                        .twitter(BlogUtil.checkAndGetRepText(userSignUpInput.getTwitter(), String.format("/blog/%s", userSignUpInput.getId())))
+                        .instagram(BlogUtil.checkAndGetRepText(userSignUpInput.getInstagram(), String.format("/blog/%s", userSignUpInput.getId())))
                         .build())
                 .isBaseTimezone(true)
                 .build();

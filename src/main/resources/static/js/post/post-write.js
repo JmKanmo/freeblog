@@ -257,7 +257,6 @@ class PostWriteController extends UtilController {
                     this.hiddenBlogPostThumbnailImage.value = this.postThumbnailImageURL;
                     this.hiddenBlogPostCategory.value = this.postCategory.value;
                     this.setTagText();
-                    this.clearInterval(this.postInterval, "postSaveInfo");
                     this.#uploadPost();
                 }
             }
@@ -312,6 +311,7 @@ class PostWriteController extends UtilController {
                 const blogId = responseValue["postDto"]["blogId"];
                 window.location.href = `/post/${postId}?blogId=${blogId}`;
                 this.loadingStop(spinner, "postWriteLoading");
+                this.clearInterval(this.postInterval, "postSaveInfo");
             }
             this.isSubmitFlag = false;
         });
@@ -457,8 +457,7 @@ class PostWriteController extends UtilController {
     checkPostSubmitInfo() {
         if (!this.postTitle.value || !this.postCategory.value ||
             ((this.postWriterEditor.root.innerText === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
-                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
-            (!this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
+                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>"))) {
             return true;
         } else {
             return false;
@@ -477,8 +476,7 @@ class PostWriteController extends UtilController {
         }
 
         if (((this.postWriterEditor.root.innerText === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>") ||
-                (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) ||
-            (!this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>")) {
+            (this.postWriterEditor.root.innerText.replace(/ /g, "") === null || this.getRemoveSpaceStr(this.postWriterEditor.root.innerHTML) === "<p></p>"))) {
             msg += "게시글 본문이 빈칸,공백만 포함되어있습니다.";
         }
         return msg;

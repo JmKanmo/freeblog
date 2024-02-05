@@ -22,7 +22,11 @@ public class UserProfileDto {
     private int emailHash;
     private String greetings;
     private String profileImages;
-
+    // social address
+    private String address;
+    private String github;
+    private String twitter;
+    private String instagram;
 
     public static UserProfileDto fromEntity(UserDomain user) {
         if (user == null) {
@@ -32,6 +36,10 @@ public class UserProfileDto {
                     .greetings(ConstUtil.UNDEFINED)
                     .profileImages(ConstUtil.UNDEFINED)
                     .emailHash(new Random().nextInt())
+                    .address(ConstUtil.UNDEFINED)
+                    .github(ConstUtil.UNDEFINED)
+                    .twitter(ConstUtil.UNDEFINED)
+                    .instagram(ConstUtil.UNDEFINED)
                     .build();
         } else {
             return UserProfileDto.builder()
@@ -40,6 +48,10 @@ public class UserProfileDto {
                     .nickname(BlogUtil.ofNull(user.getNickname()))
                     .greetings(BlogUtil.ofNull(user.getGreetings()))
                     .profileImages(BlogUtil.ofNull(user.getProfileImage()))
+                    .address(user.getSocialAddress().getAddress())
+                    .github(user.getSocialAddress().getGithub())
+                    .twitter(user.getSocialAddress().getTwitter())
+                    .instagram(user.getSocialAddress().getInstagram())
                     .build();
         }
     }

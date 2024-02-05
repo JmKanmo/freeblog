@@ -11,7 +11,10 @@ public class ConstUtil {
     public static final String UNDEFINED_ERROR = "UNDEFINED-ERROR";
     public static final String ASIA_SEOUL = "Asia/Seoul";
     public static final String NOT_EXIST_CATEGORY = "분류 없음";
-    public static final String DEFAULT_USER_INTRO = "안녕하세요! 반가워요. :)";
+    public static final String DEFAULT_USER_INTRO = "Hello ~ Nice to meet u :)";
+    public static final String DEFAULT_BLOG_NAME = "Welcome to freeblog :)";
+    public static final String DEFAULT_USER_GREETINGS = "Hello ~ Nice to meet u :)";
+    public static final String DEFAULT_USER_NICKNAME = "freeblog-user";
     public static final String TOTAL_CATEGORY = "전체 카테고리";
     public static final String TOTAL = "전체";
     public static final String TOTAL_POST = "전체글";
@@ -20,6 +23,7 @@ public class ConstUtil {
     public static final int SFTP_POST_IMAGE_HASH = "post-image".hashCode();
     public static final int SFTP_POST_THUMBNAIL_HASH = "post-thumbnail".hashCode();
     public static final int SFTP_COMMENT_IMAGE_HASH = "comment-image".hashCode();
+    public static final int POST_VIDEO_HASH = "post-video".hashCode();
     public static final String AWS_S3_IMAGE_URL = "https://freelog-s3-bucket.s3.amazonaws.com/image/%s";
 
     public static final String DEFAULT_SERVER_TIMEZONE = "UTC";

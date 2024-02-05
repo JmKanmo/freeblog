@@ -116,6 +116,14 @@ public class BlogUtil {
         return uuid;
     }
 
+    public static String generateVideoToken(Principal principal) {
+        int principalHash = principal.hashCode();
+        int loginHash = principal.getName().hashCode();
+        long curTime = System.currentTimeMillis();
+        long sum = principalHash + loginHash + curTime;
+        return UUID.randomUUID() + "." + sum;
+    }
+
     public static String getImageExtension(String extension) {
         if (extension == null || extension.isEmpty()) {
             return "png";

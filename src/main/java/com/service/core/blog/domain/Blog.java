@@ -5,6 +5,7 @@ import com.service.core.music.domain.UserMusicCategory;
 import com.service.core.post.domain.Post;
 import com.service.core.user.domain.UserDomain;
 import com.service.core.user.model.UserSignUpInput;
+import com.service.util.BlogUtil;
 import com.service.util.ConstUtil;
 import com.service.util.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
@@ -55,7 +56,7 @@ public class Blog extends BaseTimeEntity {
 
     public static Blog from(UserSignUpInput userSignUpInput) {
         return Blog.builder()
-                .name(userSignUpInput.getBlogName())
+                .name(BlogUtil.checkAndGetRepText(userSignUpInput.getBlogName(), ConstUtil.DEFAULT_BLOG_NAME))
                 .intro(ConstUtil.DEFAULT_USER_INTRO)
                 .isBaseTimezone(true)
                 .build();

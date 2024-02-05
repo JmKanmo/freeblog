@@ -67,6 +67,20 @@
         </div>
 
         <div class="post_write_block">
+            <!-- video progress block -->
+            <div class="video_upload_progress_box" id="video_upload_progress_box">
+                <h3 class="video_upload_process_title">
+                    동영상 업로드 진행률 (<span id="cur_video_upload_cnt">0</span>/<span id="total_video_upload_cnt">0</span>)
+                </h3>
+
+                <button type="button" class="video_upload_progress_box_close_button"
+                        id="video_upload_progress_box_close_button">
+                    <img class="common_button_image_style" src="/images/close.png" alt="">
+                    <span class="blind">닫기 버튼</span>
+                </button>
+                <!-- video upload progress template -->
+            </div>
+
             <div class="editor-board">
                 <!-- Contents Here -->
                 <div id="post_write_editor" class="post_write_editor">
@@ -91,6 +105,14 @@
         <input type="hidden" id="hidden_blog_post_category" name="category" th:field="*{category}">
         <input type="hidden" id="hidden_blog_post_contents" name="contents" th:field="*{contents}">
         <input type="hidden" id="hidden_blog_post_summary" name="summary" th:field="*{summary}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+
+    <!-- video form -->
+    <form action="/video/video/upload/video_token" method="post" id="video_form" name="video_form">
+        <input type="file" style="display: none;"
+               id="video_file_input" name="video_file_input"
+               accept="video/mp4, video/avi, video/mkv, video/wmv, video/flv, video/mov, video/webm, video/3gp">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 

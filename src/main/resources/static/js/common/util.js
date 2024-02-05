@@ -21,6 +21,17 @@ class UtilController {
         this.RETRY_MAX_COUNT = 10; // API 요청 재시도 횟수
 
         this.UPLOAD_IMAGE_TYPE = "FILE_SERVER" // 이미지 업로드 방식: S3 | FILE_SERVER
+
+        // video tus upload config
+        this.videoFileInput = document.getElementById("video_file_input");
+        this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
+        this.videoChunkSize = 10485760; // 10MB
+        this.tusUploadProtocol = 'http'; // http | https
+        this.tusServerAddress = '192.168.35.98' // 'www.zlzzlz-resource.info';
+        this.tusServerPort = 8700;
+        this.videoServerPort = 80;
+        this.tusSaveDirectory = '/home/junmokang/jmservice/jmblog' // '/home/freeblog';
+        this.convertedVideoFiles = [];
     }
 
     initHandlerbars() {
@@ -390,7 +401,8 @@ class UtilController {
                         ['clean'],
                         ['emoji'],
                         ['codeBlock'],
-                        ['trash']
+                        ['trash'],
+                        ['addVideo']
                     ],
                     handlers: {
                         // Custom event handler for the link button
@@ -408,6 +420,9 @@ class UtilController {
                                     }
                                 } else {
                                     // insert a tag
+                                    if (!url || url === '') {
+                                        return;
+                                    }
                                     const data = `<a href="${url}">${url}</a>`;
                                     quill.clipboard.dangerouslyPasteHTML(quill.getSelection().index, data);
                                 }
@@ -616,7 +631,278 @@ class UtilController {
                 }
             }
         });
+
+        /**
+         * front 작업 진행 (파일 추가 및 validation 체크 등등)
+         *
+         * http 요청 -> token(unique) 값 생성 + redis 저장 및 반환 /upload/video_token
+         * 토큰 값을 토대로, 파일 서버에 tus protocol http 요청
+         * 작업 완료 후에, src 값 및 img 태그 삽입
+         */
+        const addVideoButton = document.querySelector('.ql-addVideo');
+
+        addVideoButton.innerHTML = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 111.34"><title>video</title><path d="M23.59,0h75.7a23.68,23.68,0,0,1,23.59,23.59V87.75A23.56,23.56,0,0,1,116,104.41l-.22.2a23.53,23.53,0,0,1-16.44,6.73H23.59a23.53,23.53,0,0,1-16.66-6.93l-.2-.22A23.46,23.46,0,0,1,0,87.75V23.59A23.66,23.66,0,0,1,23.59,0ZM54,47.73,79.25,65.36a3.79,3.79,0,0,1,.14,6.3L54.22,89.05a3.75,3.75,0,0,1-2.4.87A3.79,3.79,0,0,1,48,86.13V50.82h0A3.77,3.77,0,0,1,54,47.73ZM7.35,26.47h14L30.41,7.35H23.59A16.29,16.29,0,0,0,7.35,23.59v2.88ZM37.05,7.35,28,26.47H53.36L62.43,7.38v0Zm32,0L59.92,26.47h24.7L93.7,7.35Zm31.32,0L91.26,26.47h24.27V23.59a16.32,16.32,0,0,0-15.2-16.21Zm15.2,26.68H7.35V87.75A16.21,16.21,0,0,0,12,99.05l.17.16A16.19,16.19,0,0,0,23.59,104h75.7a16.21,16.21,0,0,0,11.3-4.6l.16-.18a16.17,16.17,0,0,0,4.78-11.46V34.06Z"/></svg>`;
+        addVideoButton.addEventListener('click', evt => {
+            this.videoFileInput.click();
+        });
+
+        this.videoFileInput.addEventListener("change", evt => {
+            // video token 발급
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/video/upload/video_token`, true);
+
+            xhr.addEventListener("loadend", event => {
+                let status = event.target.status;
+                const responseValue = JSON.parse(event.target.responseText);
+
+                if ((status >= 400 && status <= 500) || (status > 500)) {
+                    this.showToastMessage(responseValue["message"]);
+                } else {
+                    this.resetVideoProgressBar();
+
+                    const uploadKeyDocument = document.getElementById("upload_key");
+                    let uploadKey = uploadKeyDocument.value;
+
+                    if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
+                        uploadKey = new Date().getTime();
+                        uploadKeyDocument.value = uploadKey;
+                    }
+
+                    // tus protocol request
+                    const files = evt.target.files;
+
+                    // init convertedFiles
+                    Object.keys(files).forEach(k => {
+                        this.convertedVideoFiles = [
+                            ...this.convertedVideoFiles,
+                            {id: URL.createObjectURL(files[k]), file: files[k]}
+                        ];
+                    });
+
+                    document.getElementById("total_video_upload_cnt").innerText = `${files.length}`;
+                    document.getElementById("cur_video_upload_cnt").innerText = `0`;
+
+                    this.convertedVideoFiles.map((i, key) => {
+                        key++;
+
+                        const file = i.file;
+
+                        if (this.checkVideoFileExtension(file.name) === false) {
+                            this.showToastMessage("비디오 파일 확장자가 아닙니다.");
+                            return;
+                        }
+
+                        const protocol = this.tusUploadProtocol;
+                        const address = this.tusServerAddress;
+                        const tusServerPort = this.tusServerPort;
+                        const videoServerPort = this.videoServerPort;
+                        const directory = this.tusSaveDirectory;
+                        const videoToken = responseValue["token"];
+                        const uploadType = responseValue["uploadType"];
+                        const uploadHash = responseValue["hash"];
+                        const videoChunkSize = parseInt(this.videoChunkSize, 10);
+                        const date = this.deleteSpace(this.getCurrentDateYYYYMMDD());
+                        const vodName = this.deleteSpace(this.generateVodName(file.name));
+                        const extension = `video/${this.deleteSpace(this.getFileExtension(file.name))}`;
+
+                        this.videoUploadProgressBox.innerHTML += `
+                            <div style="padding: 5px 5px 0px 5px;" class="file-data" key=${key}>
+                                <h3 class="video_upload_progress_text">파일명: ${i.file.name}</h3>
+                                <h3 class="video_upload_progress_text">파일 타입: ${i.file.type}</h3>
+                                <h3 class="video_upload_progress_text">파일 크기: ${i.file.size} byte</h3>
+                                <h3 class="upload-text-progress video_upload_progress_text" id="js-upload-text-progress_${key}"></h3>
+                                <div class="flex-grow-1" style="margin-top: 5px;">
+                                    <div class="progress pr_${key}">
+                                        <div class="progress-bar_${key} progress-bar-striped bg-success" role="progressbar"></div>
+                                    </div>
+                                </div>
+                            </div>`;
+
+                        const upload = new tus.Upload(file, {
+                            endpoint: `${protocol}://${address}:${tusServerPort}/tus/upload/video`,
+                            headers: {
+                                // 필요 시에, 추가
+                                'Video-Token': videoToken
+                            },
+                            videoChunkSize,
+                            retryDelays: [0, 1000, 3000, 5000],
+                            metadata: {
+                                protocol: protocol,
+                                address: address,
+                                port: tusServerPort,
+                                directory: directory,
+                                videoToken: videoToken,
+                                uploadType: uploadType,
+                                uploadHash: uploadHash,
+                                date: date,
+                                uploadKey: uploadKey,
+                                vodName: vodName,
+                                filename: file.name,
+                                filetype: file.type
+                            },
+                            onError: function (error) {
+                                console.log("Video Upload Failed because: " + error);
+                                $('#js-upload-text-progress_' + key).css('color', 'red');
+                                $('#js-upload-text-progress_' + key).html(`파일 저장 중 에러 발생, ` + error);
+                            },
+                            onProgress: function (bytesUploaded, bytesTotal) {
+                                const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
+
+                                $('.progress-bar_' + key).css('width', percentage + '%');
+
+                                if (percentage < 100.00) {
+                                    $('#js-upload-text-progress_' + key).html(`Uploaded ${this.formatBytes(bytesUploaded)} of ${this.formatBytes(bytesTotal)} (${percentage}%)`);
+                                } else {
+                                    $('#js-upload-text-progress_' + key).html(`Uploaded ${this.formatBytes(bytesUploaded)} of ${this.formatBytes(bytesTotal)} (${percentage}%) 파일 저장 중`);
+                                }
+                            },
+                            onSuccess: function () {
+                                $('#js-upload-text-progress_' + key).html("파일 저장 완료");
+                                // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
+                                const videoSrc = `${protocol}://${address}:${videoServerPort}/${uploadType}/${uploadHash}/${uploadKey}/${date}/${vodName}`;
+                                const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+                                const range = quill.getSelection();
+
+                                if (range) {
+                                    quill.insertText(range.index + 1, '\n', Quill.sources.USER)
+                                    quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
+                                }
+
+                                const curVideoUploadCnt = parseInt(document.getElementById("cur_video_upload_cnt").innerText) + 1;
+                                document.getElementById("cur_video_upload_cnt").innerText = curVideoUploadCnt.toString();
+
+                                if (curVideoUploadCnt === parseInt(document.getElementById("total_video_upload_cnt").innerText)) {
+                                    // 1분 뒤에, 업로드 진행 바 close
+                                    setTimeout(() => {
+                                        document.getElementById("video_upload_progress_box").style.display = 'none';
+                                        document.getElementById("video_upload_progress_box_close_button").style.display = 'none';
+                                    }, 1000 * 60);
+                                }
+                            },
+                            onAfterResponse: function (req, res) {
+                                console.log(req + ", " + res);
+                            },
+                            /**
+                             * Turn a byte number into a human readable format.
+                             * Taken from https://stackoverflow.com/a/18650828
+                             */
+                            formatBytes: function (bytes, decimals = 2) {
+                                if (bytes === 0) {
+                                    return '0 Bytes';
+                                }
+                                const k = 1024
+                                const dm = decimals < 0 ? 0 : decimals
+                                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+                                const i = Math.floor(Math.log(bytes) / Math.log(k))
+                                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+                            }
+                        });
+
+                        // Check if there are any previous uploads to continue.
+                        upload.findPreviousUploads().then(function (previousUploads) {
+                            // Found previous uploads so we select the first one.
+                            if (previousUploads.length) {
+                                upload.resumeFromPreviousUpload(previousUploads[0]);
+                            }
+                            // Start the upload
+                            upload.start();
+                        });
+                    });
+                }
+            });
+
+            xhr.addEventListener("error", event => {
+                this.showToastMessage('오류가 발생하여 토큰 발급 및 비디오 저장 작업에 실패하였습니다.');
+            });
+
+            xhr.send();
+        });
+
+        document.getElementById("video_upload_progress_box").addEventListener("click", evt => {
+            const closeBtn = evt.target.closest("button");
+
+            if (closeBtn && closeBtn.id === "video_upload_progress_box_close_button") {
+                if (confirm("동영상 업로드 진행률 창을 닫겠습니까?")) {
+                    this.resetVideoProgressBar();
+                    this.videoUploadProgressBox.style.display = 'none';
+                    document.getElementById("video_upload_progress_box_close_button").style.display = 'none';
+                }
+            }
+        });
         return quill;
+    }
+
+    getCurrentDateYYYYMMDD() {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+        const day = currentDate.getDate().toString().padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        return formattedDate;
+    }
+
+    getFileExtension(filename) {
+        return filename.slice(((filename.lastIndexOf(".") - 1 >>> 0) + 2)).toLowerCase();
+    }
+
+    resetVideoProgressBar() {
+        this.videoUploadProgressBox.style.display = 'block';
+        document.getElementById("video_upload_progress_box_close_button").style.display = 'block';
+        this.videoUploadProgressBox.innerHTML = `
+                <h3 class="video_upload_process_title">
+                    동영상 업로드 진행률 (<span id="cur_video_upload_cnt">0</span>/<span id="total_video_upload_cnt">0</span>)
+                </h3>
+                <button type="button" class="video_upload_progress_box_close_button"
+                        id="video_upload_progress_box_close_button">
+                    <img class="common_button_image_style" src="/images/close.png" alt="">
+                    <span class="blind">닫기 버튼</span>
+                </button>`;
+
+        this.convertedVideoFiles.map((i, key) => {
+            $('.progress-bar_' + key).css('width', '0%');
+            $('#js-upload-text-progress_' + key).html('');
+        });
+        document.getElementById("total_video_upload_cnt").innerText = `0`;
+        document.getElementById("cur_video_upload_cnt").innerText = `0`;
+        this.convertedVideoFiles = [];
+    }
+
+    deleteSpace(str) {
+        if (!str) {
+            return str;
+        }
+        return str.split('').filter(char => char !== ' ').join('');
+    }
+
+    generateVodName(fileName) {
+        return `${new Date().getTime()}_${this.generateString(30)}_${fileName}`;
+    }
+
+    generateString(length) {
+        // program to generate random strings
+        // declare all characters
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    checkVideoFileExtension(filename) {
+        const allowedExtensions = ['mp4', 'avi', 'mkv', 'wmv', 'flv', 'mov', 'webm', '3gp'];
+
+        // 파일 이름이 null이거나 빈 문자열인 경우 유효하지 않음
+        if (!filename) {
+            return false;
+        }
+
+        // 파일 이름에서 마지막 점('.') 이후의 문자열 추출
+        const fileExtension = filename.slice(((filename.lastIndexOf(".") - 1 >>> 0) + 2)).toLowerCase();
+
+        // 허용 가능한 확장자 목록과 비교하여 유효성 검사
+        return allowedExtensions.includes(fileExtension);
     }
 
     getQuillEditorImgUrls(delta) {
