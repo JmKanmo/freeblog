@@ -211,7 +211,7 @@ class PostUpdateController extends UtilController {
 
             const imgFile = evt.target.files[0];
 
-            if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+            if (this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
                 if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_THUMBNAIL_IMAGE_UPLOAD_SIZE)) {
                     // if file extension is gif | GIF, 300KB가 넘지 않는 경우, 압축 진행 X
                     this.#uploadImage(imgFile);
@@ -222,7 +222,7 @@ class PostUpdateController extends UtilController {
                 }
             } else {
                 this.isImageUploadFlag = false;
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
             }
         });
 

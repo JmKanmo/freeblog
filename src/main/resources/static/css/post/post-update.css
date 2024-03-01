@@ -1,5 +1,6 @@
 /* post update container 스타일 */
 .post_update_container {
+    position: relative;
     margin: 0 auto;
     width: 988px;
     padding-bottom: 140px;

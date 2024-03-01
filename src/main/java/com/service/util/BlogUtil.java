@@ -131,9 +131,14 @@ public class BlogUtil {
 
         switch (extension) {
             case "jpeg":
+            case "JPEG":
                 return "jpg";
             case "GIF":
                 return "gif";
+            case "PNG":
+                return "png";
+            case "JPG":
+                return "jpg";
             default:
                 return extension;
         }

@@ -692,8 +692,28 @@ input:focus {
     cursor: pointer;
 }
 
-video {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
+/*video {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: fill;*/
+/*}*/
+
+
+/** image option (progress bar) style **/
+/* 프로그레스 바 스타일 */
+#imageWidthProgressbar, #imageHeightProgressbar {
+    /* width: 301px; */
+    height: 15px;
+    background-color: #f0f0f0;
+    /* border: 1px solid #ccc; */
+    position: relative;
+    cursor: ew-resize;
+}
+
+#imageWidthProgressbar .progress, #imageHeightProgressbar .progress {
+    background-color: #007bff;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
 }

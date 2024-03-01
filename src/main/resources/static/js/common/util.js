@@ -25,13 +25,24 @@ class UtilController {
         // video tus upload config
         this.videoFileInput = document.getElementById("video_file_input");
         this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
+        this.MAX_UPLOAD_VIDEO_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 1GB
         this.videoChunkSize = 10485760; // 10MB
         this.tusUploadProtocol = 'http'; // http | https
         this.tusServerAddress = '192.168.35.98' // 'www.zlzzlz-resource.info';
         this.tusServerPort = 8700;
-        this.videoServerPort = 80;
+        this.videoServerPort = 80; // 443
         this.tusSaveDirectory = '/home/junmokang/jmservice/jmblog' // '/home/freeblog';
         this.convertedVideoFiles = [];
+
+        // image option
+        this.imageWidthInput = document.getElementById("imageWidthInput");
+        this.imageHeightInput = document.getElementById("imageHeightInput");
+        this.imageOptionSettingButton = document.getElementById("imageOptionSettingButton");
+        this.clickedImageId = null;
+        this.clickedImageWidth = 0;
+        this.clickedImageHeight = 0;
+        this.MAX_IMAGE_WIDTH = 1000;
+        this.MAX_IMAGE_HEIGHT = 999_999;
     }
 
     initHandlerbars() {
@@ -449,7 +460,7 @@ class UtilController {
             input.addEventListener("change", async () => {
                 const imgFile = input.files[0];
                 try {
-                    if (this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
+                    if (this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
                         if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
                             // if file extension is gif | GIF, 5MB가 넘지 않는 경우, 압축 진행 X
                             const fileReader = new FileReader();
@@ -477,6 +488,18 @@ class UtilController {
                                     } else {
                                         quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                         this.quillScrollDownImage(quill, responseValue);
+                                        setTimeout(function () {
+                                            // 이미지를 찾아서 스타일을 변경합니다.
+                                            const images = document.querySelectorAll('.ql-editor img');
+                                            images.forEach(function (image) {
+                                                const srcValue = image.src;
+                                                image.style.cursor = 'pointer';
+                                                image.setAttribute('title', image.src);
+                                                image.setAttribute('id', `IMAGE-${srcValue}`);
+                                                image.setAttribute('data-toggle', 'modal');
+                                                image.setAttribute('data-target', '#image_option_modal');
+                                            });
+                                        }, 100);
                                     }
                                 });
 
@@ -516,6 +539,18 @@ class UtilController {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                             quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
                                             this.quillScrollDownImage(quill, responseValue);
+                                            setTimeout(function () {
+                                                // 이미지를 찾아서 스타일을 변경합니다.
+                                                const images = document.querySelectorAll('.ql-editor img');
+                                                images.forEach(function (image) {
+                                                    const srcValue = image.src;
+                                                    image.style.cursor = 'pointer';
+                                                    image.setAttribute('title', image.src);
+                                                    image.setAttribute('id', `IMAGE-${srcValue}`);
+                                                    image.setAttribute('data-toggle', 'modal');
+                                                    image.setAttribute('data-target', '#image_option_modal');
+                                                });
+                                            }, 100);
                                         }
                                     });
 
@@ -530,13 +565,53 @@ class UtilController {
                             });
                         }
                     } else {
-                        this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+                        this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                     }
                 } catch (error) {
                     this.showToastMessage("ERROR: " + error);
                 }
             })
         });
+
+        // quill editor click event handler
+        document.getElementById("post_write_editor").addEventListener("click", evt => {
+            const imgTag = evt.target.closest('img');
+
+            if (imgTag) {
+                const srcValue = imgTag.src;
+                // check img src (Test Server | resource server, CDN)
+                if (srcValue && (srcValue.toString().includes('http://192.168.35.98/images') || srcValue.toString().includes('https://www.zlzzlz-resource.info/images'))) {
+                    imgTag.style.cursor = 'pointer';
+                    imgTag.setAttribute('title', imgTag.src);
+                    imgTag.setAttribute('id', `IMAGE-${srcValue}`);
+                    imgTag.setAttribute('data-toggle', 'modal');
+                    imgTag.setAttribute('data-target', '#image_option_modal');
+                    this.clickedImageId = imgTag.getAttribute('id');
+                    this.clickedImageWidth = imgTag.width;
+                    this.clickedImageHeight = imgTag.height;
+                    this.imageWidthInput.value = this.clickedImageWidth;
+                    this.imageHeightInput.value = this.clickedImageHeight;
+                }
+            }
+        });
+
+        this.imageWidthInput.addEventListener("input", evt => {
+            this.clickedImageWidth = this.imageWidthInput.value;
+        });
+
+        this.imageHeightInput.addEventListener("input", evt => {
+            this.clickedImageHeight = this.imageHeightInput.value;
+        });
+
+        this.imageOptionSettingButton.addEventListener("click", evt => {
+            this.imageWidthInput.value = this.clickedImageWidth;
+            this.imageHeightInput.value = this.clickedImageHeight;
+            document.getElementById(this.clickedImageId).width = this.imageWidthInput.value;
+            document.getElementById(this.clickedImageId).height = this.imageHeightInput.value;
+        });
+
+        // TODO image option popup event handler
+
 
         /**
          * Batch Job 통해 주기(N년) 동안 참조되지 않은 리소스 삭제하도록 (방법 조사)
@@ -689,6 +764,9 @@ class UtilController {
 
                         if (this.checkVideoFileExtension(file.name) === false) {
                             this.showToastMessage("비디오 파일 확장자가 아닙니다.");
+                            return;
+                        } else if (this.checkVideoFileSize(file, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
+                            this.showToastMessage("최대 업로드 파일 크기는 1GB 입니다.");
                             return;
                         }
 
@@ -890,6 +968,15 @@ class UtilController {
         return result;
     }
 
+    checkVideoFileSize(videoFile, maxFileSize) {
+        if (videoFile) {
+            if (videoFile.size >= maxFileSize) {
+                return false;
+            }
+        }
+        return true
+    }
+
     checkVideoFileExtension(filename) {
         const allowedExtensions = ['mp4', 'avi', 'mkv', 'wmv', 'flv', 'mov', 'webm', '3gp'];
 
@@ -952,8 +1039,8 @@ class UtilController {
 
     checkImageFile(imgFile) {
         if (imgFile) {
-            if (!this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+            if (!this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 return false;
             } else if (!this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
                 this.showToastMessage('최대 업로드 파일 크기는 5MB 입니다.');
@@ -965,8 +1052,8 @@ class UtilController {
 
     checkImageFile(imgFile, size) {
         if (imgFile) {
-            if (!this.checkImageFileExtension(imgFile, ['jpg', 'jpeg', 'png', 'gif', 'GIF'])) {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'jpeg', 'png', 'gif', 'GIF')만 업로드 가능합니다.");
+            if (!this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
+                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 return false;
             } else if (!this.checkImageFileBySize(imgFile, size * 1024 * 1024)) {
                 this.showToastMessage('최대 업로드 파일 크기는 ' + size + 'MB 입니다.');
