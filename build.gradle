@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'com.service.freeblog'
-version = '1.0'
+version = '2.0'
 sourceCompatibility = 11
 targetCompatibility = 11
 

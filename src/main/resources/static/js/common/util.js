@@ -27,11 +27,13 @@ class UtilController {
         this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
         this.MAX_UPLOAD_VIDEO_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 1GB
         this.videoChunkSize = 10485760; // 10MB
-        this.tusUploadProtocol = 'http'; // http | https
-        this.tusServerAddress = '192.168.35.98' // 'www.zlzzlz-resource.info';
-        this.tusServerPort = 8700;
-        this.videoServerPort = 80; // 443
-        this.tusSaveDirectory = '/home/junmokang/jmservice/jmblog' // '/home/freeblog';
+        this.tusUploadProtocol = 'http'; // 고정
+        this.tusServerAddress = '172.31.3.57'; // '172.31.3.57' | '192.168.35.98'
+        this.tusServerPort = 8700; // 고정
+        this.videoServerProtocol = 'http'; // 'http' | 'https'
+        this.videoServerAddress = 'www.zlzzlz-resource.info'; // '192.168.35.98' | 'www.zlzzlz-resource.info'
+        this.videoServerPort = 443; // 80 | 443
+        this.tusSaveDirectory = '/home/freeblog' // '/home/freeblog' | '/home/junmokang/jmservice/jmblog'
         this.convertedVideoFiles = [];
 
         // image option
@@ -771,7 +773,9 @@ class UtilController {
                         }
 
                         const protocol = this.tusUploadProtocol;
+                        const videoServerProtocol = this.videoServerProtocol;
                         const address = this.tusServerAddress;
+                        const videoServerAddress = this.videoServerAddress;
                         const tusServerPort = this.tusServerPort;
                         const videoServerPort = this.videoServerPort;
                         const directory = this.tusSaveDirectory;
@@ -837,7 +841,7 @@ class UtilController {
                             onSuccess: function () {
                                 $('#js-upload-text-progress_' + key).html("파일 저장 완료");
                                 // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
-                                const videoSrc = `${protocol}://${address}:${videoServerPort}/${uploadType}/${uploadHash}/${uploadKey}/${date}/${vodName}`;
+                                const videoSrc = `${videoServerProtocol}://${videoServerAddress}:${videoServerPort}/${uploadType}/${uploadHash}/${uploadKey}/${date}/${vodName}`;
                                 const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
                                 const range = quill.getSelection();
 
