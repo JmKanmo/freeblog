@@ -27,7 +27,7 @@ class UtilController {
         this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
         this.MAX_UPLOAD_VIDEO_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 1GB
         this.videoChunkSize = 10485760; // 10MB
-        this.tusUploadProtocol = 'http'; // 고정
+        this.tusUploadProtocol = 'https'; // 고정
         this.tusServerAddress = '172.31.3.57'; // '172.31.3.57' | '192.168.35.98'
         this.tusServerPort = 8700; // 고정
         this.videoServerProtocol = 'http'; // 'http' | 'https'
