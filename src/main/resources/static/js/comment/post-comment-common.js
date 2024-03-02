@@ -50,7 +50,7 @@ class PostCommentCommonController extends UtilController {
                         });
                     }
                 } else {
-                    this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                    this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                     this.isImageUploadFlag = false;
                 }
             });
@@ -94,7 +94,7 @@ class PostCommentCommonController extends UtilController {
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.loadingStop(spinner, "commentImageLoading");
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                         this.removeCommentImage();
                     } else {
                         this.loadingStop(spinner, "commentImageLoading");
@@ -107,7 +107,7 @@ class PostCommentCommonController extends UtilController {
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('오류가 발생하여 댓글 이미지 전송에 실패하였습니다.');
                     this.loadingStop(spinner, "commentImageLoading");
                     this.removeCommentImage();
                     this.isImageUploadFlag = false;

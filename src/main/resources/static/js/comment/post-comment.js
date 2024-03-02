@@ -34,7 +34,7 @@ class PostCommentController extends PostCommentCommonController {
             }, "commentRegisterLoading");
 
             if (this.checkCommentForm() === false) {
-                this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
+                this.showSweetAlertWarningMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
                 this.loadingStop(spinner, "commentRegisterLoading");
                 return;
             }
@@ -48,7 +48,7 @@ class PostCommentController extends PostCommentCommonController {
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
                     this.loadingStop(spinner, "commentRegisterLoading");
-                    this.showToastMessage(responseValue["message"]);
+                    this.showSweetAlertErrorMessage(responseValue["message"]);
                 } else {
                     this.loadingStop(spinner, "commentRegisterLoading");
                     this.resetCommentForm();
@@ -60,7 +60,7 @@ class PostCommentController extends PostCommentCommonController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
+                this.showSweetAlertErrorMessage('오류가 발생하여 댓글 등록에 실패하였습니다.');
                 this.loadingStop(spinner, "commentRegisterLoading");
                 this.isClickedPostCommentSubmuitButton = false;
             });
@@ -200,7 +200,7 @@ class PostCommentController extends PostCommentCommonController {
                         let status = evt.target.status;
                         const responseValue = evt.target.responseText;
 
-                        this.showToastMessage(responseValue);
+                        this.showSweetAlertErrorMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
                             this.loadingStop(spinner2, "commentDeleteLoading");
@@ -249,7 +249,7 @@ class PostCommentController extends PostCommentCommonController {
                         let status = event.target.status;
                         const responseValue = event.target.responseText;
 
-                        this.showToastMessage(responseValue);
+                        this.showSweetAlertErrorMessage(responseValue);
 
                         if (status >= 400 && status <= 500) {
                             this.loadingStop(spinner2, "commentDeleteLoading");
@@ -328,7 +328,7 @@ class PostCommentController extends PostCommentCommonController {
             const responseValue = event.target.responseText;
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue);
+                this.showSweetAlertErrorMessage(responseValue);
                 location.reload();
             } else {
                 if (responseValue === "true") {
@@ -365,7 +365,7 @@ class PostCommentController extends PostCommentCommonController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "commentSearchLoading");
             } else {
                 this.loadingStop(spinner, "commentSearchLoading");

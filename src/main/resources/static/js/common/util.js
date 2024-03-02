@@ -30,7 +30,7 @@ class UtilController {
         this.tusUploadProtocol = 'https'; // 고정
         this.tusServerAddress = '172.31.3.57'; // '172.31.3.57' | '192.168.35.98'
         this.tusServerPort = 8700; // 고정
-        this.videoServerProtocol = 'http'; // 'http' | 'https'
+        this.videoServerProtocol = 'https'; // 'http' | 'https'
         this.videoServerAddress = 'www.zlzzlz-resource.info'; // '192.168.35.98' | 'www.zlzzlz-resource.info'
         this.videoServerPort = 443; // 80 | 443
         this.tusSaveDirectory = '/home/freeblog' // '/home/freeblog' | '/home/junmokang/jmservice/jmblog'
@@ -233,6 +233,7 @@ class UtilController {
         return new Promise((resolve) => setTimeout(resolve, ms))
     }
 
+    // Toastify.js 알림 메시지
     showToastMessage(message, _duration) {
         Toastify({
             text: message,
@@ -271,6 +272,81 @@ class UtilController {
             },
             callback: dismissListener
         }).showToast();
+    }
+
+    // sweetalert.js 팝업/알림 메시지
+    showSweetAlertNormalMessage(message, duration) {
+        if (duration) {
+            Swal.fire({
+                text: message,
+                timer: duration, // 3초 후에 자동으로 사라짐
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading() // 로딩 아이콘 표시
+                },
+                onClose: () => {
+                    clearInterval(duration) // 타이머 종료
+                }
+            }).then((result) => {
+                // 타이머가 종료되었을 때 실행할 코드
+                // TODO
+            });
+        } else {
+            Swal.fire({
+                text: message
+            });
+        }
+        ;
+    }
+
+    showSweetAlertWarningMessage(message, duration) {
+        if (duration) {
+            Swal.fire({
+                icon: "warning",
+                text: message,
+                timer: duration, // 3초 후에 자동으로 사라짐
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading() // 로딩 아이콘 표시
+                },
+                onClose: () => {
+                    clearInterval(duration) // 타이머 종료
+                }
+            }).then((result) => {
+                // 타이머가 종료되었을 때 실행할 코드
+                // TODO
+            });
+        } else {
+            Swal.fire({
+                icon: "warning",
+                text: message
+            });
+        }
+    }
+
+    showSweetAlertErrorMessage(message, duration) {
+        if (duration) {
+            Swal.fire({
+                icon: "error",
+                text: message,
+                timer: duration, // 3초 후에 자동으로 사라짐
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading() // 로딩 아이콘 표시
+                },
+                onClose: () => {
+                    clearInterval(duration) // 타이머 종료
+                }
+            }).then((result) => {
+                // 타이머가 종료되었을 때 실행할 코드
+                // TODO
+            });
+        } else {
+            Swal.fire({
+                icon: "error",
+                text: message
+            });
+        }
     }
 
     checkSpecialCharacter(text) {
@@ -608,6 +684,14 @@ class UtilController {
         });
 
         this.imageOptionSettingButton.addEventListener("click", evt => {
+            if (this.clickedImageWidth > this.MAX_IMAGE_WIDTH) {
+                this.showSweetAlertWarningMessage(`이미지 최대 너비는 ${this.MAX_IMAGE_WIDTH}px를 넘을 수 없습니다.`);
+                return;
+            }
+            if (this.clickedImageHeight > this.MAX_IMAGE_HEIGHT) {
+                this.showSweetAlertWarningMessage(`이미지 최대 높이는 ${this.MAX_IMAGE_HEIGHT}px를 넘을 수 없습니다.`);
+                return;
+            }
             this.imageWidthInput.value = this.clickedImageWidth;
             this.imageHeightInput.value = this.clickedImageHeight;
             document.getElementById(this.clickedImageId).width = this.imageWidthInput.value;
@@ -621,9 +705,6 @@ class UtilController {
         this.imageRestoreOptionButton.addEventListener("click", evt => {
             document.getElementById(this.clickedImageId).style.display = 'block';
         });
-
-        // TODO image option popup event handler
-
 
         /**
          * Batch Job 통해 주기(N년) 동안 참조되지 않은 리소스 삭제하도록 (방법 조사)
@@ -720,6 +801,9 @@ class UtilController {
         });
 
         /**
+         * 프로토콜(XmlHttpRequest Mixed Content Error (HTTPS 내에서 HTTP 요청 불가) 등등 여러 제약사항 및 에러 발생으로 인해 동작 X)
+         * TODO 추후에 Video CDN 도입 및 요청 로직 변경 등등 여러 대응책, 추가 개발 진행 고려 TOT
+         *
          * front 작업 진행 (파일 추가 및 validation 체크 등등)
          *
          * http 요청 -> token(unique) 값 생성 + redis 저장 및 반환 /upload/video_token
