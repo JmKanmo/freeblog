@@ -21,7 +21,7 @@ class PostCommentController extends PostCommentCommonController {
 
         this.postCommentSubmitButton.addEventListener("click", evt => {
             if (this.isClickedPostCommentSubmuitButton === true) {
-                this.showToastMessage("댓글 등록이 진행 중입니다.");
+                this.showSweetAlertInfoMessage("댓글 등록이 진행 중입니다.", 3000);
                 return;
             }
 
@@ -143,7 +143,7 @@ class PostCommentController extends PostCommentCommonController {
 
     #deleteComment(commentId) {
         if (this.isClickedPostCommentDeleteButton === true) {
-            this.showToastMessage("댓글을 삭제 중입니다.");
+            this.showSweetAlertInfoMessage("댓글을 삭제 중입니다.", 3000);
             return;
         }
 
@@ -155,11 +155,11 @@ class PostCommentController extends PostCommentCommonController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.isClickedPostCommentDeleteButton = false;
             } else {
                 if (responseValue["auth"] === false) {
-                    this.showToastMessage("댓글을 삭제할 권한이 없습니다. 로그인 후 시도해 주세요.");
+                    this.showSweetAlertErrorMessage("댓글을 삭제할 권한이 없습니다. 로그인 후 시도해 주세요.");
                     this.isClickedPostCommentDeleteButton = false;
                     return;
                 }
@@ -213,7 +213,7 @@ class PostCommentController extends PostCommentCommonController {
                     });
 
                     subXhr.addEventListener("error", event => {
-                        this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
+                        this.showSweetAlertErrorMessage("댓글 삭제 작업에 실패하였습니다.");
                         this.loadingStop(spinner2, "commentDeleteLoading");
                         this.isClickedPostCommentDeleteButton = false;
                     });
@@ -262,7 +262,7 @@ class PostCommentController extends PostCommentCommonController {
                     });
 
                     subXhr.addEventListener("error", event => {
-                        this.showToastMessage("댓글 삭제 작업에 실패하였습니다.");
+                        this.showSweetAlertErrorMessage("댓글 삭제 작업에 실패하였습니다.");
                         this.loadingStop(spinner2, "commentDeleteLoading");
                         this.isClickedPostCommentDeleteButton = false;
                     });
@@ -273,7 +273,7 @@ class PostCommentController extends PostCommentCommonController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
+            this.showSweetAlertErrorMessage("댓글 삭제 권한 확인 작업에 실패하였습니다.");
             this.isClickedPostCommentDeleteButton = false;
         });
 
@@ -340,7 +340,7 @@ class PostCommentController extends PostCommentCommonController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("댓글 등록 여부 확인에 실패하였습니다.");
+            this.showSweetAlertErrorMessage("댓글 등록 여부 확인에 실패하였습니다.");
             location.reload();
         });
 
@@ -379,7 +379,7 @@ class PostCommentController extends PostCommentCommonController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("댓글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("댓글 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "commentSearchLoading");
         });
 

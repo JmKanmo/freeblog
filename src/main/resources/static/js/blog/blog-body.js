@@ -33,7 +33,7 @@ class BlogBodyController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "blogMainPostLoading");
             } else {
                 this.loadingStop(spinner, "blogMainPostLoading");
@@ -53,7 +53,7 @@ class BlogBodyController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("블로그 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("블로그 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "blogMainPostLoading");
         });
         xhr.send();

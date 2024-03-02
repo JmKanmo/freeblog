@@ -95,7 +95,7 @@ class BasicInfoController extends UtilController {
 
         document.getElementById("user_basic_info_form").addEventListener("submit", evt => {
             if (this.isSubmitFlag === true) {
-                this.showToastMessage("개인정보를 수정 중입니다.");
+                this.showSweetAlertInfoMessage("개인정보를 수정 중입니다.", 3000);
                 return;
             }
 
@@ -105,14 +105,14 @@ class BasicInfoController extends UtilController {
                 const compressedContent = this.compressContent(this.introEditor.root.innerHTML, true);
 
                 if (this.checkPostContentSize(compressedContent, this.MAX_INTRO_CONTENT_SIZE)) {
-                    this.showToastMessage("소개글 본문 크기가 허용 범위를 초과하였습니다.");
+                    this.showSweetAlertWarningMessage("소개글 본문 크기가 허용 범위를 초과하였습니다.");
                     return;
                 }
 
                 this.userIntroEditorInput.value = compressedContent;
 
                 if (this.checkPrevChangeUserInfos()) {
-                    this.showToastMessage("변경 된 정보가 없습니다.");
+                    this.showSweetAlertInfoMessage("변경 된 정보가 없습니다.", 3000);
                     this.isSubmitFlag = false;
                     return false;
                 }

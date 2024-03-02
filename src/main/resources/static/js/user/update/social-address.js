@@ -29,7 +29,7 @@ class SocialAddressInfoController extends UtilController {
     initSocialAddressInfoController() {
         this.socialAddressInfoForm.addEventListener("submit", evt => {
             if (this.isSubmitFlag === true) {
-                this.showToastMessage("SNS 정보를 수정 중입니다.");
+                this.showSweetAlertInfoMessage("SNS 정보를 수정 중입니다.", 3000);
                 return;
             }
 
@@ -37,7 +37,7 @@ class SocialAddressInfoController extends UtilController {
 
             if (confirm('소셜 정보를 수정하겠습니까?') === true) {
                 if (this.checkPrevChangeSocialInfos()) {
-                    this.showToastMessage("변경 된 정보가 없습니다.");
+                    this.showSweetAlertInfoMessage("변경 된 정보가 없습니다.", 3000);
                     this.isSubmitFlag = false;
                     return false;
                 }

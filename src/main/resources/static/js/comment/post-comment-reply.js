@@ -25,12 +25,12 @@ class PostCommentReplyController extends PostCommentCommonController {
 
         this.postReplyCommentButton.addEventListener("click", evt => {
             if (this.isCommentSubmitFlag === true) {
-                this.showToastMessage("게시글을 발행 중입니다.");
+                this.showSweetAlertInfoMessage("게시글을 발행 중입니다.", 3000);
                 return;
             }
 
             if (this.checkReplyCommentForm() === false) {
-                this.showToastMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.");
+                this.showSweetAlertInfoMessage("폼 입력 정보가 양식 조건에 유효하지 않습니다.", 3000);
                 this.isCommentSubmitFlag = false;
                 return;
             }
@@ -66,7 +66,7 @@ class PostCommentReplyController extends PostCommentCommonController {
                 const responseValue = evt.target.responseText;
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(responseValue);
+                    this.showSweetAlertErrorMessage(responseValue);
                     this.loadingStop(spinner, "commentReplyLoading");
                 } else {
                     this.loadingStop(spinner, "commentReplyLoading");
@@ -82,7 +82,7 @@ class PostCommentReplyController extends PostCommentCommonController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('오류가 발생하여 답글 등록에 실패하였습니다.');
+                this.showSweetAlertErrorMessage('오류가 발생하여 답글 등록에 실패하였습니다.');
                 this.loadingStop(spinner, "commentReplyLoading");
                 this.isCommentSubmitFlag = false;
             });

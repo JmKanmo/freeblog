@@ -22,15 +22,15 @@ class SignUpCompleteController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(responseValue);
+                    this.showSweetAlertErrorMessage(responseValue);
                 } else {
-                    this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
+                    this.showSweetAlertInfoMessage(`이메일이 정상적으로 전송되었습니다.`, 3000);
                     this.resendButton.disabled = true;
                 }
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('이메일 전송에 실패하였습니다.');
+                this.showSweetAlertErrorMessage('이메일 전송에 실패하였습니다.');
             });
             xhr.send();
         });

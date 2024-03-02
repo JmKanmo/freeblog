@@ -83,7 +83,7 @@ class BlogHeaderController extends BlogBodyController {
                 this.postSearchOptionHiddenInput.value = this.postSearchOptionSelector.value;
 
                 if (this.postSearchKeywordInput.value === '') {
-                    this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                    this.showSweetAlertWarningMessage("키워드를 한글자 이상 입력해주세요.");
                     return;
                 }
                 this.postSearchForm.submit();
@@ -96,7 +96,7 @@ class BlogHeaderController extends BlogBodyController {
             this.postSearchOptionHiddenInput.value = this.postSearchOptionSelector.value;
 
             if (this.postSearchKeywordInput.value === '') {
-                this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                this.showSweetAlertWarningMessage("키워드를 한글자 이상 입력해주세요.");
                 return;
             }
             this.postSearchForm.submit();
@@ -119,14 +119,14 @@ class BlogHeaderController extends BlogBodyController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
             } else {
                 this.#recentPostHandleTemplateList(responseValue);
             }
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("게시글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("게시글 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
     }
@@ -141,14 +141,14 @@ class BlogHeaderController extends BlogBodyController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
             } else {
                 this.#popularPostHandleTemplateList(responseValue);
             }
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("게시글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("게시글 정보를 불러오는데 실패하였습니다.");
         });
         xhr.send();
     }

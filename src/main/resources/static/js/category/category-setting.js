@@ -39,7 +39,7 @@ class CategorySettingController extends UtilController {
             if (!categoryValues) {
                 return;
             } else if (categoryValues.length === 4 && categoryValues[0] === 'childCategory' && categoryValues[2] > 0) {
-                this.showToastMessage('2차카테고리 에서 해당 작업을 수행할 수 없습니다.');
+                this.showSweetAlertWarningMessage('2차카테고리 에서 해당 작업을 수행할 수 없습니다.');
                 return;
             }
 
@@ -64,10 +64,10 @@ class CategorySettingController extends UtilController {
             if (!categoryValues) {
                 return;
             } else if (categoryValues === 'totalCategory') {
-                this.showToastMessage('전체카테고리 에서 해당 작업을 수행할 수 없습니다.')
+                this.showSweetAlertWarningMessage('전체카테고리 에서 해당 작업을 수행할 수 없습니다.')
                 return;
             } else if (categoryValues[0] === 'childCategory') {
-                this.showToastMessage('2차카테고리 에서 해당 작업을 수행할 수 없습니다.')
+                this.showSweetAlertWarningMessage('2차카테고리 에서 해당 작업을 수행할 수 없습니다.')
                 return;
             }
 
@@ -92,7 +92,7 @@ class CategorySettingController extends UtilController {
             if (!categoryValues) {
                 return;
             } else if (categoryValues === "totalCategory") {
-                this.showToastMessage('해당 카테고리는 삭제할 수 없습니다.');
+                this.showSweetAlertWarningMessage('해당 카테고리는 삭제할 수 없습니다.');
                 return;
             }
 
@@ -130,7 +130,7 @@ class CategorySettingController extends UtilController {
         this.registerCategoryButton.addEventListener("click", evt => {
             if (confirm("카테고리를 등록하겠습니까?")) {
                 if (this.isSubmitFlag === true) {
-                    this.showToastMessage("카테고리를 등록 중입니다.");
+                    this.showSweetAlertInfoMessage("카테고리를 등록 중입니다.", 3000);
                     return;
                 }
 
@@ -167,17 +167,17 @@ class CategorySettingController extends UtilController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                         this.loadingStop(spinner, "categorySettingLoading");
                     } else {
-                        this.showToastMessage("카테고리가 등록되었습니다. 페이지를 새로고침해주세요.");
+                        this.showSweetAlertInfoMessage("카테고리가 등록되었습니다. 페이지를 새로고침해주세요.", 3000);
                         this.loadingStop(spinner, "categorySettingLoading");
                     }
                     this.isSubmitFlag = false;
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage("카테고리 정보를 등록하는데 실패하였습니다.");
+                    this.showSweetAlertErrorMessage("카테고리 정보를 등록하는데 실패하였습니다.");
                     this.loadingStop(spinner, "categorySettingLoading");
                     this.isSubmitFlag = false;
                 });
@@ -191,10 +191,10 @@ class CategorySettingController extends UtilController {
 
         this.updateCategoryButton.addEventListener("click", evt => {
             if (!this.prevClickedButton) {
-                this.showToastMessage('대상 카테고리가 선택되지 않았습니다.');
+                this.showSweetAlertWarningMessage('대상 카테고리가 선택되지 않았습니다.');
                 return;
             } else if (this.prevClickedButton.id === 'total_category_search_title') {
-                this.showToastMessage('해당 카테고리는 수정할 수 없습니다.');
+                this.showSweetAlertWarningMessage('해당 카테고리는 수정할 수 없습니다.');
                 return;
             }
 
@@ -212,7 +212,7 @@ class CategorySettingController extends UtilController {
         const categories = this.categoryList.childNodes;
 
         if (categories.length <= 1) {
-            this.showToastMessage('등록된 카테고리가 없습니다.');
+            this.showSweetAlertWarningMessage('등록된 카테고리가 없습니다.');
             return;
         }
 
@@ -258,14 +258,14 @@ class CategorySettingController extends UtilController {
 
     getCategoryValues(category, isJson) {
         if (!category) {
-            this.showToastMessage('대상 카테고리가 선택되지 않았습니다.');
+            this.showSweetAlertWarningMessage('대상 카테고리가 선택되지 않았습니다.');
             return null;
         }
 
         let categoryValue = !isJson ? category.value : category;
 
         if (!categoryValue && !isJson) {
-            this.showToastMessage('대상 카테고리 유효성 검사에 실패하였습니다.');
+            this.showSweetAlertWarningMessage('대상 카테고리 유효성 검사에 실패하였습니다.');
             return null;
         }
 
@@ -340,10 +340,10 @@ class CategorySettingController extends UtilController {
 
     checkCategoryName(categoryName) {
         if (categoryName.length <= 0 || /\s/g.test(categoryName)) {
-            this.showToastMessage("비어있거나 공백이 포함 된 문자로 변경할 수 없습니다.");
+            this.showSweetAlertWarningMessage("비어있거나 공백이 포함 된 문자로 변경할 수 없습니다.");
             return true;
         } else if (categoryName.length > 25) {
-            this.showToastMessage("카테고리명은 25 글자를 넘을 수 없습니다.");
+            this.showSweetAlertWarningMessage("카테고리명은 25 글자를 넘을 수 없습니다.");
             return true;
         }
         return false;

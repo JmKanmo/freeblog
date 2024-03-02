@@ -69,7 +69,7 @@ class PostWriteController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "postWriteLoading");
             } else {
                 const categorySelectorOptionTemplate = document.getElementById("category-selector-option-template").innerHTML;
@@ -81,7 +81,7 @@ class PostWriteController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 카테고리 데이터 수집에 실패하였습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 카테고리 데이터 수집에 실패하였습니다.');
             this.loadingStop(spinner, "postWriteLoading");
         });
         xhr.send();
@@ -160,18 +160,18 @@ class PostWriteController extends UtilController {
             const tagText = this.postTagInput.value;
 
             if (tagText.length <= 0 || /\s/g.test(tagText)) {
-                this.showToastMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
+                this.showSweetAlertWarningMessage("비어있거나 공백이 포함 된 문자는 등록할 수 없습니다.");
                 return;
             } else if (this.tagSet.has(`#${tagText}`)) {
-                this.showToastMessage("이미 등록한 태그는 등록할 수 없습니다.");
+                this.showSweetAlertWarningMessage("이미 등록한 태그는 등록할 수 없습니다.");
                 return;
             }
 
             if (this.checkSpecialCharacter(tagText)) {
-                this.showToastMessage("특수문자는 태그로 등록할 수 없습니다.");
+                this.showSweetAlertWarningMessage("특수문자는 태그로 등록할 수 없습니다.");
             } else {
                 if (this.createdTagBox.children.length >= 30) {
-                    this.showToastMessage("태그는 최대 30개만 등록할 수 있습니다.");
+                    this.showSweetAlertWarningMessage("태그는 최대 30개만 등록할 수 있습니다.");
                     return;
                 }
                 if (this.createdTagBox.children.length == 0) {
@@ -207,7 +207,7 @@ class PostWriteController extends UtilController {
 
         this.postThumbnailImageInput.addEventListener("change", evt => {
             if (this.imageUploadFlag === true) {
-                this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                this.showSweetAlertInfoMessage("이미지 업로드를 진행 중입니다.", 3000);
                 return;
             }
 
@@ -223,7 +223,7 @@ class PostWriteController extends UtilController {
                     });
                 }
             } else {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 this.imageUploadFlag = false;
             }
         });
@@ -236,18 +236,18 @@ class PostWriteController extends UtilController {
 
         this.postWriteRegisterButton.addEventListener("click", evt => {
             if (this.isSubmitFlag === true) {
-                this.showToastMessage("게시글을 발행 중입니다.");
+                this.showSweetAlertInfoMessage("게시글을 발행 중입니다.", 3000);
                 return;
             }
 
             if (confirm('게시글을 발행하겟습니까?')) {
                 if (this.checkPostSubmitInfo()) {
-                    this.showToastMessage(`빈칸,공백만 포함 된 정보는 유효하지 않습니다. ${this.getCheckedPostUpdateInfoMessage()}`);
+                    this.showSweetAlertWarningMessage(`빈칸,공백만 포함 된 정보는 유효하지 않습니다. ${this.getCheckedPostUpdateInfoMessage()}`);
                 } else {
                     const compressedContent = this.compressContent(this.postWriterEditor.root.innerHTML, true);
 
                     if (this.checkPostContentSize(compressedContent, this.MAX_POST_CONTENT_SIZE)) {
-                        this.showToastMessage("게시글 본문 크기가 허용 범위를 초과하였습니다.");
+                        this.showSweetAlertWarningMessage("게시글 본문 크기가 허용 범위를 초과하였습니다.");
                         return;
                     }
 
@@ -304,7 +304,7 @@ class PostWriteController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "postWriteLoading");
             } else {
                 const postId = responseValue["postDto"]["id"];
@@ -317,7 +317,7 @@ class PostWriteController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 게시글 업로드에 실패하였습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 게시글 업로드에 실패하였습니다.');
             this.loadingStop(spinner, "postWriteLoading");
         });
         xhr.send(formData);
@@ -361,7 +361,7 @@ class PostWriteController extends UtilController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                         this.loadingStop(spinner, "postUploadImageLoading");
                     } else {
                         // this.showToastMessage('게시글 썸네일 이미지가 지정되었습니다.');
@@ -375,7 +375,7 @@ class PostWriteController extends UtilController {
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
                     this.loadingStop(spinner, "postUploadImageLoading");
                     this.imageUploadFlag = false;
                 });

@@ -56,7 +56,7 @@ class BlogViewController extends UtilController {
         const current = new Date().getTime();
 
         if (current - this.prevPostSearchReloadTime <= this.postSearchReloadTimeOut) {
-            this.showToastMessage("잠시 후에 요청 해주세요.");
+            this.showSweetAlertWarningMessage("잠시 후에 요청 해주세요.", 3000);
             return;
         }
         const searchOption = !this.blogSearchOptionSelector.value ? "title" : this.blogSearchOptionSelector.value;
@@ -95,7 +95,7 @@ class BlogViewController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "mainPostLoading");
             } else {
                 this.loadingStop(spinner, "mainPostLoading");
@@ -113,7 +113,7 @@ class BlogViewController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "mainPostLoading");
         });
         xhr.send();

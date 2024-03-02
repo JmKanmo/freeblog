@@ -68,9 +68,9 @@ class SettingsController extends HeaderController {
         if (this.emailAuthButton) {
             this.emailAuthButton.addEventListener("click", () => {
                 if (this.emailAuthTime.value === "") {
-                    this.showToastMessage("이메일 인증이 완료 된 계정입니다.");
+                    this.showSweetAlertInfoMessage("이메일 인증이 완료 된 계정입니다.", 3000);
                 } else {
-                    this.showToastMessage(`${this.emailAuthTime.value} 시간에 이메일 인증이 완료 된 계정입니다.`);
+                    this.showSweetAlertInfoMessage(`${this.emailAuthTime.value} 시간에 이메일 인증이 완료 된 계정입니다.`, 3000);
                 }
             });
         } else if (this.emailNotAuthButton) {
@@ -80,7 +80,7 @@ class SettingsController extends HeaderController {
                     const email = document.getElementById("user_basic_info_email").value;
 
                     if (!email) {
-                        this.showToastMessage("이메일 정보를 찾을 수 없습니다.");
+                        this.showSweetAlertWarningMessage("이메일 정보를 찾을 수 없습니다.");
                         return;
                     }
 
@@ -91,15 +91,15 @@ class SettingsController extends HeaderController {
                         const responseValue = event.target.responseText;
 
                         if ((status >= 400 && status <= 500) || (status > 500)) {
-                            this.showToastMessage(responseValue);
+                            this.showSweetAlertErrorMessage(responseValue);
                         } else {
-                            this.showToastMessage(`이메일이 정상적으로 전송되었습니다.`);
+                            this.showSweetAlertInfoMessage(`이메일이 정상적으로 전송되었습니다.`, 3000);
                             this.authTargetEmailButton.disabled = true;
                         }
                     });
 
                     xhr.addEventListener("error", event => {
-                        this.showToastMessage('이메일 전송에 실패하였습니다.');
+                        this.showSweetAlertErrorMessage('이메일 전송에 실패하였습니다.');
                     });
                     xhr.send();
                 }
@@ -108,7 +108,7 @@ class SettingsController extends HeaderController {
 
         this.userProfileImageInput.addEventListener("change", evt => {
             if (this.isImageUploadFlag === true) {
-                this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                this.showSweetAlertInfoMessage("이미지 업로드를 진행 중입니다.", 3000);
                 return;
             }
 
@@ -124,7 +124,7 @@ class SettingsController extends HeaderController {
                     });
                 }
             } else {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 this.isImageUploadFlag = false;
             }
         });
@@ -135,14 +135,14 @@ class SettingsController extends HeaderController {
 
         this.userProfileRemoveButton.addEventListener("click", evt => {
             if (this.isImageDeleteFlag === true) {
-                this.showToastMessage("프로필 이미지를 삭제 중입니다.");
+                this.showSweetAlertInfoMessage("프로필 이미지를 삭제 중입니다.", 3000);
                 return;
             }
 
             if (confirm("프로필 이미지를 삭제하시겠습니까?")) {
                 if (this.defaultUserProfileImage.src.includes(this.getDefaultUserProfileThumbnail()
                     .split('/')[this.getDefaultUserProfileThumbnail().split('/').length - 1])) {
-                    this.showToastMessage("현재 프로필 이미지가 지정되어 있지 않습니다.");
+                    this.showSweetAlertWarningMessage("현재 프로필 이미지가 지정되어 있지 않습니다.");
                     this.isImageDeleteFlag = false;
                     return;
                 }
@@ -163,7 +163,7 @@ class SettingsController extends HeaderController {
                 const email = this.userEmail.value;
 
                 if (!email) {
-                    this.showToastMessage("이메일 정보가 존재하지 않습니다.");
+                    this.showSweetAlertWarningMessage("이메일 정보가 존재하지 않습니다.");
                     return;
                 }
 
@@ -174,15 +174,15 @@ class SettingsController extends HeaderController {
                     const responseValue = event.target.responseText;
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showSweetAlertErrorMessage(responseValue);
                     } else {
-                        this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
+                        this.showSweetAlertInfoMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`, 3000);
                         this.passwordChangeButton.disabled = true;
                     }
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('이메일 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('이메일 전송에 실패하였습니다.');
                 });
                 xhr.send();
             }
@@ -210,10 +210,10 @@ class SettingsController extends HeaderController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                         this.removeUserProfileImage();
                     } else {
-                        this.showToastMessage('프로필 썸네일 이미지 저장에 성공하였습니다.');
+                        this.showSweetAlertInfoMessage('프로필 썸네일 이미지 저장에 성공하였습니다.', 3000);
                         this.defaultUserProfileImage.src = responseValue["imageSrc"];
                         this.setHeaderUserProfileImage(responseValue["imageSrc"]);
                         this.userMetakeyInput.value = responseValue["metaKey"];
@@ -222,7 +222,7 @@ class SettingsController extends HeaderController {
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
                     this.removeUserProfileImage();
                     this.isImageUploadFlag = false;
                 });
@@ -258,15 +258,15 @@ class SettingsController extends HeaderController {
             const responseValue = event.target.responseText;
 
             if ((status >= 400 && status <= 500) || (status > 500)) {
-                this.showToastMessage(responseValue);
+                this.showSweetAlertErrorMessage(responseValue);
             } else {
-                this.showToastMessage(`프로필 이미지가 정상적으로 삭제 되었습니다.`);
+                this.showSweetAlertInfoMessage(`프로필 이미지가 정상적으로 삭제 되었습니다.`, 3000);
             }
             this.isImageDeleteFlag = false;
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage(`프로필 이미지 삭제에 실패하였습니다.`);
+            this.showSweetAlertErrorMessage(`프로필 이미지 삭제에 실패하였습니다.`);
         });
 
         xhr.send();

@@ -49,7 +49,7 @@ class HeaderController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
             } else {
                 if (responseValue === true) {
                     if (this.noticeAlarmBoard) {
@@ -60,7 +60,7 @@ class HeaderController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 공지사항 알림 정보를 불러오지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 공지사항 알림 정보를 불러오지 못했습니다.');
         });
 
         xhr.send();
@@ -92,7 +92,7 @@ class HeaderController extends UtilController {
                         this.#requestUserLikePostInfo();
                         this.lastSearchTime = now;
                     } else {
-                        this.showToastMessage("잠시후에 다시 시도 해주세요.")
+                        this.showSweetAlertWarningMessage("잠시후에 다시 시도 해주세요.", 3000);
                     }
                 }
             });
@@ -196,7 +196,7 @@ class HeaderController extends UtilController {
                         const responseValue = event.target.responseText;
 
                         if ((status >= 400 && status <= 500) || (status > 500)) {
-                            this.showToastMessage(responseValue);
+                            this.showSweetAlertErrorMessage(responseValue);
                             this.loadingStop(spinner, "likeListLoading");
                         } else if (status == 200) {
                             if (userLikePostList != null) {
@@ -207,7 +207,7 @@ class HeaderController extends UtilController {
                     });
 
                     xhr.addEventListener("error", event => {
-                        this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                        this.showSweetAlertErrorMessage(`게시글 정보 삭제에 실패하였습니다.`);
                         this.loadingStop(spinner, "likeListLoading");
                     });
 
@@ -247,7 +247,7 @@ class HeaderController extends UtilController {
                     const responseValue = JSON.parse(evt.target.responseText);
 
                     if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                     } else {
                         const musicPlayerConfigTemplate = document.getElementById("music-config-template").innerHTML;
                         const musicPlayerConfigTemplateObject = Handlebars.compile(musicPlayerConfigTemplate);
@@ -257,7 +257,7 @@ class HeaderController extends UtilController {
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 뮤직 설정을 읽는데 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('오류가 발생하여 뮤직 설정을 읽는데 실패하였습니다.');
                 });
                 xhr.send();
             });
@@ -273,14 +273,14 @@ class HeaderController extends UtilController {
                     const responseValue = JSON.parse(evt.target.responseText);
 
                     if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                     } else {
                         location.reload();
                     }
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('오류가 발생하여 뮤직 설정 저장에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('오류가 발생하여 뮤직 설정 저장에 실패하였습니다.');
                 });
 
                 // music config data setting
@@ -326,7 +326,7 @@ class HeaderController extends UtilController {
 
                 if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
                     this.isReadNoticeAlarm = false;
-                    this.showToastMessage(responseValue["message"]);
+                    this.showSweetAlertErrorMessage(responseValue["message"]);
                 } else {
                     if (this.noticeAlarmBoard) {
                         this.noticeAlarmBoard.style.display = 'none';
@@ -335,7 +335,7 @@ class HeaderController extends UtilController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('오류가 발생하여 공지사항 알림을 읽는데 실패하였습니다.');
+                this.showSweetAlertErrorMessage('오류가 발생하여 공지사항 알림을 읽는데 실패하였습니다.');
                 this.isReadNoticeAlarm = false;
             });
 
@@ -383,7 +383,7 @@ class HeaderController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "noticeListLoading");
             } else {
                 this.#handleNoticeTemplateList(responseValue);
@@ -395,7 +395,7 @@ class HeaderController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 공지사항 리스트 정보를 불러오지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 공지사항 리스트 정보를 불러오지 못했습니다.');
             this.loadingStop(spinner, "noticeListLoading");
         });
 
@@ -434,7 +434,7 @@ class HeaderController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "likeListLoading");
             } else {
                 this.loadingStop(spinner, "likeListLoading");
@@ -449,7 +449,7 @@ class HeaderController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 사용자가 좋아요 누른 게시글 정보를 불러오지 못했습니다.');
             this.loadingStop(spinner, "likeListLoading");
         });
 
@@ -534,7 +534,7 @@ class HeaderController extends UtilController {
                         const responseValue = event.target.responseText;
 
                         if ((status >= 400 && status <= 500) || (status > 500)) {
-                            this.showToastMessage(responseValue);
+                            this.showSweetAlertErrorMessage(responseValue);
                             this.loadingStop(spinner, "likeListLoading");
                         } else if (status == 200) {
                             list.remove();
@@ -543,7 +543,7 @@ class HeaderController extends UtilController {
                     });
 
                     xhr.addEventListener("error", event => {
-                        this.showToastMessage(`게시글 정보 삭제에 실패하였습니다.`);
+                        this.showSweetAlertErrorMessage(`게시글 정보 삭제에 실패하였습니다.`);
                         this.loadingStop(spinner, "likeListLoading");
                     });
 

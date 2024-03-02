@@ -17,7 +17,7 @@ class FindInfoController extends UtilController {
             const nickname = this.nickNameInput.value;
 
             if (!nickname) {
-                this.showToastMessage("닉네임 입력폼이 비어있습니다.");
+                this.showSweetAlertWarningMessage("닉네임 입력폼이 비어있습니다.");
                 return;
             }
 
@@ -31,26 +31,26 @@ class FindInfoController extends UtilController {
                 const email = this.emailInput.value;
 
                 if (!email) {
-                    this.showToastMessage("이메일 입력폼이 비어있습니다.");
+                    this.showSweetAlertWarningMessage("이메일 입력폼이 비어있습니다.");
                     return;
                 }
 
-                xhr.open("GET", `/email/send/find-password?email=${email}`,true);
+                xhr.open("GET", `/email/send/find-password?email=${email}`, true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
                     const responseValue = event.target.responseText;
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showSweetAlertErrorMessage(responseValue);
                     } else {
-                        this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
+                        this.showSweetAlertInfoMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`, 3000);
                         this.passwordFindButton.disabled = true;
                     }
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('이메일 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('이메일 전송에 실패하였습니다.');
                 });
                 xhr.send();
             }
@@ -72,26 +72,26 @@ class FindInfoController extends UtilController {
                 const email = this.authTargetEmailInput.value;
 
                 if (!email) {
-                    this.showToastMessage("이메일 입력폼이 비어있습니다.");
+                    this.showSweetAlertWarningMessage("이메일 입력폼이 비어있습니다.");
                     return;
                 }
 
-                xhr.open("GET", `/email/send/auth?email=${email}`,true);
+                xhr.open("GET", `/email/send/auth?email=${email}`, true);
 
                 xhr.addEventListener("loadend", event => {
                     let status = event.target.status;
                     const responseValue = event.target.responseText;
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showToastMessage(responseValue);
+                        this.showSweetAlertErrorMessage(responseValue);
                     } else {
-                        this.showToastMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`);
+                        this.showSweetAlertInfoMessage(`이메일이 정상적으로 전송되었습니다. 재전송을 원할 시에 새로고침 후 시도하세요.`, 3000);
                         this.authTargetEmailButton.disabled = true;
                     }
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage('이메일 전송에 실패하였습니다.');
+                    this.showSweetAlertErrorMessage('이메일 전송에 실패하였습니다.');
                 });
                 xhr.send();
             }

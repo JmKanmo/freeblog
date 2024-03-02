@@ -93,7 +93,7 @@ class PostSearchController extends UtilController {
             this.searchResultBox.style.display = 'block';
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "postSearchLoading");
             } else {
                 this.loadingStop(spinner, "postSearchLoading");
@@ -119,7 +119,7 @@ class PostSearchController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "postSearchLoading");
         });
         xhr.send();
@@ -164,7 +164,7 @@ class PostSearchController extends UtilController {
             this.searchResultBox.style.display = 'block';
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "postSearchLoading");
             } else {
                 this.loadingStop(spinner, "postSearchLoading");
@@ -184,7 +184,7 @@ class PostSearchController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("검색 게시글 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "postSearchLoading");
         });
         xhr.send();

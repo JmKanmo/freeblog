@@ -233,7 +233,9 @@ class UtilController {
         return new Promise((resolve) => setTimeout(resolve, ms))
     }
 
-    // Toastify.js 알림 메시지
+    /**
+     * Toastify.js 팝업/알림 메시지
+     */
     showToastMessage(message, _duration) {
         Toastify({
             text: message,
@@ -274,8 +276,10 @@ class UtilController {
         }).showToast();
     }
 
-    // sweetalert.js 팝업/알림 메시지
-    showSweetAlertNormalMessage(message, duration) {
+    /**
+     * sweetalert.js 팝업/알림 메시지
+     */
+    showSweetAlertNormalMessage(message, duration, callback) {
         if (duration) {
             Swal.fire({
                 text: message,
@@ -288,8 +292,9 @@ class UtilController {
                     clearInterval(duration) // 타이머 종료
                 }
             }).then((result) => {
-                // 타이머가 종료되었을 때 실행할 코드
-                // TODO
+                if (callback) {
+                    callback();
+                }
             });
         } else {
             Swal.fire({
@@ -299,7 +304,33 @@ class UtilController {
         ;
     }
 
-    showSweetAlertWarningMessage(message, duration) {
+    showSweetAlertInfoMessage(message, duration, callback) {
+        if (duration) {
+            Swal.fire({
+                icon: "info",
+                text: message,
+                timer: duration, // 3초 후에 자동으로 사라짐
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading() // 로딩 아이콘 표시
+                },
+                onClose: () => {
+                    clearInterval(duration) // 타이머 종료
+                }
+            }).then((result) => {
+                if (callback) {
+                    callback();
+                }
+            });
+        } else {
+            Swal.fire({
+                icon: "info",
+                text: message
+            });
+        }
+    }
+
+    showSweetAlertWarningMessage(message, duration, callback) {
         if (duration) {
             Swal.fire({
                 icon: "warning",
@@ -313,8 +344,9 @@ class UtilController {
                     clearInterval(duration) // 타이머 종료
                 }
             }).then((result) => {
-                // 타이머가 종료되었을 때 실행할 코드
-                // TODO
+                if (callback) {
+                    callback();
+                }
             });
         } else {
             Swal.fire({
@@ -324,7 +356,7 @@ class UtilController {
         }
     }
 
-    showSweetAlertErrorMessage(message, duration) {
+    showSweetAlertErrorMessage(message, duration, callback) {
         if (duration) {
             Swal.fire({
                 icon: "error",
@@ -338,8 +370,9 @@ class UtilController {
                     clearInterval(duration) // 타이머 종료
                 }
             }).then((result) => {
-                // 타이머가 종료되었을 때 실행할 코드
-                // TODO
+                if (callback) {
+                    callback();
+                }
             });
         } else {
             Swal.fire({
@@ -564,7 +597,7 @@ class UtilController {
                                     const responseValue = event.target.responseText;
 
                                     if ((status >= 400 && status <= 500) || (status > 500)) {
-                                        this.showToastMessage(responseValue);
+                                        this.showSweetAlertErrorMessage(responseValue);
                                     } else {
                                         quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                         this.quillScrollDownImage(quill, responseValue);
@@ -584,7 +617,7 @@ class UtilController {
                                 });
 
                                 xhr.addEventListener("error", event => {
-                                    this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                    this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
                                 });
 
                                 formData.append("compressed_post_image", imgFile);
@@ -614,7 +647,7 @@ class UtilController {
                                         const responseValue = event.target.responseText;
 
                                         if ((status >= 400 && status <= 500) || (status > 500)) {
-                                            this.showToastMessage(responseValue);
+                                            this.showSweetAlertErrorMessage(responseValue);
                                         } else {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                             quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
@@ -635,7 +668,7 @@ class UtilController {
                                     });
 
                                     xhr.addEventListener("error", event => {
-                                        this.showToastMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                        this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
                                     });
 
                                     formData.append("compressed_post_image", compressedImgFile);
@@ -645,10 +678,10 @@ class UtilController {
                             });
                         }
                     } else {
-                        this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                        this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                     }
                 } catch (error) {
-                    this.showToastMessage("ERROR: " + error);
+                    this.showSweetAlertErrorMessage("ERROR: " + error);
                 }
             })
         });
@@ -827,7 +860,7 @@ class UtilController {
                 const responseValue = JSON.parse(event.target.responseText);
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(responseValue["message"]);
+                    this.showSweetAlertErrorMessage(responseValue["message"]);
                 } else {
                     this.resetVideoProgressBar();
 
@@ -859,10 +892,10 @@ class UtilController {
                         const file = i.file;
 
                         if (this.checkVideoFileExtension(file.name) === false) {
-                            this.showToastMessage("비디오 파일 확장자가 아닙니다.");
+                            this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
                             return;
                         } else if (this.checkVideoFileSize(file, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
-                            this.showToastMessage("최대 업로드 파일 크기는 1GB 입니다.");
+                            this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 1GB 입니다.");
                             return;
                         }
 
@@ -988,7 +1021,7 @@ class UtilController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('오류가 발생하여 토큰 발급 및 비디오 저장 작업에 실패하였습니다.');
+                this.showSweetAlertErrorMessage('오류가 발생하여 토큰 발급 및 비디오 저장 작업에 실패하였습니다.');
             });
 
             xhr.send();
@@ -1138,10 +1171,10 @@ class UtilController {
     checkImageFile(imgFile) {
         if (imgFile) {
             if (!this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 return false;
             } else if (!this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
-                this.showToastMessage('최대 업로드 파일 크기는 5MB 입니다.');
+                this.showSweetAlertWarningMessage('최대 업로드 파일 크기는 5MB 입니다.');
                 return false;
             }
         }
@@ -1151,10 +1184,10 @@ class UtilController {
     checkImageFile(imgFile, size) {
         if (imgFile) {
             if (!this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
-                this.showToastMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
+                this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                 return false;
             } else if (!this.checkImageFileBySize(imgFile, size * 1024 * 1024)) {
-                this.showToastMessage('최대 업로드 파일 크기는 ' + size + 'MB 입니다.');
+                this.showSweetAlertWarningMessage('최대 업로드 파일 크기는 ' + size + 'MB 입니다.');
                 return false;
             }
         }

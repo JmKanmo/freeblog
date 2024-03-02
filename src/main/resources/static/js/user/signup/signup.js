@@ -19,7 +19,7 @@ class SignUpController extends UtilController {
             const id = this.idInput.value;
 
             if (this.checkIdRegExp(id) === false) {
-                this.showToastMessage('id 패턴에 적합하지 않습니다.');
+                this.showSweetAlertWarningMessage('id 패턴에 적합하지 않습니다.');
                 return;
             }
 
@@ -33,12 +33,12 @@ class SignUpController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                    this.showSweetAlertErrorMessage(`${responseValue}`, 3000, () => {
                         this.idCheckButton.disabled = false;
                     });
                     this.idCheckFlagInput.value = false;
                 } else {
-                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                    this.showSweetAlertInfoMessage(`${responseValue}`, 3000, () => {
                         this.idCheckButton.disabled = false;
                     });
                     this.idCheckFlagInput.value = true;
@@ -46,7 +46,7 @@ class SignUpController extends UtilController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('id 중복확인에 실패하였습니다.', false, 5000, () => {
+                this.showSweetAlertErrorMessage('id 중복확인에 실패하였습니다.', 3000, () => {
                     this.idCheckButton.disabled = false;
                 });
             });
@@ -61,7 +61,7 @@ class SignUpController extends UtilController {
             const email = this.emailInput.value;
 
             if (this.checkEmailRegExp(email) === false) {
-                this.showToastMessage('이메일 패턴에 적합하지 않습니다.');
+                this.showSweetAlertWarningMessage('이메일 패턴에 적합하지 않습니다.');
                 return;
             }
 
@@ -75,12 +75,12 @@ class SignUpController extends UtilController {
                 const responseValue = event.target.responseText;
 
                 if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                    this.showSweetAlertErrorMessage(`${responseValue}`, 3000, () => {
                         this.emailCheckButton.disabled = false;
                     });
                     this.emailCheckFlagInput.value = false;
                 } else {
-                    this.showToastMessage(`${responseValue}`, false, 5000, () => {
+                    this.showSweetAlertInfoMessage(`${responseValue}`, 3000, () => {
                         this.emailCheckButton.disabled = false;
                     });
                     this.emailCheckFlagInput.value = true;
@@ -88,7 +88,7 @@ class SignUpController extends UtilController {
             });
 
             xhr.addEventListener("error", event => {
-                this.showToastMessage('이메일 중복확인에 실패하였습니다.', false, 5000, () => {
+                this.showSweetAlertErrorMessage('이메일 중복확인에 실패하였습니다.', 3000, () => {
                     this.emailCheckButton.disabled = false;
                 });
             });
@@ -97,7 +97,7 @@ class SignUpController extends UtilController {
 
         this.userSignUpForm.addEventListener("submit", evt => {
             if (this.isSubmitFlag === true) {
-                this.showToastMessage("회원가입을 진행 중입니다.");
+                this.showSweetAlertInfoMessage("회원가입을 진행 중입니다.", 3000);
                 return;
             }
 

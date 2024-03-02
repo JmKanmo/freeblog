@@ -61,7 +61,7 @@ class NoticeListController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "noticeLoading");
             } else {
                 this.loadingStop(spinner, "noticeLoading");
@@ -79,7 +79,7 @@ class NoticeListController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("공지사항 목록 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("공지사항 목록 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "noticeLoading");
         });
         xhr.send();

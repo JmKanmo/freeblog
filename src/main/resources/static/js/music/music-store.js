@@ -89,7 +89,7 @@ class MusicPlayController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "musicStoreLoading");
             } else {
                 this.loadingStop(spinner, "musicStoreLoading");
@@ -99,7 +99,7 @@ class MusicPlayController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
@@ -137,7 +137,7 @@ class MusicPlayController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "musicStoreLoading");
             } else {
                 this.loadingStop(spinner, "musicStoreLoading");
@@ -147,7 +147,7 @@ class MusicPlayController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("뮤직 카테고리 목록 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
@@ -197,7 +197,7 @@ class MusicPlayController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "musicStoreLoading");
             } else {
                 this.loadingStop(spinner, "musicStoreLoading");
@@ -216,7 +216,7 @@ class MusicPlayController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("뮤직 목록 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("뮤직 목록 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
@@ -268,7 +268,7 @@ class MusicPlayController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "musicStoreLoading");
             } else {
                 this.loadingStop(spinner, "musicStoreLoading");
@@ -287,7 +287,7 @@ class MusicPlayController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("뮤직 다운로드 목록 정보를 불러오는데 실패하였습니다.");
+            this.showSweetAlertErrorMessage("뮤직 다운로드 목록 정보를 불러오는데 실패하였습니다.");
             this.loadingStop(spinner, "musicStoreLoading");
         });
         xhr.send();
@@ -338,7 +338,7 @@ class MusicPlayController extends UtilController {
                     this.#requestMusicStoreList("/music/play-list");
                     this.prevMusicPlaySearchKeywordTime = current;
                 } else {
-                    this.showToastMessage("잠시 후에 요청 해주세요.");
+                    this.showSweetAlertWarningMessage("잠시 후에 요청 해주세요.", 3000);
                 }
             }
         });
@@ -351,7 +351,7 @@ class MusicPlayController extends UtilController {
                     this.#requestMusicDownloadList("/music/download-list");
                     this.prevMusicDownloadSearchKeywordTime = current;
                 } else {
-                    this.showToastMessage("잠시 후에 요청 해주세요.");
+                    this.showSweetAlertWarningMessage("잠시 후에 요청 해주세요.", 3000);
                 }
             }
         });
@@ -381,7 +381,7 @@ class MusicPlayController extends UtilController {
                 this.#requestMusicStoreList("/music/play-list");
                 this.prevMusicPlayReloadTime = current;
             } else {
-                this.showToastMessage("잠시 후에 요청 해주세요.");
+                this.showSweetAlertWarningMessage("잠시 후에 요청 해주세요.", 3000);
             }
         });
 
@@ -393,7 +393,7 @@ class MusicPlayController extends UtilController {
                 this.#requestMusicDownloadList("/music/download-list");
                 this.prevMusicDownloadReloadTime = current;
             } else {
-                this.showToastMessage("잠시 후에 요청 해주세요.");
+                this.showSweetAlertWarningMessage("잠시 후에 요청 해주세요.", 3000);
             }
         });
 
@@ -741,7 +741,7 @@ class MusicPlayController extends UtilController {
 
         this.musicDownloadDeleteButton.addEventListener("click", evt => {
             if (this.musicDownloadSelectMap == null || this.musicDownloadSelectMap.size <= 0) {
-                this.showToastMessage("항목을 선택해주세요.");
+                this.showSweetAlertInfoMessage("항목을 선택해주세요.", 3000);
                 return;
             }
 
@@ -792,7 +792,7 @@ class MusicPlayController extends UtilController {
                     const responseValue = JSON.parse(event.target.responseText);
 
                     if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                        this.showToastMessage(responseValue["message"]);
+                        this.showSweetAlertErrorMessage(responseValue["message"]);
                         this.loadingStop(spinner, "musicStoreLoading");
                     } else {
                         this.loadingStop(spinner, "musicStoreLoading");
@@ -801,7 +801,7 @@ class MusicPlayController extends UtilController {
                 });
 
                 xhr.addEventListener("error", event => {
-                    this.showToastMessage("뮤직 삭제에 실패했습니다.");
+                    this.showSweetAlertErrorMessage("뮤직 삭제에 실패했습니다.");
                     this.loadingStop(spinner, "musicStoreLoading");
                 });
                 xhr.send(JSON.stringify(musicList));
@@ -811,7 +811,7 @@ class MusicPlayController extends UtilController {
 
     #requestMusicDownload(musicPlaySelectMap) {
         if (this.isMusicDownloadFlag === true) {
-            this.showToastMessage("뮤직 다운로드를 진행 중입니다.");
+            this.showSweetAlertInfoMessage("뮤직 다운로드를 진행 중입니다.", 3000);
             return;
         }
         const musicList = [];
@@ -860,11 +860,11 @@ class MusicPlayController extends UtilController {
             const responseValue = JSON.parse(event.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "musicStoreLoading");
             } else {
                 this.loadingStop(spinner, "musicStoreLoading");
-                this.showToastMessage("뮤직 플레이 리스트를 담았습니다.");
+                this.showSweetAlertInfoMessage("뮤직 플레이 리스트를 담았습니다.", 3000);
                 this.#requestMusicDownloadCategoryList();
                 this.#requestMusicDownloadList("/music/download-list");
             }
@@ -872,7 +872,7 @@ class MusicPlayController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage("뮤직 플레이 리스트를 담기에 실패했습니다.");
+            this.showSweetAlertErrorMessage("뮤직 플레이 리스트를 담기에 실패했습니다.");
             this.loadingStop(spinner, "musicStoreLoading");
             this.isMusicDownloadFlag = false;
         });

@@ -142,7 +142,7 @@ class PostDetailController extends UtilController {
             this.postSearchOptionInput.value = this.postSearchOptionSelector.value;
 
             if (this.postSearchKeywordInput.value === '') {
-                this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                this.showSweetAlertWarningMessage("키워드를 한글자 이상 입력해주세요.", 3000);
                 return;
             }
             this.postSearchForm.submit();
@@ -155,7 +155,7 @@ class PostDetailController extends UtilController {
                 this.postSearchOptionInput.value = this.postSearchOptionSelector.value;
 
                 if (this.postSearchKeywordInput.value === '') {
-                    this.showToastMessage("키워드를 한글자 이상 입력해주세요.");
+                    this.showSweetAlertWarningMessage("키워드를 한글자 이상 입력해주세요.", 3000);
                     return;
                 }
                 this.postSearchForm.submit();
@@ -190,7 +190,7 @@ class PostDetailController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
             } else {
                 if (responseValue["like"] === true) {
                     this.postLikeCountText.innerText = Number(this.postLikeCountText.innerText) + 1;
@@ -204,7 +204,7 @@ class PostDetailController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 좋아요를 누르지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 좋아요를 누르지 못했습니다.');
         });
 
         xhr.send(JSON.stringify({
@@ -246,13 +246,13 @@ class PostDetailController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "userLikeListLoading");
             } else {
                 this.postLikeUserListContainer.style.display = 'block';
 
                 if (responseValue["likePaginationResponse"]["likeDto"].length <= 0) {
-                    this.showToastMessage("공감을 누른 사용자가 없습니다.");
+                    this.showSweetAlertInfoMessage("공감을 누른 사용자가 없습니다.", 3000);
                     this.loadingStop(spinner, "userLikeListLoading");
                     return;
                 }
@@ -265,7 +265,7 @@ class PostDetailController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 공감을 누른 사용자 정보를 불러오지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 공감을 누른 사용자 정보를 불러오지 못했습니다.');
             this.loadingStop(spinner, "userLikeListLoading");
         });
 
@@ -305,13 +305,13 @@ class PostDetailController extends UtilController {
             const responseValue = JSON.parse(evt.target.responseText);
 
             if (((status >= 400 && status <= 500) || (status > 500)) || (status > 500)) {
-                this.showToastMessage(responseValue["message"]);
+                this.showSweetAlertErrorMessage(responseValue["message"]);
                 this.loadingStop(spinner, "categoryPostLoading");
             } else {
                 this.loadingStop(spinner, "categoryPostLoading");
 
                 if (responseValue["postPaginationResponse"]["postDto"].length <= 0) {
-                    this.showToastMessage("게시글 정보가 존재하지 않습니다.");
+                    this.showSweetAlertInfoMessage("게시글 정보가 존재하지 않습니다.", 3000);
                     return;
                 }
                 this.#handleCategoryPostTemplateList(responseValue);
@@ -321,7 +321,7 @@ class PostDetailController extends UtilController {
         });
 
         xhr.addEventListener("error", event => {
-            this.showToastMessage('오류가 발생하여 게시글 정보를 불러오지 못했습니다.');
+            this.showSweetAlertErrorMessage('오류가 발생하여 게시글 정보를 불러오지 못했습니다.');
             this.loadingStop(spinner, "categoryPostLoading");
         });
 

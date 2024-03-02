@@ -34,7 +34,7 @@ class PostCommentCommonController extends UtilController {
         if (this.postCommentImageFileInput != null) {
             this.postCommentImageFileInput.addEventListener("change", evt => {
                 if (this.isImageUploadFlag === true) {
-                    this.showToastMessage("이미지 업로드를 진행 중입니다.");
+                    this.showSweetAlertInfoMessage("이미지 업로드를 진행 중입니다.", 3000);
                     return;
                 }
 
