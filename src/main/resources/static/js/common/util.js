@@ -40,6 +40,8 @@ class UtilController {
         this.imageWidthInput = document.getElementById("imageWidthInput");
         this.imageHeightInput = document.getElementById("imageHeightInput");
         this.imageOptionSettingButton = document.getElementById("imageOptionSettingButton");
+        this.imageDeleteOptionButton = document.getElementById("imageDeleteOptionButton");
+        this.imageRestoreOptionButton = document.getElementById("imageRestoreOptionButton");
         this.clickedImageId = null;
         this.clickedImageWidth = 0;
         this.clickedImageHeight = 0;
@@ -610,6 +612,14 @@ class UtilController {
             this.imageHeightInput.value = this.clickedImageHeight;
             document.getElementById(this.clickedImageId).width = this.imageWidthInput.value;
             document.getElementById(this.clickedImageId).height = this.imageHeightInput.value;
+        });
+
+        this.imageDeleteOptionButton.addEventListener("click", evt => {
+            document.getElementById(this.clickedImageId).style.display = 'none';
+        });
+
+        this.imageRestoreOptionButton.addEventListener("click", evt => {
+            document.getElementById(this.clickedImageId).style.display = 'block';
         });
 
         // TODO image option popup event handler

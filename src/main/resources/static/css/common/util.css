@@ -314,6 +314,24 @@ input:focus {
     box-shadow: none;
 }
 
+.common_pink_badge_button_style {
+    border: 0;
+    background-color: #e76893;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.common_green_badge_button_style {
+    border: 0;
+    background-color: #5cc260;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
 .common_red_button {
     font-size: 12px;
     height: 30px;

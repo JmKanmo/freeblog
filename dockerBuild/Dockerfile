@@ -16,7 +16,7 @@ ENV JAVA_HOME /etc/alternatives/jre
 EXPOSE 8400 22
 
 ADD jboot.sh /freeblog/jboot.sh
-ADD freeblog-1.0.war /freeblog/freeblog-1.0.war
+ADD freeblog-2.0.war /freeblog/freeblog-2.0.war
 
 RUN chmod +x /freeblog/jboot.sh
 
