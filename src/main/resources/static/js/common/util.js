@@ -526,7 +526,8 @@ class UtilController {
                         ['emoji'],
                         ['codeBlock'],
                         ['trash'],
-                        ['addVideo']
+                        ['addVideo'],
+                        ['editor_height']
                     ],
                     handlers: {
                         // Custom event handler for the link button
@@ -1035,6 +1036,38 @@ class UtilController {
                     this.resetVideoProgressBar();
                     this.videoUploadProgressBox.style.display = 'none';
                     document.getElementById("video_upload_progress_box_close_button").style.display = 'none';
+                }
+            }
+        });
+
+        const editorHeightButton = document.querySelector('.ql-editor_height');
+        editorHeightButton.innerHTML = `
+            <div class="clear_fix editor_height_style" style="width: 110px; position: relative;">
+                <label for="editorHeightInput" style="cursor: pointer" title="에디터 높이 (px)">
+                    <svg version="1.1" style="width: 30px; height:20px; float:left;" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 41.04 122.88" style="enable-background:new 0 0 41.04 122.88" xml:space="preserve"><g><path d="M6.09,7.49c-2.07,0-3.75-1.68-3.75-3.75C2.34,1.68,4.02,0,6.09,0h28.86c2.07,0,3.75,1.68,3.75,3.75 c0,2.07-1.68,3.75-3.75,3.75H6.09L6.09,7.49z M6.09,122.88c-2.07,0-3.75-1.68-3.75-3.75s1.68-3.75,3.75-3.75h28.86 c2.07,0,3.75,1.68,3.75,3.75s-1.68,3.75-3.75,3.75H6.09L6.09,122.88z M22.03,109.61c-0.41,0.18-0.85,0.29-1.29,0.31l0,0l-0.09,0 l0,0l-0.09,0h0h-0.09h0l-0.09,0l0,0l-0.09,0l0,0c-0.44-0.03-0.88-0.13-1.29-0.31l-0.01,0l-0.01-0.01l-0.07-0.03l-0.01-0.01 l-0.07-0.03l-0.02-0.01l-0.01-0.01c-0.24-0.12-0.47-0.27-0.68-0.45L1.4,95.55c-1.61-1.29-1.86-3.65-0.57-5.25 c1.29-1.61,3.65-1.86,5.25-0.57l10.73,8.67l-0.02-71L6.08,36.04c-1.61,1.29-3.96,1.04-5.25-0.57c-1.29-1.61-1.04-3.96,0.57-5.25 L18.12,16.7c0.21-0.18,0.44-0.33,0.68-0.45l0.01-0.01l0.02-0.01l0.07-0.03l0.01-0.01l0.07-0.03l0.01-0.01l0.01,0 c0.41-0.18,0.85-0.29,1.29-0.31l0,0l0.09,0l0,0l0.09,0h0h0.09h0l0.09,0l0,0l0.09,0l0,0c0.44,0.03,0.88,0.13,1.29,0.31l0.01,0 l0.01,0.01l0.07,0.03l0.01,0.01l0.07,0.03l0.02,0.01l0.01,0.01c0.24,0.12,0.47,0.27,0.68,0.45l16.72,13.52 c1.61,1.29,1.86,3.65,0.57,5.25c-1.29,1.61-3.65,1.86-5.25,0.57l-10.7-8.65l0.02,70.97l10.68-8.63c1.61-1.29,3.96-1.04,5.25,0.57 c1.29,1.61,1.04,3.96-0.57,5.25l-16.72,13.52c-0.21,0.18-0.44,0.33-0.68,0.45l-0.01,0.01l-0.02,0.01l-0.07,0.03l-0.01,0.01 l-0.07,0.03l-0.01,0.01L22.03,109.61L22.03,109.61z"/></g></svg>
+                </label>
+                <input type="number" id="editorHeightInput" style="float: right; width: 80px; height: 20px;" min="1" max="999999">
+                <button type="button" class="common_orange_button" id="editorHeightSettingButton" style="position: absolute; right: -40px; border: 1px solid #e0763c; background-color: #e0763c; width: 35px; font-size: 11px; top: -3px;">적용</button>
+            </div>`;
+
+        const postWriteEditor = document.getElementById("post_write_editor");
+        const editorHeightInput = document.getElementById("editorHeightInput");
+        const editorHeightSettingButton = document.getElementById("editorHeightSettingButton");
+        editorHeightInput.value = postWriteEditor.clientHeight;
+
+        editorHeightSettingButton.addEventListener('click', evt => {
+            const heightValue = editorHeightInput.value;
+            const maxHeightValue = editorHeightInput.max;
+
+            if (heightValue && maxHeightValue) {
+                if (parseInt(heightValue) > 0) {
+                    if (parseInt(heightValue) > parseInt(maxHeightValue)) {
+                        this.showSweetAlertWarningMessage(`에디터 높이는 ${maxHeightValue}px를 초과할 수 없습니다.`);
+                    } else {
+                        postWriteEditor.style.height = `${heightValue}px`;
+                    }
+                } else {
+                    this.showSweetAlertWarningMessage("에디터 높이는 1px보다 작을 수 없습니다.");
                 }
             }
         });
