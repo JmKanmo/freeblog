@@ -532,7 +532,15 @@ class UtilController {
                     handlers: {
                         // Custom event handler for the link button
                         link: function (value) {
-                            // TODO 타 블로그와 같이 이미지,제목, 본문 첨부해서 템플릿 링크 박스로 표시하는 방안 고민
+                            /**
+                             * 해당 기능은 quill.editor 자체적으로 HTML 태그 및 인라인 CSS, 클래스 삽입을 막는다.
+                             * 내가 원하는 코드를 dangerouslyPasteHTML 메서드를 통해 삽입해도, 에디터에 생략해서 포함 되며 제한적이다.
+                             *
+                             * 따라서, 내가 원하는 기능을 우회하여 직접 구현하는 것은 불가능하다. quill.js 개발팀에서 해당 기능을 제공 해주어야함.
+                             *
+                             * (Github issue) https://github.com/quilljs/quill/issues/4035
+                             * (CodePen) https://codepen.io/jmkanmo/pen/yLryKKY
+                             */
                             if (value) {
                                 // If a URL is provided, perform your custom logic here
                                 const url = prompt('Enter the link URL:');
