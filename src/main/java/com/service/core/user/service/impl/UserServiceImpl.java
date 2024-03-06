@@ -302,7 +302,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String uploadSftpProfileImageById(MultipartFile multipartFile, String id) throws Exception {
         try {
-            String profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, id);
+            String profileImageSrc = sftpService.sftpFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, id);
             UserDomain userDomain = userInfoService.findUserDomainByIdOrThrow(id);
             userDomain.setProfileImage(profileImageSrc);
             userInfoService.saveUserDomain(userDomain);
@@ -326,7 +326,7 @@ public class UserServiceImpl implements UserService {
             if (uploadType.equals(ConstUtil.UPLOAD_TYPE_S3)) {
                 profileImageSrc = awsS3Service.uploadImageFile(multipartFile);
             } else if (uploadType.equals(ConstUtil.UPLOAD_TYPE_FILE_SERVER)) {
-                profileImageSrc = sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, uploadKey);
+                profileImageSrc = sftpService.sftpFileUpload(multipartFile, ConstUtil.SFTP_PROFILE_THUMBNAIL_HASH, uploadKey);
             }
 
             String userUploadKey = userDomain.getMetaKey();
@@ -374,7 +374,7 @@ public class UserServiceImpl implements UserService {
 
     private void deleteUserProfileImageSrc(String imgSrc) {
         try {
-            sftpService.sftpImageFileDelete(imgSrc);
+            sftpService.sftpFileDelete(imgSrc);
         } catch (Exception e) {
             log.error("UserService[deleteUserProfileImageSrc] error:", e);
         }

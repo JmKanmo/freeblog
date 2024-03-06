@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentImageResultDto uploadSftpCommentThumbnailImage(MultipartFile multipartFile, String uploadKey) throws Exception {
-        return CommentImageResultDto.from(sftpService.sftpImageFileUpload(multipartFile, ConstUtil.SFTP_COMMENT_IMAGE_HASH, uploadKey), uploadKey);
+        return CommentImageResultDto.from(sftpService.sftpFileUpload(multipartFile, ConstUtil.SFTP_COMMENT_IMAGE_HASH, uploadKey), uploadKey);
     }
 
     /**
@@ -316,7 +316,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteCommentThumbnailImage(String imageSrc) {
         try {
-            sftpService.sftpImageFileDelete(imageSrc);
+            sftpService.sftpFileDelete(imageSrc);
         } catch (Exception e) {
             log.error("CommentServiceImpl[deleteCommentThumbnailImage] exception:", e);
         }

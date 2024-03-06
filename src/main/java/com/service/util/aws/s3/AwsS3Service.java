@@ -17,7 +17,7 @@ public class AwsS3Service {
             throw new FileHandleException(ServiceExceptionMessage.NOT_VALID_FILE_NAME);
         }
 
-        String imgSrc = awsS3Util.storeImageFile(BlogUtil.getImageFileUUID(multipartFile), multipartFile.getInputStream(), BlogUtil.initObjectMetaData(multipartFile));
+        String imgSrc = awsS3Util.storeImageFile(BlogUtil.getFileUUID(multipartFile), multipartFile.getInputStream(), BlogUtil.initObjectMetaData(multipartFile));
         return imgSrc;
     }
 }

@@ -26,15 +26,6 @@ class UtilController {
         this.videoFileInput = document.getElementById("video_file_input");
         this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
         this.MAX_UPLOAD_VIDEO_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 1GB
-        this.videoChunkSize = 10485760; // 10MB
-        this.tusUploadProtocol = 'https'; // 고정
-        this.tusServerAddress = '172.31.3.57'; // '172.31.3.57' | '192.168.35.98'
-        this.tusServerPort = 8700; // 고정
-        this.videoServerProtocol = 'https'; // 'http' | 'https'
-        this.videoServerAddress = 'www.zlzzlz-resource.info'; // '192.168.35.98' | 'www.zlzzlz-resource.info'
-        this.videoServerPort = 443; // 80 | 443
-        this.tusSaveDirectory = '/home/freeblog' // '/home/freeblog' | '/home/junmokang/jmservice/jmblog'
-        this.convertedVideoFiles = [];
 
         // image option
         this.imageWidthInput = document.getElementById("imageWidthInput");
@@ -846,6 +837,8 @@ class UtilController {
          * 프로토콜(XmlHttpRequest Mixed Content Error (HTTPS 내에서 HTTP 요청 불가) 등등 여러 제약사항 및 에러 발생으로 인해 동작 X)
          * TODO 추후에 Video CDN 도입 및 요청 로직 변경 등등 여러 대응책, 추가 개발 진행 고려 TOT
          *
+         * 우선, Multipart Post 방식을 통한 video 업로드 진행
+         *
          * front 작업 진행 (파일 추가 및 validation 체크 등등)
          *
          * http 요청 -> token(unique) 값 생성 + redis 저장 및 반환 /upload/video_token
@@ -860,192 +853,59 @@ class UtilController {
         });
 
         this.videoFileInput.addEventListener("change", evt => {
-            // video token 발급
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/video/upload/video_token`, true);
+            const videoFile = this.videoFileInput.files[0];
 
-            xhr.addEventListener("loadend", event => {
-                let status = event.target.status;
-                const responseValue = JSON.parse(event.target.responseText);
-
-                if ((status >= 400 && status <= 500) || (status > 500)) {
-                    this.showSweetAlertErrorMessage(responseValue["message"]);
-                } else {
-                    this.resetVideoProgressBar();
-
-                    const uploadKeyDocument = document.getElementById("upload_key");
-                    let uploadKey = uploadKeyDocument.value;
-
-                    if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
-                        uploadKey = new Date().getTime();
-                        uploadKeyDocument.value = uploadKey;
-                    }
-
-                    // tus protocol request
-                    const files = evt.target.files;
-
-                    // init convertedFiles
-                    Object.keys(files).forEach(k => {
-                        this.convertedVideoFiles = [
-                            ...this.convertedVideoFiles,
-                            {id: URL.createObjectURL(files[k]), file: files[k]}
-                        ];
-                    });
-
-                    document.getElementById("total_video_upload_cnt").innerText = `${files.length}`;
-                    document.getElementById("cur_video_upload_cnt").innerText = `0`;
-
-                    this.convertedVideoFiles.map((i, key) => {
-                        key++;
-
-                        const file = i.file;
-
-                        if (this.checkVideoFileExtension(file.name) === false) {
-                            this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
-                            return;
-                        } else if (this.checkVideoFileSize(file, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
-                            this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 1GB 입니다.");
-                            return;
-                        }
-
-                        const protocol = this.tusUploadProtocol;
-                        const videoServerProtocol = this.videoServerProtocol;
-                        const address = this.tusServerAddress;
-                        const videoServerAddress = this.videoServerAddress;
-                        const tusServerPort = this.tusServerPort;
-                        const videoServerPort = this.videoServerPort;
-                        const directory = this.tusSaveDirectory;
-                        const videoToken = responseValue["token"];
-                        const uploadType = responseValue["uploadType"];
-                        const uploadHash = responseValue["hash"];
-                        const videoChunkSize = parseInt(this.videoChunkSize, 10);
-                        const date = this.deleteSpace(this.getCurrentDateYYYYMMDD());
-                        const vodName = this.deleteSpace(this.generateVodName(file.name));
-                        const extension = `video/${this.deleteSpace(this.getFileExtension(file.name))}`;
-
-                        this.videoUploadProgressBox.innerHTML += `
-                            <div style="padding: 5px 5px 0px 5px;" class="file-data" key=${key}>
-                                <h3 class="video_upload_progress_text">파일명: ${i.file.name}</h3>
-                                <h3 class="video_upload_progress_text">파일 타입: ${i.file.type}</h3>
-                                <h3 class="video_upload_progress_text">파일 크기: ${i.file.size} byte</h3>
-                                <h3 class="upload-text-progress video_upload_progress_text" id="js-upload-text-progress_${key}"></h3>
-                                <div class="flex-grow-1" style="margin-top: 5px;">
-                                    <div class="progress pr_${key}">
-                                        <div class="progress-bar_${key} progress-bar-striped bg-success" role="progressbar"></div>
-                                    </div>
-                                </div>
-                            </div>`;
-
-                        const upload = new tus.Upload(file, {
-                            endpoint: `${protocol}://${address}:${tusServerPort}/tus/upload/video`,
-                            headers: {
-                                // 필요 시에, 추가
-                                'Video-Token': videoToken
-                            },
-                            videoChunkSize,
-                            retryDelays: [0, 1000, 3000, 5000],
-                            metadata: {
-                                protocol: protocol,
-                                address: address,
-                                port: tusServerPort,
-                                directory: directory,
-                                videoToken: videoToken,
-                                uploadType: uploadType,
-                                uploadHash: uploadHash,
-                                date: date,
-                                uploadKey: uploadKey,
-                                vodName: vodName,
-                                filename: file.name,
-                                filetype: file.type
-                            },
-                            onError: function (error) {
-                                console.log("Video Upload Failed because: " + error);
-                                $('#js-upload-text-progress_' + key).css('color', 'red');
-                                $('#js-upload-text-progress_' + key).html(`파일 저장 중 에러 발생, ` + error);
-                            },
-                            onProgress: function (bytesUploaded, bytesTotal) {
-                                const percentage = ((bytesUploaded / bytesTotal) * 100).toFixed(2);
-
-                                $('.progress-bar_' + key).css('width', percentage + '%');
-
-                                if (percentage < 100.00) {
-                                    $('#js-upload-text-progress_' + key).html(`Uploaded ${this.formatBytes(bytesUploaded)} of ${this.formatBytes(bytesTotal)} (${percentage}%)`);
-                                } else {
-                                    $('#js-upload-text-progress_' + key).html(`Uploaded ${this.formatBytes(bytesUploaded)} of ${this.formatBytes(bytesTotal)} (${percentage}%) 파일 저장 중`);
-                                }
-                            },
-                            onSuccess: function () {
-                                $('#js-upload-text-progress_' + key).html("파일 저장 완료");
-                                // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
-                                const videoSrc = `${videoServerProtocol}://${videoServerAddress}:${videoServerPort}/${uploadType}/${uploadHash}/${uploadKey}/${date}/${vodName}`;
-                                const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
-                                const range = quill.getSelection();
-
-                                if (range) {
-                                    quill.insertText(range.index + 1, '\n', Quill.sources.USER)
-                                    quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
-                                }
-
-                                const curVideoUploadCnt = parseInt(document.getElementById("cur_video_upload_cnt").innerText) + 1;
-                                document.getElementById("cur_video_upload_cnt").innerText = curVideoUploadCnt.toString();
-
-                                if (curVideoUploadCnt === parseInt(document.getElementById("total_video_upload_cnt").innerText)) {
-                                    // 1분 뒤에, 업로드 진행 바 close
-                                    setTimeout(() => {
-                                        document.getElementById("video_upload_progress_box").style.display = 'none';
-                                        document.getElementById("video_upload_progress_box_close_button").style.display = 'none';
-                                    }, 1000 * 60);
-                                }
-                            },
-                            onAfterResponse: function (req, res) {
-                                console.log(req + ", " + res);
-                            },
-                            /**
-                             * Turn a byte number into a human readable format.
-                             * Taken from https://stackoverflow.com/a/18650828
-                             */
-                            formatBytes: function (bytes, decimals = 2) {
-                                if (bytes === 0) {
-                                    return '0 Bytes';
-                                }
-                                const k = 1024
-                                const dm = decimals < 0 ? 0 : decimals
-                                const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-                                const i = Math.floor(Math.log(bytes) / Math.log(k))
-                                return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-                            }
-                        });
-
-                        // Check if there are any previous uploads to continue.
-                        upload.findPreviousUploads().then(function (previousUploads) {
-                            // Found previous uploads so we select the first one.
-                            if (previousUploads.length) {
-                                upload.resumeFromPreviousUpload(previousUploads[0]);
-                            }
-                            // Start the upload
-                            upload.start();
-                        });
-                    });
-                }
-            });
-
-            xhr.addEventListener("error", event => {
-                this.showSweetAlertErrorMessage('오류가 발생하여 토큰 발급 및 비디오 저장 작업에 실패하였습니다.');
-            });
-
-            xhr.send();
-        });
-
-        document.getElementById("video_upload_progress_box").addEventListener("click", evt => {
-            const closeBtn = evt.target.closest("button");
-
-            if (closeBtn && closeBtn.id === "video_upload_progress_box_close_button") {
-                if (confirm("동영상 업로드 진행률 창을 닫겠습니까?")) {
-                    this.resetVideoProgressBar();
-                    this.videoUploadProgressBox.style.display = 'none';
-                    document.getElementById("video_upload_progress_box_close_button").style.display = 'none';
-                }
+            if (this.checkVideoFileExtension(videoFile.name) === false) {
+                this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
+                return;
+            } else if (this.checkVideoFileSize(videoFile, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
+                this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 1GB 입니다.");
+                return;
             }
+
+            const fileReader = new FileReader();
+
+            fileReader.onload = (event) => {
+                const formData = new FormData();
+                const xhr = new XMLHttpRequest();
+                const uploadKeyDocument = document.getElementById("upload_key")
+                let uploadKey = uploadKeyDocument.value;
+
+                if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
+                    uploadKey = new Date().getTime();
+                    uploadKeyDocument.value = uploadKey;
+                }
+
+                xhr.open("POST", `/video/upload/video/${uploadKey}`, true);
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                xhr.addEventListener("loadend", event => {
+                    let status = event.target.status;
+                    const responseValue = event.target.responseText;
+
+                    if ((status >= 400 && status <= 500) || (status > 500)) {
+                        this.showSweetAlertErrorMessage(responseValue);
+                    } else {
+                        // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
+                        const videoSrc = responseValue;
+                        const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+                        const range = quill.getSelection();
+
+                        if (range) {
+                            quill.insertText(range.index + 1, '\n', Quill.sources.USER)
+                            quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
+                        }
+                    }
+                });
+
+                xhr.addEventListener("error", event => {
+                    this.showSweetAlertErrorMessage('오류가 발생하여 비디오 업로드에 실패하였습니다.');
+                });
+
+                formData.append("compressed_video", videoFile);
+                xhr.send(formData);
+            }
+            fileReader.readAsDataURL(videoFile);
         });
 
         const editorHeightButton = document.querySelector('.ql-editor_height');

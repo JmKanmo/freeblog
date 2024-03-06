@@ -102,16 +102,16 @@ public class BlogUtil {
         return str == null ? ConstUtil.UNDEFINED : str;
     }
 
-    public static String getImageFileUUID(MultipartFile multipartFile) {
+    public static String getFileUUID(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
-        String extension = getImageExtension(fileName.substring(fileName.lastIndexOf(".") + 1));
+        String extension = getFileExtension(fileName.substring(fileName.lastIndexOf(".") + 1));
         String uuid = LocalDateTime.now().toString() + UUID.nameUUIDFromBytes(fileName.getBytes(StandardCharsets.UTF_8)) + "." + extension;
         return uuid;
     }
 
-    public static String getImageFileUUIDBySftp(MultipartFile multipartFile) {
+    public static String getFileUUIDBySftp(MultipartFile multipartFile) {
         String fileName = multipartFile.getContentType();
-        String extension = getImageExtension(fileName.substring(fileName.lastIndexOf("/") + 1));
+        String extension = getFileExtension(fileName.substring(fileName.lastIndexOf("/") + 1));
         String uuid = UUID.randomUUID() + "." + extension;
         return uuid;
     }
@@ -124,9 +124,9 @@ public class BlogUtil {
         return UUID.randomUUID() + "." + sum;
     }
 
-    public static String getImageExtension(String extension) {
+    public static String getFileExtension(String extension) {
         if (extension == null || extension.isEmpty()) {
-            return "png";
+            return ConstUtil.UNDEFINED;
         }
 
         switch (extension) {
