@@ -54,11 +54,13 @@
                     </div>
 
                     <div class="clear_fix" style="margin-top: 10px;">
-                        <button type="button" class="common_badge_button_style common_pink_badge_button_style" id="imageDeleteOptionButton">
+                        <button type="button" class="common_badge_button_style common_pink_badge_button_style"
+                                id="imageDeleteOptionButton">
                             이미지 삭제
                         </button>
 
-                        <button type="button" class="common_badge_button_style common_green_badge_button_style" id="imageRestoreOptionButton">
+                        <button type="button" class="common_badge_button_style common_green_badge_button_style"
+                                id="imageRestoreOptionButton">
                             이미지 복원
                         </button>
                     </div>
@@ -137,19 +139,7 @@
         </div>
 
         <div class="post_write_block">
-            <!-- video progress block -->
-            <div class="video_upload_progress_box" id="video_upload_progress_box">
-                <h3 class="video_upload_process_title">
-                    동영상 업로드 진행률 (<span id="cur_video_upload_cnt">0</span>/<span id="total_video_upload_cnt">0</span>)
-                </h3>
-
-                <button type="button" class="video_upload_progress_box_close_button"
-                        id="video_upload_progress_box_close_button">
-                    <img class="common_button_image_style" src="/images/close.png" alt="">
-                    <span class="blind">닫기 버튼</span>
-                </button>
-                <!-- video upload progress template -->
-            </div>
+            <div style="position: absolute; left: 50%; top: 30%;" id="fileUploadLoading"></div>
 
             <div class="editor-board">
                 <!-- Contents Here -->

@@ -24,8 +24,7 @@ class UtilController {
 
         // video tus upload config
         this.videoFileInput = document.getElementById("video_file_input");
-        this.videoUploadProgressBox = document.getElementById("video_upload_progress_box");
-        this.MAX_UPLOAD_VIDEO_FILE_SIZE = 1 * 1024 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 1GB
+        this.MAX_UPLOAD_VIDEO_FILE_SIZE = 300 * 1024 * 1024; // 동영상 최대 업로드 사이즈: 300MB
 
         // image option
         this.imageWidthInput = document.getElementById("imageWidthInput");
@@ -581,6 +580,28 @@ class UtilController {
                             fileReader.onload = (event) => {
                                 const formData = new FormData();
                                 const xhr = new XMLHttpRequest();
+                                const spinner = this.loadingSpin({
+                                    lines: 15,
+                                    length: 2,
+                                    width: 3,
+                                    radius: 4,
+                                    scale: 1,
+                                    corners: 1,
+                                    color: '#000',
+                                    opacity: 0.25,
+                                    rotate: 0,
+                                    direction: 1,
+                                    speed: 1,
+                                    trail: 60,
+                                    fps: 20,
+                                    zIndex: 2e9,
+                                    className: 'spinner',
+                                    top: '30%',
+                                    left: '50%',
+                                    shadow: false,
+                                    hwaccel: false,
+                                    position: 'absolute'
+                                }, "fileUploadLoading");
                                 const uploadKeyDocument = document.getElementById("upload_key")
                                 let uploadKey = uploadKeyDocument.value;
 
@@ -598,6 +619,7 @@ class UtilController {
 
                                     if ((status >= 400 && status <= 500) || (status > 500)) {
                                         this.showSweetAlertErrorMessage(responseValue);
+                                        this.loadingStop(spinner, "fileUploadLoading");
                                     } else {
                                         quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                         this.quillScrollDownImage(quill, responseValue);
@@ -613,11 +635,13 @@ class UtilController {
                                                 image.setAttribute('data-target', '#image_option_modal');
                                             });
                                         }, 100);
+                                        this.loadingStop(spinner, "fileUploadLoading");
                                     }
                                 });
 
                                 xhr.addEventListener("error", event => {
                                     this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                    this.loadingStop(spinner, "fileUploadLoading");
                                 });
 
                                 formData.append("compressed_post_image", imgFile);
@@ -631,6 +655,28 @@ class UtilController {
                                 fileReader.onload = (event) => {
                                     const formData = new FormData();
                                     const xhr = new XMLHttpRequest();
+                                    const spinner = this.loadingSpin({
+                                        lines: 15,
+                                        length: 2,
+                                        width: 3,
+                                        radius: 4,
+                                        scale: 1,
+                                        corners: 1,
+                                        color: '#000',
+                                        opacity: 0.25,
+                                        rotate: 0,
+                                        direction: 1,
+                                        speed: 1,
+                                        trail: 60,
+                                        fps: 20,
+                                        zIndex: 2e9,
+                                        className: 'spinner',
+                                        top: '30%',
+                                        left: '50%',
+                                        shadow: false,
+                                        hwaccel: false,
+                                        position: 'absolute'
+                                    }, "fileUploadLoading");
                                     const uploadKeyDocument = document.getElementById("upload_key")
                                     let uploadKey = uploadKeyDocument.value;
 
@@ -648,6 +694,7 @@ class UtilController {
 
                                         if ((status >= 400 && status <= 500) || (status > 500)) {
                                             this.showSweetAlertErrorMessage(responseValue);
+                                            this.loadingStop(spinner, "fileUploadLoading");
                                         } else {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
                                             quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
@@ -664,11 +711,13 @@ class UtilController {
                                                     image.setAttribute('data-target', '#image_option_modal');
                                                 });
                                             }, 100);
+                                            this.loadingStop(spinner, "fileUploadLoading");
                                         }
                                     });
 
                                     xhr.addEventListener("error", event => {
                                         this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                        this.loadingStop(spinner, "fileUploadLoading");
                                     });
 
                                     formData.append("compressed_post_image", compressedImgFile);
@@ -859,7 +908,7 @@ class UtilController {
                 this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
                 return;
             } else if (this.checkVideoFileSize(videoFile, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
-                this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 1GB 입니다.");
+                this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 300MB 입니다.");
                 return;
             }
 
@@ -868,6 +917,28 @@ class UtilController {
             fileReader.onload = (event) => {
                 const formData = new FormData();
                 const xhr = new XMLHttpRequest();
+                const spinner = this.loadingSpin({
+                    lines: 15,
+                    length: 2,
+                    width: 3,
+                    radius: 4,
+                    scale: 1,
+                    corners: 1,
+                    color: '#000',
+                    opacity: 0.25,
+                    rotate: 0,
+                    direction: 1,
+                    speed: 1,
+                    trail: 60,
+                    fps: 20,
+                    zIndex: 2e9,
+                    className: 'spinner',
+                    top: '30%',
+                    left: '50%',
+                    shadow: false,
+                    hwaccel: false,
+                    position: 'absolute'
+                }, "fileUploadLoading");
                 const uploadKeyDocument = document.getElementById("upload_key")
                 let uploadKey = uploadKeyDocument.value;
 
@@ -885,6 +956,7 @@ class UtilController {
 
                     if ((status >= 400 && status <= 500) || (status > 500)) {
                         this.showSweetAlertErrorMessage(responseValue);
+                        this.loadingStop(spinner, "fileUploadLoading");
                     } else {
                         // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
                         const videoSrc = responseValue;
@@ -895,11 +967,13 @@ class UtilController {
                             quill.insertText(range.index + 1, '\n', Quill.sources.USER)
                             quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
                         }
+                        this.loadingStop(spinner, "fileUploadLoading");
                     }
                 });
 
                 xhr.addEventListener("error", event => {
                     this.showSweetAlertErrorMessage('오류가 발생하여 비디오 업로드에 실패하였습니다.');
+                    this.loadingStop(spinner, "fileUploadLoading");
                 });
 
                 formData.append("compressed_video", videoFile);
@@ -953,28 +1027,6 @@ class UtilController {
 
     getFileExtension(filename) {
         return filename.slice(((filename.lastIndexOf(".") - 1 >>> 0) + 2)).toLowerCase();
-    }
-
-    resetVideoProgressBar() {
-        this.videoUploadProgressBox.style.display = 'block';
-        document.getElementById("video_upload_progress_box_close_button").style.display = 'block';
-        this.videoUploadProgressBox.innerHTML = `
-                <h3 class="video_upload_process_title">
-                    동영상 업로드 진행률 (<span id="cur_video_upload_cnt">0</span>/<span id="total_video_upload_cnt">0</span>)
-                </h3>
-                <button type="button" class="video_upload_progress_box_close_button"
-                        id="video_upload_progress_box_close_button">
-                    <img class="common_button_image_style" src="/images/close.png" alt="">
-                    <span class="blind">닫기 버튼</span>
-                </button>`;
-
-        this.convertedVideoFiles.map((i, key) => {
-            $('.progress-bar_' + key).css('width', '0%');
-            $('#js-upload-text-progress_' + key).html('');
-        });
-        document.getElementById("total_video_upload_cnt").innerText = `0`;
-        document.getElementById("cur_video_upload_cnt").innerText = `0`;
-        this.convertedVideoFiles = [];
     }
 
     deleteSpace(str) {
