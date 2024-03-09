@@ -7,7 +7,7 @@ class BasicInfoController extends UtilController {
         this.currentTextCount = document.getElementById("current_text_count");
         this.greetingLimitWarn = document.getElementById("greeting_limit_warn");
 
-        this.introEditor = this.getQuillEditor('basic_info_editor');
+        this.postWriteEditor = this.getQuillEditor('post_write_editor');
 
         this.viewSourceBtn = document.getElementById("view-editor-source");
         this.userIntroEditorInput = document.getElementById("user_intro_editor_input")
@@ -30,7 +30,7 @@ class BasicInfoController extends UtilController {
         document.getElementById("user_nickname").value = window.opener.document.getElementById("user_basic_info_nickname").value;
         document.getElementById("user_greeting_textarea").value = window.opener.document.getElementById("user_basic_info_greetings").value;
         this.setTextCount(this.greetingTextArea);
-        this.introEditor.root.innerHTML = this.compressContent(window.opener.document.getElementById("user_info_intro").value, false);
+        this.postWriteEditor.root.innerHTML = this.compressContent(window.opener.document.getElementById("user_info_intro").value, false);
         document.getElementById("user_id").value = window.opener.document.getElementById("user_basic_info_id").value;
     }
 
@@ -87,7 +87,7 @@ class BasicInfoController extends UtilController {
                     <body>                   
                         <h1 class="code_view_title">HTML Source View</h1>
                             <textarea class="code_container">
-                               ${this.introEditor.root.innerHTML}
+                               ${this.postWriteEditor.root.innerHTML}
                             </textarea>
                     </body>
                 </html>`);
@@ -102,7 +102,7 @@ class BasicInfoController extends UtilController {
             evt.preventDefault();
 
             if (confirm('기본 정보를 수정하겠습니까?') === true) {
-                const compressedContent = this.compressContent(this.introEditor.root.innerHTML, true);
+                const compressedContent = this.compressContent(this.postWriteEditor.root.innerHTML, true);
 
                 if (this.checkPostContentSize(compressedContent, this.MAX_INTRO_CONTENT_SIZE)) {
                     this.showSweetAlertWarningMessage("소개글 본문 크기가 허용 범위를 초과하였습니다.");
@@ -129,7 +129,7 @@ class BasicInfoController extends UtilController {
         if (document.getElementById("user_blog_name").value === this.prevUserBasicInfoBlogName &&
             document.getElementById("user_nickname").value === this.prevUserBasicInfoNickName &&
             document.getElementById("user_greeting_textarea").value === this.prevUserBasicInfoGreetings &&
-            this.introEditor.root.innerHTML === this.prevUserBasicInfoIntro) {
+            this.postWriteEditor.root.innerHTML === this.prevUserBasicInfoIntro) {
             return true;
         } else {
             return false;

@@ -21,7 +21,7 @@
             <span class="blind">블로그이름</span>
         </label>
         <input type="text" id="user_blog_name" name="blogName" class="blog_name_input" th:field="*{blogName}"
-               maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)" required>
+               maxlength="32" placeholder="블로그 이름을 입력해주세요 (최대 32글자)">
     </div>
 
     <div class="basic_info_spel_div">
@@ -35,7 +35,7 @@
         </label>
 
         <input type="text" id="user_nickname" name="nickname" class="nickname_input" th:field="*{nickname}"
-               maxlength="20" placeholder="닉네임을 입력해주세요 (최대 20글자)" required>
+               maxlength="20" placeholder="닉네임을 입력해주세요 (최대 20글자)">
     </div>
 
     <div class="basic_info_spel_div">
@@ -51,7 +51,7 @@
         <textarea name="greeting" id="user_greeting_textarea" class="user_greeting_textarea" cols="30" rows="10"
                   maxlength="128"
                   th:field="*{greetings}"
-                  placeholder="사용자 인사말을 입력해주세요. (최대 128글자 입력 가능)" required></textarea>
+                  placeholder="사용자 인사말을 입력해주세요. (최대 128글자 입력 가능)"></textarea>
 
         <div class="greeting_edit_count_block">
             <span class="current_text_count common_gray_text" id="current_text_count">0</span>
@@ -76,10 +76,80 @@
 
     <div class="intro_block" id="user_intro_board">
         <span class="blind">소개</span>
+        <div style="position: absolute; left: 50%; top: 30%;" id="fileUploadLoading"></div>
+
+        <!-- Image Option Modal -->
+        <div class="modal fade" id="image_option_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">이미지 옵션</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- image option -->
+                        <div class="clear_fix">
+                            <div style="float: left">
+                                <span style="font-size: 12px;">넓이(px)</span>
+                                <input type="number" id="imageWidthInput" min="0" max="1000"
+                                       style="width: 100px; height: 20px; font-size: 13px;">
+                            </div>
+
+                            <div style="float: left; margin-left: 10px;">
+                                <span style="font-size: 12px;">높이(px)</span>
+                                <input type="number" id="imageHeightInput" min="0" max="999999"
+                                       style="width: 100px; height: 20px; font-size: 13px;">
+                            </div>
+
+                            <button type="button" id="imageOptionSettingButton" style="border: 1px solid #e0763c;
+                        background-color: #e0763c; float: left; font-size: 12px; height: 20px;
+                        color: #fff; margin-left: 10px; cursor: pointer; border-radius: 3px; transition-duration: 0.3s; box-shadow: 3px 3px 3px #eeeeee;">
+                                적용
+                            </button>
+                        </div>
+
+                        <div style=" padding-top: 10px; font-size: 11px; color: #04631a;">
+                            <span>최대 너비: 1000px, 최대 높이: 999,999px</span>
+                        </div>
+
+                        <div class="clear_fix" style="margin-top: 10px;">
+                            <button type="button" class="common_badge_button_style common_pink_badge_button_style"
+                                    id="imageDeleteOptionButton">
+                                이미지 삭제
+                            </button>
+
+                            <button type="button" class="common_badge_button_style common_green_badge_button_style"
+                                    id="imageRestoreOptionButton">
+                                이미지 복원
+                            </button>
+                        </div>
+                        <!--                    <div class="clear_fix" style="margin-top: 10px;">-->
+                        <!--                        <h3 style="font-size: 13px; float: left;">width</h3>-->
+                        <!--                        <div id="imageWidthProgressbar" style="float: left; margin-left: 5px;">-->
+                        <!--                            <div class="progress" id="imageWidthProgress" style="width: 400px; max-width: 400px"></div>-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+
+                        <!--                    <div class="clear_fix" style="margin-top: 10px;">-->
+                        <!--                        <h3 style="font-size: 13px; float: left;">height</h3>-->
+                        <!--                        <div id="imageHeightProgressbar" style="float: left; margin-left: 5px;">-->
+                        <!--                            <div class="progress" id="imageHeightProgress" style="width: 400px; max-width: 400px"></div>-->
+                        <!--                        </div>-->
+                        <!--                    </div>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="editor-board">
             <!-- Contents Here -->
-            <div id="basic_info_editor" class="user_intro_editor">
+            <div id="post_write_editor" class="user_intro_editor">
                 <!-- Contents Here -->
             </div>
             <button id="view-editor-source" type="button"
@@ -104,6 +174,14 @@
     <input type="hidden" id="upload_key" readonly th:value="${email_hash}">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" name="_method" value="PATCH"/>
+</form>
+
+<!-- video form -->
+<form method="post" id="video_form" name="video_form">
+    <input type="file" style="display: none;"
+           id="video_file_input" name="video_file_input"
+           accept="video/mp4, video/avi, video/mkv, video/wmv, video/flv, video/mov, video/webm, video/3gp">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 </form>
 </body>
 </html>
