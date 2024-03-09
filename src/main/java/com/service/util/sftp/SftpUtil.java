@@ -102,7 +102,11 @@ public class SftpUtil {
      * @param fileUUID
      * @throws Exception
      */
-    public void deleteFile(String type, String hash, String id, String date, String fileUUID) throws Exception {
+    /*
+     * TODO 추후에 image/video 등과 같은 File CDN 도입, (frontend,backend) 코드 적용 전까지는 synchronized 적용해서 다음 오류를 방지하도록 한다.
+     * TODO 이후에 해당 코드는 폐기/미사용 처리 (아마도)
+     */
+    public synchronized void deleteFile(String type, String hash, String id, String date, String fileUUID) throws Exception {
         connectSFTP();
 
         String dir = sFtpConfig.getDirectory() + "/" + type + "/" + hash + "/" + id + "/" + date;
@@ -276,7 +280,11 @@ public class SftpUtil {
         }
     }
 
-    public String fileUpload(String fileUUID, InputStream fileInputStream, String type, String hash, String id, String date) throws Exception {
+    /*
+     * TODO 추후에 image/video 등과 같은 File CDN 도입, (frontend,backend) 코드 적용 전까지는 synchronized 적용해서 다음 오류를 방지하도록 한다.
+     * TODO 이후에 해당 코드는 폐기/미사용 처리 (아마도)
+     */
+    public synchronized String fileUpload(String fileUUID, InputStream fileInputStream, String type, String hash, String id, String date) throws Exception {
         connectSFTP();
         String url = String.format(ConstUtil.SFTP_IMAGE_URL, sFtpConfig.getProtocol(), sFtpConfig.getUrl(), uploadFile(fileUUID, fileInputStream, type, hash, id, date));
         disconnectSFTP();

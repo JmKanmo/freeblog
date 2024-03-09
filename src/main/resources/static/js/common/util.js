@@ -37,6 +37,9 @@ class UtilController {
         this.clickedImageHeight = 0;
         this.MAX_IMAGE_WIDTH = 1000;
         this.MAX_IMAGE_HEIGHT = 999_999;
+
+        // upload config
+        this.MAX_UPLOAD_FILE_COUNT = 30;
     }
 
     initHandlerbars() {
@@ -567,89 +570,23 @@ class UtilController {
             const input = document.createElement('input');
             input.setAttribute('type', 'file');
             input.setAttribute('accept', 'image/*');
+            input.setAttribute('multiple', '');
             input.click();
 
             input.addEventListener("change", async () => {
-                const imgFile = input.files[0];
                 try {
-                    if (this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
-                        if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
-                            // if file extension is gif | GIF, 5MB가 넘지 않는 경우, 압축 진행 X
-                            const fileReader = new FileReader();
+                    const imgFiles = input.files;
 
-                            fileReader.onload = (event) => {
-                                const formData = new FormData();
-                                const xhr = new XMLHttpRequest();
-                                const spinner = this.loadingSpin({
-                                    lines: 15,
-                                    length: 2,
-                                    width: 3,
-                                    radius: 4,
-                                    scale: 1,
-                                    corners: 1,
-                                    color: '#000',
-                                    opacity: 0.25,
-                                    rotate: 0,
-                                    direction: 1,
-                                    speed: 1,
-                                    trail: 60,
-                                    fps: 20,
-                                    zIndex: 2e9,
-                                    className: 'spinner',
-                                    top: '30%',
-                                    left: '50%',
-                                    shadow: false,
-                                    hwaccel: false,
-                                    position: 'absolute'
-                                }, "fileUploadLoading");
-                                const uploadKeyDocument = document.getElementById("upload_key")
-                                let uploadKey = uploadKeyDocument.value;
+                    if (imgFiles.length > this.MAX_UPLOAD_FILE_COUNT) {
+                        this.showSweetAlertWarningMessage(`최대 업로드 가능한 파일 갯수는 ${this.MAX_UPLOAD_FILE_COUNT}개 입니다.`, 3000);
+                    }
 
-                                if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
-                                    uploadKey = new Date().getTime();
-                                    uploadKeyDocument.value = uploadKey;
-                                }
+                    for (let i = 0; i < (imgFiles.length > this.MAX_UPLOAD_FILE_COUNT ? this.MAX_UPLOAD_FILE_COUNT : imgFiles.length); i++) {
+                        const imgFile = input.files[i];
 
-                                xhr.open("POST", `/post/upload/post-image/${uploadKey}`, true);
-                                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-
-                                xhr.addEventListener("loadend", event => {
-                                    let status = event.target.status;
-                                    const responseValue = event.target.responseText;
-
-                                    if ((status >= 400 && status <= 500) || (status > 500)) {
-                                        this.showSweetAlertErrorMessage(responseValue);
-                                        this.loadingStop(spinner, "fileUploadLoading");
-                                    } else {
-                                        quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
-                                        this.quillScrollDownImage(quill, responseValue);
-                                        setTimeout(function () {
-                                            // 이미지를 찾아서 스타일을 변경합니다.
-                                            const images = document.querySelectorAll('.ql-editor img');
-                                            images.forEach(function (image) {
-                                                const srcValue = image.src;
-                                                image.style.cursor = 'pointer';
-                                                image.setAttribute('title', image.src);
-                                                image.setAttribute('id', `IMAGE-${srcValue}`);
-                                                image.setAttribute('data-toggle', 'modal');
-                                                image.setAttribute('data-target', '#image_option_modal');
-                                            });
-                                        }, 100);
-                                        this.loadingStop(spinner, "fileUploadLoading");
-                                    }
-                                });
-
-                                xhr.addEventListener("error", event => {
-                                    this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
-                                    this.loadingStop(spinner, "fileUploadLoading");
-                                });
-
-                                formData.append("compressed_post_image", imgFile);
-                                xhr.send(formData);
-                            }
-                            fileReader.readAsDataURL(imgFile);
-                        } else {
-                            this.getCompressedImageFile(imgFile).then(compressedImgFile => {
+                        if (this.checkImageFileExtension(imgFile, ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF'])) {
+                            if (this.checkImageFileExtension(imgFile, ['gif', 'GIF']) && this.checkImageFileBySize(imgFile, this.MAX_IMAGE_UPLOAD_SIZE)) {
+                                // if file extension is gif | GIF, 5MB가 넘지 않는 경우, 압축 진행 X
                                 const fileReader = new FileReader();
 
                                 fileReader.onload = (event) => {
@@ -697,7 +634,6 @@ class UtilController {
                                             this.loadingStop(spinner, "fileUploadLoading");
                                         } else {
                                             quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
-                                            quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
                                             this.quillScrollDownImage(quill, responseValue);
                                             setTimeout(function () {
                                                 // 이미지를 찾아서 스타일을 변경합니다.
@@ -720,17 +656,94 @@ class UtilController {
                                         this.loadingStop(spinner, "fileUploadLoading");
                                     });
 
-                                    formData.append("compressed_post_image", compressedImgFile);
+                                    formData.append("compressed_post_image", imgFile);
                                     xhr.send(formData);
                                 }
-                                fileReader.readAsDataURL(compressedImgFile);
-                            });
+                                fileReader.readAsDataURL(imgFile);
+                            } else {
+                                this.getCompressedImageFile(imgFile).then(compressedImgFile => {
+                                    const fileReader = new FileReader();
+
+                                    fileReader.onload = (event) => {
+                                        const formData = new FormData();
+                                        const xhr = new XMLHttpRequest();
+                                        const spinner = this.loadingSpin({
+                                            lines: 15,
+                                            length: 2,
+                                            width: 3,
+                                            radius: 4,
+                                            scale: 1,
+                                            corners: 1,
+                                            color: '#000',
+                                            opacity: 0.25,
+                                            rotate: 0,
+                                            direction: 1,
+                                            speed: 1,
+                                            trail: 60,
+                                            fps: 20,
+                                            zIndex: 2e9,
+                                            className: 'spinner',
+                                            top: '30%',
+                                            left: '50%',
+                                            shadow: false,
+                                            hwaccel: false,
+                                            position: 'absolute'
+                                        }, "fileUploadLoading");
+                                        const uploadKeyDocument = document.getElementById("upload_key")
+                                        let uploadKey = uploadKeyDocument.value;
+
+                                        if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
+                                            uploadKey = new Date().getTime();
+                                            uploadKeyDocument.value = uploadKey;
+                                        }
+
+                                        xhr.open("POST", `/post/upload/post-image/${uploadKey}`, true);
+                                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                                        xhr.addEventListener("loadend", event => {
+                                            let status = event.target.status;
+                                            const responseValue = event.target.responseText;
+
+                                            if ((status >= 400 && status <= 500) || (status > 500)) {
+                                                this.showSweetAlertErrorMessage(responseValue);
+                                                this.loadingStop(spinner, "fileUploadLoading");
+                                            } else {
+                                                quill.editor.insertEmbed(quill.getSelection().index, 'image', responseValue);
+                                                quill.editor.insertEmbed(quill.getSelection().index + 1, 'block', '<p><br></p>');
+                                                this.quillScrollDownImage(quill, responseValue);
+                                                setTimeout(function () {
+                                                    // 이미지를 찾아서 스타일을 변경합니다.
+                                                    const images = document.querySelectorAll('.ql-editor img');
+                                                    images.forEach(function (image) {
+                                                        const srcValue = image.src;
+                                                        image.style.cursor = 'pointer';
+                                                        image.setAttribute('title', image.src);
+                                                        image.setAttribute('id', `IMAGE-${srcValue}`);
+                                                        image.setAttribute('data-toggle', 'modal');
+                                                        image.setAttribute('data-target', '#image_option_modal');
+                                                    });
+                                                }, 100);
+                                                this.loadingStop(spinner, "fileUploadLoading");
+                                            }
+                                        });
+
+                                        xhr.addEventListener("error", event => {
+                                            this.showSweetAlertErrorMessage('오류가 발생하여 이미지 전송에 실패하였습니다.');
+                                            this.loadingStop(spinner, "fileUploadLoading");
+                                        });
+
+                                        formData.append("compressed_post_image", compressedImgFile);
+                                        xhr.send(formData);
+                                    }
+                                    fileReader.readAsDataURL(compressedImgFile);
+                                });
+                            }
+                        } else {
+                            this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                         }
-                    } else {
-                        this.showSweetAlertWarningMessage("지정 된 이미지 파일 ('jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'gif', 'GIF')만 업로드 가능합니다.");
                     }
                 } catch (error) {
-                    this.showSweetAlertErrorMessage("ERROR: " + error);
+                    this.showSweetAlertErrorMessage("IMAGE UPLOAD ERROR: " + error);
                 }
             })
         });
@@ -902,84 +915,96 @@ class UtilController {
         });
 
         this.videoFileInput.addEventListener("change", evt => {
-            const videoFile = this.videoFileInput.files[0];
+            try {
+                const videoFiles = this.videoFileInput.files;
 
-            if (this.checkVideoFileExtension(videoFile.name) === false) {
-                this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
-                return;
-            } else if (this.checkVideoFileSize(videoFile, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
-                this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 300MB 입니다.");
-                return;
-            }
-
-            const fileReader = new FileReader();
-
-            fileReader.onload = (event) => {
-                const formData = new FormData();
-                const xhr = new XMLHttpRequest();
-                const spinner = this.loadingSpin({
-                    lines: 15,
-                    length: 2,
-                    width: 3,
-                    radius: 4,
-                    scale: 1,
-                    corners: 1,
-                    color: '#000',
-                    opacity: 0.25,
-                    rotate: 0,
-                    direction: 1,
-                    speed: 1,
-                    trail: 60,
-                    fps: 20,
-                    zIndex: 2e9,
-                    className: 'spinner',
-                    top: '30%',
-                    left: '50%',
-                    shadow: false,
-                    hwaccel: false,
-                    position: 'absolute'
-                }, "fileUploadLoading");
-                const uploadKeyDocument = document.getElementById("upload_key")
-                let uploadKey = uploadKeyDocument.value;
-
-                if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
-                    uploadKey = new Date().getTime();
-                    uploadKeyDocument.value = uploadKey;
+                if (videoFiles.length > this.MAX_UPLOAD_FILE_COUNT) {
+                    this.showSweetAlertWarningMessage(`최대 업로드 가능한 파일 갯수는 ${this.MAX_UPLOAD_FILE_COUNT}개 입니다.`, 3000);
                 }
 
-                xhr.open("POST", `/video/upload/video/${uploadKey}`, true);
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+                for (let i = 0; i < (videoFiles.length > this.MAX_UPLOAD_FILE_COUNT ? this.MAX_UPLOAD_FILE_COUNT : videoFiles.length); i++) {
+                    const videoFile = this.videoFileInput.files[i];
 
-                xhr.addEventListener("loadend", event => {
-                    let status = event.target.status;
-                    const responseValue = event.target.responseText;
-
-                    if ((status >= 400 && status <= 500) || (status > 500)) {
-                        this.showSweetAlertErrorMessage(responseValue);
-                        this.loadingStop(spinner, "fileUploadLoading");
-                    } else {
-                        // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
-                        const videoSrc = responseValue;
-                        const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
-                        const range = quill.getSelection();
-
-                        if (range) {
-                            quill.insertText(range.index + 1, '\n', Quill.sources.USER)
-                            quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
-                        }
-                        this.loadingStop(spinner, "fileUploadLoading");
+                    if (this.checkVideoFileExtension(videoFile.name) === false) {
+                        this.showSweetAlertWarningMessage("비디오 파일 확장자가 아닙니다.");
+                        return;
+                    } else if (this.checkVideoFileSize(videoFile, this.MAX_UPLOAD_VIDEO_FILE_SIZE) === false) {
+                        this.showSweetAlertWarningMessage("최대 업로드 파일 크기는 300MB 입니다.");
+                        return;
                     }
-                });
 
-                xhr.addEventListener("error", event => {
-                    this.showSweetAlertErrorMessage('오류가 발생하여 비디오 업로드에 실패하였습니다.');
-                    this.loadingStop(spinner, "fileUploadLoading");
-                });
+                    const fileReader = new FileReader();
 
-                formData.append("compressed_video", videoFile);
-                xhr.send(formData);
+                    fileReader.onload = (event) => {
+                        const formData = new FormData();
+                        const xhr = new XMLHttpRequest();
+                        const spinner = this.loadingSpin({
+                            lines: 15,
+                            length: 2,
+                            width: 3,
+                            radius: 4,
+                            scale: 1,
+                            corners: 1,
+                            color: '#000',
+                            opacity: 0.25,
+                            rotate: 0,
+                            direction: 1,
+                            speed: 1,
+                            trail: 60,
+                            fps: 20,
+                            zIndex: 2e9,
+                            className: 'spinner',
+                            top: '30%',
+                            left: '50%',
+                            shadow: false,
+                            hwaccel: false,
+                            position: 'absolute'
+                        }, "fileUploadLoading");
+                        const uploadKeyDocument = document.getElementById("upload_key")
+                        let uploadKey = uploadKeyDocument.value;
+
+                        if (!uploadKey || uploadKey === '' || uploadKey === 'undefined') {
+                            uploadKey = new Date().getTime();
+                            uploadKeyDocument.value = uploadKey;
+                        }
+
+                        xhr.open("POST", `/video/upload/video/${uploadKey}`, true);
+                        xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+
+                        xhr.addEventListener("loadend", event => {
+                            let status = event.target.status;
+                            const responseValue = event.target.responseText;
+
+                            if ((status >= 400 && status <= 500) || (status > 500)) {
+                                this.showSweetAlertErrorMessage(responseValue);
+                                this.loadingStop(spinner, "fileUploadLoading");
+                            } else {
+                                // ex) https://www.zlzzlz-resource.info/images/1753056255/1706810674997/2024-02-01/1f66fef0-2257-4553-ac4d-e41f6adac0bb.png
+                                const videoSrc = responseValue;
+                                const iframeTag = '<iframe width="300" height="300" src="' + videoSrc + '" frameborder="0" allowfullscreen></iframe>';
+                                const range = quill.getSelection();
+
+                                if (range) {
+                                    quill.insertText(range.index + 1, '\n', Quill.sources.USER)
+                                    quill.clipboard.dangerouslyPasteHTML(range.index + 1, iframeTag);
+                                }
+                                this.loadingStop(spinner, "fileUploadLoading");
+                            }
+                        });
+
+                        xhr.addEventListener("error", event => {
+                            this.showSweetAlertErrorMessage('오류가 발생하여 비디오 업로드에 실패하였습니다.');
+                            this.loadingStop(spinner, "fileUploadLoading");
+                        });
+
+                        formData.append("compressed_video", videoFile);
+                        xhr.send(formData);
+                    }
+                    fileReader.readAsDataURL(videoFile);
+                }
+            } catch (error) {
+                this.showSweetAlertErrorMessage("VIDEO UPLOAD ERROR: " + error);
             }
-            fileReader.readAsDataURL(videoFile);
         });
 
         const editorHeightButton = document.querySelector('.ql-editor_height');
