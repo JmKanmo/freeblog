@@ -30,6 +30,7 @@ class UtilController {
         this.imageWidthInput = document.getElementById("imageWidthInput");
         this.imageHeightInput = document.getElementById("imageHeightInput");
         this.imageOptionSettingButton = document.getElementById("imageOptionSettingButton");
+        this.imageCopyOptionButton = document.getElementById("imageCopyOptionButton");
         this.imageDeleteOptionButton = document.getElementById("imageDeleteOptionButton");
         this.imageRestoreOptionButton = document.getElementById("imageRestoreOptionButton");
         this.clickedImageId = null;
@@ -793,6 +794,17 @@ class UtilController {
             document.getElementById(this.clickedImageId).height = this.imageHeightInput.value;
         });
 
+        this.imageCopyOptionButton.addEventListener("click", evt => {
+            // 이미지 요소에서 src 속성을 가져옵니다.
+            const imageSrc = document.getElementById(this.clickedImageId).src;
+
+            navigator.clipboard.writeText(imageSrc).then(function () {
+                console.log('클립보드에 복사 성공!');
+            }, function (err) {
+                console.error('클립보드에 복사 실패: ', err);
+            });
+        });
+
         this.imageDeleteOptionButton.addEventListener("click", evt => {
             document.getElementById(this.clickedImageId).style.display = 'none';
         });
@@ -1322,7 +1334,7 @@ class UtilController {
         textarea.select();
         document.execCommand("copy");
         document.body.removeChild(textarea);
-        alert("URL이 복사되었습니다.")
+        this.showSweetAlertInfoMessage("URL이 복사되었습니다.");
     }
 
     invokeAutoSaveInterval(func, contents, time) {
